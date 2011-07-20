@@ -28,7 +28,7 @@ public class TeamspeakUser {
 	
 
 
-	private static final String[] NEEDCONVERT = {"client_nickname","client_talk_request_msg","client_description"};
+	private static final String[] NEEDCONVERT = {"client_nickname","client_talk_request_msg","client_description","client_type"};
 		
 	public TeamspeakUser(String msg){
 		values = TeamspeakEvent.split(msg);
@@ -62,6 +62,10 @@ public class TeamspeakUser {
 	public String getName(){
 		return getValue("client_nickname");
 	}
+        public int getClientType()
+        {
+            return Integer.parseInt(getValue("client_type"));
+        }
 	
 	/**
 	 * @return the values

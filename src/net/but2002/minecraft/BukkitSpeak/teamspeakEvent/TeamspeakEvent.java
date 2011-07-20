@@ -72,22 +72,26 @@ public abstract class TeamspeakEvent {
 		return result;
 	}
 	
-	public String replaceValues(String input){
-		//replace values from User
-		String[]keys = user.getValues().keySet().toArray(new String[user.getValues().size()]);
-		for(String key: keys){
-			if(key != null && user.getValue(key) != null)
-			input = input.replaceAll("%"+key+"%", user.getValue(key));
-		}
-		//replace event specific values
-		keys = localValues.keySet().toArray(new String[localValues.size()]);
-		for(String key: keys){
-			if(key != null && localValues.get(key) != null)
-				input = input.replaceAll("%"+key+"%", localValues.get(key));
-		}
-                input = input.replaceAll("\\$", "§");
-		return input;
-	}
+  public String replaceValues(String input, boolean color)
+  {
+      if (color == true)
+      {
+        input = input.replaceAll("\\$", "§");
+      }
+      String[] keys = (String[])this.user.getValues().keySet().toArray(new String[this.user.getValues().size()]);
+      for (String key : keys) {
+          if ((key != null) && (this.user.getValue(key) != null)) {
+            input = input.replaceAll("%" + key + "%", this.user.getValue(key));
+          }
+      }
+      keys = (String[])this.localValues.keySet().toArray(new String[this.localValues.size()]);
+      for (String key : keys) {
+          if ((key != null) && (this.localValues.get(key) != null)) {
+            input = input.replaceAll("%" + key + "%", (String)this.localValues.get(key));
+          }
+      }
+      return input;
+  }
 
 
 }

@@ -43,7 +43,7 @@ public class ServerMessageEvent extends TeamspeakEvent{
 	@Override
 	protected void sendMessage() {
 		if(user != null)
-			plugin.getServer().broadcastMessage(replaceValues(plugin.getStringManager().getMessage("msg_servermsg")));
+			plugin.getServer().broadcastMessage(replaceValues(plugin.getStringManager().getMessage("msg_servermsg"), false));
 		
 	}
 

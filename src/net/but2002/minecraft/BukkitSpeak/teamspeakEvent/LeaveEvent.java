@@ -32,9 +32,9 @@ public class LeaveEvent extends TeamspeakEvent{
 	 */
 	@Override
 	protected void sendMessage() {
-		if(user != null && !getUser().getName().startsWith("Unknown from"))
+		if(user != null && !getUser().getName().startsWith("Unknown from") && getUser().getClientType() != 1)
                 {
-                    plugin.getServer().broadcastMessage(replaceValues(plugin.getStringManager().getMessage("msg_quit")));
+                    plugin.getServer().broadcastMessage(replaceValues(plugin.getStringManager().getMessage("msg_quit"), true));
                 }
 		
 	}

@@ -25,7 +25,10 @@ public class EnterEvent extends TeamspeakEvent{
 	}
 	
 	protected void sendMessage(){
-		plugin.getServer().broadcastMessage((replaceValues(plugin.getStringManager().getMessage("msg_join"))));
+                if (!getUser().getName().startsWith("Unknown from"))
+                {
+                    plugin.getServer().broadcastMessage((replaceValues(plugin.getStringManager().getMessage("msg_join"))));
+                }
 		
 	}
 

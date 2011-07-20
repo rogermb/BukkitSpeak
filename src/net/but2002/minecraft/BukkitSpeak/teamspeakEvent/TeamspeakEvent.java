@@ -85,6 +85,7 @@ public abstract class TeamspeakEvent {
 			if(key != null && localValues.get(key) != null)
 				input = input.replaceAll("%"+key+"%", localValues.get(key));
 		}
+                input = input.replaceAll("\\$", "§");
 		return input;
 	}
 

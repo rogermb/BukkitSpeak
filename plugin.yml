@@ -1,3 +1,5 @@
 name: BukkitSpeak
-main: net.befog.minecraft.BukkitSpeak.BukkitSpeak
-version: 0.14
+main: net.but2002.minecraft.BukkitSpeak.BukkitSpeak
+version: 0.23
+author: greycap
+authors: [but2002, Firedroide]

@@ -1,19 +1,12 @@
-/**
- * 
- */
 package net.but2002.minecraft.BukkitSpeak.teamspeakEvent;
 
 import net.but2002.minecraft.BukkitSpeak.BukkitSpeak;
 import net.but2002.minecraft.BukkitSpeak.TeamspeakUser;
 
-/**
- * @author greycap
- *
- */
 public class EnterEvent extends TeamspeakEvent{
-	
-	public EnterEvent(BukkitSpeak plugin, String msg){
-		super(plugin,msg);
+
+	public EnterEvent(BukkitSpeak plugin, String msg) {
+		super(plugin, msg);
 		
 		localKeys.add("cfid");
 		localKeys.add("ctid");
@@ -25,11 +18,9 @@ public class EnterEvent extends TeamspeakEvent{
 	}
 	
 	protected void sendMessage(){
-                if (!getUser().getName().startsWith("Unknown from") && getUser().getClientType() != 1)
-                {
-                    plugin.getServer().broadcastMessage((replaceValues(plugin.getStringManager().getMessage("msg_join"), true)));
-                }
-		
+		if (!getUser().getName().startsWith("Unknown from") && getUser().getClientType() != 1) {
+			String message = replaceValues(plugin.getStringManager().getMessage("msg_join"), true);
+			plugin.getServer().broadcastMessage(message);
+		}	
 	}
-
 }

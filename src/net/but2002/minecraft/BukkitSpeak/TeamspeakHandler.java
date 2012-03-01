@@ -1,6 +1,3 @@
-/**
- * 
- */
 package net.but2002.minecraft.BukkitSpeak;
 
 import java.io.BufferedReader;
@@ -14,10 +11,6 @@ import net.but2002.minecraft.BukkitSpeak.teamspeakEvent.EnterEvent;
 import net.but2002.minecraft.BukkitSpeak.teamspeakEvent.LeaveEvent;
 import net.but2002.minecraft.BukkitSpeak.teamspeakEvent.ServerMessageEvent;
 
-/**
- * @author greycap
- *
- */
 public class TeamspeakHandler implements Runnable{
 	
 	BukkitSpeak plugin;
@@ -38,9 +31,6 @@ public class TeamspeakHandler implements Runnable{
 		connect();
 	}
 
-	/* (non-Javadoc)
-	 * @see java.lang.Runnable#run()
-	 */
 	@Override
 	public void run() {
 		try {
@@ -53,15 +43,20 @@ public class TeamspeakHandler implements Runnable{
 				if(line != null){
 					handleMessage(line);
 				}
-				Thread.sleep(500);
+				Thread.sleep(1000);
 			}
 			
+			try {
+				out.println("logout");
+			} catch(Exception e) {
+				plugin.getLogger().warning(plugin + "Could not logout properly. Shouldn't be a problem though.");
+			}
 			in.close();
 			out.close();
 			socket.close();
 			
 		} catch (Exception e) {
-			plugin.getLogger().log(java.util.logging.Level.SEVERE,e.toString());
+			plugin.getLogger().severe(plugin + "Exception while listening to the Teamspeak Query.");
 			e.printStackTrace();
 		}
 	}
@@ -71,14 +66,14 @@ public class TeamspeakHandler implements Runnable{
 			socket = new Socket(InetAddress.getByName(stringManager.getIp()),stringManager.getQueryPort());
 			out = new PrintWriter(socket.getOutputStream(),true);
 			in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-                        out.println("login "+stringManager.getServerAdmin()+" "+stringManager.getServerPass());
-			out.println("use port="+stringManager.getServerPort());
+            
+			out.println("login " + stringManager.getServerAdmin() + " " + stringManager.getServerPass());
+			out.println("use port=" + stringManager.getServerPort());
 			out.println("servernotifyregister event=server");
 			out.println("servernotifyregister event=textserver");
 
 			socket.setKeepAlive(true);
-			if(keepAliveThread != null)
-				keepAliveThread.kill();
+			if(keepAliveThread != null) keepAliveThread.kill();
 			keepAliveThread = new TeamspeakKeepAlive(out);
 			keepAliveThread.start();
 			
@@ -115,8 +110,7 @@ public class TeamspeakHandler implements Runnable{
 	public TeamspeakUser getUserByName(String name){
 		TeamspeakUser[] users = this.users.values().toArray(new TeamspeakUser[this.users.values().size()]);
 		for(TeamspeakUser currentUser : users){
-			if(name.equals(currentUser.getName()))
-				return currentUser;
+			if(name.equals(currentUser.getName())) return currentUser;
 		}
 		return null;
 	}

@@ -1,35 +1,15 @@
-/**
- * 
- */
 package net.but2002.minecraft.BukkitSpeak;
 
 import java.util.HashMap;
 
 import net.but2002.minecraft.BukkitSpeak.teamspeakEvent.TeamspeakEvent;
 
-/**
- * @author greycap
- *
- */
 public class TeamspeakUser {
 	
-	/*public static final String[] FIELDS = {"cfid","ctid","reasonid","clid","client_unique_identifier",
-			"client_nickname","client_input_muted","client_output_muted","client_input_hardware",
-			"client_output_hardware", "client_is_recording","client_database_id",
-			"client_channel_group_id","client_servergroups","client_away","client_away_message",
-			"client_type","client_meta_data","client_flag_avatar","client_talk_power",
-			"client_talk_request","client_talk_request_msg","client_description",
-			"client_is_talker","client_is_priority_speaker","client_unread_messages",
-			"client_nickname_phonetic","client_needed_serverquery_view_power",
-			"client_icon_id","client_is_channel_commander","client_country"
-	};*/
-
 	private HashMap<String,String> values = new HashMap<String, String>();
 	
-
-
 	private static final String[] NEEDCONVERT = {"client_nickname","client_talk_request_msg","client_description","client_type"};
-		
+	
 	public TeamspeakUser(String msg){
 		values = TeamspeakEvent.split(msg);
 		for(String currentConvert: NEEDCONVERT){
@@ -41,8 +21,13 @@ public class TeamspeakUser {
 	}
 	
 	public String convert(String input){
-		if(input != null)
-			return input.replaceAll("\\\\s", " ");
+		if(input != null) {
+			String s = input;
+			s = s.replaceAll("\\\\s", " ");
+			s = s.replaceAll("\\\\/", "/");
+			s = s.replaceAll("\\\\p", "|");
+			return s;
+		}
 		return null;
 	}
 	
@@ -55,21 +40,18 @@ public class TeamspeakUser {
 		return values.put(key, value);
 	}
 	
-	public int getID(){
+	public int getID() {
 		return Integer.parseInt(getValue("clid"));
 	}
 	
-	public String getName(){
+	public String getName() {
 		return getValue("client_nickname");
 	}
-        public int getClientType()
-        {
-            return Integer.parseInt(getValue("client_type"));
-        }
 	
-	/**
-	 * @return the values
-	 */
+	public int getClientType() {
+		return Integer.parseInt(getValue("client_type"));
+	}
+	
 	public HashMap<String, String> getValues() {
 		return values;
 	}

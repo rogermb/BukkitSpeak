@@ -35,12 +35,12 @@ public class TeamspeakHandler implements Runnable{
 	public void run() {
 		try {
 			
-			while(!kill){
-				if(socket.isClosed()){
+			while(!kill) {
+				if(socket.isClosed()) {
 					connect();
 				}
 				String line = in.readLine();
-				if(line != null){
+				if(line != null) {
 					handleMessage(line);
 				}
 				Thread.sleep(1000);

@@ -14,10 +14,10 @@ public class StringManager {
 	public static final String CONFIG_IP = "TeamSpeakIp";
 	public static final String CONFIG_SERVERPORT = "TeamSpeakPort";
 	public static final String CONFIG_QUERYPORT = "QueryPort";
-    public static final String CONFIG_SERVERADMIN = "QueryUsername";
-    public static final String CONFIG_SERVERPASS = "QueryPassword";
+	public static final String CONFIG_SERVERADMIN = "QueryUsername";
+	public static final String CONFIG_SERVERPASS = "QueryPassword";
 
-    public static final String MESSAGES_SECTION = "Messages";
+	public static final String MESSAGES_SECTION = "Messages";
 	public static final String[] MESSAGES = {"msg_join", "msg_quit", "msg_servermsg", "msg_list"};
 
 	public static final String MUTED_SECTION = "Muted";

@@ -23,13 +23,13 @@ public class BukkitSpeak extends JavaPlugin {
 		ts = new TeamspeakHandler(this);
 		new Thread(ts).start();
 		
-		logger.log(java.util.logging.Level.INFO,getDescription().getName()+" Version: "+getDescription().getVersion()+" enabled.");
+		logger.info(this + " enabled.");
 	}
 
 	@Override
 	public void onDisable() {
 		ts.kill();
-		logger.log(java.util.logging.Level.INFO,getDescription().getName()+" Version: "+getDescription().getVersion()+" disabled.");
+		logger.info(this + " disabled.");
 	}
 	
 	public String toString() {

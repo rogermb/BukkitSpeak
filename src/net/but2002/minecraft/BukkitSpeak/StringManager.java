@@ -1,172 +1,162 @@
-/**
- * 
- */
 package net.but2002.minecraft.BukkitSpeak;
-
 
 import java.util.HashMap;
 
-import org.bukkit.util.config.Configuration;
+import org.bukkit.configuration.file.FileConfiguration;
 
-/**
- * @author greycap
- *
- */
 public class StringManager {
 	
 	private HashMap<String,String> strings = new HashMap<String,String>();
-	private String ip;
-        private String serverAdmin;
-        private String serverPass;
+	private String ip, serverAdmin, serverPass;
 	private int queryPort,serverPort;
 	
-	public static final String CONFIG_IP = "ip";
-	public static final String CONFIG_QUERYPORT = "queryPort";
-	public static final String CONFIG_SERVERPORT = "serverPort";
-        public static final String CONFIG_SERVERADMIN = "serverAdmin";
-        public static final String CONFIG_SERVERPASS = "serverPass";
-	
-	public static final String[] MESSAGES = {"msg_join","msg_quit","msg_servermsg"};
+	public static final String CONFIG_SECTION = "General";
+	public static final String CONFIG_IP = "TeamSpeakIp";
+	public static final String CONFIG_SERVERPORT = "TeamSpeakPort";
+	public static final String CONFIG_QUERYPORT = "QueryPort";
+    public static final String CONFIG_SERVERADMIN = "QueryUsername";
+    public static final String CONFIG_SERVERPASS = "QueryPassword";
+
+    public static final String MESSAGES_SECTION = "Messages";
+	public static final String[] MESSAGES = {"msg_join", "msg_quit", "msg_servermsg", "msg_list"};
+
+	public static final String MUTED_SECTION = "Muted";
 	
 	private BukkitSpeak plugin;
 	
-	public StringManager(BukkitSpeak plugin){
+	public StringManager(BukkitSpeak plugin) {
+		
 		this.plugin = plugin;
-		Configuration config = plugin.getConfiguration();
+		FileConfiguration config = plugin.getConfig();
 		boolean error = false;
-		ip = config.getString(CONFIG_IP);
-		if(ip == null){ //check if config file contains IP
-			config.setProperty(CONFIG_IP, "1.2.3.4");
-			logConfigError("IP");
+		
+		if (config.getValues(true).isEmpty()) {
+			setDefaults(config);
+			plugin.saveConfig();
+		}
+		
+		try {
+			config.getConfigurationSection(CONFIG_SECTION);
+		} catch(Exception e) {
+			config.createSection(CONFIG_SECTION);
+		}
+		
+		try {
+			config.getConfigurationSection(MESSAGES_SECTION);
+		} catch(Exception e) {
+			config.createSection(MESSAGES_SECTION);
+		}
+
+		try {
+			ip = config.getConfigurationSection(CONFIG_SECTION).getString(CONFIG_IP);
+		} catch(Exception e) {
+			config.getConfigurationSection(CONFIG_SECTION).set(CONFIG_IP, getDefault(CONFIG_IP));
+			logConfigError(CONFIG_IP);
 			error = true;
 		}
 		
-		String queryPort = config.getString(CONFIG_QUERYPORT);
 		try {
-			this.setQueryPort(Integer.parseInt(queryPort));
+			serverPort = Integer.parseInt(config.getConfigurationSection(CONFIG_SECTION).getString(CONFIG_SERVERPORT));
 		} catch (Exception e) {
-			config.setProperty(CONFIG_QUERYPORT, "10011");
-			logConfigError(e.toString());
+			config.getConfigurationSection(CONFIG_SECTION).set(CONFIG_SERVERPORT, getDefault(CONFIG_SERVERPORT));
+			logConfigError(CONFIG_SERVERPORT);
+			error = true;
+		}
+
+		try {
+			queryPort = Integer.parseInt(config.getConfigurationSection(CONFIG_SECTION).getString(CONFIG_QUERYPORT));
+		} catch (Exception e) {
+			config.getConfigurationSection(CONFIG_SECTION).set(CONFIG_QUERYPORT, getDefault(CONFIG_QUERYPORT));
+			logConfigError(CONFIG_QUERYPORT);
 			error = true;
 		}
 		
-		String serverPort = config.getString(CONFIG_SERVERPORT);
 		try {
-			this.setServerPort(Integer.parseInt(serverPort));
+			serverAdmin = config.getConfigurationSection(CONFIG_SECTION).getString(CONFIG_SERVERADMIN);
 		} catch (Exception e) {
-			config.setProperty(CONFIG_SERVERPORT, "9987");
-			logConfigError(e.toString());
+			config.getConfigurationSection(CONFIG_SECTION).set(CONFIG_SERVERADMIN, getDefault(CONFIG_SERVERADMIN));
+			logConfigError(CONFIG_SERVERADMIN);
 			error = true;
 		}
                 
-                String serverAdmin = config.getString(CONFIG_SERVERADMIN);
-                try {
-                        this.setServerAdmin(serverAdmin);
-                } catch (Exception e) {
-			config.setProperty(CONFIG_SERVERADMIN, "serveradmin");
-			logConfigError(e.toString());
+		try {
+			serverAdmin = config.getConfigurationSection(CONFIG_SECTION).getString(CONFIG_SERVERPASS);
+		} catch (Exception e) {
+			config.getConfigurationSection(CONFIG_SECTION).set(CONFIG_SERVERPASS, getDefault(CONFIG_SERVERPASS));
+			logConfigError(CONFIG_SERVERPASS);
 			error = true;
 		}
-                
-                String serverPass = config.getString(CONFIG_SERVERPASS);
-                try {
-                        this.setServerPass(serverPass);
-                } catch (Exception e) {
-			config.setProperty(CONFIG_SERVERPASS, "serverpass");
-			logConfigError(e.toString());
-			error = true;
-		}
-               
 		
-		for(String currentNode : MESSAGES){ //read all the messages
-			String currentValue = config.getString(currentNode);
-			if(currentValue == null){
-				config.setProperty(currentNode, getDefaultMessage(currentNode));
+		
+		for (String currentNode : MESSAGES) { 
+			String currentValue = config.getConfigurationSection(MESSAGES_SECTION).getString(currentNode);
+			if (currentValue == null) {
+				config.getConfigurationSection(MESSAGES_SECTION).set(currentNode, getDefault(currentNode));
 				logConfigError(currentNode);
 				error = true;
-			}
-			else{
+			} else {
 				strings.put(currentNode, currentValue);
 			}
 		}
+		
 		if(error){
-			config.save();
+			plugin.saveConfig();
 			plugin.disable();
 		}
 		
 	}
 	
 	private void logConfigError(String message){
-		plugin.getLogger().log(java.util.logging.Level.SEVERE,"["+plugin.getDescription().getName()+"] Error while parsing "+message);
+		plugin.getLogger().severe(plugin + "Error while parsing " + message);
 	}
 	
-	private String getDefaultMessage(String node){
-		if(node.equals("msg_join"))
-			return "%name% has joined TS";
-		else if (node.equals("msg_quit"))
-			return "%name% has quit TS";
-		else if (node.equals("msg_servermsg"))
-			return "[TS][Server][%client_nickname%] %msg%";
-		return "FIXME";
+	private void setDefaults(FileConfiguration config) {
+		config.createSection(CONFIG_SECTION);
+		config.getConfigurationSection(CONFIG_SECTION).set(CONFIG_IP, "1.2.3.4");
+		config.getConfigurationSection(CONFIG_SECTION).set(CONFIG_SERVERPORT, "9987");
+		config.getConfigurationSection(CONFIG_SECTION).set(CONFIG_QUERYPORT, "10011");
+		config.getConfigurationSection(CONFIG_SECTION).set(CONFIG_SERVERADMIN, "ServerAdmin");
+		config.getConfigurationSection(CONFIG_SECTION).set(CONFIG_SERVERPASS, "ServerPass");
+		config.createSection(MESSAGES_SECTION);
+		config.getConfigurationSection(MESSAGES_SECTION).set(MESSAGES[0], "%name% has joined TeamSpeak");
+		config.getConfigurationSection(MESSAGES_SECTION).set(MESSAGES[1], "%name% has left TeamSpeak");
+		config.getConfigurationSection(MESSAGES_SECTION).set(MESSAGES[2], "[TS][%client_nickname%] %msg%");
+	}
+	
+	private String getDefault(String node) {
+		if(node.equals(CONFIG_IP)) return "1.2.3.4";
+		else if (node.equals(CONFIG_SERVERPORT)) return "9987";
+		else if (node.equals(CONFIG_QUERYPORT)) return "10011";
+		else if (node.equals(CONFIG_SERVERADMIN)) return "ServerAdmin";
+		else if (node.equals(CONFIG_SERVERPASS)) return "ServerPass";
+		else if (node.equals(MESSAGES[0])) return "%name% has joined TeamSpeak";
+		else if (node.equals(MESSAGES[1])) return "%name% has quit TeamSpeak";
+		else if (node.equals(MESSAGES[2])) return "[TS][%client_nickname%] %msg%";
+		else return "NO_DEFAULT_SET";
 	}
 	
 	public String getMessage(String key){
 		return strings.get(key);
 	}
 	
-	/**
-	 * @return the ip
-	 */
 	public String getIp() {
 		return ip;
 	}
-
-	/**
-	 * @param queryPort the queryPort to set
-	 */
-	public void setQueryPort(int queryPort) {
-		this.queryPort = queryPort;
-	}
-
-	/**
-	 * @return the queryPort
-	 */
+	
 	public int getQueryPort() {
 		return queryPort;
 	}
-
-	/**
-	 * @param serverPort the serverPort to set
-	 */
-	public void setServerPort(int serverPort) {
-		this.serverPort = serverPort;
-	}
-
-	/**
-	 * @return the serverPort
-	 */
+	
 	public int getServerPort() {
 		return serverPort;
 	}
-                
-        public void setServerAdmin(String serverAdmin)
-        {
-            this.serverAdmin = serverAdmin;
-        }
-        
-        public void setServerPass(String serverPass)
-        {
-            this.serverPass = serverPass;         
-        }
-        
-        public String getServerAdmin()
-        {
-            return serverAdmin;
-        }
-        
-        public String getServerPass()
-        {
-            return serverPass;
-        }
+    
+	public String getServerAdmin() {
+        return serverAdmin;
+    }
+    
+    public String getServerPass() {
+        return serverPass;
+    }
 
 }

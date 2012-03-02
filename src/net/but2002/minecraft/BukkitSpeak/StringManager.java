@@ -6,7 +6,6 @@ import net.but2002.minecraft.BukkitSpeak.util.ConfigReader;
 
 public class StringManager {
 	
-	private ConfigReader reader;
 	private HashMap<String,String> strings = new HashMap<String,String>();
 	private String ip, serverAdmin, serverPass;
 	private int queryPort,serverPort;
@@ -29,7 +28,7 @@ public class StringManager {
 	
 	public StringManager(BukkitSpeak plugin) {
 		
-		reader = new ConfigReader(plugin);
+		ConfigReader reader = new ConfigReader(plugin);
 		
 		ip = reader.getString(CONFIG_SECTION, CONFIG_IP, "1.2.3.4");
 		serverPort = reader.getInteger(CONFIG_SECTION, CONFIG_SERVERPORT, 9987);
@@ -50,8 +49,13 @@ public class StringManager {
 		
 	}
 		
-	public String getMessage(String key){
-		return strings.get(key);
+	public String getMessage(String key) {
+		try {
+			return strings.get(key);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
 	}
 	
 	public String getIp() {

@@ -57,9 +57,9 @@ public class ConfigReader {
 	public Integer getInteger(String dir, String loc, Integer def) {
 		EnsureSectionCreated(dir);
 		
-		try {
+		if (config.getConfigurationSection(dir).isInt(loc)) {
 			return config.getConfigurationSection(dir).getInt(loc);
-		} catch (Exception e) {
+		} else {
 			config.getConfigurationSection(dir).set(loc, def);
 			logConfigError(dir + "." + loc);
 			return def;
@@ -69,9 +69,9 @@ public class ConfigReader {
 	public String getString(String dir, String loc, String def) {
 		EnsureSectionCreated(dir);
 		
-		try {
+		if (config.getConfigurationSection(dir).isString(loc)) {
 			return config.getConfigurationSection(dir).getString(loc);
-		} catch (Exception e) {
+		} else {
 			config.getConfigurationSection(dir).set(loc, def);
 			logConfigError(dir + "." + loc);
 			return def;
@@ -79,9 +79,7 @@ public class ConfigReader {
 	}
 	
 	public void EnsureSectionCreated(String dir) {
-		try {
-			config.getConfigurationSection(dir);
-		} catch(Exception e) {
+		if (!config.isConfigurationSection(dir)) {
 			config.createSection(dir);
 		}
 	}

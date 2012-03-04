@@ -7,6 +7,7 @@ import java.net.InetAddress;
 import java.net.Socket;
 import java.util.HashMap;
 
+import net.but2002.minecraft.BukkitSpeak.teamspeakEvent.ClientlistEvent;
 import net.but2002.minecraft.BukkitSpeak.teamspeakEvent.EnterEvent;
 import net.but2002.minecraft.BukkitSpeak.teamspeakEvent.LeaveEvent;
 import net.but2002.minecraft.BukkitSpeak.teamspeakEvent.ServerMessageEvent;
@@ -43,7 +44,7 @@ public class TeamspeakHandler implements Runnable{
 				if(line != null) {
 					handleMessage(line);
 				}
-				Thread.sleep(1000);
+				Thread.sleep(500);
 			}
 			
 			try {
@@ -61,58 +62,63 @@ public class TeamspeakHandler implements Runnable{
 		}
 	}
 	
-	public void connect(){
+	public void connect() {
 		try {
 			socket = new Socket(InetAddress.getByName(stringManager.getIp()),stringManager.getQueryPort());
 			out = new PrintWriter(socket.getOutputStream(),true);
 			in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-            
+			
 			out.println("login " + stringManager.getServerAdmin() + " " + stringManager.getServerPass());
 			out.println("use port=" + stringManager.getServerPort());
 			out.println("servernotifyregister event=server");
 			out.println("servernotifyregister event=textserver");
-
+			out.println("clientlist");
+			
 			socket.setKeepAlive(true);
 			if(keepAliveThread != null) keepAliveThread.kill();
 			keepAliveThread = new TeamspeakKeepAlive(out);
 			keepAliveThread.start();
 			
 		} catch (Exception e) {
-			plugin.getLogger().log(java.util.logging.Level.SEVERE,e.toString());
+			plugin.getLogger().severe(e.toString());
 			e.printStackTrace();
 		}
 		
 	}
 	
-	public void handleMessage (String message){
+	public void handleMessage (String message) {
+		if (message.startsWith("clid=")) {
+			for (String msg : message.split("\\|")) {
+				TeamspeakUser user = new ClientlistEvent(plugin, msg).getUser();
+				users.put(user.getID(), user);
+			}
+		}
 		String command = message.split(" ")[0];
 		message = message.replaceFirst("\\S* ", "");
-		if(command.equals("notifycliententerview")){
+		if(command.equals("notifycliententerview")) {
 			TeamspeakUser user = new EnterEvent(plugin, message).getUser();
 			users.put(user.getID(), user);
-		}
-		if(command.equals("notifyclientleftview")){
-			new LeaveEvent(plugin, message);
-		}
-		if(command.equals("notifytextmessage")){
+		} else if(command.equals("notifyclientleftview")) {
+			TeamspeakUser user = new LeaveEvent(plugin, message).getUser();
+			users.remove(user.getID());
+		} else if(command.equals("notifytextmessage")) {
 			new ServerMessageEvent(plugin, message);
 		}
 	}
 	
-	public void kill(){
+	public void kill() {
 		this.kill = true;
 	}
 	
-	public TeamspeakUser getUserByID(int id){
+	public TeamspeakUser getUserByID(int id) {
 		return users.get(id);
 	}
 	
-	public TeamspeakUser getUserByName(String name){
+	public TeamspeakUser getUserByName(String name) {
 		TeamspeakUser[] users = this.users.values().toArray(new TeamspeakUser[this.users.values().size()]);
 		for(TeamspeakUser currentUser : users){
 			if(name.equals(currentUser.getName())) return currentUser;
 		}
 		return null;
 	}
-
 }

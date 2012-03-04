@@ -38,7 +38,7 @@ public class BukkitSpeak extends JavaPlugin {
 		getPluginLoader().disablePlugin(this);
 		logger.severe(this + "was disabled due to an error.");
 	}
-
+	
 	public StringManager getStringManager() {
 		return stringManager;
 	}

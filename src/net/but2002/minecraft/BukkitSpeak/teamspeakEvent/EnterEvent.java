@@ -17,10 +17,10 @@ public class EnterEvent extends TeamspeakEvent{
 		sendMessage();
 	}
 	
-	protected void sendMessage(){
+	protected void sendMessage() {
 		if (!getUser().getName().startsWith("Unknown from") && getUser().getClientType() != 1) {
 			String message = replaceValues(plugin.getStringManager().getMessage("msg_join"), true);
 			plugin.getServer().broadcastMessage(message);
-		}	
+		}
 	}
 }

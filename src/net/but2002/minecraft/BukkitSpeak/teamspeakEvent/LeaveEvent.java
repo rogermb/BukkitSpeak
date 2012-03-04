@@ -12,7 +12,7 @@ public class LeaveEvent extends TeamspeakEvent{
 		
 		parseLocalValues(msg);
 		try {
-		setUser(plugin.getTs().getUserByID(Integer.parseInt(localValues.get("clid"))));
+			setUser(plugin.getTs().getUserByID(Integer.parseInt(localValues.get("clid"))));
 		} catch(Exception e) {
 			plugin.getServer().getLogger().info(plugin + "Could not identify user. May have logged off.");
 			return;

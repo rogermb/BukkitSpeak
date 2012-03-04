@@ -4,8 +4,6 @@ import java.util.logging.Logger;
 
 import org.bukkit.plugin.java.JavaPlugin;
 
-
-
 public class BukkitSpeak extends JavaPlugin {
 	
 	private Logger logger;
@@ -23,17 +21,17 @@ public class BukkitSpeak extends JavaPlugin {
 		ts = new TeamspeakHandler(this);
 		new Thread(ts).start();
 		
-		logger.info(this + " enabled.");
+		logger.info(this + "enabled.");
 	}
-
+	
 	@Override
 	public void onDisable() {
 		ts.kill();
-		logger.info(this + " disabled.");
+		logger.info(this + "disabled.");
 	}
 	
 	public String toString() {
-		return "[" + this.getDescription().getName() + " v" + this.getDescription().getVersion() + "] " ;
+		return "[" + this.getDescription().getName() + "] " ;
 	}
 	
 	public void disable(){
@@ -48,5 +46,5 @@ public class BukkitSpeak extends JavaPlugin {
 	public TeamspeakHandler getTs() {
 		return ts;
 	}
-
+	
 }

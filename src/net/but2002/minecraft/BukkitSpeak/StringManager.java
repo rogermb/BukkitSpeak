@@ -19,10 +19,10 @@ public class StringManager {
 	
 	public static final String MESSAGES_SECTION = "messages";
 	public static final String[][] MESSAGES = {
-		{"msg_join", "%name% has joined TeamSpeak"}, 
-		{"msg_quit", "%name% has left TeamSpeak"}, 
-		{"msg_servermsg", "[TS][%client_nickname%] %msg%"}, 
-		{"msg_list", "Currently online: "}};
+		{"msg_join", "&e%client_nickname% &ahas joined TeamSpeak"}, 
+		{"msg_quit", "&e%client_nickname% &ahas left TeamSpeak"}, 
+		{"msg_servermsg", "[&cTS&f][&e%client_nickname%&f] &a%msg%"}, 
+		{"msg_list", "&aCurrently online: &e"}};
 	
 	public static final String MUTED_SECTION = "Muted";
 	

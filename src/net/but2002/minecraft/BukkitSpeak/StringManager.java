@@ -39,7 +39,7 @@ public class StringManager {
 		for (String[] keyPair : MESSAGES) {
 			try {
 				String currentValue = reader.getString(MESSAGES_SECTION, keyPair[0], keyPair[1]);
-				strings.put(keyPair[1], currentValue);
+				strings.put(keyPair[0], currentValue);
 			} catch (Exception e) {
 				plugin.getLogger().severe(plugin + "was unable to load all the messages. This is probably a programming error.");
 			}

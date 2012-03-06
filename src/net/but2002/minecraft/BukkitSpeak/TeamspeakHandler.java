@@ -31,7 +31,7 @@ public class TeamspeakHandler implements Runnable{
 		stringManager = plugin.getStringManager();
 		connect();
 	}
-
+	
 	@Override
 	public void run() {
 		try {

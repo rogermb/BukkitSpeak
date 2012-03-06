@@ -6,17 +6,12 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 public class BukkitSpeak extends JavaPlugin {
 	
-	private Logger logger;
-	private StringManager stringManager;
-	private TeamspeakHandler ts;
+	Logger logger;
+	StringManager stringManager;
+	TeamspeakHandler ts;
 	
-	public Logger getLogger() {
-		return logger;
-	}
-	
-	@Override
 	public void onEnable() {
-		logger = getServer().getLogger();
+		logger = this.getLogger();
 		stringManager = new StringManager(this);
 		ts = new TeamspeakHandler(this);
 		new Thread(ts).start();
@@ -24,7 +19,6 @@ public class BukkitSpeak extends JavaPlugin {
 		logger.info(this + "enabled.");
 	}
 	
-	@Override
 	public void onDisable() {
 		ts.kill();
 		logger.info(this + "disabled.");

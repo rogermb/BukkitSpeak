@@ -1,5 +1,7 @@
 package net.but2002.minecraft.BukkitSpeak.teamspeakEvent;
 
+import org.bukkit.entity.Player;
+
 import net.but2002.minecraft.BukkitSpeak.BukkitSpeak;
 import net.but2002.minecraft.BukkitSpeak.TeamspeakUser;
 
@@ -18,9 +20,11 @@ public class EnterEvent extends TeamspeakEvent{
 	}
 	
 	protected void sendMessage() {
-		if (!getUser().getName().startsWith("Unknown from") && getUser().getClientType() != 1) {
+		if (!getUser().getName().startsWith("Unknown from") && getUser().getClientType() == 0) {
 			String message = replaceValues(plugin.getStringManager().getMessage("msg_join"), true);
-			plugin.getServer().broadcastMessage(message);
+			for (Player pl : plugin.getServer().getOnlinePlayers()) {
+				if (!plugin.getMuted(pl)) pl.sendMessage(message);
+			}
 		}
 	}
 }

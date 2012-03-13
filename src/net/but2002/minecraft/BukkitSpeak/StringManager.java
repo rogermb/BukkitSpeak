@@ -2,6 +2,8 @@ package net.but2002.minecraft.BukkitSpeak;
 
 import java.util.HashMap;
 
+import org.bukkit.configuration.MemoryConfiguration;
+
 import net.but2002.minecraft.BukkitSpeak.util.ConfigReader;
 
 public class StringManager {
@@ -21,14 +23,22 @@ public class StringManager {
 	public static final String[][] MESSAGES = {
 		{"msg_join", "&e%client_nickname% &ahas joined TeamSpeak"}, 
 		{"msg_quit", "&e%client_nickname% &ahas left TeamSpeak"}, 
-		{"msg_servermsg", "[&cTS&f][&e%client_nickname%&f] &a%msg%"}, 
-		{"msg_list", "&aCurrently online: &e"}};
+		{"msg_servermsg", "[&cTS&f] &e%client_nickname%: &a%msg%"}, 
+		{"msg_list", "&aCurrently online: &e"},
+		{"msg_mute", "&aYou are now muted."},
+		{"msg_unmute", "&aYou aren't muted anymore."}};
 	
-	public static final String MUTED_SECTION = "Muted";
+	public static final String MUTED_SECTION = "muted";
 	
 	public StringManager(BukkitSpeak plugin) {
 		
 		ConfigReader reader = new ConfigReader(plugin);
+		
+		if (plugin.getConfig().getKeys(true).size()==0) {
+			plugin.saveResource("config.yml", false);
+			plugin.reloadConfig();
+		}
+		plugin.getConfig().setDefaults(new MemoryConfiguration());
 		
 		ip = reader.getString(CONFIG_SECTION, CONFIG_IP, "1.2.3.4");
 		serverPort = reader.getInteger(CONFIG_SECTION, CONFIG_SERVERPORT, 9987);
@@ -41,14 +51,14 @@ public class StringManager {
 				String currentValue = reader.getString(MESSAGES_SECTION, keyPair[0], keyPair[1]);
 				strings.put(keyPair[0], currentValue);
 			} catch (Exception e) {
-				plugin.getLogger().severe(plugin + "was unable to load all the messages. This is probably a programming error.");
+				plugin.getLogger().severe("Was unable to load all the messages. This is probably a programming error.");
 			}
 		}
 		
 		plugin.saveConfig();
 		
 	}
-		
+	
 	public String getMessage(String key) {
 		try {
 			return strings.get(key);

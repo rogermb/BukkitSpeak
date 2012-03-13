@@ -26,7 +26,7 @@ public abstract class TeamspeakEvent {
 	
 	protected abstract void sendMessage();
 	
-	public static HashMap<String,String> split(String msg){
+	public static HashMap<String,String> split(String msg) {
 		HashMap<String, String> result = new HashMap<String,String>();
 		String[] split = msg.split(" ");
 		for(String current: split) {
@@ -42,14 +42,14 @@ public abstract class TeamspeakEvent {
 		return result;
 	}
 	
-	protected void parseLocalValues(String msg){
+	protected void parseLocalValues(String msg) {
 		HashMap<String, String> split = split(msg);
 		for(String key : localKeys){
 			localValues.put(key, split.get(key));
 		}
 	}
 	
-	protected String removeLocalKeys(String input){
+	protected String removeLocalKeys(String input) {
 		String result = new String(input);
 		for(String key : localKeys)
 			result = result.replaceFirst(key + "=\\S* ", "");
@@ -59,6 +59,7 @@ public abstract class TeamspeakEvent {
 	public String replaceValues(String input, boolean color) {
 		if (color) {
 			input = input.replaceAll("&", "§");
+			input = input.replaceAll("$", "§");
 		}
 		
 		String[] keys = (String[]) this.user.getValues().keySet().toArray(new String[this.user.getValues().size()]);

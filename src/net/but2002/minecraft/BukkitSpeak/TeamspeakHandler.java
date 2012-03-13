@@ -17,10 +17,10 @@ public class TeamspeakHandler implements Runnable{
 	BukkitSpeak plugin;
 	StringManager stringManager;
 	boolean kill = false;
+	boolean isRunning = false;
 	
-	private HashMap<Integer, TeamspeakUser> users = new HashMap<Integer, TeamspeakUser>();
-	
-	private TeamspeakKeepAlive keepAliveThread;
+	HashMap<Integer, TeamspeakUser> users = new HashMap<Integer, TeamspeakUser>();
+	TeamspeakKeepAlive keepAliveThread;
 	
 	Socket socket;
 	PrintWriter out;
@@ -35,8 +35,9 @@ public class TeamspeakHandler implements Runnable{
 	@Override
 	public void run() {
 		try {
-			
-			while(!kill) {
+			Thread.sleep(2000);
+			isRunning = true;
+			while (!kill) {
 				if(socket.isClosed()) {
 					connect();
 				}
@@ -44,12 +45,13 @@ public class TeamspeakHandler implements Runnable{
 				if(line != null) {
 					handleMessage(line);
 				}
-				Thread.sleep(500);
+				Thread.sleep(1000);
 			}
 			
+			isRunning = false;
 			try {
 				out.println("logout");
-			} catch(Exception e) {
+			} catch (Exception e) {
 				plugin.getLogger().warning(plugin + "Could not logout properly. Shouldn't be a problem though.");
 			}
 			in.close();
@@ -57,6 +59,7 @@ public class TeamspeakHandler implements Runnable{
 			socket.close();
 			
 		} catch (Exception e) {
+			isRunning = false;
 			plugin.getLogger().severe(plugin + "Exception while listening to the Teamspeak Query.");
 			e.printStackTrace();
 		}
@@ -90,17 +93,24 @@ public class TeamspeakHandler implements Runnable{
 		if (message.startsWith("clid=")) {
 			for (String msg : message.split("\\|")) {
 				TeamspeakUser user = new ClientlistEvent(plugin, msg).getUser();
-				users.put(user.getID(), user);
+				if (user.getClientType() == 0) users.put(user.getID(), user);
 			}
 		}
+		
 		String command = message.split(" ")[0];
 		message = message.replaceFirst("\\S* ", "");
 		if(command.equals("notifycliententerview")) {
 			TeamspeakUser user = new EnterEvent(plugin, message).getUser();
-			users.put(user.getID(), user);
+			if (user.getClientType() == 0) {
+				users.put(user.getID(), user);
+			}
 		} else if(command.equals("notifyclientleftview")) {
 			TeamspeakUser user = new LeaveEvent(plugin, message).getUser();
-			users.remove(user.getID());
+			if (user != null && user.getClientType() == 0) {
+				try {
+					users.remove(user.getID());
+				} catch (Exception ex) { }
+			}
 		} else if(command.equals("notifytextmessage")) {
 			new ServerMessageEvent(plugin, message);
 		}
@@ -108,6 +118,16 @@ public class TeamspeakHandler implements Runnable{
 	
 	public void kill() {
 		this.kill = true;
+	}
+	
+	public void pushMessage(String msg) {
+		if (true) {
+			out.println(msg);
+		}
+	}
+	
+	public HashMap<Integer, TeamspeakUser> getUsers() {
+		return users;
 	}
 	
 	public TeamspeakUser getUserByID(int id) {

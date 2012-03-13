@@ -10,7 +10,7 @@ public class TeamspeakUser {
 	
 	private static final String[] NEEDCONVERT = {"client_nickname","client_talk_request_msg","client_description","client_type"};
 	
-	public TeamspeakUser(String msg){
+	public TeamspeakUser(String msg) {
 		values = TeamspeakEvent.split(msg);
 		for(String currentConvert: NEEDCONVERT){
 			if(values.containsKey(currentConvert)){
@@ -20,7 +20,7 @@ public class TeamspeakUser {
 		}
 	}
 	
-	public String convert(String input){
+	public String convert(String input) {
 		if(input != null) {
 			String s = input;
 			s = s.replaceAll("\\\\s", " ");
@@ -31,12 +31,11 @@ public class TeamspeakUser {
 		return null;
 	}
 	
-	
-	public String getValue(String key){
+	public String getValue(String key) {
 		return values.get(key);
 	}
 	
-	public String setValue(String key, String value){
+	public String setValue(String key, String value) {
 		return values.put(key, value);
 	}
 	

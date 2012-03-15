@@ -69,10 +69,10 @@ public abstract class TeamspeakEvent {
 			}
 		}
 		
-		keys = (String[])this.localValues.keySet().toArray(new String[this.localValues.size()]);
+		keys = (String[]) this.localValues.keySet().toArray(new String[this.localValues.size()]);
 		for (String key : keys) {
 			if ((key != null) && (this.localValues.get(key) != null)) {
-				input = input.replaceAll("%" + key + "%", (String)this.localValues.get(key));
+				input = input.replaceAll("%" + key + "%", (String) this.localValues.get(key));
 			}
 		}
 		

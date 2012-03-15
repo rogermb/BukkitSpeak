@@ -9,8 +9,9 @@ import net.but2002.minecraft.BukkitSpeak.util.ConfigReader;
 public class StringManager {
 	
 	private HashMap<String,String> strings = new HashMap<String,String>();
-	private String ip, serverAdmin, serverPass;
-	private int queryPort,serverPort;
+	private String ip, serverAdmin, serverPass, tsName;
+	private int queryPort, serverPort, tsChannelID;
+	private Boolean tsServer, tsTextServer, tsChannel, tsTextChannel;
 	
 	public static final String CONFIG_SECTION = "main";
 	public static final String CONFIG_IP = "TeamSpeakIp";
@@ -19,14 +20,23 @@ public class StringManager {
 	public static final String CONFIG_SERVERADMIN = "QueryUsername";
 	public static final String CONFIG_SERVERPASS = "QueryPassword";
 	
+	public static final String TEAMSPEAK_SECTION = "teamspeak";
+	public static final String TEAMSPEAK_NAME = "BroadcastNickname";
+	public static final String TEAMSPEAK_SERVER = "ListenToServerEvents";
+	public static final String TEAMSPEAK_TEXTSERVER = "ListenToServerBroadcasts";
+	public static final String TEAMSPEAK_CHANNEL = "ListenToChannel";
+	public static final String TEAMSPEAK_TEXTCHANNEL = "ListenToChannelChat";
+	public static final String TEAMSPEAK_CHANNELID = "ChannelID";
+	
 	public static final String MESSAGES_SECTION = "messages";
 	public static final String[][] MESSAGES = {
-		{"msg_join", "&e%client_nickname% &ahas joined TeamSpeak"}, 
-		{"msg_quit", "&e%client_nickname% &ahas left TeamSpeak"}, 
-		{"msg_servermsg", "[&cTS&f] &e%client_nickname%: &a%msg%"}, 
-		{"msg_list", "&aCurrently online: &e"},
-		{"msg_mute", "&aYou are now muted."},
-		{"msg_unmute", "&aYou aren't muted anymore."}};
+		{"Join", "&e%client_nickname% &ahas joined TeamSpeak"}, 
+		{"Quit", "&e%client_nickname% &ahas left TeamSpeak"}, 
+		{"ServerMsg", "[&cTS&f] &e%client_nickname%: &a%msg%"}, 
+		{"ChannelMsg", "&e%client_nickname%: &f%msg%"},
+		{"OnlineList", "&aCurrently online: &e%list%"},
+		{"Mute", "&aYou are now muted."},
+		{"Unmute", "&aYou aren't muted anymore."}};
 	
 	public static final String MUTED_SECTION = "muted";
 	
@@ -45,6 +55,13 @@ public class StringManager {
 		queryPort = reader.getInteger(CONFIG_SECTION, CONFIG_QUERYPORT, 10011);
 		serverAdmin = reader.getString(CONFIG_SECTION, CONFIG_SERVERADMIN, "admin");
 		serverPass = reader.getString(CONFIG_SECTION, CONFIG_SERVERPASS, "123456");
+		
+		tsName = reader.getString(TEAMSPEAK_SECTION, TEAMSPEAK_NAME, "Minecraft");
+		tsServer = reader.getBoolean(TEAMSPEAK_SECTION, TEAMSPEAK_SERVER, true);
+		tsTextServer = reader.getBoolean(TEAMSPEAK_SECTION, TEAMSPEAK_TEXTSERVER, true);
+		tsChannel = reader.getBoolean(TEAMSPEAK_SECTION, TEAMSPEAK_SERVER, false);
+		tsTextChannel = reader.getBoolean(TEAMSPEAK_SECTION, TEAMSPEAK_SERVER, false);
+		tsChannelID = reader.getInteger(TEAMSPEAK_SECTION, TEAMSPEAK_SERVER, 0);
 		
 		for (String[] keyPair : MESSAGES) {
 			try {
@@ -72,13 +89,13 @@ public class StringManager {
 		return ip;
 	}
 	
-	public int getQueryPort() {
-		return queryPort;
-	}
-	
 	public int getServerPort() {
 		return serverPort;
 	}
+
+	public int getQueryPort() {
+		return queryPort;
+	}	
 	
 	public String getServerAdmin() {
 		return serverAdmin;
@@ -86,5 +103,29 @@ public class StringManager {
 	
 	public String getServerPass() {
 		return serverPass;
+	}
+	
+	public String getTeamspeakNickname() {
+		return tsName;
+	}
+	
+	public Boolean getUseServer() {
+		return tsServer;
+	}
+	
+	public Boolean getUseTextServer() {
+		return tsTextServer;
+	}
+	
+	public Boolean getUseChannel() {
+		return tsChannel;
+	}
+	
+	public Boolean getUseTextChannel() {
+		return tsTextChannel;
+	}
+	
+	public int getChannelID() {
+		return tsChannelID;
 	}
 }

@@ -23,9 +23,9 @@ public class ServerMessageEvent extends TeamspeakEvent{
 			return;
 		}
 		String msgValue = localValues.get("msg");
-		if(msgValue != null && user != null) localValues.put("msg", user.convert(msgValue));
+		if (msgValue != null && user != null) localValues.put("msg", user.convert(msgValue));
 		String invokerNameValue = localValues.get("invokername");
-		if(invokerNameValue != null && user != null) localValues.put("invokername", user.convert(invokerNameValue));
+		if (invokerNameValue != null && user != null) localValues.put("invokername", user.convert(invokerNameValue));
 		sendMessage();
 		
 	}

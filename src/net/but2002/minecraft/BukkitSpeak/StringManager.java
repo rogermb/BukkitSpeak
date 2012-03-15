@@ -59,9 +59,9 @@ public class StringManager {
 		tsName = reader.getString(TEAMSPEAK_SECTION, TEAMSPEAK_NAME, "Minecraft");
 		tsServer = reader.getBoolean(TEAMSPEAK_SECTION, TEAMSPEAK_SERVER, true);
 		tsTextServer = reader.getBoolean(TEAMSPEAK_SECTION, TEAMSPEAK_TEXTSERVER, true);
-		tsChannel = reader.getBoolean(TEAMSPEAK_SECTION, TEAMSPEAK_SERVER, false);
-		tsTextChannel = reader.getBoolean(TEAMSPEAK_SECTION, TEAMSPEAK_SERVER, false);
-		tsChannelID = reader.getInteger(TEAMSPEAK_SECTION, TEAMSPEAK_SERVER, 0);
+		tsChannel = reader.getBoolean(TEAMSPEAK_SECTION, TEAMSPEAK_CHANNEL, false);
+		tsTextChannel = reader.getBoolean(TEAMSPEAK_SECTION, TEAMSPEAK_TEXTCHANNEL, false);
+		tsChannelID = reader.getInteger(TEAMSPEAK_SECTION, TEAMSPEAK_CHANNELID, 0);
 		
 		for (String[] keyPair : MESSAGES) {
 			try {

@@ -45,9 +45,9 @@ public class ConfigReader {
 	public Boolean getBoolean(String dir, String loc, Boolean def) {
 		EnsureSectionCreated(dir);
 		
-		try {
+		if (config.getConfigurationSection(dir).isBoolean(loc)) {
 			return config.getConfigurationSection(dir).getBoolean(loc);
-		} catch (Exception e) {
+		} else {
 			config.getConfigurationSection(dir).set(loc, def);
 			logConfigError(dir + "." + loc);
 			return def;

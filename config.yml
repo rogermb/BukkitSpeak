@@ -4,10 +4,18 @@ main:
   QueryPort: 10011
   QueryUsername: admin
   QueryPassword: '123456'
+teamspeak:
+  BroadcastNickname: Minecraft
+  ListenToServerEvents: true
+  ListenToServerBroadcasts: true
+  ListenToChannel: false
+  ListenToChannelChat: false
+  ChannelID: 0
 messages:
-  msg_join: '&e%client_nickname% &ahas joined TeamSpeak'
-  msg_quit: '&e%client_nickname% &ahas left TeamSpeak'
-  msg_servermsg: '[&cTS&f][&e%client_nickname%&f] &a%msg%'
-  msg_list: '&aCurrently online: &e'
-  msg_mute: '&aYou are now muted.'
-  msg_unmute: '&aYou aren''t muted anymore.'
+  Join: '&e%client_nickname% &ahas joined TeamSpeak'
+  Quit: '&e%client_nickname% &ahas left TeamSpeak'
+  ServerMsg: '[&cTS&f] &e%client_nickname%: &a%msg%'
+  ChannelMsg: '&e%client_nickname%: &f%msg%'
+  OnlineList: '&aCurrently online: &e%list%'
+  Mute: '&aYou are now muted.'
+  Unmute: '&aYou aren''t muted anymore.'

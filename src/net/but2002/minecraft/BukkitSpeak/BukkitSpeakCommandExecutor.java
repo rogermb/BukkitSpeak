@@ -20,11 +20,11 @@ public class BukkitSpeakCommandExecutor implements CommandExecutor {
 	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
 		
 		if (args.length == 0) {
-			send(sender, Level.INFO, "&a[&eBukkitSpeak&a] &aHelp");
-			send(sender, Level.INFO, "&e/ts list &a- Displays a list of people who are currently online");
-			send(sender, Level.INFO, "&e/ts mute &a- Mutes / unmutes BukkitSpeak for you");
-			send(sender, Level.INFO, "&e/ts broadcast &a- Broadcasts a global message in TeamSpeak.");
-			send(sender, Level.INFO, "&e/ts reload &a- Reloads the BukkitSpeak config and restarts the TS listener");
+			send(sender, Level.INFO, "&aHelp");
+			if (CheckPermissions(sender, "list")) send(sender, Level.INFO, "&e/ts list &a- Displays a list of people who are currently online");
+			if (CheckPermissions(sender, "mute")) send(sender, Level.INFO, "&e/ts mute &a- Mutes / unmutes BukkitSpeak for you");
+			if (CheckPermissions(sender, "broadcast")) send(sender, Level.INFO, "&e/ts broadcast &a- Broadcasts a global message in TeamSpeak.");
+			if (CheckPermissions(sender, "reload")) send(sender, Level.INFO, "&e/ts reload &a- Reloads the BukkitSpeak config and restarts the TS listener");
 			return true;
 		}
 		if (!cmd.getName().equalsIgnoreCase("ts")) {
@@ -32,46 +32,17 @@ public class BukkitSpeakCommandExecutor implements CommandExecutor {
 		}
 		
 		if (args[0].equalsIgnoreCase("list")) {
-			
-			String online = "";
-			for (TeamspeakUser user : plugin.getTs().getUsers().values()) {
-				if (online.length() != 0) online += ", ";
-				online += user.getName();
-			}
-			
-			send(sender, Level.INFO, plugin.getStringManager().getMessage("msg_list") + online);
-			
+			if (!CheckPermissions(sender, "list")) return false;
+			List(sender, args);
 		} else if (args[0].equalsIgnoreCase("mute")) {
-			
-			if (sender instanceof Player) {
-				if (plugin.getMuted((Player) sender)) {
-					plugin.setMuted((Player) sender, false);
-					send(sender, Level.INFO, plugin.getStringManager().getMessage("msg_unmute"));
-				} else {
-					plugin.setMuted((Player) sender, true);
-					send(sender, Level.INFO, plugin.getStringManager().getMessage("msg_mute"));
-				}
-			} else {
-				send(sender, Level.INFO, "Can only mute BukkitSpeak for players!");
-				return true;
-			}
-			
-		} else if (args[0].equalsIgnoreCase("reload")) {
-			plugin.reload();
-			send(sender, Level.INFO, "reloaded.");
+			if (!CheckPermissions(sender, "mute")) return false;
+			Mute(sender, args);
 		} else if (args[0].equalsIgnoreCase("broadcast")) {
-			if (args.length == 1) {
-				send(sender, Level.WARNING, "Too few arguments!");
-				send(sender, Level.WARNING, "Usage: /ts broadcast message");
-			}
-			
-			StringBuilder sb = new StringBuilder();
-			for (String s : Arrays.copyOfRange(args, 1, args.length)) {
-				sb.append(s);
-				sb.append("\\s");
-			}
-			plugin.getTs().pushMessage("sendtextmessage targetmode=3 target=0 msg=" + sb.toString());
-			
+			if (!CheckPermissions(sender, "broadcast")) return false;
+			Broadcast(sender, args);
+		} else if (args[0].equalsIgnoreCase("reload")) {
+			if (!CheckPermissions(sender, "reload")) return false;
+			Reload(sender, args);
 		} else {
 			return false;
 		}
@@ -89,5 +60,58 @@ public class BukkitSpeakCommandExecutor implements CommandExecutor {
 			plugin.getLogger().log(level, msg);
 		}
 	}
+	
+	public Boolean CheckPermissions(CommandSender sender, String perm) {
+		if (sender instanceof Player) {
+			return sender.hasPermission("bukkitspeak.commands." + perm); 
+		} else {
+			return true;
+		}
+	}
+	
+	public void List(CommandSender sender, String[] args) {
+		String online = "";
+		for (TeamspeakUser user : plugin.getTs().getUsers().values()) {
+			if (online.length() != 0) online += ", ";
+			online += user.getName();
+		}
 		
+		String message = plugin.getStringManager().getMessage("OnlineList");
+		message = message.replaceAll("%list%", online);
+		
+		send(sender, Level.INFO, message);
+	}
+	
+	public void Mute(CommandSender sender, String[] args) {
+		if (sender instanceof Player) {
+			if (plugin.getMuted((Player) sender)) {
+				plugin.setMuted((Player) sender, false);
+				send(sender, Level.INFO, plugin.getStringManager().getMessage("Unmute"));
+			} else {
+				plugin.setMuted((Player) sender, true);
+				send(sender, Level.INFO, plugin.getStringManager().getMessage("Mute"));
+			}
+		} else {
+			send(sender, Level.INFO, "Can only mute BukkitSpeak for players!");
+		}
+	}
+	
+	public void Reload(CommandSender sender, String[] args) {
+		plugin.reload();
+		send(sender, Level.INFO, "&areloaded.");
+	}
+	
+	public void Broadcast(CommandSender sender, String[] args) {
+		if (args.length == 1) {
+			send(sender, Level.WARNING, "Too few arguments!");
+			send(sender, Level.WARNING, "Usage: /ts broadcast message");
+		}
+		
+		StringBuilder sb = new StringBuilder();
+		for (String s : Arrays.copyOfRange(args, 1, args.length)) {
+			sb.append(s);
+			sb.append("\\s");
+		}
+		plugin.getTs().pushMessage("sendtextmessage targetmode=3 target=0 msg=" + sb.toString());
+	}
 }

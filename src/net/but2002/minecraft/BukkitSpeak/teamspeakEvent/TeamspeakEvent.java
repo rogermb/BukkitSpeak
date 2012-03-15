@@ -3,6 +3,8 @@ package net.but2002.minecraft.BukkitSpeak.teamspeakEvent;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import org.bukkit.entity.Player;
+
 import net.but2002.minecraft.BukkitSpeak.BukkitSpeak;
 import net.but2002.minecraft.BukkitSpeak.TeamspeakUser;
 
@@ -77,5 +79,9 @@ public abstract class TeamspeakEvent {
 		}
 		
 		return input;
+	}
+	
+	public Boolean CheckPermissions(Player player, String perm) {
+		return player.hasPermission("bukkitspeak.messages." + perm);
 	}
 }

@@ -35,8 +35,9 @@ public class ServerMessageEvent extends TeamspeakEvent{
 		if (user != null) {
 			String message = replaceValues(plugin.getStringManager().getMessage("msg_servermsg"), true);
 			for (Player pl : plugin.getServer().getOnlinePlayers()) {
-				if (!plugin.getMuted(pl)) pl.sendMessage(message);
+				if (!plugin.getMuted(pl) && CheckPermissions(pl, "broadcast")) pl.sendMessage(message);
 			}
+			plugin.getLogger().info(message);
 		}
 	}
 }

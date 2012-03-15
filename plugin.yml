@@ -22,12 +22,14 @@ permissions:
     children:
       bukkitspeak.commands.list: true
       bukkitspeak.commands.mute: true
+      bukkitspeak.commands.chat: true
       bukkitspeak.messages.*: true
   bukkitspeak.commands.*:
     description: Gives access to all BukkitSpeak commands.
     children:
       bukkitspeak.commands.list: true
       bukkitspeak.commands.mute: true
+      bukkitspeak.commands.chat: true
       bukkitspeak.commands.broadcast: true
       bukkitspeak.commands.reload: true
   bukkitspeak.commands.list:
@@ -38,3 +40,24 @@ permissions:
     description: Allows you to use /ts broadcast message
   bukkitspeak.commands.reload:
     description: Allows you to use /ts reload
+  bukkitspeak.messages.*:
+    description: Allows you to see all messages.
+    children:
+      bukkitspeak.messages.join: true
+      bukkitspeak.messages.leave: true
+      bukkitspeak.messages.broadcast: true
+      bukkitspeak.messages.chat: true
+      bukkitspeak.messages.channelenter: true
+      bukkitspeak.messages.channelleave: true
+  bukkitspeak.messages.join:
+    description: Displays you a message when somebody joined TeamSpeak.
+  bukkitspeak.messages.leave:
+    description: Displays you a message when somebody left TeamSpeak.
+  bukkitspeak.messages.broadcast:
+    descritpion: Shows you a broadcasts on TeamSpeak.
+  bukkitspeak.messages.chat:
+    description: Shows you chat messages in the channel BukkitSpeak is listening to.
+  bukkitspeak.messages.channelenter:
+    description: Displays you a message when somebody entered the channel BukkitSpeak is listening to.
+  bukkitspeak.messages.channelleave:
+    description: Displays you a message when somebody left the channel BukkitSpeak is listening to.

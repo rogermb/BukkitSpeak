@@ -18,7 +18,7 @@ permissions:
       bukkitspeak.commands.*: true
       bukkitspeak.messages.*: true
   bukkitspeak.user:
-    description: Gives acces to user commands and all messages.
+    description: Gives access to user commands and all messages.
     children:
       bukkitspeak.commands.list: true
       bukkitspeak.commands.mute: true

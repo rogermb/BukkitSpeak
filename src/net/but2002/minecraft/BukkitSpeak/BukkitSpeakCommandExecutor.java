@@ -37,6 +37,9 @@ public class BukkitSpeakCommandExecutor implements CommandExecutor {
 		} else if (args[0].equalsIgnoreCase("mute")) {
 			if (!CheckPermissions(sender, "mute")) return false;
 			Mute(sender, args);
+		} else if (args[0].equalsIgnoreCase("chat")) {
+			if (!CheckPermissions(sender, "chat")) return false;
+			Chat(sender, args);
 		} else if (args[0].equalsIgnoreCase("broadcast")) {
 			if (!CheckPermissions(sender, "broadcast")) return false;
 			Broadcast(sender, args);
@@ -113,5 +116,19 @@ public class BukkitSpeakCommandExecutor implements CommandExecutor {
 			sb.append("\\s");
 		}
 		plugin.getTs().pushMessage("sendtextmessage targetmode=3 target=0 msg=" + sb.toString());
+	}
+	
+	public void Chat(CommandSender sender, String[] args) {
+		if (args.length == 1) {
+			send(sender, Level.WARNING, "Too few arguments!");
+			send(sender, Level.WARNING, "Usage: /ts broadcast message");
+		}
+		
+		StringBuilder sb = new StringBuilder();
+		for (String s : Arrays.copyOfRange(args, 1, args.length)) {
+			sb.append(s);
+			sb.append("\\s");
+		}
+		plugin.getTs().pushMessage("sendtextmessage targetmode=2 target=" + plugin.getStringManager().getChannelID() + " msg=" + sb.toString());
 	}
 }

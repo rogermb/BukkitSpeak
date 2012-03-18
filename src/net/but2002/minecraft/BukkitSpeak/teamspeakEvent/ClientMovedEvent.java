@@ -5,7 +5,7 @@ import org.bukkit.entity.Player;
 import net.but2002.minecraft.BukkitSpeak.BukkitSpeak;
 
 public class ClientMovedEvent extends TeamspeakEvent {
-
+	
 	public ClientMovedEvent(BukkitSpeak plugin, String msg) {
 		super(plugin, msg);
 		
@@ -23,7 +23,7 @@ public class ClientMovedEvent extends TeamspeakEvent {
 		
 		sendMessage();
 	}
-
+	
 	@Override
 	protected void sendMessage() {
 		if (user != null && !getUser().getName().startsWith("Unknown from") && getUser().getClientType() == 0) {

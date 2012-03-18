@@ -5,7 +5,7 @@ import org.bukkit.entity.Player;
 import net.but2002.minecraft.BukkitSpeak.BukkitSpeak;
 
 public class ServerMessageEvent extends TeamspeakEvent{
-
+	
 	public ServerMessageEvent(BukkitSpeak plugin, String msg) {
 		super(plugin, msg);
 		

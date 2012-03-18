@@ -6,7 +6,7 @@ import net.but2002.minecraft.BukkitSpeak.BukkitSpeak;
 import net.but2002.minecraft.BukkitSpeak.TeamspeakUser;
 
 public class EnterEvent extends TeamspeakEvent{
-
+	
 	public EnterEvent(BukkitSpeak plugin, String msg) {
 		super(plugin, msg);
 		

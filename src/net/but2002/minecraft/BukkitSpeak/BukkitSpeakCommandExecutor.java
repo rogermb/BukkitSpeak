@@ -130,7 +130,7 @@ public class BukkitSpeakCommandExecutor implements CommandExecutor {
 	public void Chat(CommandSender sender, String[] args) {
 		if (args.length == 1) {
 			send(sender, Level.WARNING, "Too few arguments!");
-			send(sender, Level.WARNING, "Usage: /ts broadcast message");
+			send(sender, Level.WARNING, "Usage: /ts chat message");
 		}
 		
 		StringBuilder sb = new StringBuilder();

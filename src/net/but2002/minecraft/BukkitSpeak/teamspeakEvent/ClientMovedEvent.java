@@ -15,7 +15,7 @@ public class ClientMovedEvent extends TeamspeakEvent {
 		parseLocalValues(msg);
 		
 		try {
-			setUser(plugin.getTs().getUserByID(Integer.parseInt(localValues.get("invokerid"))));
+			setUser(plugin.getTs().getUserByID(Integer.parseInt(localValues.get("clid"))));
 		} catch(Exception e) {
 			plugin.getLogger().info("Could not identify user.");
 			return;

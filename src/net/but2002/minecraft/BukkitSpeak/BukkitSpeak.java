@@ -30,18 +30,14 @@ public class BukkitSpeak extends JavaPlugin {
 	
 	public void onDisable() {
 		ts.kill();
+		
 		logger.info("disabled.");
 	}
 	
 	public String toString() {
 		return "§a[§6" + this.getDescription().getName() + "§a]§f " ;
 	}
-	
-	public void disable(){
-		getPluginLoader().disablePlugin(this);
-		logger.severe(this + "was disabled due to an error.");
-	}
-	
+		
 	public StringManager getStringManager() {
 		return stringManager;
 	}

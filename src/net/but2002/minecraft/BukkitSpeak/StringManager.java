@@ -9,7 +9,7 @@ import net.but2002.minecraft.BukkitSpeak.util.ConfigReader;
 public class StringManager {
 	
 	private HashMap<String,String> strings = new HashMap<String,String>();
-	private String ip, serverAdmin, serverPass, tsName;
+	private String ip, serverAdmin, serverPass, tsName, tsChannelPass;
 	private int queryPort, serverPort, tsChannelID;
 	private Boolean tsServer, tsTextServer, tsChannel, tsTextChannel;
 	
@@ -27,6 +27,7 @@ public class StringManager {
 	public static final String TEAMSPEAK_CHANNEL = "ListenToChannel";
 	public static final String TEAMSPEAK_TEXTCHANNEL = "ListenToChannelChat";
 	public static final String TEAMSPEAK_CHANNELID = "ChannelID";
+	public static final String TEAMSPEAK_CHANNELPW = "ChannelPassword";
 	
 	public static final String MESSAGES_SECTION = "messages";
 	public static final String[][] MESSAGES = {
@@ -62,6 +63,7 @@ public class StringManager {
 		tsChannel = reader.getBoolean(TEAMSPEAK_SECTION, TEAMSPEAK_CHANNEL, false);
 		tsTextChannel = reader.getBoolean(TEAMSPEAK_SECTION, TEAMSPEAK_TEXTCHANNEL, false);
 		tsChannelID = reader.getInteger(TEAMSPEAK_SECTION, TEAMSPEAK_CHANNELID, 0);
+		tsChannelPass = reader.getString(TEAMSPEAK_SECTION, TEAMSPEAK_CHANNELPW, "");
 		
 		for (String[] keyPair : MESSAGES) {
 			try {
@@ -95,7 +97,7 @@ public class StringManager {
 
 	public int getQueryPort() {
 		return queryPort;
-	}	
+	}
 	
 	public String getServerAdmin() {
 		return serverAdmin;
@@ -127,5 +129,9 @@ public class StringManager {
 	
 	public int getChannelID() {
 		return tsChannelID;
+	}
+	
+	public String getChannelPass() {
+		return tsChannelPass;
 	}
 }

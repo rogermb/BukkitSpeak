@@ -11,6 +11,7 @@ teamspeak:
   ListenToChannel: false
   ListenToChannelChat: false
   ChannelID: 0
+  ChannelPassword: ''
 messages:
   Join: '&e%client_nickname% &ahas joined TeamSpeak'
   Quit: '&e%client_nickname% &ahas left TeamSpeak'

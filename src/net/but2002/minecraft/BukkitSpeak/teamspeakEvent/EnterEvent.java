@@ -21,7 +21,7 @@ public class EnterEvent extends TeamspeakEvent{
 	
 	protected void sendMessage() {
 		if (!getUser().getName().startsWith("Unknown from") && getUser().getClientType() == 0) {
-			String message = replaceValues(plugin.getStringManager().getMessage("msg_join"), true);
+			String message = replaceValues(plugin.getStringManager().getMessage("Join"), true);
 			for (Player pl : plugin.getServer().getOnlinePlayers()) {
 				if (!plugin.getMuted(pl) && CheckPermissions(pl, "enter")) pl.sendMessage(message);
 			}

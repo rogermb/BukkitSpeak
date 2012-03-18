@@ -26,7 +26,7 @@ public class LeaveEvent extends TeamspeakEvent{
 	@Override
 	protected void sendMessage() {
 		if(user != null && !getUser().getName().startsWith("Unknown from") && getUser().getClientType() == 0) {
-			String message = replaceValues(plugin.getStringManager().getMessage("msg_quit"), true);
+			String message = replaceValues(plugin.getStringManager().getMessage("Quit"), true);
 			for (Player pl : plugin.getServer().getOnlinePlayers()) {
 				if (!plugin.getMuted(pl) && CheckPermissions(pl, "leave")) pl.sendMessage(message);
 			}

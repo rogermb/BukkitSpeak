@@ -74,7 +74,6 @@ public class TeamspeakHandler implements Runnable{
 			out.println("login " + stringManager.getServerAdmin() + " " + stringManager.getServerPass());
 			out.println("use port=" + stringManager.getServerPort());
 			out.println("clientupdate client_nickname=" + stringManager.getTeamspeakNickname());
-			plugin.getLogger().warning("clientupdate client_nickname=" + stringManager.getTeamspeakNickname());
 			if (stringManager.getUseServer()) out.println("servernotifyregister event=server");
 			if (stringManager.getUseTextServer()) out.println("servernotifyregister event=textserver");
 			if (stringManager.getUseChannel()) out.println("servernotifyregister event=channel id=" + stringManager.getChannelID());

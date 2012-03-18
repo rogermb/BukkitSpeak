@@ -124,7 +124,7 @@ public class BukkitSpeakCommandExecutor implements CommandExecutor {
 			sb.append(s);
 			sb.append("\\s");
 		}
-		plugin.getTs().pushMessage("sendtextmessage targetmode=3 target=0 msg=" + sb.toString());
+		plugin.getTs().pushMessage("sendtextmessage targetmode=3 target=0 msg=" + sb.toString(), plugin.getStringManager().getTeamspeakNickname());
 	}
 	
 	public void Chat(CommandSender sender, String[] args) {
@@ -138,6 +138,12 @@ public class BukkitSpeakCommandExecutor implements CommandExecutor {
 			sb.append(s);
 			sb.append("\\s");
 		}
-		plugin.getTs().pushMessage("sendtextmessage targetmode=2 target=" + plugin.getStringManager().getChannelID() + " msg=" + sb.toString());
+		String SenderName;
+		if (sender instanceof Player) {
+			SenderName = sender.getName();
+		} else {
+			SenderName = plugin.getStringManager().getTeamspeakNickname();
+		}
+		plugin.getTs().pushMessage("sendtextmessage targetmode=2 target=" + plugin.getStringManager().getChannelID() + " msg=" + sb.toString(), SenderName);
 	}
 }

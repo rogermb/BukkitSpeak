@@ -42,8 +42,9 @@ public class TeamspeakHandler implements Runnable{
 					connect();
 				}
 				String line = in.readLine();
-				if(line != null) {
+				while (line != null) {
 					handleMessage(line);
+					line = in.readLine();
 				}
 				Thread.sleep(1000);
 			}
@@ -128,10 +129,9 @@ public class TeamspeakHandler implements Runnable{
 		this.kill = true;
 	}
 	
-	public void pushMessage(String msg) {
-		if (true) {
-			out.println(msg);
-		}
+	public void pushMessage(String msg, String sender) {
+		out.println("clientupdate client_nickname=" + sender);
+		out.println(msg);
 	}
 	
 	public HashMap<Integer, TeamspeakUser> getUsers() {

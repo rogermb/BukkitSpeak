@@ -11,12 +11,12 @@ public class LeaveEvent extends TeamspeakEvent{
 		
 		localKeys.add("reasonmsg");
 		localKeys.add("clid");
-		
 		parseLocalValues(msg);
+		
 		try {
 			setUser(plugin.getTs().getUserByID(Integer.parseInt(localValues.get("clid"))));
 		} catch(Exception e) {
-			plugin.getServer().getLogger().info(plugin + "Could not identify user. May have logged off.");
+			plugin.getLogger().info("Could not identify user.");
 			return;
 		}
 		sendMessage();

@@ -9,10 +9,9 @@ public class ClientlistEvent extends TeamspeakEvent {
 		super(plugin, msg);
 		
 		localKeys.add("cid");
-		
 		parseLocalValues(msg);
-		setUser(new TeamspeakUser(removeLocalKeys(msg)));
 		
+		setUser(new TeamspeakUser(removeLocalKeys(msg)));
 	}
 	
 	@Override

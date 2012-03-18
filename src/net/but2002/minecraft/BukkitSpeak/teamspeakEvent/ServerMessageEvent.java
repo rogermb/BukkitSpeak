@@ -13,15 +13,15 @@ public class ServerMessageEvent extends TeamspeakEvent{
 		localKeys.add("invokerid");
 		localKeys.add("targetmode");
 		localKeys.add("invokername");
-		
-		
 		parseLocalValues(msg);
+		
 		try {
 			setUser(plugin.getTs().getUserByID(Integer.parseInt(localValues.get("invokerid"))));
 		} catch(Exception e) {
-			plugin.getServer().getLogger().info(plugin + "Could not identify user. May have logged off.");
+			plugin.getLogger().info("Could not identify user.");
 			return;
 		}
+		
 		String msgValue = localValues.get("msg");
 		if (msgValue != null && user != null) localValues.put("msg", user.convert(msgValue));
 		String invokerNameValue = localValues.get("invokername");

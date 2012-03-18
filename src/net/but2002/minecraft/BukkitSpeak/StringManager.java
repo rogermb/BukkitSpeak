@@ -37,7 +37,9 @@ public class StringManager {
 		{"ChannelMsg", "&e%client_nickname%&f: %msg%"},
 		{"OnlineList", "&aCurrently online: &e%list%"},
 		{"Mute", "&aYou are now muted."},
-		{"Unmute", "&aYou aren't muted anymore."}};
+		{"Unmute", "&aYou aren't muted anymore."},
+		{"ChannelEnter","&e%client_nickname% &aentered the channel."},
+		{"ChannelLeave","&e%client_nickname% &aleft the channel."}};
 	
 	public static final String MUTED_SECTION = "muted";
 	

@@ -20,3 +20,5 @@ messages:
   OnlineList: '&aCurrently online: &e%list%'
   Mute: '&aYou are now muted.'
   Unmute: '&aYou aren''t muted anymore.'
+  ChannelEnter: '&e%client_nickname% &aentered the channel.'
+  ChannelLeave: '&e%client_nickname% &aleft the channel.'

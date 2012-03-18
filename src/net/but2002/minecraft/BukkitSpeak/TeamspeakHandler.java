@@ -84,7 +84,7 @@ public class TeamspeakHandler implements Runnable{
 			if (stringManager.getUseServer()) out.println("servernotifyregister event=server");
 			if (stringManager.getUseTextServer()) out.println("servernotifyregister event=textserver");
 			if (stringManager.getUseChannel()) out.println("servernotifyregister event=channel id=" + stringManager.getChannelID());
-			if (stringManager.getUseChannel()) out.println("servernotifyregister event=textchannel id=" + stringManager.getChannelID());
+			if (stringManager.getUseTextChannel()) out.println("servernotifyregister event=textchannel id=" + stringManager.getChannelID());
 			out.println("clientlist");
 			
 			socket.setKeepAlive(true);

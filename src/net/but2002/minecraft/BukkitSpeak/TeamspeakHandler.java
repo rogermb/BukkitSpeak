@@ -7,6 +7,7 @@ import java.net.InetAddress;
 import java.net.Socket;
 import java.util.HashMap;
 
+import net.but2002.minecraft.BukkitSpeak.teamspeakEvent.ClientMovedEvent;
 import net.but2002.minecraft.BukkitSpeak.teamspeakEvent.ClientlistEvent;
 import net.but2002.minecraft.BukkitSpeak.teamspeakEvent.EnterEvent;
 import net.but2002.minecraft.BukkitSpeak.teamspeakEvent.LeaveEvent;
@@ -122,6 +123,8 @@ public class TeamspeakHandler implements Runnable{
 			}
 		} else if (command.equals("notifytextmessage")) {
 			new ServerMessageEvent(plugin, message);
+		} else if (command.equals("notifyclientmoved")) {
+			new ClientMovedEvent(plugin, message);
 		}
 	}
 	

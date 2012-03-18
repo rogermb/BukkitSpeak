@@ -36,16 +36,17 @@ public class TeamspeakHandler implements Runnable{
 	@Override
 	public void run() {
 		try {
-			Thread.sleep(2000);
+			Thread.sleep(3000);
 			isRunning = true;
 			while (!kill) {
 				if(socket.isClosed()) {
 					connect();
 				}
 				String line = in.readLine();
-				while (line != null) {
+				while (line != null && !line.isEmpty()) {
 					handleMessage(line);
 					line = in.readLine();
+					Thread.sleep(50);
 				}
 				Thread.sleep(1000);
 			}
@@ -53,6 +54,7 @@ public class TeamspeakHandler implements Runnable{
 			isRunning = false;
 			try {
 				out.println("logout");
+				plugin.getLogger().info("Logged out properly.");
 			} catch (Exception e) {
 				plugin.getLogger().warning(plugin + "Could not logout properly. Shouldn't be a problem though.");
 			}

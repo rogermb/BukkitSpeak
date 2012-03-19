@@ -30,12 +30,12 @@ public class TeamspeakHandler implements Runnable{
 	public TeamspeakHandler(BukkitSpeak plugin){
 		this.plugin = plugin;
 		stringManager = plugin.getStringManager();
-		connect();
 	}
 	
 	@Override
 	public void run() {
 		try {
+			connect();
 			Thread.sleep(3000);
 			isRunning = true;
 			while (!kill) {

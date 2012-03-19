@@ -2,8 +2,10 @@ package net.but2002.minecraft.BukkitSpeak;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -62,13 +64,18 @@ public class BukkitSpeak extends JavaPlugin {
 		}
 	}
 	
-	public void reload() {
-		ts.kill();
-		this.reloadConfig();
-		
-		stringManager = new StringManager(this);
-		ts = new TeamspeakHandler(this);
-		muted = new ArrayList<String>();
-		new Thread(ts).start();
+	public void reload(BukkitSpeakCommandExecutor exec, CommandSender sender) {
+		try {
+			ts.kill();
+			this.reloadConfig();
+			
+			stringManager = new StringManager(this);
+			ts = new TeamspeakHandler(this);
+			muted = new ArrayList<String>();
+			new Thread(ts).start();
+			exec.send(sender, Level.INFO, "&areloaded.");
+		} catch (Exception e) {
+			exec.send(sender, Level.INFO, "&areloaded.");
+		}
 	}
 }

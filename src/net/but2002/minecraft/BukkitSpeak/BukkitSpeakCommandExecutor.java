@@ -115,12 +115,11 @@ public class BukkitSpeakCommandExecutor implements CommandExecutor {
 	}
 	
 	public void Reload(CommandSender sender, String[] args) {
-		plugin.reload();
-		send(sender, Level.INFO, "&areloaded.");
+		plugin.reload(this, sender);
 	}
 	
 	public void Status(CommandSender sender, String[] args) {
-		send(sender, Level.INFO, "BukkitSpeak Version: v" + plugin.getDescription().getVersion());
+		send(sender, Level.INFO, "&eBukkitSpeak Version: &av" + plugin.getDescription().getVersion());
 		if (plugin.getTs().getAlive()) {
 			send(sender, Level.INFO, "&eTeamspeak Listener: &arunning");
 		} else {

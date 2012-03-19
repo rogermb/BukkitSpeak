@@ -122,10 +122,10 @@ public class BukkitSpeakCommandExecutor implements CommandExecutor {
 	public void Status(CommandSender sender, String[] args) {
 		send(sender, Level.INFO, "BukkitSpeak Version: v" + plugin.getDescription().getVersion());
 		if (plugin.getTs().getAlive()) {
-			send(sender, Level.INFO, "Teamspeak Listener: running");
+			send(sender, Level.INFO, "&eTeamspeak Listener: &arunning");
 		} else {
-			send(sender, Level.WARNING, "Teamspeak Listener: dead");
-			send(sender, Level.WARNING, "Use /ts reload to restart the listener!");
+			send(sender, Level.WARNING, "&eTeamspeak Listener: &4dead");
+			send(sender, Level.WARNING, "&eUse &a/ts reload &eto restart the listener!");
 		}
 	}
 	

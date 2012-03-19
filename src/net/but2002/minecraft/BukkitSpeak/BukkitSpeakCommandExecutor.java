@@ -25,6 +25,7 @@ public class BukkitSpeakCommandExecutor implements CommandExecutor {
 			if (CheckPermissions(sender, "mute")) send(sender, Level.INFO, "&e/ts mute &a- Mutes / unmutes BukkitSpeak for you");
 			if (CheckPermissions(sender, "chat") && plugin.getStringManager().getUseTextChannel()) send(sender, Level.INFO, "&e/ts chat &a- Displays a message only in the TS channel.");
 			if (CheckPermissions(sender, "broadcast")) send(sender, Level.INFO, "&e/ts broadcast &a- Broadcasts a global message in TeamSpeak.");
+			if (CheckPermissions(sender, "status")) send(sender, Level.INFO, "&e/ts status &a- Shows you some info about BukkitSpeak.");
 			if (CheckPermissions(sender, "reload")) send(sender, Level.INFO, "&e/ts reload &a- Reloads the BukkitSpeak config and restarts the TS listener");
 			return true;
 		}
@@ -52,6 +53,9 @@ public class BukkitSpeakCommandExecutor implements CommandExecutor {
 			}
 			if (!CheckPermissions(sender, "broadcast")) return false;
 			Broadcast(sender, args);
+		} else if (args[0].equalsIgnoreCase("status")) {
+			if (!CheckPermissions(sender, "status")) return false;
+			Status(sender, args);
 		} else if (args[0].equalsIgnoreCase("reload")) {
 			if (!CheckPermissions(sender, "reload")) return false;
 			Reload(sender, args);
@@ -111,6 +115,16 @@ public class BukkitSpeakCommandExecutor implements CommandExecutor {
 	public void Reload(CommandSender sender, String[] args) {
 		plugin.reload();
 		send(sender, Level.INFO, "&areloaded.");
+	}
+	
+	public void Status(CommandSender sender, String[] args) {
+		send(sender, Level.INFO, "BukkitSpeak Version: v" + plugin.getDescription().getVersion());
+		if (plugin.getTs().getAlive()) {
+			send(sender, Level.INFO, "Teamspeak Listener: running");
+		} else {
+			send(sender, Level.WARNING, "Teamspeak Listener: dead");
+			send(sender, Level.WARNING, "Use /ts reload to restart the listener!");
+		}
 	}
 	
 	public void Broadcast(CommandSender sender, String[] args) {

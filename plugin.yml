@@ -31,6 +31,7 @@ permissions:
       bukkitspeak.commands.mute: true
       bukkitspeak.commands.chat: true
       bukkitspeak.commands.broadcast: true
+      bukkitspeak.commands.status: true
       bukkitspeak.commands.reload: true
   bukkitspeak.commands.list:
     description: Allows you to use /ts list
@@ -40,6 +41,8 @@ permissions:
     description: Allows you to use /ts chat message
   bukkitspeak.commands.broadcast:
     description: Allows you to use /ts broadcast message
+  bukkitspeak.commands.status:
+    description: Allows you to use /ts status
   bukkitspeak.commands.reload:
     description: Allows you to use /ts reload
   bukkitspeak.messages.*:
@@ -56,7 +59,7 @@ permissions:
   bukkitspeak.messages.leave:
     description: Displays you a message when somebody left TeamSpeak.
   bukkitspeak.messages.broadcast:
-    descritpion: Shows you a broadcasts on TeamSpeak.
+    description: Shows you a broadcasts on TeamSpeak.
   bukkitspeak.messages.chat:
     description: Shows you chat messages in the channel BukkitSpeak is listening to.
   bukkitspeak.messages.channelenter:

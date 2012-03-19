@@ -134,6 +134,10 @@ public class TeamspeakHandler implements Runnable{
 		this.kill = true;
 	}
 	
+	public Boolean getAlive() {
+		return isRunning;
+	}
+	
 	public void pushMessage(String msg, String sender) {
 		out.println("clientupdate client_nickname=" + sender);
 		out.println(msg);

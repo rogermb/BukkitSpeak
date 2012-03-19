@@ -19,8 +19,8 @@ public class LeaveEvent extends TeamspeakEvent{
 			plugin.getLogger().info("Could not identify user.");
 			return;
 		}
-		sendMessage();
 		
+		if (plugin.getStringManager().getUseServer()) sendMessage();
 	}
 	
 	@Override

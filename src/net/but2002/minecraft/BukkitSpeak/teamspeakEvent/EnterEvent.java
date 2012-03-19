@@ -16,7 +16,8 @@ public class EnterEvent extends TeamspeakEvent{
 		parseLocalValues(msg);
 		
 		setUser(new TeamspeakUser(removeLocalKeys(msg)));
-		sendMessage();
+		
+		if (plugin.getStringManager().getUseServer()) sendMessage();
 	}
 	
 	protected void sendMessage() {

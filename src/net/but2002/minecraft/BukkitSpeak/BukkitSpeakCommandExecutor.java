@@ -26,7 +26,7 @@ public class BukkitSpeakCommandExecutor implements CommandExecutor {
 			if (CheckPermissions(sender, "list")) send(sender, Level.INFO, "&e/ts list &a- Displays a list of people who are currently online");
 			if (CheckPermissions(sender, "mute")) send(sender, Level.INFO, "&e/ts mute &a- Mutes / unmutes BukkitSpeak for you");
 			if (CheckPermissions(sender, "chat") && stringManager.getUseTextChannel()) send(sender, Level.INFO, "&e/ts chat &a- Displays a message only in the TS channel.");
-			if (CheckPermissions(sender, "broadcast") && stringManager.getUseTextServer()) send(sender, Level.INFO, "&e/ts broadcast &a- Broadcasts a global message in TeamSpeak.");
+			if (CheckPermissions(sender, "broadcast")) send(sender, Level.INFO, "&e/ts broadcast &a- Broadcasts a global message in TeamSpeak.");
 			if (CheckPermissions(sender, "status")) send(sender, Level.INFO, "&e/ts status &a- Shows you some info about BukkitSpeak.");
 			if (CheckPermissions(sender, "reload")) send(sender, Level.INFO, "&e/ts reload &a- Reloads the BukkitSpeak config and restarts the TS listener");
 			return true;

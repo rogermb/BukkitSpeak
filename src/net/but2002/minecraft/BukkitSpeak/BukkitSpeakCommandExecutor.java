@@ -11,9 +11,11 @@ import org.bukkit.entity.Player;
 public class BukkitSpeakCommandExecutor implements CommandExecutor {
 	
 	BukkitSpeak plugin;
+	StringManager stringManager;
 	
 	public BukkitSpeakCommandExecutor(BukkitSpeak plugin) {
 		this.plugin = plugin;
+		stringManager = plugin.getStringManager();
 	}
 	
 	@Override
@@ -23,8 +25,8 @@ public class BukkitSpeakCommandExecutor implements CommandExecutor {
 			send(sender, Level.INFO, "&aHelp");
 			if (CheckPermissions(sender, "list")) send(sender, Level.INFO, "&e/ts list &a- Displays a list of people who are currently online");
 			if (CheckPermissions(sender, "mute")) send(sender, Level.INFO, "&e/ts mute &a- Mutes / unmutes BukkitSpeak for you");
-			if (CheckPermissions(sender, "chat") && plugin.getStringManager().getUseTextChannel()) send(sender, Level.INFO, "&e/ts chat &a- Displays a message only in the TS channel.");
-			if (CheckPermissions(sender, "broadcast")) send(sender, Level.INFO, "&e/ts broadcast &a- Broadcasts a global message in TeamSpeak.");
+			if (CheckPermissions(sender, "chat") && stringManager.getUseTextChannel()) send(sender, Level.INFO, "&e/ts chat &a- Displays a message only in the TS channel.");
+			if (CheckPermissions(sender, "broadcast") && stringManager.getUseTextServer()) send(sender, Level.INFO, "&e/ts broadcast &a- Broadcasts a global message in TeamSpeak.");
 			if (CheckPermissions(sender, "status")) send(sender, Level.INFO, "&e/ts status &a- Shows you some info about BukkitSpeak.");
 			if (CheckPermissions(sender, "reload")) send(sender, Level.INFO, "&e/ts reload &a- Reloads the BukkitSpeak config and restarts the TS listener");
 			return true;
@@ -40,14 +42,14 @@ public class BukkitSpeakCommandExecutor implements CommandExecutor {
 			if (!CheckPermissions(sender, "mute")) return false;
 			Mute(sender, args);
 		} else if (args[0].equalsIgnoreCase("chat")) {
-			if (!plugin.getStringManager().getUseTextChannel()) {
+			if (!stringManager.getUseTextChannel()) {
 				send(sender, Level.INFO, "You need to enable ListenToServerBroadcasts in the config to use this command.");
 				return true;
 			}
 			if (!CheckPermissions(sender, "chat")) return false;
 			Chat(sender, args);
 		} else if (args[0].equalsIgnoreCase("broadcast")) {
-			if (!plugin.getStringManager().getUseTextServer()) {
+			if (!stringManager.getUseTextServer()) {
 				send(sender, Level.INFO, "You need to enable ListenToChannelChat in the config to use this command.");
 				return true;
 			}
@@ -92,7 +94,7 @@ public class BukkitSpeakCommandExecutor implements CommandExecutor {
 			online += user.getName();
 		}
 		
-		String message = plugin.getStringManager().getMessage("OnlineList");
+		String message = stringManager.getMessage("OnlineList");
 		message = message.replaceAll("%list%", online);
 		
 		send(sender, Level.INFO, message);
@@ -102,10 +104,10 @@ public class BukkitSpeakCommandExecutor implements CommandExecutor {
 		if (sender instanceof Player) {
 			if (plugin.getMuted((Player) sender)) {
 				plugin.setMuted((Player) sender, false);
-				send(sender, Level.INFO, plugin.getStringManager().getMessage("Unmute"));
+				send(sender, Level.INFO, stringManager.getMessage("Unmute"));
 			} else {
 				plugin.setMuted((Player) sender, true);
-				send(sender, Level.INFO, plugin.getStringManager().getMessage("Mute"));
+				send(sender, Level.INFO, stringManager.getMessage("Mute"));
 			}
 		} else {
 			send(sender, Level.INFO, "Can only mute BukkitSpeak for players!");
@@ -138,7 +140,7 @@ public class BukkitSpeakCommandExecutor implements CommandExecutor {
 			sb.append(s);
 			sb.append("\\s");
 		}
-		plugin.getTs().pushMessage("sendtextmessage targetmode=3 target=0 msg=" + sb.toString(), plugin.getStringManager().getTeamspeakNickname());
+		plugin.getTs().pushMessage("sendtextmessage targetmode=3 target=0 msg=" + sb.toString(), stringManager.getTeamspeakNickname());
 	}
 	
 	public void Chat(CommandSender sender, String[] args) {
@@ -156,8 +158,8 @@ public class BukkitSpeakCommandExecutor implements CommandExecutor {
 		if (sender instanceof Player) {
 			SenderName = sender.getName();
 		} else {
-			SenderName = plugin.getStringManager().getTeamspeakNickname();
+			SenderName = stringManager.getTeamspeakNickname();
 		}
-		plugin.getTs().pushMessage("sendtextmessage targetmode=2 target=" + plugin.getStringManager().getChannelID() + " msg=" + sb.toString(), SenderName);
+		plugin.getTs().pushMessage("sendtextmessage targetmode=2 target=" + stringManager.getChannelID() + " msg=" + sb.toString(), SenderName);
 	}
 }

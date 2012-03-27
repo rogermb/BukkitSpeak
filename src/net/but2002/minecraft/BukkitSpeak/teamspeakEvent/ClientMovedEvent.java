@@ -11,7 +11,6 @@ public class ClientMovedEvent extends TeamspeakEvent {
 		
 		localKeys.add("ctid");
 		localKeys.add("reasonid");
-		localKeys.add("clid");
 		parseLocalValues(msg);
 		
 		try {

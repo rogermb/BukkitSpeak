@@ -20,7 +20,7 @@ public class TeamspeakUser {
 		}
 	}
 	
-	public String convert(String input) {
+	public static String convert(String input) {
 		if(input != null) {
 			String s = input;
 			s = s.replaceAll("\\\\s", " ");

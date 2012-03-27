@@ -3,6 +3,7 @@ package net.but2002.minecraft.BukkitSpeak.teamspeakEvent;
 import org.bukkit.entity.Player;
 
 import net.but2002.minecraft.BukkitSpeak.BukkitSpeak;
+import net.but2002.minecraft.BukkitSpeak.TeamspeakUser;
 
 public class ServerMessageEvent extends TeamspeakEvent{
 	
@@ -23,9 +24,9 @@ public class ServerMessageEvent extends TeamspeakEvent{
 		}
 		
 		String msgValue = localValues.get("msg");
-		if (msgValue != null && user != null) localValues.put("msg", user.convert(msgValue));
+		if (msgValue != null && user != null) localValues.put("msg", TeamspeakUser.convert(msgValue));
 		String invokerNameValue = localValues.get("invokername");
-		if (invokerNameValue != null && user != null) localValues.put("invokername", user.convert(invokerNameValue));
+		if (invokerNameValue != null && user != null) localValues.put("invokername", TeamspeakUser.convert(invokerNameValue));
 		sendMessage();
 		
 	}

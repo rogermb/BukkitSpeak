@@ -13,6 +13,7 @@ public class EnterEvent extends TeamspeakEvent{
 		localKeys.add("cfid");
 		localKeys.add("ctid");
 		localKeys.add("reasonid");
+		localKeys.add("client_country");
 		parseLocalValues(msg);
 		
 		setUser(new TeamspeakUser(removeLocalKeys(msg)));

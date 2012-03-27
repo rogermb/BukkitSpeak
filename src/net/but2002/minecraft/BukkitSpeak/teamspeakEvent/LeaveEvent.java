@@ -9,6 +9,9 @@ public class LeaveEvent extends TeamspeakEvent{
 	public LeaveEvent(BukkitSpeak plugin, String msg) {
 		super(plugin, msg);
 		
+		localKeys.add("cfid");
+		localKeys.add("ctid");
+		localKeys.add("reasonid");
 		localKeys.add("reasonmsg");
 		localKeys.add("clid");
 		parseLocalValues(msg);

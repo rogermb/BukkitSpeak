@@ -8,7 +8,9 @@ public class ClientlistEvent extends TeamspeakEvent {
 	public ClientlistEvent(BukkitSpeak plugin, String msg) {
 		super(plugin, msg);
 		
+		localKeys.add("clid");
 		localKeys.add("cid");
+		localKeys.add("client_database_id");
 		parseLocalValues(msg);
 		
 		setUser(new TeamspeakUser(removeLocalKeys(msg)));

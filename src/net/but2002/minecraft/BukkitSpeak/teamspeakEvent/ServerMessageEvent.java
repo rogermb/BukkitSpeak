@@ -9,9 +9,9 @@ public class ServerMessageEvent extends TeamspeakEvent{
 	public ServerMessageEvent(BukkitSpeak plugin, String msg) {
 		super(plugin, msg);
 		
+		localKeys.add("targetmode");
 		localKeys.add("msg");
 		localKeys.add("invokerid");
-		localKeys.add("targetmode");
 		localKeys.add("invokername");
 		parseLocalValues(msg);
 		

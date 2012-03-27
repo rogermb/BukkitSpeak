@@ -62,7 +62,7 @@ public class TeamspeakHandler implements Runnable{
 				out.println("logout");
 				plugin.getLogger().info("Logged out properly.");
 			} catch (Exception e) {
-				plugin.getLogger().warning(plugin + "Could not logout properly. Shouldn't be a problem though.");
+				plugin.getLogger().warning("Could not logout properly. Shouldn't be a problem though.");
 			}
 			in.close();
 			out.close();
@@ -70,7 +70,7 @@ public class TeamspeakHandler implements Runnable{
 			
 		} catch (Exception e) {
 			setAlive(false);
-			plugin.getLogger().severe(plugin + "Exception while listening to the Teamspeak Query.");
+			plugin.getLogger().severe("Exception while listening to the Teamspeak Query.");
 			e.printStackTrace();
 		}
 	}
@@ -150,8 +150,7 @@ public class TeamspeakHandler implements Runnable{
 		if (alive) {
 			isRunning = true;
 			tsStarted = new Date();
-		} else {
-			kill();
+		} else if (!kill) {
 			isRunning = false;
 			tsStopped = new Date();
 		}

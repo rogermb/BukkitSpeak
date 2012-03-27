@@ -9,6 +9,7 @@ public abstract class DateManager {
 		
 		Calendar c = Calendar.getInstance();
 		Date d = new Date();
+		c.setTime(date);
 		
 		if (date == null) return null;
 		if (d.getTime() - date.getTime() < 2000) {

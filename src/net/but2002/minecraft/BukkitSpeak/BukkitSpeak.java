@@ -75,7 +75,8 @@ public class BukkitSpeak extends JavaPlugin {
 			new Thread(ts).start();
 			exec.send(sender, Level.INFO, "&areloaded.");
 		} catch (Exception e) {
-			exec.send(sender, Level.INFO, "&areloaded.");
+			exec.send(sender, Level.INFO, "&4Was unable to reload, an error happened.");
+			e.printStackTrace();
 		}
 	}
 }

@@ -120,6 +120,8 @@ public class BukkitSpeakCommandExecutor implements CommandExecutor {
 	
 	public void Reload(CommandSender sender, String[] args) {
 		plugin.reload(this, sender);
+		stringManager = plugin.getStringManager();
+		ts = plugin.getTs();
 	}
 	
 	public void Status(CommandSender sender, String[] args) {

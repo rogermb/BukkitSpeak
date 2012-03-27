@@ -10,6 +10,7 @@ public abstract class DateManager {
 		Calendar c = Calendar.getInstance();
 		Date d = new Date();
 		
+		if (date == null) return null;
 		if (d.getTime() - date.getTime() < 2000) {
 			return "Now";
 		}
@@ -18,6 +19,4 @@ public abstract class DateManager {
 		
 		return s;
 	}
-	
-	
 }

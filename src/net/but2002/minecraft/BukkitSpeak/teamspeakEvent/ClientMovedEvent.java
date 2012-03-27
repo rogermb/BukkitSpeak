@@ -9,6 +9,7 @@ public class ClientMovedEvent extends TeamspeakEvent {
 	public ClientMovedEvent(BukkitSpeak plugin, String msg) {
 		super(plugin, msg);
 		
+		localKeys.add("clid");
 		localKeys.add("ctid");
 		localKeys.add("reasonid");
 		parseLocalValues(msg);

@@ -7,8 +7,6 @@ public abstract class DateManager {
 	
 	public static String DateToString(Date date) {
 		
-		
-		StringBuilder sb = new StringBuilder();
 		Calendar c = Calendar.getInstance();
 		Date d = new Date();
 		
@@ -16,14 +14,9 @@ public abstract class DateManager {
 			return "Now";
 		}
 		
-		sb.append(c.get(Calendar.YEAR) + ":");
-		sb.append(c.get(Calendar.MONTH) + ":");
-		sb.append(c.get(Calendar.DAY_OF_MONTH) + " ");
-		sb.append(c.get(Calendar.HOUR_OF_DAY) + ".");
-		sb.append(c.get(Calendar.MINUTE) + ".");
-		sb.append(c.get(Calendar.SECOND));
+		String s = String.format("%1$td:%1$tm:%1$tY %1$tH.%1$tM.%1$tS", c);
 		
-		return sb.toString();
+		return s;
 	}
 	
 	

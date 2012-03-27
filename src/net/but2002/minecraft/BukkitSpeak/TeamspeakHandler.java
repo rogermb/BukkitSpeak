@@ -5,6 +5,7 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.InetAddress;
 import java.net.Socket;
+import java.util.Date;
 import java.util.HashMap;
 
 import net.but2002.minecraft.BukkitSpeak.teamspeakEvent.ClientMovedEvent;
@@ -18,8 +19,12 @@ public class TeamspeakHandler implements Runnable{
 	
 	BukkitSpeak plugin;
 	StringManager stringManager;
-	boolean kill = false;
-	boolean isRunning = false;
+	Boolean kill = false;
+	Boolean isRunning = false;
+	
+	Date tsStarted;
+	Date tsStopped;
+	String error = "";
 	
 	HashMap<Integer, TeamspeakUser> users = new HashMap<Integer, TeamspeakUser>();
 	TeamspeakKeepAlive keepAliveThread;
@@ -37,8 +42,8 @@ public class TeamspeakHandler implements Runnable{
 	public void run() {
 		try {
 			connect();
+			setAlive(true);
 			Thread.sleep(3000);
-			isRunning = true;
 			while (!kill) {
 				if(socket.isClosed()) {
 					connect();
@@ -52,7 +57,7 @@ public class TeamspeakHandler implements Runnable{
 				Thread.sleep(1000);
 			}
 			
-			isRunning = false;
+			setAlive(false);
 			try {
 				out.println("logout");
 				plugin.getLogger().info("Logged out properly.");
@@ -64,7 +69,7 @@ public class TeamspeakHandler implements Runnable{
 			socket.close();
 			
 		} catch (Exception e) {
-			isRunning = false;
+			setAlive(false);
 			plugin.getLogger().severe(plugin + "Exception while listening to the Teamspeak Query.");
 			e.printStackTrace();
 		}
@@ -139,6 +144,32 @@ public class TeamspeakHandler implements Runnable{
 	
 	public Boolean getAlive() {
 		return isRunning;
+	}
+	
+	private void setAlive(Boolean alive) {
+		if (alive) {
+			isRunning = true;
+			tsStarted = new Date();
+		} else {
+			isRunning = false;
+			tsStopped = new Date();
+		}
+	}
+	
+	public Date getStarted() {
+		return tsStarted;
+	}
+	
+	public Date getStopped() {
+		return tsStopped;
+	}
+	
+	public String getError() {
+		if (error.isEmpty()) {
+			return null;
+		} else {
+			return error;
+		}
 	}
 	
 	public void pushMessage(String msg, String sender) {

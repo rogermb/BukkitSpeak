@@ -3,6 +3,8 @@ package net.but2002.minecraft.BukkitSpeak;
 import java.util.Arrays;
 import java.util.logging.Level;
 
+import net.but2002.minecraft.BukkitSpeak.util.DateManager;
+
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -12,10 +14,12 @@ public class BukkitSpeakCommandExecutor implements CommandExecutor {
 	
 	BukkitSpeak plugin;
 	StringManager stringManager;
+	TeamspeakHandler ts;
 	
 	public BukkitSpeakCommandExecutor(BukkitSpeak plugin) {
 		this.plugin = plugin;
 		stringManager = plugin.getStringManager();
+		ts = plugin.getTs();
 	}
 	
 	@Override
@@ -89,7 +93,7 @@ public class BukkitSpeakCommandExecutor implements CommandExecutor {
 	
 	public void List(CommandSender sender, String[] args) {
 		String online = "";
-		for (TeamspeakUser user : plugin.getTs().getUsers().values()) {
+		for (TeamspeakUser user : ts.getUsers().values()) {
 			if (online.length() != 0) online += ", ";
 			online += user.getName();
 		}
@@ -120,10 +124,13 @@ public class BukkitSpeakCommandExecutor implements CommandExecutor {
 	
 	public void Status(CommandSender sender, String[] args) {
 		send(sender, Level.INFO, "&eBukkitSpeak Version: &av" + plugin.getDescription().getVersion());
-		if (plugin.getTs().getAlive()) {
+		if (ts.getAlive()) {
 			send(sender, Level.INFO, "&eTeamspeak Listener: &arunning");
+			if (ts.getStarted() != null) send(sender, Level.INFO, "&eRunning since: &a" + DateManager.DateToString(ts.getStarted()));
 		} else {
 			send(sender, Level.WARNING, "&eTeamspeak Listener: &4dead");
+			send(sender, Level.WARNING, "&eRunning since: &4" + DateManager.DateToString(ts.getStarted()));
+			send(sender, Level.WARNING, "&eStopped since: &4" + DateManager.DateToString(ts.getStopped()));
 			send(sender, Level.WARNING, "&eUse &a/ts reload &eto restart the listener!");
 		}
 	}
@@ -139,7 +146,7 @@ public class BukkitSpeakCommandExecutor implements CommandExecutor {
 			sb.append(s);
 			sb.append("\\s");
 		}
-		plugin.getTs().pushMessage("sendtextmessage targetmode=3 target=0 msg=" + sb.toString(), stringManager.getTeamspeakNickname());
+		ts.pushMessage("sendtextmessage targetmode=3 target=0 msg=" + sb.toString(), stringManager.getTeamspeakNickname());
 	}
 	
 	public void Chat(CommandSender sender, String[] args) {
@@ -159,6 +166,6 @@ public class BukkitSpeakCommandExecutor implements CommandExecutor {
 		} else {
 			SenderName = stringManager.getTeamspeakNickname();
 		}
-		plugin.getTs().pushMessage("sendtextmessage targetmode=2 target=" + stringManager.getChannelID() + " msg=" + sb.toString(), SenderName);
+		ts.pushMessage("sendtextmessage targetmode=2 target=" + stringManager.getChannelID() + " msg=" + sb.toString(), SenderName);
 	}
 }

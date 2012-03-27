@@ -15,7 +15,7 @@ import net.but2002.minecraft.BukkitSpeak.teamspeakEvent.ErrorEvent;
 import net.but2002.minecraft.BukkitSpeak.teamspeakEvent.LeaveEvent;
 import net.but2002.minecraft.BukkitSpeak.teamspeakEvent.ServerMessageEvent;
 
-public class TeamspeakHandler implements Runnable{
+public class TeamspeakHandler implements Runnable {
 	
 	BukkitSpeak plugin;
 	StringManager stringManager;
@@ -24,7 +24,6 @@ public class TeamspeakHandler implements Runnable{
 	
 	Date tsStarted;
 	Date tsStopped;
-	String error = "";
 	
 	HashMap<Integer, TeamspeakUser> users = new HashMap<Integer, TeamspeakUser>();
 	TeamspeakKeepAlive keepAliveThread;
@@ -36,23 +35,27 @@ public class TeamspeakHandler implements Runnable{
 	public TeamspeakHandler(BukkitSpeak plugin){
 		this.plugin = plugin;
 		stringManager = plugin.getStringManager();
+		tsStarted = null;
+		tsStopped = null;
+		kill = false;
+		isRunning = false;
 	}
 	
 	@Override
 	public void run() {
 		try {
+			Thread.sleep(2000);
 			connect();
 			setAlive(true);
-			Thread.sleep(3000);
+
 			while (!kill) {
-				if(socket.isClosed()) {
-					connect();
-				}
+				if (socket.isClosed()) connect();
+				
 				String line = in.readLine();
-				while (line != null && !line.isEmpty()) {
+				while (!line.isEmpty()) {
 					handleMessage(line);
-					line = in.readLine();
 					Thread.sleep(50);
+					line = in.readLine();
 				}
 				Thread.sleep(1000);
 			}
@@ -77,8 +80,8 @@ public class TeamspeakHandler implements Runnable{
 	
 	public void connect() {
 		try {
-			socket = new Socket(InetAddress.getByName(stringManager.getIp()),stringManager.getQueryPort());
-			out = new PrintWriter(socket.getOutputStream(),true);
+			socket = new Socket(InetAddress.getByName(stringManager.getIp()), stringManager.getQueryPort());
+			out = new PrintWriter(socket.getOutputStream(), true);
 			in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 			
 			out.println("login " + stringManager.getServerAdmin() + " " + stringManager.getServerPass());
@@ -140,6 +143,7 @@ public class TeamspeakHandler implements Runnable{
 	
 	public void kill() {
 		this.kill = true;
+		out.println("clientupdate");
 	}
 	
 	public Boolean getAlive() {
@@ -150,7 +154,7 @@ public class TeamspeakHandler implements Runnable{
 		if (alive) {
 			isRunning = true;
 			tsStarted = new Date();
-		} else if (!kill) {
+		} else {
 			isRunning = false;
 			tsStopped = new Date();
 		}
@@ -163,15 +167,7 @@ public class TeamspeakHandler implements Runnable{
 	public Date getStopped() {
 		return tsStopped;
 	}
-	
-	public String getError() {
-		if (error.isEmpty()) {
-			return null;
-		} else {
-			return error;
-		}
-	}
-	
+		
 	public void pushMessage(String msg, String sender) {
 		if (!(sender.isEmpty() || sender.equals(stringManager.getTeamspeakNickname()))) {
 			out.println("clientupdate client_nickname=" + sender);

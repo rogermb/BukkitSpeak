@@ -151,6 +151,7 @@ public class TeamspeakHandler implements Runnable{
 			isRunning = true;
 			tsStarted = new Date();
 		} else {
+			kill();
 			isRunning = false;
 			tsStopped = new Date();
 		}
@@ -173,8 +174,13 @@ public class TeamspeakHandler implements Runnable{
 	}
 	
 	public void pushMessage(String msg, String sender) {
-		out.println("clientupdate client_nickname=" + sender);
-		out.println(msg);
+		if (!(sender.isEmpty() || sender.equals(stringManager.getTeamspeakNickname()))) {
+			out.println("clientupdate client_nickname=" + sender);
+			out.println(msg);
+			out.println("clientupdate client_nickname=" + stringManager.getTeamspeakNickname());
+		} else {
+			out.println(msg);
+		}
 	}
 	
 	public HashMap<Integer, TeamspeakUser> getUsers() {

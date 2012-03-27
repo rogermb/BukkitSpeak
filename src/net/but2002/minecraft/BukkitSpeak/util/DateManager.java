@@ -15,7 +15,7 @@ public abstract class DateManager {
 			return "Now";
 		}
 		
-		String s = String.format("%1$td:%1$tm:%1$tY %1$tH.%1$tM.%1$tS", c);
+		String s = String.format("%1$td.%1$tm.%1$tY %1$tH:%1$tM:%1$tS", c);
 		
 		return s;
 	}

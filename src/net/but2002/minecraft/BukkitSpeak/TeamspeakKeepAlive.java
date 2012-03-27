@@ -2,12 +2,12 @@ package net.but2002.minecraft.BukkitSpeak;
 
 import java.io.PrintWriter;
 
-public class TeamspeakKeepAlive extends Thread{
+public class TeamspeakKeepAlive extends Thread {
 	
 	private PrintWriter out;
 	private boolean kill = false;
 	
-	public TeamspeakKeepAlive(PrintWriter out){
+	public TeamspeakKeepAlive(PrintWriter out) {
 		this.out = out;
 	}
 	

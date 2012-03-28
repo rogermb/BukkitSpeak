@@ -131,8 +131,8 @@ public class BukkitSpeakCommandExecutor implements CommandExecutor {
 			if (ts.getStarted() != null) send(sender, Level.INFO, "&eRunning since: &a" + DateManager.DateToString(ts.getStarted()));
 		} else {
 			send(sender, Level.WARNING, "&eTeamspeak Listener: &4dead");
-			send(sender, Level.WARNING, "&eRunning since: &4" + DateManager.DateToString(ts.getStarted()));
-			send(sender, Level.WARNING, "&eStopped since: &4" + DateManager.DateToString(ts.getStopped()));
+			if (ts.getStarted() != null) send(sender, Level.WARNING, "&eRunning since: &4" + DateManager.DateToString(ts.getStarted()));
+			if (ts.getStopped() != null) send(sender, Level.WARNING, "&eStopped since: &4" + DateManager.DateToString(ts.getStopped()));
 			send(sender, Level.WARNING, "&eUse &a/ts reload &eto restart the listener!");
 		}
 	}

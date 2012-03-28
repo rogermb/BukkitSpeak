@@ -49,6 +49,7 @@ public class StringManager {
 		
 		if (plugin.getConfig().getKeys(true).size()==0) {
 			plugin.saveResource("config.yml", false);
+			plugin.getLogger().info("Default config created!");
 			plugin.reloadConfig();
 		}
 		plugin.getConfig().setDefaults(new MemoryConfiguration());

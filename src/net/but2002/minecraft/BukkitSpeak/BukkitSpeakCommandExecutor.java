@@ -28,11 +28,11 @@ public class BukkitSpeakCommandExecutor implements CommandExecutor {
 		if (args.length == 0) {
 			send(sender, Level.INFO, "&aHelp");
 			if (CheckPermissions(sender, "list")) send(sender, Level.INFO, "&e/ts list &a- Displays who's currently on TeamSpeak.");
-			if (CheckPermissions(sender, "mute")) send(sender, Level.INFO, "&e/ts mute &a- Mutes / unmutes BukkitSpeak for you");
+			if (CheckPermissions(sender, "mute")) send(sender, Level.INFO, "&e/ts mute &a- Mutes / unmutes BukkitSpeak for you.");
 			if (CheckPermissions(sender, "chat") && stringManager.getUseTextChannel()) send(sender, Level.INFO, "&e/ts chat &a- Displays a message only in the TS channel.");
-			if (CheckPermissions(sender, "broadcast")) send(sender, Level.INFO, "&e/ts broadcast &a- Broadcast a global TS message");
+			if (CheckPermissions(sender, "broadcast")) send(sender, Level.INFO, "&e/ts broadcast &a- Broadcast a global TS message.");
 			if (CheckPermissions(sender, "status")) send(sender, Level.INFO, "&e/ts status &a- Shows some info about BukkitSpeak.");
-			if (CheckPermissions(sender, "reload")) send(sender, Level.INFO, "&e/ts reload &a- Reloads the config and the listener");
+			if (CheckPermissions(sender, "reload")) send(sender, Level.INFO, "&e/ts reload &a- Reloads the config and the listener.");
 			return true;
 		}
 		if (!cmd.getName().equalsIgnoreCase("ts")) {

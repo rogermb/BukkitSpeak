@@ -66,7 +66,7 @@ public class BukkitSpeak extends JavaPlugin {
 	
 	public void reload(BukkitSpeakCommandExecutor exec, CommandSender sender) {
 		try {
-			ts.kill();
+			if (ts.getAlive()) ts.kill();
 			this.reloadConfig();
 			
 			stringManager = new StringManager(this);

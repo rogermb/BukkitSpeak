@@ -138,11 +138,11 @@ public class BukkitSpeakCommandExecutor implements CommandExecutor {
 	
 	public void Broadcast(CommandSender sender, String[] args) {
 		if (args.length == 1) {
-			send(sender, Level.WARNING, "Too few arguments!");
-			send(sender, Level.WARNING, "Usage: /ts broadcast message");
+			send(sender, Level.WARNING, "&aToo few arguments!");
+			send(sender, Level.WARNING, "&aUsage: /ts broadcast message");
 			return;
 		} else if (!ts.getAlive()) {
-			send(sender, Level.WARNING, "Can't communicate with the TeamSpeak server.");
+			send(sender, Level.WARNING, "&4Can't communicate with the TeamSpeak server.");
 			return;
 		}
 		
@@ -156,11 +156,11 @@ public class BukkitSpeakCommandExecutor implements CommandExecutor {
 	
 	public void Chat(CommandSender sender, String[] args) {
 		if (args.length == 1) {
-			send(sender, Level.WARNING, "Too few arguments!");
-			send(sender, Level.WARNING, "Usage: /ts chat message");
+			send(sender, Level.WARNING, "&aToo few arguments!");
+			send(sender, Level.WARNING, "&aUsage: /ts chat message");
 			return;
 		} else if (!ts.getAlive()) {
-			send(sender, Level.WARNING, "Can't communicate with the TeamSpeak server.");
+			send(sender, Level.WARNING, "&4Can't communicate with the TeamSpeak server.");
 			return;
 		}
 		

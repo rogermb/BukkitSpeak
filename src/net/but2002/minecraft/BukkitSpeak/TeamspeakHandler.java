@@ -45,9 +45,9 @@ public class TeamspeakHandler implements Runnable {
 	public void run() {
 		try {
 			Thread.sleep(2000);
-			connect();
 			setAlive(true);
-
+			connect();
+			
 			while (!kill) {
 				if (socket.isClosed()) connect();
 				

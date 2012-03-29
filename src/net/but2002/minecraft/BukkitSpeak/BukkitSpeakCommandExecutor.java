@@ -27,12 +27,12 @@ public class BukkitSpeakCommandExecutor implements CommandExecutor {
 		
 		if (args.length == 0) {
 			send(sender, Level.INFO, "&aHelp");
-			if (CheckPermissions(sender, "list")) send(sender, Level.INFO, "&e/ts list &a- Displays a list of people who are currently online");
+			if (CheckPermissions(sender, "list")) send(sender, Level.INFO, "&e/ts list &a- Displays who's currently on TeamSpeak.");
 			if (CheckPermissions(sender, "mute")) send(sender, Level.INFO, "&e/ts mute &a- Mutes / unmutes BukkitSpeak for you");
 			if (CheckPermissions(sender, "chat") && stringManager.getUseTextChannel()) send(sender, Level.INFO, "&e/ts chat &a- Displays a message only in the TS channel.");
-			if (CheckPermissions(sender, "broadcast")) send(sender, Level.INFO, "&e/ts broadcast &a- Broadcasts a global message in TeamSpeak.");
-			if (CheckPermissions(sender, "status")) send(sender, Level.INFO, "&e/ts status &a- Shows you some info about BukkitSpeak.");
-			if (CheckPermissions(sender, "reload")) send(sender, Level.INFO, "&e/ts reload &a- Reloads the BukkitSpeak config and restarts the TS listener");
+			if (CheckPermissions(sender, "broadcast")) send(sender, Level.INFO, "&e/ts broadcast &a- Broadcast a global TS message");
+			if (CheckPermissions(sender, "status")) send(sender, Level.INFO, "&e/ts status &a- Shows some info about BukkitSpeak.");
+			if (CheckPermissions(sender, "reload")) send(sender, Level.INFO, "&e/ts reload &a- Reloads the config and the listener");
 			return true;
 		}
 		if (!cmd.getName().equalsIgnoreCase("ts")) {
@@ -47,14 +47,14 @@ public class BukkitSpeakCommandExecutor implements CommandExecutor {
 			Mute(sender, args);
 		} else if (args[0].equalsIgnoreCase("chat")) {
 			if (!stringManager.getUseTextChannel()) {
-				send(sender, Level.INFO, "You need to enable ListenToServerBroadcasts in the config to use this command.");
+				send(sender, Level.INFO, "&4You need to enable ListenToServerBroadcasts in the config to use this command.");
 				return true;
 			}
 			if (!CheckPermissions(sender, "chat")) return false;
 			Chat(sender, args);
 		} else if (args[0].equalsIgnoreCase("broadcast")) {
 			if (!stringManager.getUseTextServer()) {
-				send(sender, Level.INFO, "You need to enable ListenToChannelChat in the config to use this command.");
+				send(sender, Level.INFO, "&4You need to enable ListenToChannelChat in the config to use this command.");
 				return true;
 			}
 			if (!CheckPermissions(sender, "broadcast")) return false;
@@ -70,7 +70,6 @@ public class BukkitSpeakCommandExecutor implements CommandExecutor {
 		}
 		
 		return true;
-		
 	}
 	
 	public void send(CommandSender sender, Level level, String msg) {
@@ -141,6 +140,10 @@ public class BukkitSpeakCommandExecutor implements CommandExecutor {
 		if (args.length == 1) {
 			send(sender, Level.WARNING, "Too few arguments!");
 			send(sender, Level.WARNING, "Usage: /ts broadcast message");
+			return;
+		} else if (!ts.getAlive()) {
+			send(sender, Level.WARNING, "Can't communicate with the TeamSpeak server.");
+			return;
 		}
 		
 		StringBuilder sb = new StringBuilder();
@@ -155,6 +158,10 @@ public class BukkitSpeakCommandExecutor implements CommandExecutor {
 		if (args.length == 1) {
 			send(sender, Level.WARNING, "Too few arguments!");
 			send(sender, Level.WARNING, "Usage: /ts chat message");
+			return;
+		} else if (!ts.getAlive()) {
+			send(sender, Level.WARNING, "Can't communicate with the TeamSpeak server.");
+			return;
 		}
 		
 		StringBuilder sb = new StringBuilder();

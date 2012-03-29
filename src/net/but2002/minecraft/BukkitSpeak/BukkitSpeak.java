@@ -31,7 +31,7 @@ public class BukkitSpeak extends JavaPlugin {
 	}
 	
 	public void onDisable() {
-		ts.kill();
+		if (ts.getAlive()) ts.kill();
 		
 		logger.info("disabled.");
 	}

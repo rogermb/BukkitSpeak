@@ -84,7 +84,7 @@ public class ConfigReader {
 	}
 	
 	private void logConfigError(String message){
-		plugin.getLogger().severe(plugin + "Error while parsing " + message);
+		plugin.getLogger().severe("Error while parsing " + message);
 	}
 	
 }

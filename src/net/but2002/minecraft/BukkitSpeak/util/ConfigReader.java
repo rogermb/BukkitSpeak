@@ -3,17 +3,16 @@ package net.but2002.minecraft.BukkitSpeak.util;
 import java.util.HashMap;
 
 import org.bukkit.configuration.file.FileConfiguration;
-
-import net.but2002.minecraft.BukkitSpeak.BukkitSpeak;
+import org.bukkit.plugin.java.JavaPlugin;
 
 public class ConfigReader {
 	
-	BukkitSpeak plugin;
+	JavaPlugin plugin;
 	FileConfiguration config;
 	
-	public ConfigReader(BukkitSpeak BukkitSpeak) {
-		plugin = BukkitSpeak;
-		config = BukkitSpeak.getConfig();
+	public ConfigReader(JavaPlugin JavaPlugin) {
+		plugin = JavaPlugin;
+		config = JavaPlugin.getConfig();
 	}
 	
 	public HashMap<String, ?> getAll(HashMap<String, ?> map) {

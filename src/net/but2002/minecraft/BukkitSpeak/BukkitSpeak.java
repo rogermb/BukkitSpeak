@@ -71,7 +71,10 @@ public class BukkitSpeak extends JavaPlugin {
 			
 			stringManager = new StringManager(this);
 			ts = new TeamspeakHandler(this);
+			tsCommand = new BukkitSpeakCommandExecutor(this);
 			muted = new ArrayList<String>();
+			
+			this.getCommand("ts").setExecutor(tsCommand);
 			new Thread(ts).start();
 			exec.send(sender, Level.INFO, "&areloaded.");
 		} catch (Exception e) {

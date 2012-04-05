@@ -6,12 +6,13 @@ main:
   QueryPassword: '123456'
 teamspeak:
   BroadcastNickname: Minecraft
+  ChannelID: 0
+  ChannelPassword: ''
+  
   ListenToServerEvents: true
   ListenToServerBroadcasts: true
   ListenToChannel: false
   ListenToChannelChat: false
-  ChannelID: 0
-  ChannelPassword: ''
 messages:
   Join: '&e%client_nickname% &ahas joined TeamSpeak'
   Quit: '&e%client_nickname% &ahas left TeamSpeak'
@@ -19,6 +20,7 @@ messages:
   ChannelMsg: '&e%client_nickname%&f: %msg%'
   ChannelEnter: '&e%client_nickname% &aentered the channel.'
   ChannelLeave: '&e%client_nickname% &aleft the channel.'
+  
   Broadcast: '&e%player_name% &a-> &f[&cTS&f]&f: %msg%'
   Chat: '&e%player_name% &a-> &eTS&f: %msg%'
   Pm: '&eMe &a-> &e%target%&f: %msg%'

@@ -64,12 +64,12 @@ public class StringManager {
 		serverPass = reader.getString(CONFIG_SECTION, CONFIG_SERVERPASS, "123456");
 		
 		tsName = reader.getString(TEAMSPEAK_SECTION, TEAMSPEAK_NAME, "Minecraft");
+		tsChannelID = reader.getInteger(TEAMSPEAK_SECTION, TEAMSPEAK_CHANNELID, 0);
+		tsChannelPass = reader.getString(TEAMSPEAK_SECTION, TEAMSPEAK_CHANNELPW, "");
 		tsServer = reader.getBoolean(TEAMSPEAK_SECTION, TEAMSPEAK_SERVER, true);
 		tsTextServer = reader.getBoolean(TEAMSPEAK_SECTION, TEAMSPEAK_TEXTSERVER, true);
 		tsChannel = reader.getBoolean(TEAMSPEAK_SECTION, TEAMSPEAK_CHANNEL, false);
 		tsTextChannel = reader.getBoolean(TEAMSPEAK_SECTION, TEAMSPEAK_TEXTCHANNEL, false);
-		tsChannelID = reader.getInteger(TEAMSPEAK_SECTION, TEAMSPEAK_CHANNELID, 0);
-		tsChannelPass = reader.getString(TEAMSPEAK_SECTION, TEAMSPEAK_CHANNELPW, "");
 		
 		for (String[] keyPair : MESSAGES) {
 			try {

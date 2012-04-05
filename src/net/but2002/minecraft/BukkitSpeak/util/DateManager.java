@@ -13,7 +13,7 @@ public abstract class DateManager {
 		
 		if (date == null) return null;
 		if (d.getTime() - date.getTime() < 2000) {
-			return "Now";
+			return "Just now";
 		}
 		
 		String s = String.format("%1$td.%1$tm.%1$tY %1$tH:%1$tM:%1$tS", c);

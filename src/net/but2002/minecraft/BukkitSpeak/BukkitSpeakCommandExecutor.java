@@ -15,7 +15,7 @@ public class BukkitSpeakCommandExecutor implements CommandExecutor {
 	StringManager stringManager;
 	TeamspeakHandler ts;
 	
-	BukkitSpeakCommand List, Mute, Chat, Broadcast, Pm, Status;
+	BukkitSpeakCommand List, Mute, Broadcast, Chat, Pm, Status;
 	
 	public BukkitSpeakCommandExecutor(BukkitSpeak plugin) {
 		this.plugin = plugin;
@@ -24,8 +24,9 @@ public class BukkitSpeakCommandExecutor implements CommandExecutor {
 		
 		List = new CommandList(plugin);
 		Mute = new CommandMute(plugin);
-		Chat = new CommandChat(plugin);
 		Broadcast = new CommandBroadcast(plugin);
+		Chat = new CommandChat(plugin);
+		Pm = new CommandPm(plugin);
 		Status = new CommandStatus(plugin);
 	}
 	
@@ -34,12 +35,20 @@ public class BukkitSpeakCommandExecutor implements CommandExecutor {
 		
 		if (args.length == 0) {
 			send(sender, Level.INFO, "&aHelp");
-			if (CheckPermissions(sender, "list")) send(sender, Level.INFO, "&e/ts list &a- Displays who's currently on TeamSpeak.");
-			if (CheckPermissions(sender, "mute")) send(sender, Level.INFO, "&e/ts mute &a- Mutes / unmutes BukkitSpeak for you.");
-			if (CheckPermissions(sender, "chat") && stringManager.getUseTextChannel()) send(sender, Level.INFO, "&e/ts chat &a- Displays a message only in the TS channel.");
-			if (CheckPermissions(sender, "broadcast")) send(sender, Level.INFO, "&e/ts broadcast &a- Broadcast a global TS message.");
-			if (CheckPermissions(sender, "status")) send(sender, Level.INFO, "&e/ts status &a- Shows some info about BukkitSpeak.");
-			if (CheckPermissions(sender, "reload")) send(sender, Level.INFO, "&e/ts reload &a- Reloads the config and the listener.");
+			if (CheckPermissions(sender, "list"))
+				send(sender, Level.INFO, "&e/ts list &a- Displays who's currently on TeamSpeak.");
+			if (CheckPermissions(sender, "mute"))
+				send(sender, Level.INFO, "&e/ts mute &a- Mutes / unmutes BukkitSpeak for you.");
+			if (CheckPermissions(sender, "broadcast"))
+				send(sender, Level.INFO, "&e/ts broadcast &a- Broadcast a global TS message.");
+			if (CheckPermissions(sender, "chat") && stringManager.getUseTextChannel())
+				send(sender, Level.INFO, "&e/ts chat &a- Displays a message only in the TS channel.");
+			if (CheckPermissions(sender, "pm") && stringManager.getUseTextChannel())
+				send(sender, Level.INFO, "&e/ts pm &a- Sends a certain person on TS a message.");
+			if (CheckPermissions(sender, "status"))
+				send(sender, Level.INFO, "&e/ts status &a- Shows some info about BukkitSpeak.");
+			if (CheckPermissions(sender, "reload"))
+				send(sender, Level.INFO, "&e/ts reload &a- Reloads the config and the listener.");
 			return true;
 		}
 		if (!cmd.getName().equalsIgnoreCase("ts")) {
@@ -52,20 +61,27 @@ public class BukkitSpeakCommandExecutor implements CommandExecutor {
 		} else if (args[0].equalsIgnoreCase("mute")) {
 			if (!CheckPermissions(sender, "mute")) return false;
 			Mute.execute(sender, args);
-		} else if (args[0].equalsIgnoreCase("chat")) {
-			if (!stringManager.getUseTextChannel()) {
-				send(sender, Level.INFO, "&4You need to enable ListenToServerBroadcasts in the config to use this command.");
-				return true;
-			}
-			if (!CheckPermissions(sender, "chat")) return false;
-			Chat.execute(sender, args);
 		} else if (args[0].equalsIgnoreCase("broadcast")) {
+			if (!CheckPermissions(sender, "broadcast")) return false;
 			if (!stringManager.getUseTextServer()) {
 				send(sender, Level.INFO, "&4You need to enable ListenToChannelChat in the config to use this command.");
 				return true;
 			}
-			if (!CheckPermissions(sender, "broadcast")) return false;
 			Broadcast.execute(sender, args);
+		} else if (args[0].equalsIgnoreCase("chat")) {
+			if (!CheckPermissions(sender, "chat")) return false;
+			if (!stringManager.getUseTextChannel()) {
+				send(sender, Level.INFO, "&4You need to enable ListenToServerBroadcasts in the config to use this command.");
+				return true;
+			}
+			Chat.execute(sender, args);
+		} else if (args[0].equalsIgnoreCase("pm")) {
+			if (!CheckPermissions(sender, "pm")) return false;
+			if (!stringManager.getUseTextChannel()) {
+				send(sender, Level.INFO, "&4You need to enable ListenToServerBroadcasts in the config to use this command.");
+				return true;
+			}
+			Pm.execute(sender, args);
 		} else if (args[0].equalsIgnoreCase("status")) {
 			if (!CheckPermissions(sender, "status")) return false;
 			Status.execute(sender, args);

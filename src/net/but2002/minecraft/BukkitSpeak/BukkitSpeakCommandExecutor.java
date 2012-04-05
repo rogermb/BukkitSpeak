@@ -1,9 +1,8 @@
 package net.but2002.minecraft.BukkitSpeak;
 
-import java.util.Arrays;
 import java.util.logging.Level;
 
-import net.but2002.minecraft.BukkitSpeak.util.DateManager;
+import net.but2002.minecraft.BukkitSpeak.Commands.*;
 
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -16,10 +15,18 @@ public class BukkitSpeakCommandExecutor implements CommandExecutor {
 	StringManager stringManager;
 	TeamspeakHandler ts;
 	
+	BukkitSpeakCommand List, Mute, Chat, Broadcast, Pm, Status;
+	
 	public BukkitSpeakCommandExecutor(BukkitSpeak plugin) {
 		this.plugin = plugin;
 		stringManager = plugin.getStringManager();
 		ts = plugin.getTs();
+		
+		List = new CommandList(plugin);
+		Mute = new CommandMute(plugin);
+		Chat = new CommandChat(plugin);
+		Broadcast = new CommandBroadcast(plugin);
+		Status = new CommandStatus(plugin);
 	}
 	
 	@Override
@@ -41,30 +48,30 @@ public class BukkitSpeakCommandExecutor implements CommandExecutor {
 		
 		if (args[0].equalsIgnoreCase("list")) {
 			if (!CheckPermissions(sender, "list")) return false;
-			List(sender, args);
+			List.execute(sender, args);
 		} else if (args[0].equalsIgnoreCase("mute")) {
 			if (!CheckPermissions(sender, "mute")) return false;
-			Mute(sender, args);
+			Mute.execute(sender, args);
 		} else if (args[0].equalsIgnoreCase("chat")) {
 			if (!stringManager.getUseTextChannel()) {
 				send(sender, Level.INFO, "&4You need to enable ListenToServerBroadcasts in the config to use this command.");
 				return true;
 			}
 			if (!CheckPermissions(sender, "chat")) return false;
-			Chat(sender, args);
+			Chat.execute(sender, args);
 		} else if (args[0].equalsIgnoreCase("broadcast")) {
 			if (!stringManager.getUseTextServer()) {
 				send(sender, Level.INFO, "&4You need to enable ListenToChannelChat in the config to use this command.");
 				return true;
 			}
 			if (!CheckPermissions(sender, "broadcast")) return false;
-			Broadcast(sender, args);
+			Broadcast.execute(sender, args);
 		} else if (args[0].equalsIgnoreCase("status")) {
 			if (!CheckPermissions(sender, "status")) return false;
-			Status(sender, args);
+			Status.execute(sender, args);
 		} else if (args[0].equalsIgnoreCase("reload")) {
 			if (!CheckPermissions(sender, "reload")) return false;
-			Reload(sender, args);
+			plugin.reload(this, sender);
 		} else {
 			return false;
 		}
@@ -90,91 +97,4 @@ public class BukkitSpeakCommandExecutor implements CommandExecutor {
 		}
 	}
 	
-	public void List(CommandSender sender, String[] args) {
-		String online = "";
-		for (TeamspeakUser user : ts.getUsers().values()) {
-			if (online.length() != 0) online += ", ";
-			online += user.getName();
-		}
-		
-		String message = stringManager.getMessage("OnlineList");
-		message = message.replaceAll("%list%", online);
-		
-		send(sender, Level.INFO, message);
-	}
-	
-	public void Mute(CommandSender sender, String[] args) {
-		if (sender instanceof Player) {
-			if (plugin.getMuted((Player) sender)) {
-				plugin.setMuted((Player) sender, false);
-				send(sender, Level.INFO, stringManager.getMessage("Unmute"));
-			} else {
-				plugin.setMuted((Player) sender, true);
-				send(sender, Level.INFO, stringManager.getMessage("Mute"));
-			}
-		} else {
-			send(sender, Level.INFO, "Can only mute BukkitSpeak for players!");
-		}
-	}
-	
-	public void Reload(CommandSender sender, String[] args) {
-		plugin.reload(this, sender);
-		stringManager = plugin.getStringManager();
-		ts = plugin.getTs();
-	}
-	
-	public void Status(CommandSender sender, String[] args) {
-		send(sender, Level.INFO, "&eBukkitSpeak Version: &av" + plugin.getDescription().getVersion());
-		if (ts.getAlive()) {
-			send(sender, Level.INFO, "&eTeamspeak Listener: &arunning");
-			if (ts.getStarted() != null) send(sender, Level.INFO, "&eRunning since: &a" + DateManager.DateToString(ts.getStarted()));
-		} else {
-			send(sender, Level.WARNING, "&eTeamspeak Listener: &4dead");
-			if (ts.getStarted() != null) send(sender, Level.WARNING, "&eRunning since: &4" + DateManager.DateToString(ts.getStarted()));
-			if (ts.getStopped() != null) send(sender, Level.WARNING, "&eStopped since: &4" + DateManager.DateToString(ts.getStopped()));
-			send(sender, Level.WARNING, "&eUse &a/ts reload &eto restart the listener!");
-		}
-	}
-	
-	public void Broadcast(CommandSender sender, String[] args) {
-		if (args.length == 1) {
-			send(sender, Level.WARNING, "&aToo few arguments!");
-			send(sender, Level.WARNING, "&aUsage: /ts broadcast message");
-			return;
-		} else if (!ts.getAlive()) {
-			send(sender, Level.WARNING, "&4Can't communicate with the TeamSpeak server.");
-			return;
-		}
-		
-		StringBuilder sb = new StringBuilder();
-		for (String s : Arrays.copyOfRange(args, 1, args.length)) {
-			sb.append(s);
-			sb.append("\\s");
-		}
-		ts.pushMessage("sendtextmessage targetmode=3 target=0 msg=" + sb.toString(), stringManager.getTeamspeakNickname());
-	}
-	
-	public void Chat(CommandSender sender, String[] args) {
-		if (args.length == 1) {
-			send(sender, Level.WARNING, "&aToo few arguments!");
-			send(sender, Level.WARNING, "&aUsage: /ts chat message");
-			return;
-		} else if (!ts.getAlive()) {
-			send(sender, Level.WARNING, "&4Can't communicate with the TeamSpeak server.");
-			return;
-		}
-		
-		StringBuilder sb = new StringBuilder();
-		for (String s : Arrays.copyOfRange(args, 1, args.length)) {
-			sb.append(s);
-			sb.append("\\s");
-		}
-		String SenderName;
-		if (sender instanceof Player) {
-			SenderName = sender.getName();
-		} else {
-			SenderName = stringManager.getTeamspeakNickname();
-		}
-		ts.pushMessage("sendtextmessage targetmode=2 target=" + stringManager.getChannelID() + " msg=" + sb.toString(), SenderName);
-	}
 }

@@ -31,6 +31,17 @@ public abstract class BukkitSpeakCommand {
 		}
 	}
 	
+	protected String convert(String input) {
+		if(input != null) {
+			String s = input;
+			s = s.replaceAll(" ", "\\\\s");
+			s = s.replaceAll("/", "\\\\/");
+			s = s.replaceAll("|", "\\\\p");
+			return s;
+		}
+		return null;
+	}
+	
 	public abstract void execute(CommandSender sender, String[] args);
 	
 }

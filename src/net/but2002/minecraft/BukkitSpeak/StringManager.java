@@ -35,12 +35,14 @@ public class StringManager {
 		{"Quit", "&e%client_nickname% &ahas left TeamSpeak"}, 
 		{"ServerMsg", "[&cTS&f] &e%client_nickname%&a: %msg%"}, 
 		{"ChannelMsg", "&e%client_nickname%&f: %msg%"},
-		{"MinecraftMsg", "&e%player_name% &a-> &eTS&f: %msg%"},
+		{"ChannelEnter","&e%client_nickname% &aentered the channel."},
+		{"ChannelLeave","&e%client_nickname% &aleft the channel."},
+		{"Broadcast", "&e%player_name% &a-> &f[&cTS&f]&f: %msg%"},
+		{"Chat", "&e%player_name% &a-> &eTS&f: %msg%"},
+		{"Pm", "&eMe &a-> &e%target%&f: %msg%"},
 		{"OnlineList", "&aCurrently online: &e%list%"},
 		{"Mute", "&aYou are now muted."},
-		{"Unmute", "&aYou aren't muted anymore."},
-		{"ChannelEnter","&e%client_nickname% &aentered the channel."},
-		{"ChannelLeave","&e%client_nickname% &aleft the channel."}};
+		{"Unmute", "&aYou aren't muted anymore."}};
 	
 	public static final String MUTED_SECTION = "muted";
 	

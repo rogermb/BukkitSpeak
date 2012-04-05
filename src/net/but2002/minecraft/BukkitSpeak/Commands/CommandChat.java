@@ -28,7 +28,6 @@ public class CommandChat extends BukkitSpeakCommand {
 		StringBuilder sb = new StringBuilder();
 		for (String s : Arrays.copyOfRange(args, 1, args.length)) {
 			sb.append(s);
-			sb.append("\\s");
 		}
 		String SenderName, DisplayName;
 		if (sender instanceof Player) {
@@ -38,11 +37,13 @@ public class CommandChat extends BukkitSpeakCommand {
 			SenderName = stringManager.getTeamspeakNickname();
 			DisplayName = "&eServer";
 		}
-		ts.pushMessage("sendtextmessage targetmode=2 target=" + stringManager.getChannelID() + " msg=" + sb.toString(), SenderName);
+		ts.pushMessage("sendtextmessage targetmode=2"
+				+ " target=" + stringManager.getChannelID()
+				+ " msg=" + convert(sb.toString()), SenderName);
 		
-		String message = stringManager.getMessage("MinecraftMsg");
+		String message = stringManager.getMessage("Chat");
 		message.replaceAll("%player_name%", DisplayName);
-		message.replaceAll("%msg%", sb.toString().replaceAll("\\\\s", " "));
+		message.replaceAll("%msg%", sb.toString());
 		
 		for (Player pl : plugin.getServer().getOnlinePlayers()) {
 			if (!plugin.getMuted(pl)) pl.sendMessage(message);

@@ -35,7 +35,6 @@ public class CommandPm extends BukkitSpeakCommand {
 		StringBuilder sb = new StringBuilder();
 		for (String s : Arrays.copyOfRange(args, 2, args.length)) {
 			sb.append(s);
-			sb.append("\\s");
 		}
 		String SenderName;
 		if (sender instanceof Player) {
@@ -43,6 +42,14 @@ public class CommandPm extends BukkitSpeakCommand {
 		} else {
 			SenderName = stringManager.getTeamspeakNickname();
 		}
-		ts.pushMessage("sendtextmessage targetmode=1 target=" + user.getID() + " msg=" + sb.toString(), SenderName);
+		ts.pushMessage("sendtextmessage targetmode=1" 
+				+ " target=" + user.getID()
+				+ " msg=" + convert(sb.toString()), SenderName);
+		
+		String message = stringManager.getMessage("Pm");
+		message.replaceAll("%target%", user.getName());
+		message.replaceAll("%msg%", sb.toString());
+		
+		send(sender, Level.INFO, message);
 	}
 }

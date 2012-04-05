@@ -30,12 +30,23 @@ public class CommandChat extends BukkitSpeakCommand {
 			sb.append(s);
 			sb.append("\\s");
 		}
-		String SenderName;
+		String SenderName, DisplayName;
 		if (sender instanceof Player) {
 			SenderName = sender.getName();
+			DisplayName = ((Player) sender).getDisplayName();
 		} else {
 			SenderName = stringManager.getTeamspeakNickname();
+			DisplayName = "&eServer";
 		}
 		ts.pushMessage("sendtextmessage targetmode=2 target=" + stringManager.getChannelID() + " msg=" + sb.toString(), SenderName);
+		
+		String message = stringManager.getMessage("MinecraftMsg");
+		message.replaceAll("%player_name%", DisplayName);
+		message.replaceAll("%msg%", sb.toString().replaceAll("\\\\s", " "));
+		
+		for (Player pl : plugin.getServer().getOnlinePlayers()) {
+			if (!plugin.getMuted(pl)) pl.sendMessage(message);
+		}
+		plugin.getLogger().info(message);
 	}
 }

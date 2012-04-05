@@ -35,6 +35,7 @@ public class StringManager {
 		{"Quit", "&e%client_nickname% &ahas left TeamSpeak"}, 
 		{"ServerMsg", "[&cTS&f] &e%client_nickname%&a: %msg%"}, 
 		{"ChannelMsg", "&e%client_nickname%&f: %msg%"},
+		{"MinecraftMsg", "&e%player_name% &a-> &eTS&f: %msg%"},
 		{"OnlineList", "&aCurrently online: &e%list%"},
 		{"Mute", "&aYou are now muted."},
 		{"Unmute", "&aYou aren't muted anymore."},

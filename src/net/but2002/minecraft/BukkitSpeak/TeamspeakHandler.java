@@ -110,7 +110,7 @@ public class TeamspeakHandler implements Runnable {
 		
 	}
 	
-	public void handleMessage (String message) {
+	public void handleMessage(String message) {
 		if (message.startsWith("clid=")) {
 			for (String msg : message.split("\\|")) {
 				TeamspeakUser user = new ClientlistEvent(plugin, msg).getUser();
@@ -167,7 +167,7 @@ public class TeamspeakHandler implements Runnable {
 	public Date getStopped() {
 		return tsStopped;
 	}
-		
+	
 	public void pushMessage(String msg, String sender) {
 		if (!(sender.isEmpty() || sender.equals(stringManager.getTeamspeakNickname()))) {
 			out.println("clientupdate client_nickname=" + sender);
@@ -189,7 +189,15 @@ public class TeamspeakHandler implements Runnable {
 	public TeamspeakUser getUserByName(String name) {
 		TeamspeakUser[] users = this.users.values().toArray(new TeamspeakUser[this.users.values().size()]);
 		for(TeamspeakUser currentUser : users){
-			if(name.equals(currentUser.getName())) return currentUser;
+			if (name.equals(currentUser.getName())) return currentUser;
+		}
+		return null;
+	}
+	
+	public TeamspeakUser getUserByPartialName(String name) {
+		TeamspeakUser[] users = this.users.values().toArray(new TeamspeakUser[this.users.values().size()]);
+		for(TeamspeakUser currentUser : users){
+			if (currentUser.getName().toLowerCase().startsWith(name.toLowerCase())) return currentUser;
 		}
 		return null;
 	}

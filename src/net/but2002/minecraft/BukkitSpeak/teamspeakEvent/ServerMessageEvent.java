@@ -36,17 +36,21 @@ public class ServerMessageEvent extends TeamspeakEvent{
 	protected void sendMessage() {
 		if (user != null) {
 			if (localValues.get("targetmode").equals("3")) {
-				String message = replaceValues(plugin.getStringManager().getMessage("ServerMsg"), true);
+				String m = plugin.getStringManager().getMessage("ServerMsg");
 				for (Player pl : plugin.getServer().getOnlinePlayers()) {
-					if (!plugin.getMuted(pl) && CheckPermissions(pl, "broadcast")) pl.sendMessage(message);
+					if (!plugin.getMuted(pl) && CheckPermissions(pl, "broadcast")) {
+						pl.sendMessage(replaceValues(m, true));
+					}
 				}
-				plugin.getLogger().info(message);
+				plugin.getLogger().info(replaceValues(m, false));
 			} else if (localValues.get("targetmode").equals("2")) {
-				String message = replaceValues(plugin.getStringManager().getMessage("ChannelMsg"), true);
+				String m = plugin.getStringManager().getMessage("ChannelMsg");
 				for (Player pl : plugin.getServer().getOnlinePlayers()) {
-					if (!plugin.getMuted(pl) && CheckPermissions(pl, "chat")) pl.sendMessage(message);
+					if (!plugin.getMuted(pl) && CheckPermissions(pl, "chat")) {
+						pl.sendMessage(replaceValues(m, true));
+					}
 				}
-				plugin.getLogger().info(message);
+				plugin.getLogger().info(replaceValues(m, false));
 			}
 		}
 	}

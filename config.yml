@@ -6,24 +6,33 @@ main:
   QueryPassword: '123456'
 teamspeak:
   BroadcastNickname: Minecraft
+  
+  # Only required if you use the channel functions!
   ChannelID: 0
   ChannelPassword: ''
   
+  # Can only be true or false
   ListenToServerEvents: true
   ListenToServerBroadcasts: true
   ListenToChannel: false
   ListenToChannelChat: false
-messages:
-  Join: '&e%client_nickname% &ahas joined TeamSpeak'
-  Quit: '&e%client_nickname% &ahas left TeamSpeak'
-  ServerMsg: '[&cTS&f] &e%client_nickname%&a: %msg%'
-  ChannelMsg: '&e%client_nickname%&f: %msg%'
-  ChannelEnter: '&e%client_nickname% &aentered the channel.'
-  ChannelLeave: '&e%client_nickname% &aleft the channel.'
   
-  Broadcast: '&e%player_name% &a-> &f[&cTS&f]&f: %msg%'
-  Chat: '&e%player_name% &a-> &eTS&f: %msg%'
-  Pm: '&eMe &a-> &e%target%&f: %msg%'
-  OnlineList: '&aCurrently online: &e%list%'
-  Mute: '&aYou are now muted.'
-  Unmute: '&aYou aren''t muted anymore.'
+  # Can only be 'server', 'channel' or 'none'
+  SendChatToTeamspeak: 'none'
+messages:
+  events:
+    Join: '&e%client_nickname% &ahas joined TeamSpeak'
+    Quit: '&e%client_nickname% &ahas left TeamSpeak'
+    ServerMsg: '[&cTS&f] &e%client_nickname%&a: %msg%'
+    ChannelMsg: '&e%client_nickname%&f: %msg%'
+    ChannelEnter: '&e%client_nickname% &aentered the channel.'
+    ChannelLeave: '&e%client_nickname% &aleft the channel.'
+  commands:
+    OnlineList: '&aCurrently online: &e%list%'
+    Mute: '&aYou are now muted.'
+    Unmute: '&aYou aren''t muted anymore.'
+    Broadcast: '&e%player_name% &a-> &f[&cTS&f]&f: %msg%'
+    Chat: '&e%player_name% &a-> &eTS&f: %msg%'
+    Pm: '&eMe &a-> &e%target%&f: %msg%'
+  teamspeak:
+    Broadcast: ''

@@ -29,20 +29,25 @@ public class StringManager {
 	public static final String TEAMSPEAK_CHANNELID = "ChannelID";
 	public static final String TEAMSPEAK_CHANNELPW = "ChannelPassword";
 	
-	public static final String MESSAGES_SECTION = "messages";
-	public static final String[][] MESSAGES = {
+	public static final String[] EVENTMESSAGES_SECTION = {"messages", "events"};
+	public static final String[] COMMANDMESSAGES_SECTION = {"messages", "commands"};
+	public static final String[] TEAMSPEAKMESSAGES_SECTION = {"messages", "teamspeak"};	
+	public static final String[][] EVENTMESSAGES = {
 		{"Join", "&e%client_nickname% &ahas joined TeamSpeak"}, 
 		{"Quit", "&e%client_nickname% &ahas left TeamSpeak"}, 
 		{"ServerMsg", "[&cTS&f] &e%client_nickname%&a: %msg%"}, 
 		{"ChannelMsg", "&e%client_nickname%&f: %msg%"},
 		{"ChannelEnter","&e%client_nickname% &aentered the channel."},
-		{"ChannelLeave","&e%client_nickname% &aleft the channel."},
-		{"Broadcast", "&e%player_name% &a-> &f[&cTS&f]&f: %msg%"},
-		{"Chat", "&e%player_name% &a-> &eTS&f: %msg%"},
-		{"Pm", "&eMe &a-> &e%target%&f: %msg%"},
+		{"ChannelLeave","&e%client_nickname% &aleft the channel."}};
+	public static final String[][] COMMANDMESSAGES = {
 		{"OnlineList", "&aCurrently online: &e%list%"},
 		{"Mute", "&aYou are now muted."},
-		{"Unmute", "&aYou aren't muted anymore."}};
+		{"Unmute", "&aYou aren't muted anymore."},
+		{"Broadcast", "&e%player_name% &a-> &f[&cTS&f]&f: %msg%"},
+		{"Chat", "&e%player_name% &a-> &eTS&f: %msg%"},
+		{"Pm", "&eMe &a-> &e%target%&f: %msg%"}};
+	public static final String[][] TEAMSPEAKMESSAGES = {
+		{"Broadcast", "%name%: %msg%"}};
 	
 	public static final String MUTED_SECTION = "muted";
 	
@@ -71,9 +76,25 @@ public class StringManager {
 		tsChannel = reader.getBoolean(TEAMSPEAK_SECTION, TEAMSPEAK_CHANNEL, false);
 		tsTextChannel = reader.getBoolean(TEAMSPEAK_SECTION, TEAMSPEAK_TEXTCHANNEL, false);
 		
-		for (String[] keyPair : MESSAGES) {
+		for (String[] keyPair : EVENTMESSAGES) {
 			try {
-				String currentValue = reader.getString(MESSAGES_SECTION, keyPair[0], keyPair[1]);
+				String currentValue = reader.getString(EVENTMESSAGES_SECTION, keyPair[0], keyPair[1]);
+				strings.put(keyPair[0], currentValue);
+			} catch (Exception e) {
+				plugin.getLogger().severe("Was unable to load all the messages. This is probably a programming error.");
+			}
+		}
+		for (String[] keyPair : COMMANDMESSAGES) {
+			try {
+				String currentValue = reader.getString(COMMANDMESSAGES_SECTION, keyPair[0], keyPair[1]);
+				strings.put(keyPair[0], currentValue);
+			} catch (Exception e) {
+				plugin.getLogger().severe("Was unable to load all the messages. This is probably a programming error.");
+			}
+		}
+		for (String[] keyPair : TEAMSPEAKMESSAGES) {
+			try {
+				String currentValue = reader.getString(TEAMSPEAKMESSAGES_SECTION, keyPair[0], keyPair[1]);
 				strings.put(keyPair[0], currentValue);
 			} catch (Exception e) {
 				plugin.getLogger().severe("Was unable to load all the messages. This is probably a programming error.");

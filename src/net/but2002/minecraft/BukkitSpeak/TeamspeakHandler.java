@@ -3,6 +3,7 @@ package net.but2002.minecraft.BukkitSpeak;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
+import java.net.ConnectException;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.util.Date;
@@ -65,11 +66,11 @@ public class TeamspeakHandler implements Runnable {
 				out.println("logout");
 				plugin.getLogger().info("Logged out properly.");
 			} catch (Exception e) {
-				plugin.getLogger().warning("Could not logout properly. Shouldn't be a problem though.");
+				plugin.getLogger().warning("Could not log out properly. Shouldn't be a problem though.");
 			}
-			in.close();
-			out.close();
-			socket.close();
+			if (in != null) in.close();
+			if (out != null) out.close();
+			if (socket != null) socket.close();
 			
 		} catch (Exception e) {
 			setAlive(false);
@@ -103,6 +104,11 @@ public class TeamspeakHandler implements Runnable {
 			keepAliveThread = new TeamspeakKeepAlive(out);
 			keepAliveThread.start();
 			
+		} catch (ConnectException ce) {
+			plugin.getLogger().warning("Could not connect to the TeamSpeak3 server.");
+			plugin.getLogger().warning("Ensure that the IP and the ports are correct!");
+			plugin.getLogger().warning("(" + ce.getMessage() + ")");
+			this.kill = true;
 		} catch (Exception e) {
 			plugin.getLogger().severe(e.toString());
 			e.printStackTrace();

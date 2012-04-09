@@ -151,7 +151,7 @@ public class ConfigReader {
 			return poss.get(cs.getString(loc));
 		} else {
 			cs.set(loc, def);
-			logConfigError(dir + "." + loc);
+			logConfigError(getAbsolutePath(dir) + "." + loc);
 			return poss.get(def);
 		}
 	}
@@ -204,12 +204,12 @@ public class ConfigReader {
 				return res;
 			} else {
 				cs.set(loc, poss[def][0]);
-				logConfigError(dir + "." + loc);
+				logConfigError(getAbsolutePath(dir) + "." + loc);
 				return def;
 			}
 		} else {
 			cs.set(loc, poss[def][0]);
-			logConfigError(dir + "." + loc);
+			logConfigError(getAbsolutePath(dir) + "." + loc);
 			return def;
 		}
 	}

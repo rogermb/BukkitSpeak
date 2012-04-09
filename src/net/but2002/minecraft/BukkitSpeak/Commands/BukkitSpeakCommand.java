@@ -1,5 +1,6 @@
 package net.but2002.minecraft.BukkitSpeak.Commands;
 
+import java.util.HashMap;
 import java.util.logging.Level;
 
 import net.but2002.minecraft.BukkitSpeak.BukkitSpeak;
@@ -23,20 +24,38 @@ public abstract class BukkitSpeakCommand {
 	
 	protected void send(CommandSender sender, Level level, String msg) {
 		if (sender instanceof Player) {
-			msg = msg.replaceAll("&", "§").replaceAll("$", "§");
+			msg = msg.replaceAll("(&([a-fk-orA-FK-OR0-9]))", "§$2").replaceAll("($([a-fk-orA-FK-OR0-9]))", "§$2");
 			sender.sendMessage(plugin + msg);
 		} else {
-			msg = msg.replaceAll("&[a-fA-F0-9]", "").replaceAll("$[a-fA-F0-9]", "");
+			msg = msg.replaceAll("(&([a-fk-orA-FK-OR0-9]))", "").replaceAll("($([a-fk-orA-FK-OR0-9]))", "");
 			plugin.getLogger().log(level, msg);
 		}
 	}
 	
 	protected String convert(String input) {
-		if(input != null) {
+		if (input != null) {
 			String s = input;
-			s = s.replaceAll(" ", "\\\\s");
+			s = s.replaceAll("\\s", "\\\\s");
 			s = s.replaceAll("/", "\\\\/");
-			s = s.replaceAll("|", "\\\\p");
+			s = s.replaceAll("\\|", "\\\\p");
+			return s;
+		}
+		return null;
+	}
+	
+	protected String replaceKeys(String input, Boolean color, HashMap<String, String> repl) {
+		if (input != null) {
+			String s = input;
+			if (color) {
+				s = s.replaceAll("(&([a-fk-orA-FK-OR0-9]))", "§$2");
+			} else {
+				s = s.replaceAll("(&([a-fk-orA-FK-OR0-9]))", "");
+			}
+			
+			for (String key : repl.keySet()) {
+				s = s.replaceAll(key, repl.get(key));
+			}
+			
 			return s;
 		}
 		return null;

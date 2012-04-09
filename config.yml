@@ -16,10 +16,10 @@ teamspeak:
   ListenToServerBroadcasts: true
   ListenToChannel: false
   ListenToChannelChat: false
-  ListenToPMs: false
+  ListenToPrivateMessages: false
   
-  # Can only be 'server', 'channel' or 'none'
-  SendChatToTeamspeak: 'none'
+  # Can be either 'server', 'channel' or 'none'
+  SendChatToTeamspeak: none
 messages:
   events:
     Join: '&e%client_nickname% &ahas joined TeamSpeak'

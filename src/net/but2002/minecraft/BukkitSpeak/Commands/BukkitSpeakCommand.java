@@ -32,7 +32,7 @@ public abstract class BukkitSpeakCommand {
 		}
 	}
 	
-	protected String convert(String input) {
+	public static String convert(String input) {
 		if (input != null) {
 			String s = input;
 			s = s.replaceAll("\\s", "\\\\s");
@@ -43,7 +43,7 @@ public abstract class BukkitSpeakCommand {
 		return null;
 	}
 	
-	protected String replaceKeys(String input, Boolean color, HashMap<String, String> repl) {
+	public static String replaceKeys(String input, Boolean color, HashMap<String, String> repl) {
 		if (input != null) {
 			String s = input;
 			if (color) {

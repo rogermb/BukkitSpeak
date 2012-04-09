@@ -15,6 +15,7 @@ public class BukkitSpeak extends JavaPlugin {
 	StringManager stringManager;
 	TeamspeakHandler ts;
 	BukkitSpeakCommandExecutor tsCommand;
+	ChatListener chatListener;
 	List<String> muted;
 	
 	public void onEnable() {
@@ -22,8 +23,10 @@ public class BukkitSpeak extends JavaPlugin {
 		stringManager = new StringManager(this);
 		ts = new TeamspeakHandler(this);
 		tsCommand = new BukkitSpeakCommandExecutor(this);
+		chatListener = new ChatListener(this);
 		muted = new ArrayList<String>();
 		
+		this.getServer().getPluginManager().registerEvents(chatListener, this);
 		this.getCommand("ts").setExecutor(tsCommand);
 		new Thread(ts).start();
 		
@@ -72,6 +75,7 @@ public class BukkitSpeak extends JavaPlugin {
 			stringManager = new StringManager(this);
 			ts = new TeamspeakHandler(this);
 			tsCommand = new BukkitSpeakCommandExecutor(this);
+			chatListener.reload(this);
 			muted = new ArrayList<String>();
 			
 			this.getCommand("ts").setExecutor(tsCommand);

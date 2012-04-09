@@ -10,10 +10,12 @@ public class ConfigReader {
 	
 	JavaPlugin plugin;
 	FileConfiguration config;
+	Boolean err;
 	
 	public ConfigReader(JavaPlugin JavaPlugin) {
 		plugin = JavaPlugin;
 		config = JavaPlugin.getConfig();
+		err = false;
 	}
 	
 	public HashMap<String, ?> getAll(HashMap<String, ?> map) {
@@ -251,5 +253,10 @@ public class ConfigReader {
 	
 	private void logConfigError(String message){
 		plugin.getLogger().severe("Error while parsing " + message);
+		err = true;
+	}
+	
+	public Boolean gotErrors() {
+		return err;
 	}
 }

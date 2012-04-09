@@ -47,15 +47,29 @@ public abstract class BukkitSpeakCommand {
 		if (input != null) {
 			String s = input;
 			if (color) {
-				s = s.replaceAll("(&([a-fk-orA-FK-OR0-9]))", "§$2");
+				s = s.replaceAll("(&([a-fkA-FK0-9]))", "§$2");
 			} else {
-				s = s.replaceAll("(&([a-fk-orA-FK-OR0-9]))", "");
+				s = s.replaceAll("(&([a-fkA-FK0-9]))", "");
 			}
 			
 			for (String key : repl.keySet()) {
 				s = s.replaceAll(key, repl.get(key));
 			}
 			
+			return s;
+		}
+		return null;
+	}
+	
+	public static String filterLinks(String input, Boolean allowed) {
+		if (input != null) {
+			String s = input;
+			if (allowed) {
+				s.replaceAll("\\[URL](.*)\\[/URL]", "$1");
+			} else {
+				s.replaceAll("\\[URL].*\\[/URL]", "");
+				s.replaceAll("(http://|ftp://).*\\..*\\..*(\\s|/)", "");
+			}
 			return s;
 		}
 		return null;

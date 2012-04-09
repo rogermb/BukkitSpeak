@@ -17,6 +17,7 @@ teamspeak:
   ListenToChannel: false
   ListenToChannelChat: false
   ListenToPrivateMessages: false
+  AllowLinksInMessages: true
   
   # Can be either 'server', 'channel' or 'none'
   SendChatToTeamspeak: none

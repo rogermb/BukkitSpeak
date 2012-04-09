@@ -11,7 +11,7 @@ public class StringManager {
 	private HashMap<String,String> strings = new HashMap<String,String>();
 	private String ip, serverAdmin, serverPass, tsName, tsChannelPass;
 	private int queryPort, serverPort, tsChannelID, tsTarget;
-	private Boolean tsServer, tsTextServer, tsChannel, tsTextChannel;
+	private Boolean tsServer, tsTextServer, tsChannel, tsTextChannel, tsAllowLinks;
 	
 	public static final String CONFIG_SECTION = "main";
 	public static final String CONFIG_IP = "TeamSpeakIp";
@@ -22,12 +22,13 @@ public class StringManager {
 	
 	public static final String TEAMSPEAK_SECTION = "teamspeak";
 	public static final String TEAMSPEAK_NAME = "BroadcastNickname";
+	public static final String TEAMSPEAK_CHANNELID = "ChannelID";
+	public static final String TEAMSPEAK_CHANNELPW = "ChannelPassword";
 	public static final String TEAMSPEAK_SERVER = "ListenToServerEvents";
 	public static final String TEAMSPEAK_TEXTSERVER = "ListenToServerBroadcasts";
 	public static final String TEAMSPEAK_CHANNEL = "ListenToChannel";
 	public static final String TEAMSPEAK_TEXTCHANNEL = "ListenToChannelChat";
-	public static final String TEAMSPEAK_CHANNELID = "ChannelID";
-	public static final String TEAMSPEAK_CHANNELPW = "ChannelPassword";
+	public static final String TEAMSPEAK_ALLOWLINKS = "AllowLinksInMessages";
 	public static final String TEAMSPEAK_TARGET = "SendChatToTeamspeak";
 	public static final String[][] TEAMSPEAK_TARGETS = {
 		{"none"},
@@ -60,7 +61,7 @@ public class StringManager {
 		
 		ConfigReader reader = new ConfigReader(plugin);
 		
-		if (plugin.getConfig().getKeys(true).size()==0) {
+		if (plugin.getConfig().getKeys(true).size() == 0) {
 			plugin.saveResource("config.yml", false);
 			plugin.getLogger().info("Default config created!");
 			plugin.reloadConfig();
@@ -80,7 +81,8 @@ public class StringManager {
 		tsTextServer = reader.getBoolean(TEAMSPEAK_SECTION, TEAMSPEAK_TEXTSERVER, true);
 		tsChannel = reader.getBoolean(TEAMSPEAK_SECTION, TEAMSPEAK_CHANNEL, false);
 		tsTextChannel = reader.getBoolean(TEAMSPEAK_SECTION, TEAMSPEAK_TEXTCHANNEL, false);
-		tsTarget = reader.getChoice(TEAMSPEAKMESSAGES_SECTION, TEAMSPEAK_TARGET, 0, TEAMSPEAK_TARGETS);
+		tsAllowLinks = reader.getBoolean(TEAMSPEAK_SECTION, TEAMSPEAK_ALLOWLINKS, true);
+		tsTarget = reader.getChoice(TEAMSPEAK_SECTION, TEAMSPEAK_TARGET, 0, TEAMSPEAK_TARGETS);
 		
 		for (String[] keyPair : EVENTMESSAGES) {
 			try {
@@ -107,7 +109,7 @@ public class StringManager {
 			}
 		}
 		
-		plugin.saveConfig();
+		if (reader.gotErrors()) plugin.saveConfig();
 		
 	}
 	
@@ -166,6 +168,10 @@ public class StringManager {
 	
 	public Boolean getUseTextChannel() {
 		return tsTextChannel;
+	}
+	
+	public Boolean getAllowLinks() {
+		return tsAllowLinks;
 	}
 	
 	public TsTargetEnum getTeamspeakTarget() {

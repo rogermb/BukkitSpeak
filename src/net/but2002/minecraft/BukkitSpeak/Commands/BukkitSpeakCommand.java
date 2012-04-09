@@ -47,9 +47,9 @@ public abstract class BukkitSpeakCommand {
 		if (input != null) {
 			String s = input;
 			if (color) {
-				s = s.replaceAll("(&([a-fkA-FK0-9]))", "§$2");
+				s = s.replaceAll("(&([a-fk-orA-FK-OR0-9]))", "§$2").replaceAll("($([a-fk-orA-FK-OR0-9]))", "§$2");
 			} else {
-				s = s.replaceAll("(&([a-fkA-FK0-9]))", "");
+				s = s.replaceAll("(&([a-fk-orA-FK-OR0-9]))", "").replaceAll("($([a-fk-orA-FK-OR0-9]))", "");
 			}
 			
 			for (String key : repl.keySet()) {

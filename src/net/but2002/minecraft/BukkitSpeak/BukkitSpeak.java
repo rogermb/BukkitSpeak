@@ -42,7 +42,7 @@ public class BukkitSpeak extends JavaPlugin {
 	public String toString() {
 		return "§a[§6" + this.getDescription().getName() + "§a]§f " ;
 	}
-		
+	
 	public StringManager getStringManager() {
 		return stringManager;
 	}

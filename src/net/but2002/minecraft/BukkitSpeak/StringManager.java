@@ -47,7 +47,7 @@ public class StringManager {
 		{"Chat", "&e%player_name% &a-> &eTS&f: %msg%"},
 		{"Pm", "&eMe &a-> &e%target%&f: %msg%"}};
 	public static final String[][] TEAMSPEAKMESSAGES = {
-		{"Broadcast", "%name%: %msg%"}};
+		{"WIP", "Features still WIP, sorry :D"}};
 	
 	public static final String MUTED_SECTION = "muted";
 	

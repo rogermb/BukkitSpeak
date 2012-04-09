@@ -16,6 +16,7 @@ teamspeak:
   ListenToServerBroadcasts: true
   ListenToChannel: false
   ListenToChannelChat: false
+  ListenToPMs: false
   
   # Can only be 'server', 'channel' or 'none'
   SendChatToTeamspeak: 'none'
@@ -35,4 +36,4 @@ messages:
     Chat: '&e%player_name% &a-> &eTS&f: %msg%'
     Pm: '&eMe &a-> &e%target%&f: %msg%'
   teamspeak:
-    Broadcast: ''
+    WIP: 'Features still WIP, sorry :D'

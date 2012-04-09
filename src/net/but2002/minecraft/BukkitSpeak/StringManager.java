@@ -10,7 +10,7 @@ public class StringManager {
 	
 	private HashMap<String,String> strings = new HashMap<String,String>();
 	private String ip, serverAdmin, serverPass, tsName, tsChannelPass;
-	private int queryPort, serverPort, tsChannelID;
+	private int queryPort, serverPort, tsChannelID, tsTarget;
 	private Boolean tsServer, tsTextServer, tsChannel, tsTextChannel;
 	
 	public static final String CONFIG_SECTION = "main";
@@ -28,6 +28,11 @@ public class StringManager {
 	public static final String TEAMSPEAK_TEXTCHANNEL = "ListenToChannelChat";
 	public static final String TEAMSPEAK_CHANNELID = "ChannelID";
 	public static final String TEAMSPEAK_CHANNELPW = "ChannelPassword";
+	public static final String TEAMSPEAK_TARGET = "SendChatToTeamspeak";
+	public static final String[][] TEAMSPEAK_TARGETS = {
+		{"none"},
+		{"channel", "chat"},
+		{"server", "broadcast"}};
 	
 	public static final String[] EVENTMESSAGES_SECTION = {"messages", "events"};
 	public static final String[] COMMANDMESSAGES_SECTION = {"messages", "commands"};
@@ -75,6 +80,7 @@ public class StringManager {
 		tsTextServer = reader.getBoolean(TEAMSPEAK_SECTION, TEAMSPEAK_TEXTSERVER, true);
 		tsChannel = reader.getBoolean(TEAMSPEAK_SECTION, TEAMSPEAK_CHANNEL, false);
 		tsTextChannel = reader.getBoolean(TEAMSPEAK_SECTION, TEAMSPEAK_TEXTCHANNEL, false);
+		tsTarget = reader.getChoice(TEAMSPEAKMESSAGES_SECTION, TEAMSPEAK_TARGET, 0, TEAMSPEAK_TARGETS);
 		
 		for (String[] keyPair : EVENTMESSAGES) {
 			try {
@@ -138,6 +144,14 @@ public class StringManager {
 		return tsName;
 	}
 	
+	public int getChannelID() {
+		return tsChannelID;
+	}
+	
+	public String getChannelPass() {
+		return tsChannelPass;
+	}
+	
 	public Boolean getUseServer() {
 		return tsServer;
 	}
@@ -154,11 +168,7 @@ public class StringManager {
 		return tsTextChannel;
 	}
 	
-	public int getChannelID() {
-		return tsChannelID;
-	}
-	
-	public String getChannelPass() {
-		return tsChannelPass;
+	public TsTargetEnum getTeamspeakTarget() {
+		return TsTargetEnum.values()[tsTarget];
 	}
 }

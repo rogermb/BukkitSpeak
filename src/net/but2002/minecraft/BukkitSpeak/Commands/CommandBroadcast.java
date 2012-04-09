@@ -1,6 +1,7 @@
 package net.but2002.minecraft.BukkitSpeak.Commands;
 
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.logging.Level;
 
 import net.but2002.minecraft.BukkitSpeak.BukkitSpeak;
@@ -28,13 +29,17 @@ public class CommandBroadcast extends BukkitSpeakCommand {
 		StringBuilder sb = new StringBuilder();
 		for (String s : Arrays.copyOfRange(args, 1, args.length)) {
 			sb.append(s);
+			sb.append(" ");
 		}
 		ts.pushMessage("sendtextmessage targetmode=3" 
 				+ " target=0 msg=" + convert(sb.toString()), stringManager.getTeamspeakNickname());
 		
 		String message = stringManager.getMessage("Broadcast");
-		message.replaceAll("%player_name%", stringManager.getTeamspeakNickname());
-		message.replaceAll("%msg%", sb.toString());
+		HashMap<String, String> repl = new HashMap<String, String>();
+		repl.put("%player_name%", stringManager.getTeamspeakNickname());
+		repl.put("%msg%", sb.toString());
+		
+		message = replaceKeys(message, true, repl);
 		
 		for (Player pl : plugin.getServer().getOnlinePlayers()) {
 			if (!plugin.getMuted(pl)) pl.sendMessage(message);

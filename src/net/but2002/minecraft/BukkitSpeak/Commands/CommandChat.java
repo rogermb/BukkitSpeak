@@ -1,6 +1,7 @@
 package net.but2002.minecraft.BukkitSpeak.Commands;
 
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.logging.Level;
 
 import net.but2002.minecraft.BukkitSpeak.BukkitSpeak;
@@ -28,6 +29,7 @@ public class CommandChat extends BukkitSpeakCommand {
 		StringBuilder sb = new StringBuilder();
 		for (String s : Arrays.copyOfRange(args, 1, args.length)) {
 			sb.append(s);
+			sb.append(" ");
 		}
 		String SenderName, DisplayName;
 		if (sender instanceof Player) {
@@ -42,8 +44,11 @@ public class CommandChat extends BukkitSpeakCommand {
 				+ " msg=" + convert(sb.toString()), SenderName);
 		
 		String message = stringManager.getMessage("Chat");
-		message.replaceAll("%player_name%", DisplayName);
-		message.replaceAll("%msg%", sb.toString());
+		HashMap<String, String> repl = new HashMap<String, String>();
+		repl.put("%player_name%", DisplayName);
+		repl.put("%msg%", sb.toString());
+		
+		message = replaceKeys(message, true, repl);
 		
 		for (Player pl : plugin.getServer().getOnlinePlayers()) {
 			if (!plugin.getMuted(pl)) pl.sendMessage(message);

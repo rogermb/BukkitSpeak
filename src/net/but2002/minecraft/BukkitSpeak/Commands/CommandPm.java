@@ -1,6 +1,7 @@
 package net.but2002.minecraft.BukkitSpeak.Commands;
 
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.logging.Level;
 
 import net.but2002.minecraft.BukkitSpeak.BukkitSpeak;
@@ -48,8 +49,12 @@ public class CommandPm extends BukkitSpeakCommand {
 				+ " msg=" + convert(sb.toString()), SenderName);
 		
 		String message = stringManager.getMessage("Pm");
-		message = message.replaceAll("%target%", user.getName());
-		message = message.replaceAll("%msg%", sb.toString());
+		HashMap<String, String> repl = new HashMap<String, String>();
+		repl.put("%target%", user.getName());
+		repl.put("%msg%", sb.toString());
+		
+		message = replaceKeys(message, true, repl);
+		message = filterLinks(message, stringManager.getAllowLinks());
 		
 		send(sender, Level.INFO, message);
 	}

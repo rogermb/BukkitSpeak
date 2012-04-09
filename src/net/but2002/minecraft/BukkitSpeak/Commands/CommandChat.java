@@ -49,6 +49,7 @@ public class CommandChat extends BukkitSpeakCommand {
 		repl.put("%msg%", sb.toString());
 		
 		message = replaceKeys(message, true, repl);
+		message = filterLinks(message, stringManager.getAllowLinks());
 		
 		for (Player pl : plugin.getServer().getOnlinePlayers()) {
 			if (!plugin.getMuted(pl)) pl.sendMessage(message);

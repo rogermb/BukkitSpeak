@@ -4,6 +4,7 @@ import org.bukkit.entity.Player;
 
 import net.but2002.minecraft.BukkitSpeak.BukkitSpeak;
 import net.but2002.minecraft.BukkitSpeak.TeamspeakUser;
+import net.but2002.minecraft.BukkitSpeak.Commands.BukkitSpeakCommand;
 
 public class ServerMessageEvent extends TeamspeakEvent{
 	
@@ -24,11 +25,11 @@ public class ServerMessageEvent extends TeamspeakEvent{
 		}
 		
 		String msgValue = localValues.get("msg");
+		msgValue = filterLinks(msgValue);
 		if (msgValue != null && user != null) localValues.put("msg", TeamspeakUser.convert(msgValue));
 		String invokerNameValue = localValues.get("invokername");
 		if (invokerNameValue != null && user != null) localValues.put("invokername", TeamspeakUser.convert(invokerNameValue));
 		sendMessage();
-		
 	}
 	
 	@Override
@@ -48,5 +49,9 @@ public class ServerMessageEvent extends TeamspeakEvent{
 				plugin.getLogger().info(message);
 			}
 		}
+	}
+	
+	protected String filterLinks(String msg) {
+		return BukkitSpeakCommand.filterLinks(msg, plugin.getStringManager().getAllowLinks());
 	}
 }

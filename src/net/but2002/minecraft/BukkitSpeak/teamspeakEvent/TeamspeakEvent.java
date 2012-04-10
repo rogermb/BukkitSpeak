@@ -33,7 +33,7 @@ public abstract class TeamspeakEvent {
 		String[] split = msg.split(" ");
 		for(String current: split) {
 			if(current != null) {
-				String[] key_value = current.split("=");
+				String[] key_value = current.split("=", 2);
 				if(key_value.length == 1) {
 					result.put(current, null);
 				} else if(key_value.length == 2) {

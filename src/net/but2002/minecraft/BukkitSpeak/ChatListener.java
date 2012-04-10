@@ -1,7 +1,5 @@
 package net.but2002.minecraft.BukkitSpeak;
 
-import java.util.HashMap;
-
 import net.but2002.minecraft.BukkitSpeak.Commands.BukkitSpeakCommand;
 
 import org.bukkit.event.EventHandler;

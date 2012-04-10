@@ -64,21 +64,21 @@ public class BukkitSpeakCommandExecutor implements CommandExecutor {
 		} else if (args[0].equalsIgnoreCase("broadcast")) {
 			if (!CheckPermissions(sender, "broadcast")) return false;
 			if (!stringManager.getUseTextServer()) {
-				send(sender, Level.INFO, "&4You need to enable ListenToChannelChat in the config to use this command.");
+				send(sender, Level.INFO, "&4You need to enable ListenToServerBroadcasts in the config to use this command.");
 				return true;
 			}
 			Broadcast.execute(sender, args);
 		} else if (args[0].equalsIgnoreCase("chat")) {
 			if (!CheckPermissions(sender, "chat")) return false;
 			if (!stringManager.getUseTextChannel()) {
-				send(sender, Level.INFO, "&4You need to enable ListenToServerBroadcasts in the config to use this command.");
+				send(sender, Level.INFO, "&4You need to enable ListenToChannelChat in the config to use this command.");
 				return true;
 			}
 			Chat.execute(sender, args);
 		} else if (args[0].equalsIgnoreCase("pm")) {
 			if (!CheckPermissions(sender, "pm")) return false;
 			if (!stringManager.getUseTextChannel()) {
-				send(sender, Level.INFO, "&4You need to enable ListenToServerBroadcasts in the config to use this command.");
+				send(sender, Level.INFO, "&4You need to enable ListenToPersonalMessages in the config to use this command.");
 				return true;
 			}
 			Pm.execute(sender, args);

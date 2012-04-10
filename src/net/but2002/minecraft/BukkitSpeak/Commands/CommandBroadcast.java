@@ -31,12 +31,21 @@ public class CommandBroadcast extends BukkitSpeakCommand {
 			sb.append(s);
 			sb.append(" ");
 		}
+		String SenderName, DisplayName;
+		if (sender instanceof Player) {
+			SenderName = sender.getName();
+			DisplayName = ((Player) sender).getDisplayName();
+		} else {
+			SenderName = stringManager.getTeamspeakNickname();
+			DisplayName = "&eServer";
+		}
 		ts.pushMessage("sendtextmessage targetmode=3" 
-				+ " target=0 msg=" + convert(sb.toString()), stringManager.getTeamspeakNickname());
+				+ " target=0"
+				+ " msg=" + convert(sb.toString()), SenderName);
 		
 		String message = stringManager.getMessage("Broadcast");
 		HashMap<String, String> repl = new HashMap<String, String>();
-		repl.put("%player_name%", stringManager.getTeamspeakNickname());
+		repl.put("%player_name%", DisplayName);
 		repl.put("%msg%", sb.toString());
 		
 		message = replaceKeys(message, true, repl);

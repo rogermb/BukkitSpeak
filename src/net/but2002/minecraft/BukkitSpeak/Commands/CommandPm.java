@@ -38,7 +38,9 @@ public class CommandPm extends BukkitSpeakCommand {
 			sb.append(s);
 			sb.append(" ");
 		}
-		String SenderName;
+		String SenderName, msg;
+		msg = filterLinks(sb.toString(), stringManager.getAllowLinks());
+		if (msg.isEmpty()) return;
 		if (sender instanceof Player) {
 			SenderName = sender.getName();
 		} else {
@@ -46,15 +48,15 @@ public class CommandPm extends BukkitSpeakCommand {
 		}
 		ts.pushMessage("sendtextmessage targetmode=1" 
 				+ " target=" + user.getID()
-				+ " msg=" + convert(sb.toString()), SenderName);
+				+ " msg=" + convert(msg), SenderName);
 		
 		String message = stringManager.getMessage("Pm");
 		HashMap<String, String> repl = new HashMap<String, String>();
 		repl.put("%target%", user.getName());
-		repl.put("%msg%", sb.toString());
+		repl.put("%msg%", msg);
+		repl.put("(\\[URL]|\\[/URL])", "");
 		
 		message = replaceKeys(message, true, repl);
-		message = filterLinks(message, stringManager.getAllowLinks());
 		
 		send(sender, Level.INFO, message);
 	}

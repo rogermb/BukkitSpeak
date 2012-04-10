@@ -4,7 +4,6 @@ import org.bukkit.entity.Player;
 
 import net.but2002.minecraft.BukkitSpeak.BukkitSpeak;
 import net.but2002.minecraft.BukkitSpeak.TeamspeakUser;
-import net.but2002.minecraft.BukkitSpeak.Commands.BukkitSpeakCommand;
 
 public class ServerMessageEvent extends TeamspeakEvent{
 	
@@ -25,8 +24,9 @@ public class ServerMessageEvent extends TeamspeakEvent{
 		}
 		
 		String msgValue = localValues.get("msg");
-		msgValue = filterLinks(msgValue);
-		if (msgValue != null && user != null) localValues.put("msg", TeamspeakUser.convert(msgValue));
+		msgValue = filterLinks(TeamspeakUser.convert(msgValue), plugin.getStringManager().getAllowLinks());
+		if (msgValue == null || msgValue.isEmpty() || user == null) return;
+		localValues.put("msg", msgValue);
 		String invokerNameValue = localValues.get("invokername");
 		if (invokerNameValue != null && user != null) localValues.put("invokername", TeamspeakUser.convert(invokerNameValue));
 		sendMessage();
@@ -55,7 +55,16 @@ public class ServerMessageEvent extends TeamspeakEvent{
 		}
 	}
 	
-	protected String filterLinks(String msg) {
-		return BukkitSpeakCommand.filterLinks(msg, plugin.getStringManager().getAllowLinks());
+	protected String filterLinks(String input, Boolean allowed) {
+		if (input != null) {
+			String s = input;
+			if (allowed) {
+				s = s.replaceAll("\\[URL](.*)\\[/URL]", "$1");
+			} else {
+				s = s.replaceAll("\\[URL](.*)\\[/URL]", "");
+			}
+			return s;
+		}
+		return null;
 	}
 }

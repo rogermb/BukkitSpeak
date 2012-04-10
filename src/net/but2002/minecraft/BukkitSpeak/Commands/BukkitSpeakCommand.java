@@ -65,10 +65,9 @@ public abstract class BukkitSpeakCommand {
 		if (input != null) {
 			String s = input;
 			if (allowed) {
-				s.replaceAll("\\[URL](.*)\\[/URL]", "$1");
+				s = s.replaceAll("(?i)((http://|ftp://).*\\.?.+\\..+(/.*)?)", "\\[URL]$1\\[/URL]");
 			} else {
-				s.replaceAll("\\[URL].*\\[/URL]", "");
-				s.replaceAll("(http://|ftp://).*\\..*\\..*(\\s|/)", "");
+				s = s.replaceAll("(?i)((http://|ftp://).*\\.?.+\\..+(/.*)?)", "");
 			}
 			return s;
 		}

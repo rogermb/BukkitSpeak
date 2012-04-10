@@ -31,29 +31,29 @@ public class CommandChat extends BukkitSpeakCommand {
 			sb.append(s);
 			sb.append(" ");
 		}
-		String SenderName, DisplayName;
+		String SenderName, DisplayName, msg;
+		msg = filterLinks(sb.toString(), stringManager.getAllowLinks());
+		if (msg.isEmpty()) return;
 		if (sender instanceof Player) {
 			SenderName = sender.getName();
 			DisplayName = ((Player) sender).getDisplayName();
 		} else {
 			SenderName = stringManager.getTeamspeakNickname();
-			DisplayName = "&eServer";
+			DisplayName = "Server";
 		}
 		ts.pushMessage("sendtextmessage targetmode=2"
 				+ " target=" + stringManager.getChannelID()
-				+ " msg=" + convert(sb.toString()), SenderName);
+				+ " msg=" + convert(msg), SenderName);
 		
 		String message = stringManager.getMessage("Chat");
 		HashMap<String, String> repl = new HashMap<String, String>();
 		repl.put("%player_name%", DisplayName);
-		repl.put("%msg%", sb.toString());
-		
-		message = replaceKeys(message, true, repl);
-		message = filterLinks(message, stringManager.getAllowLinks());
+		repl.put("%msg%", msg);
+		repl.put("(\\[URL]|\\[/URL])", "");
 		
 		for (Player pl : plugin.getServer().getOnlinePlayers()) {
-			if (!plugin.getMuted(pl)) pl.sendMessage(message);
+			if (!plugin.getMuted(pl)) pl.sendMessage(replaceKeys(message, true, repl));
 		}
-		plugin.getLogger().info(message);
+		plugin.getLogger().info(replaceKeys(message, false, repl));
 	}
 }

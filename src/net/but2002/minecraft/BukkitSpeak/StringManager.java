@@ -49,11 +49,14 @@ public class StringManager {
 		{"OnlineList", "&aCurrently online: &e%list%"},
 		{"Mute", "&aYou are now muted."},
 		{"Unmute", "&aYou aren't muted anymore."},
-		{"Broadcast", "&e%player_name% &a-> &f[&cTS&f]&f: %msg%"},
-		{"Chat", "&e%player_name% &a-> &eTS&f: %msg%"},
+		{"Broadcast", "&e%player_displayname% &a-> &f[&cTS&f]&f: %msg%"},
+		{"Chat", "&e%player_displayname% &a-> &eTS&f: %msg%"},
 		{"Pm", "&eMe &a-> &e%target%&f: %msg%"}};
 	public static final String[][] TEAMSPEAKMESSAGES = {
-		{"WIP", "Features still WIP, sorry :D"}};
+		{"ServerMessage", "%msg%"},
+		{"ChannelMessage", "[%player_displayname%] %msg%"},
+		{"PrivateMessage", "[%player_displayname%] %msg%"},
+		{"MinecraftMessage", "%player_displayname%: %msg%"}};
 	
 	public static final String MUTED_SECTION = "muted";
 	

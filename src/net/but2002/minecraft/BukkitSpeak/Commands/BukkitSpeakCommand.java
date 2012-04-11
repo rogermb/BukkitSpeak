@@ -32,42 +32,48 @@ public abstract class BukkitSpeakCommand {
 		}
 	}
 	
-	public static String convert(String input) {
+	public static String convertToTeamspeak(String input, Boolean color, Boolean links) {
 		if (input != null) {
 			String s = input;
 			s = s.replaceAll("\\s", "\\\\s");
 			s = s.replaceAll("/", "\\\\/");
 			s = s.replaceAll("\\|", "\\\\p");
-			return s;
-		}
-		return null;
-	}
-	
-	public static String replaceKeys(String input, Boolean color, HashMap<String, String> repl) {
-		if (input != null) {
-			String s = input;
 			if (color) {
-				s = s.replaceAll("(&([a-fk-orA-FK-OR0-9]))", "§$2").replaceAll("($([a-fk-orA-FK-OR0-9]))", "§$2");
+				//TODO: ADD COLORS!
 			} else {
-				s = s.replaceAll("(&([a-fk-orA-FK-OR0-9]))", "").replaceAll("($([a-fk-orA-FK-OR0-9]))", "");
+				s = s.replaceAll("((&|$|§)([a-fk-orA-FK-OR0-9]))", "");
 			}
-			
-			for (String key : repl.keySet()) {
-				s = s.replaceAll(key, repl.get(key));
-			}
-			
-			return s;
-		}
-		return null;
-	}
-	
-	public static String filterLinks(String input, Boolean allowed) {
-		if (input != null) {
-			String s = input;
-			if (allowed) {
+			if (links) {
 				s = s.replaceAll("(?i)((http://|ftp://).*\\.?.+\\..+(/.*)?)", "\\[URL]$1\\[/URL]");
 			} else {
 				s = s.replaceAll("(?i)((http://|ftp://).*\\.?.+\\..+(/.*)?)", "");
+			}
+			return s;
+		}
+		return null;
+	}
+	
+	public static String convertToMinecraft(String input, Boolean color, Boolean links) {
+		if (input != null) {
+			String s = input;
+			if (color) {
+				s = s.replaceAll("((&|$)([a-fk-orA-FK-OR0-9]))", "§$3");
+			} else {
+				s = s.replaceAll("((&|$|§)([a-fk-orA-FK-OR0-9]))", "");
+			}
+			if (!links) {
+				s = s.replaceAll("(?i)((http://|ftp://).*\\.?.+\\..+(/.*)?)", "");
+			}
+			return s;
+		}
+		return null;
+	}
+	
+	public static String replaceKeys(String input, HashMap<String, String> repl) {
+		if (input != null) {
+			String s = input;
+			for (String key : repl.keySet()) {
+				s = s.replaceAll(key, repl.get(key));
 			}
 			return s;
 		}

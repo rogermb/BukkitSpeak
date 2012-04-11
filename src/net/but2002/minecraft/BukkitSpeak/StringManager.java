@@ -110,7 +110,6 @@ public class StringManager {
 		}
 		
 		if (reader.gotErrors()) plugin.saveConfig();
-		
 	}
 	
 	public String getMessage(String key) {

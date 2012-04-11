@@ -31,29 +31,33 @@ public class CommandChat extends BukkitSpeakCommand {
 			sb.append(s);
 			sb.append(" ");
 		}
-		String SenderName, DisplayName, msg;
-		msg = filterLinks(sb.toString(), stringManager.getAllowLinks());
-		if (msg.isEmpty()) return;
+		
+		String tsMsg = stringManager.getMessage("ChannelMessage");
+		String mcMsg = stringManager.getMessage("Chat");
+		String Name, DisplayName;
 		if (sender instanceof Player) {
-			SenderName = sender.getName();
+			Name = ((Player) sender).getName();
 			DisplayName = ((Player) sender).getDisplayName();
 		} else {
-			SenderName = stringManager.getTeamspeakNickname();
-			DisplayName = "Server";
+			//TODO: Config?
+			Name = "Server";
+			DisplayName = "&eServer";
 		}
-		ts.pushMessage("sendtextmessage targetmode=2"
-				+ " target=" + stringManager.getChannelID()
-				+ " msg=" + convert(msg), SenderName);
 		
-		String message = stringManager.getMessage("Chat");
 		HashMap<String, String> repl = new HashMap<String, String>();
-		repl.put("%player_name%", DisplayName);
-		repl.put("%msg%", msg);
-		repl.put("(\\[URL]|\\[/URL])", "");
+		repl.put("%player_name%", Name);
+		repl.put("%player_displayname%", DisplayName);
+		repl.put("%msg%", sb.toString());
 		
+		tsMsg = replaceKeys(tsMsg, repl);
+		mcMsg = replaceKeys(mcMsg, repl);
+		
+		if (tsMsg.isEmpty() || mcMsg.isEmpty()) return;
+		
+		ts.SendTextMessage(2, stringManager.getChannelID(), convertToTeamspeak(tsMsg, false, stringManager.getAllowLinks()));
 		for (Player pl : plugin.getServer().getOnlinePlayers()) {
-			if (!plugin.getMuted(pl)) pl.sendMessage(replaceKeys(message, true, repl));
+			if (!plugin.getMuted(pl)) pl.sendMessage(convertToMinecraft(mcMsg, true, stringManager.getAllowLinks()));
 		}
-		plugin.getLogger().info(replaceKeys(message, false, repl));
+		plugin.getLogger().info(convertToMinecraft(mcMsg, false, stringManager.getAllowLinks()));
 	}
 }

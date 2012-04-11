@@ -174,14 +174,14 @@ public class TeamspeakHandler implements Runnable {
 		return tsStopped;
 	}
 	
-	public void pushMessage(String msg, String sender) {
-		if (!(sender.isEmpty() || sender.equals(stringManager.getTeamspeakNickname()))) {
-			out.println("clientupdate client_nickname=" + sender);
-			out.println(msg);
-			out.println("clientupdate client_nickname=" + stringManager.getTeamspeakNickname());
-		} else {
-			out.println(msg);
-		}
+	public void pushMessage(String msg) {
+		out.println(msg);
+	}
+	
+	public void SendTextMessage(Integer targetmode, Integer target, String msg) {
+		pushMessage("sendtextmessage targetmode=" + targetmode
+				+ " target=" + target
+				+ " msg=" + msg);
 	}
 	
 	public HashMap<Integer, TeamspeakUser> getUsers() {

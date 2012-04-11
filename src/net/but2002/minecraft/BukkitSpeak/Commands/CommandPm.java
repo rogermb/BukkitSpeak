@@ -38,26 +38,31 @@ public class CommandPm extends BukkitSpeakCommand {
 			sb.append(s);
 			sb.append(" ");
 		}
-		String SenderName, msg;
-		msg = filterLinks(sb.toString(), stringManager.getAllowLinks());
-		if (msg.isEmpty()) return;
+		
+		String tsMsg = stringManager.getMessage("PrivateMessage");
+		String mcMsg = stringManager.getMessage("Pm");
+		String Name, DisplayName;
 		if (sender instanceof Player) {
-			SenderName = sender.getName();
+			Name = ((Player) sender).getName();
+			DisplayName = ((Player) sender).getDisplayName();
 		} else {
-			SenderName = stringManager.getTeamspeakNickname();
+			//TODO: Config?
+			Name = "Server";
+			DisplayName = "&eServer";
 		}
-		ts.pushMessage("sendtextmessage targetmode=1" 
-				+ " target=" + user.getID()
-				+ " msg=" + convert(msg), SenderName);
 		
-		String message = stringManager.getMessage("Pm");
 		HashMap<String, String> repl = new HashMap<String, String>();
+		repl.put("%player_name%", Name);
+		repl.put("%player_displayname%", DisplayName);
 		repl.put("%target%", user.getName());
-		repl.put("%msg%", msg);
-		repl.put("(\\[URL]|\\[/URL])", "");
+		repl.put("%msg%", sb.toString());
 		
-		message = replaceKeys(message, true, repl);
+		tsMsg = replaceKeys(tsMsg, repl);
+		mcMsg = replaceKeys(mcMsg, repl);
 		
-		send(sender, Level.INFO, message);
+		if (tsMsg.isEmpty() || mcMsg.isEmpty()) return;
+		
+		ts.SendTextMessage(1, user.getID(), convertToTeamspeak(tsMsg, false, stringManager.getAllowLinks()));
+		send(sender, Level.INFO, convertToMinecraft(mcMsg, true, stringManager.getAllowLinks()));
 	}
 }

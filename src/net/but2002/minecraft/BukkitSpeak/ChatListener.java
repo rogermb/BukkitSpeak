@@ -1,5 +1,7 @@
 package net.but2002.minecraft.BukkitSpeak;
 
+import java.util.HashMap;
+
 import net.but2002.minecraft.BukkitSpeak.Commands.BukkitSpeakCommand;
 
 import org.bukkit.event.EventHandler;
@@ -22,22 +24,27 @@ public class ChatListener implements Listener {
 	public void onPlayerChat(PlayerChatEvent e) {
 		if (e.getPlayer() == null || e.getMessage().isEmpty()) return;
 		
-		String msg = e.getMessage();
-		msg = msg.replaceAll("(§([a-fk-orA-FK-OR0-9]))", "");
+		String tsMsg = stringManager.getMessage("MinecraftMessage");
+		HashMap<String, String> repl = new HashMap<String, String>();
+		repl.put("%player_name%", e.getPlayer().getName());
+		repl.put("%player_displayname%", e.getPlayer().getDisplayName());
+		repl.put("%msg%", e.getMessage());
+		
+		tsMsg = replaceKeys(tsMsg, repl);
 		
 		if (stringManager.getTeamspeakTarget() == TsTargetEnum.CHANNEL) {
-			ts.pushMessage("sendtextmessage targetmode=2"
-					+ " target=" + stringManager.getChannelID()
-					+ " msg=" + convert(msg), e.getPlayer().getName());
+			ts.SendTextMessage(2, stringManager.getChannelID(), convert(tsMsg, false, stringManager.getAllowLinks()));
 		} else if (stringManager.getTeamspeakTarget() == TsTargetEnum.SERVER) {
-			ts.pushMessage("sendtextmessage targetmode=3"
-					+ " target=0"
-					+ " msg=" + convert(msg), e.getPlayer().getName());
+			ts.SendTextMessage(3, 0, convert(tsMsg, false, stringManager.getAllowLinks()));
 		}
 	}
 	
-	public String convert(String input) {
-		return BukkitSpeakCommand.convert(input);
+	private String convert(String input, Boolean color, Boolean links) {
+		return BukkitSpeakCommand.convertToTeamspeak(input, color, links);
+	}
+	
+	private String replaceKeys(String input, HashMap<String, String> repl) {
+		return BukkitSpeakCommand.replaceKeys(input, repl);
 	}
 	
 	public void reload(BukkitSpeak plugin) {

@@ -41,7 +41,7 @@ public class CommandChat extends BukkitSpeakCommand {
 		} else {
 			//TODO: Config?
 			Name = "Server";
-			DisplayName = "&eServer";
+			DisplayName = "&4Server";
 		}
 		
 		HashMap<String, String> repl = new HashMap<String, String>();
@@ -52,9 +52,9 @@ public class CommandChat extends BukkitSpeakCommand {
 		tsMsg = replaceKeys(tsMsg, repl);
 		mcMsg = replaceKeys(mcMsg, repl);
 		
-		if (tsMsg.isEmpty() || mcMsg.isEmpty()) return;
-		
-		ts.SendTextMessage(2, stringManager.getChannelID(), convertToTeamspeak(tsMsg, false, stringManager.getAllowLinks()));
+		if (tsMsg.isEmpty()) return;
+		ts.SendTextMessage(2, stringManager.getChannelID(), convertToTeamspeak(tsMsg, true, stringManager.getAllowLinks()));
+		if (mcMsg.isEmpty()) return;
 		for (Player pl : plugin.getServer().getOnlinePlayers()) {
 			if (!plugin.getMuted(pl)) pl.sendMessage(convertToMinecraft(mcMsg, true, stringManager.getAllowLinks()));
 		}

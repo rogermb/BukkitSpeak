@@ -48,7 +48,7 @@ public class CommandPm extends BukkitSpeakCommand {
 		} else {
 			//TODO: Config?
 			Name = "Server";
-			DisplayName = "&eServer";
+			DisplayName = "&4Server";
 		}
 		
 		HashMap<String, String> repl = new HashMap<String, String>();
@@ -60,9 +60,9 @@ public class CommandPm extends BukkitSpeakCommand {
 		tsMsg = replaceKeys(tsMsg, repl);
 		mcMsg = replaceKeys(mcMsg, repl);
 		
-		if (tsMsg.isEmpty() || mcMsg.isEmpty()) return;
-		
-		ts.SendTextMessage(1, user.getID(), convertToTeamspeak(tsMsg, false, stringManager.getAllowLinks()));
+		if (tsMsg.isEmpty()) return;
+		ts.SendTextMessage(1, user.getID(), convertToTeamspeak(tsMsg, true, stringManager.getAllowLinks()));
+		if (mcMsg.isEmpty()) return;
 		send(sender, Level.INFO, convertToMinecraft(mcMsg, true, stringManager.getAllowLinks()));
 	}
 }

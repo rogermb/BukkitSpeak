@@ -37,7 +37,7 @@ messages:
     Chat: '&e%player_displayname% &a-> &eTS&f: %msg%'
     Pm: '&eMe &a-> &e%target%&f: %msg%'
   teamspeak:
-    ServerMessage: '%msg%'
+    ServerMessage: '&4%msg%'
     ChannelMessage: '[%player_displayname%] %msg%'
     PrivateMessage: '[%player_displayname%] %msg%'
     MinecraftMessage: '%player_displayname%: %msg%'

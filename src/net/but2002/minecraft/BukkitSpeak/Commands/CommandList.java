@@ -15,7 +15,7 @@ public class CommandList extends BukkitSpeakCommand {
 	
 	@Override
 	public void execute(CommandSender sender, String[] args) {
-		if (args.length < 2 || args[2].equalsIgnoreCase("server")) {
+		if (args.length < 2 || args[1].equalsIgnoreCase("server")) {
 			StringBuilder online = new StringBuilder();
 			for (TeamspeakUser user : ts.getUsers().values()) {
 				if (online.length() != 0) online.append(", ");
@@ -27,7 +27,7 @@ public class CommandList extends BukkitSpeakCommand {
 			
 			send(sender, Level.INFO, message);
 			
-		} else if (args.length == 2 && stringManager.getUseChannel() && args[2].equalsIgnoreCase("channel")) {
+		} else if (args.length == 2 && stringManager.getUseChannel() && args[1].equalsIgnoreCase("channel")) {
 			StringBuilder online = new StringBuilder();
 			for (TeamspeakUser user : ts.getUsers().values()) {
 				if (user.getValue("ctid").equals(plugin.getStringManager().getChannelID())) {

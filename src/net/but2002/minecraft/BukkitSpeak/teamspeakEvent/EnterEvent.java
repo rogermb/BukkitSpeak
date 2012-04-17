@@ -11,7 +11,6 @@ public class EnterEvent extends TeamspeakEvent{
 		super(plugin, msg);
 		
 		localKeys.add("cfid");
-		localKeys.add("ctid");
 		localKeys.add("reasonid");
 		localKeys.add("client_country");
 		parseLocalValues(msg);

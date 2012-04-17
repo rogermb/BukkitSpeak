@@ -36,6 +36,7 @@ public class TeamspeakUser {
 	}
 	
 	public String setValue(String key, String value) {
+		if (values.containsKey(key)) values.remove(key);
 		return values.put(key, value);
 	}
 	

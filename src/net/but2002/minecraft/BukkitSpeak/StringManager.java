@@ -9,7 +9,7 @@ import net.but2002.minecraft.BukkitSpeak.util.ConfigReader;
 public class StringManager {
 	
 	private HashMap<String,String> strings = new HashMap<String,String>();
-	private String ip, serverAdmin, serverPass, tsName, tsChannelPass;
+	private String ip, serverAdmin, serverPass, tsName, tsConsoleName, tsChannelPass;
 	private int queryPort, serverPort, tsChannelID, tsTarget;
 	private Boolean tsServer, tsTextServer, tsChannel, tsTextChannel, tsPrivateMessages, tsAllowLinks;
 	
@@ -22,6 +22,7 @@ public class StringManager {
 	
 	public static final String TEAMSPEAK_SECTION = "teamspeak";
 	public static final String TEAMSPEAK_NAME = "BroadcastNickname";
+	public static final String TEAMSPEAK_CONSOLENAME = "ConsoleName";
 	public static final String TEAMSPEAK_CHANNELID = "ChannelID";
 	public static final String TEAMSPEAK_CHANNELPW = "ChannelPassword";
 	public static final String TEAMSPEAK_SERVER = "ListenToServerEvents";
@@ -42,10 +43,11 @@ public class StringManager {
 	public static final String[][] EVENTMESSAGES = {
 		{"Join", "&e%client_nickname% &ahas joined TeamSpeak"}, 
 		{"Quit", "&e%client_nickname% &ahas left TeamSpeak"}, 
+		{"ChannelEnter","&e%client_nickname% &aentered the channel."},
+		{"ChannelLeave","&e%client_nickname% &aleft the channel."},
 		{"ServerMsg", "[&cTS&f] &e%client_nickname%&a: %msg%"}, 
 		{"ChannelMsg", "&e%client_nickname%&f: %msg%"},
-		{"ChannelEnter","&e%client_nickname% &aentered the channel."},
-		{"ChannelLeave","&e%client_nickname% &aleft the channel."}};
+		{"PrivateMsg", "&e%target% &a-> &eMe&f: %msg%"}};
 	public static final String[][] COMMANDMESSAGES = {
 		{"OnlineList", "&aCurrently online: &e%list%"},
 		{"Mute", "&aYou are now muted."},
@@ -54,10 +56,10 @@ public class StringManager {
 		{"Chat", "&e%player_displayname% &a-> &eTS&f: %msg%"},
 		{"Pm", "&eMe &a-> &e%target%&f: %msg%"}};
 	public static final String[][] TEAMSPEAKMESSAGES = {
-		{"ServerMessage", "%msg%"},
-		{"ChannelMessage", "[%player_displayname%] %msg%"},
-		{"PrivateMessage", "[%player_displayname%] %msg%"},
-		{"MinecraftMessage", "%player_displayname%: %msg%"}};
+		{"ServerMessage", "&4&l%msg%"},
+		{"ChannelMessage", "&4&l[%player_displayname%&4] &r%msg%"},
+		{"PrivateMessage", "&4&l[%player_displayname%&4] &r%msg%"},
+		{"MinecraftMessage", "&l%player_displayname%&r: %msg%"}};
 	
 	public static final String MUTED_SECTION = "muted";
 	
@@ -79,6 +81,7 @@ public class StringManager {
 		serverPass = reader.getString(CONFIG_SECTION, CONFIG_SERVERPASS, "123456");
 		
 		tsName = reader.getString(TEAMSPEAK_SECTION, TEAMSPEAK_NAME, "Minecraft");
+		tsConsoleName = reader.getString(TEAMSPEAK_SECTION, TEAMSPEAK_CONSOLENAME, "&eServer");
 		tsChannelID = reader.getInteger(TEAMSPEAK_SECTION, TEAMSPEAK_CHANNELID, 0);
 		tsChannelPass = reader.getString(TEAMSPEAK_SECTION, TEAMSPEAK_CHANNELPW, "");
 		tsServer = reader.getBoolean(TEAMSPEAK_SECTION, TEAMSPEAK_SERVER, true);
@@ -148,6 +151,10 @@ public class StringManager {
 	
 	public String getTeamspeakNickname() {
 		return tsName;
+	}
+	
+	public String getConsoleName() {
+		return tsConsoleName;
 	}
 	
 	public int getChannelID() {

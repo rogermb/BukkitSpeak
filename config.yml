@@ -6,6 +6,7 @@ main:
   QueryPassword: '123456'
 teamspeak:
   BroadcastNickname: Minecraft
+  ConsoleName: '&eServer'
   
   # Only required if you use the channel functions!
   ChannelID: 0
@@ -25,11 +26,11 @@ messages:
   events:
     Join: '&e%client_nickname% &ahas joined TeamSpeak'
     Quit: '&e%client_nickname% &ahas left TeamSpeak'
+    ChannelEnter: '&e%client_nickname% &aentered the channel.'
+    ChannelLeave: '&e%client_nickname% &aleft the channel.'
     ServerMsg: '[&cTS&f] &e%client_nickname%&a: %msg%'
     ChannelMsg: '&e%client_nickname%&f: %msg%'
     PrivateMsg: '&e%target% &a-> &eMe&f: %msg%'
-    ChannelEnter: '&e%client_nickname% &aentered the channel.'
-    ChannelLeave: '&e%client_nickname% &aleft the channel.'
   commands:
     OnlineList: '&aCurrently online: &e%list%'
     Mute: '&aYou are now muted.'
@@ -38,7 +39,7 @@ messages:
     Chat: '&e%player_displayname% &a-> &eTS&f: %msg%'
     Pm: '&eMe &a-> &e%target%&f: %msg%'
   teamspeak:
-    ServerMessage: '&4%msg%'
-    ChannelMessage: '[%player_displayname%] %msg%'
-    PrivateMessage: '[%player_displayname%] %msg%'
-    MinecraftMessage: '%player_displayname%: %msg%'
+    ServerMessage: '&4&l%msg%'
+    ChannelMessage: '&4&l[%player_displayname%&4] &r%msg%'
+    PrivateMessage: '&4&l[%player_displayname%&4] &r%msg%'
+    MinecraftMessage: '&l%player_displayname%&r: %msg%'

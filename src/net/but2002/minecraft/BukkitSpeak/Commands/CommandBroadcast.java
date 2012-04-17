@@ -39,9 +39,8 @@ public class CommandBroadcast extends BukkitSpeakCommand {
 			Name = ((Player) sender).getName();
 			DisplayName = ((Player) sender).getDisplayName();
 		} else {
-			//TODO: Config?
-			Name = "Server";
-			DisplayName = "&4Server";
+			Name = convertToMinecraft(stringManager.getConsoleName(), false, false);
+			DisplayName = stringManager.getConsoleName();
 		}
 		
 		HashMap<String, String> repl = new HashMap<String, String>();

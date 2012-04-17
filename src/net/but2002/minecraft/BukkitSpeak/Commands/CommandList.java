@@ -15,15 +15,34 @@ public class CommandList extends BukkitSpeakCommand {
 	
 	@Override
 	public void execute(CommandSender sender, String[] args) {
-		String online = "";
-		for (TeamspeakUser user : ts.getUsers().values()) {
-			if (online.length() != 0) online += ", ";
-			online += user.getName();
+		if (args.length < 2 || args[2].equalsIgnoreCase("server")) {
+			StringBuilder online = new StringBuilder();
+			for (TeamspeakUser user : ts.getUsers().values()) {
+				if (online.length() != 0) online.append(", ");
+				online.append(user.getName());
+			}
+			
+			String message = stringManager.getMessage("OnlineList");
+			message = message.replaceAll("%list%", online.toString());
+			
+			send(sender, Level.INFO, message);
+			
+		} else if (args.length == 2 && stringManager.getUseChannel() && args[2].equalsIgnoreCase("channel")) {
+			StringBuilder online = new StringBuilder();
+			for (TeamspeakUser user : ts.getUsers().values()) {
+				if (user.getValue("ctid").equals(plugin.getStringManager().getChannelID())) {
+					if (online.length() != 0) online.append(", ");
+					online.append(user.getName());
+				}
+			}
+			
+			String message = stringManager.getMessage("ChannelList");
+			message = message.replaceAll("%list%", online.toString());
+			
+			send(sender, Level.INFO, message);
+		} else {
+			send(sender, Level.INFO, "&4Usage:");
+			send(sender, Level.INFO, "&4/ts list (server / channel)");
 		}
-		
-		String message = stringManager.getMessage("OnlineList");
-		message = message.replaceAll("%list%", online);
-		
-		send(sender, Level.INFO, message);
 	}
 }

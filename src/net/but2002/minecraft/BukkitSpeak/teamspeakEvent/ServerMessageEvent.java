@@ -51,6 +51,13 @@ public class ServerMessageEvent extends TeamspeakEvent{
 					}
 				}
 				plugin.getLogger().info(replaceValues(m, false));
+			} else if (localValues.get("targetmode").equals("3")) {
+				String m = plugin.getStringManager().getMessage("PrivateMsg");
+				String p = plugin.getRecipient(getUser());
+				if (p != null && !p.isEmpty()) {
+					Player pl = plugin.getServer().getPlayerExact(p);
+					if (!plugin.getMuted(pl) && CheckPermissions(pl, "pm")) pl.sendMessage(m);
+				}
 			}
 		}
 	}

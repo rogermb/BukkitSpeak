@@ -1,6 +1,7 @@
 package net.but2002.minecraft.BukkitSpeak;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -17,6 +18,7 @@ public class BukkitSpeak extends JavaPlugin {
 	BukkitSpeakCommandExecutor tsCommand;
 	ChatListener chatListener;
 	List<String> muted;
+	HashMap<TeamspeakUser, String> pmRecipients;
 	
 	public void onEnable() {
 		logger = this.getLogger();
@@ -25,6 +27,7 @@ public class BukkitSpeak extends JavaPlugin {
 		tsCommand = new BukkitSpeakCommandExecutor(this);
 		chatListener = new ChatListener(this);
 		muted = new ArrayList<String>();
+		pmRecipients = new HashMap<TeamspeakUser, String>();
 		
 		this.getServer().getPluginManager().registerEvents(chatListener, this);
 		this.getCommand("ts").setExecutor(tsCommand);
@@ -65,6 +68,20 @@ public class BukkitSpeak extends JavaPlugin {
 		} else if (!mute && muted.contains(player.getName())) {
 			muted.remove(player.getName());
 		}
+	}
+	
+	public void registerRecipient(String player, TeamspeakUser tsUser) {
+		if (pmRecipients.containsKey(tsUser)) {
+			pmRecipients.remove(tsUser);
+		}
+		pmRecipients.put(tsUser, player);
+	}
+	
+	public String getRecipient(TeamspeakUser tsUser) {
+		if (pmRecipients.containsKey(tsUser)) {
+			return pmRecipients.get(tsUser);
+		}
+		return null;
 	}
 	
 	public void reload(BukkitSpeakCommandExecutor exec, CommandSender sender) {

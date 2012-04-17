@@ -27,6 +27,7 @@ messages:
     Quit: '&e%client_nickname% &ahas left TeamSpeak'
     ServerMsg: '[&cTS&f] &e%client_nickname%&a: %msg%'
     ChannelMsg: '&e%client_nickname%&f: %msg%'
+    PrivateMsg: '&e%target% &a-> &eMe&f: %msg%'
     ChannelEnter: '&e%client_nickname% &aentered the channel.'
     ChannelLeave: '&e%client_nickname% &aleft the channel.'
   commands:

@@ -62,7 +62,6 @@ public abstract class BukkitSpeakCommand {
 			if (color) {
 				s = s.replaceAll("((&|$)([a-fk-orA-FK-OR0-9]))", "§$3");
 				while (s.matches(".*§[a-fk-orA-FK-OR0-9].*")) {
-					//Integer i = s.indexOf("(§([a-fk-orA-FK-OR0-9]))");
 					Matcher m = Pattern.compile("(§([a-fk-orA-FK-OR0-9]))").matcher(s);
 					if (!m.find()) break;
 					Integer i = m.start();

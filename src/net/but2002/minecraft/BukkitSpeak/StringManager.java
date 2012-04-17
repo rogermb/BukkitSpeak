@@ -11,7 +11,7 @@ public class StringManager {
 	private HashMap<String,String> strings = new HashMap<String,String>();
 	private String ip, serverAdmin, serverPass, tsName, tsChannelPass;
 	private int queryPort, serverPort, tsChannelID, tsTarget;
-	private Boolean tsServer, tsTextServer, tsChannel, tsTextChannel, tsAllowLinks;
+	private Boolean tsServer, tsTextServer, tsChannel, tsTextChannel, tsPrivateMessages, tsAllowLinks;
 	
 	public static final String CONFIG_SECTION = "main";
 	public static final String CONFIG_IP = "TeamSpeakIp";
@@ -28,10 +28,11 @@ public class StringManager {
 	public static final String TEAMSPEAK_TEXTSERVER = "ListenToServerBroadcasts";
 	public static final String TEAMSPEAK_CHANNEL = "ListenToChannel";
 	public static final String TEAMSPEAK_TEXTCHANNEL = "ListenToChannelChat";
+	public static final String TEAMSPEAK_PRIVATEMESSAGES = "ListenToPrivateMessages";
 	public static final String TEAMSPEAK_ALLOWLINKS = "AllowLinksInMessages";
 	public static final String TEAMSPEAK_TARGET = "SendChatToTeamspeak";
 	public static final String[][] TEAMSPEAK_TARGETS = {
-		{"none"},
+		{"none", "nobody", "null", "noting"},
 		{"channel", "chat"},
 		{"server", "broadcast"}};
 	
@@ -84,6 +85,7 @@ public class StringManager {
 		tsTextServer = reader.getBoolean(TEAMSPEAK_SECTION, TEAMSPEAK_TEXTSERVER, true);
 		tsChannel = reader.getBoolean(TEAMSPEAK_SECTION, TEAMSPEAK_CHANNEL, false);
 		tsTextChannel = reader.getBoolean(TEAMSPEAK_SECTION, TEAMSPEAK_TEXTCHANNEL, false);
+		tsPrivateMessages = reader.getBoolean(TEAMSPEAK_SECTION, TEAMSPEAK_PRIVATEMESSAGES, false);
 		tsAllowLinks = reader.getBoolean(TEAMSPEAK_SECTION, TEAMSPEAK_ALLOWLINKS, true);
 		tsTarget = reader.getChoice(TEAMSPEAK_SECTION, TEAMSPEAK_TARGET, 0, TEAMSPEAK_TARGETS);
 		
@@ -170,6 +172,10 @@ public class StringManager {
 	
 	public Boolean getUseTextChannel() {
 		return tsTextChannel;
+	}
+	
+	public Boolean getUsePrivateMessages() {
+		return tsPrivateMessages;
 	}
 	
 	public Boolean getAllowLinks() {

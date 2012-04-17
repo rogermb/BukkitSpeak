@@ -33,7 +33,7 @@ messages:
     PrivateMsg: '&e%target% &a-> &eMe&f: %msg%'
   commands:
     OnlineList: '&aCurrently online: &e%list%'
-    ChannelList: '&aCurrently inside the channel: &e%list%'
+    ChannelList: '&aCurrently in the channel: &e%list%'
     Mute: '&aYou are now muted.'
     Unmute: '&aYou aren''t muted anymore.'
     Broadcast: '&e%player_displayname% &a-> &f[&cTS&f]&f: %msg%'

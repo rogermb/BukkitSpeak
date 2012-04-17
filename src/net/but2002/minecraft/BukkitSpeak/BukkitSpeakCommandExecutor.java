@@ -15,13 +15,14 @@ public class BukkitSpeakCommandExecutor implements CommandExecutor {
 	StringManager stringManager;
 	TeamspeakHandler ts;
 	
-	BukkitSpeakCommand List, Mute, Broadcast, Chat, Pm, Status;
+	BukkitSpeakCommand Help, List, Mute, Broadcast, Chat, Pm, Status;
 	
 	public BukkitSpeakCommandExecutor(BukkitSpeak plugin) {
 		this.plugin = plugin;
 		stringManager = plugin.getStringManager();
 		ts = plugin.getTs();
 		
+		Help = new CommandHelp(plugin);
 		List = new CommandList(plugin);
 		Mute = new CommandMute(plugin);
 		Broadcast = new CommandBroadcast(plugin);
@@ -33,25 +34,11 @@ public class BukkitSpeakCommandExecutor implements CommandExecutor {
 	@Override
 	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
 		
-		if (args.length == 0) {
-			send(sender, Level.INFO, "&aHelp");
-			if (CheckPermissions(sender, "list"))
-				send(sender, Level.INFO, "&e/ts list &a- Displays who's currently on TeamSpeak.");
-			if (CheckPermissions(sender, "mute"))
-				send(sender, Level.INFO, "&e/ts mute &a- Mutes / unmutes BukkitSpeak for you.");
-			if (CheckPermissions(sender, "broadcast"))
-				send(sender, Level.INFO, "&e/ts broadcast &a- Broadcast a global TS message.");
-			if (CheckPermissions(sender, "chat") && stringManager.getUseTextChannel())
-				send(sender, Level.INFO, "&e/ts chat &a- Displays a message only in the TS channel.");
-			if (CheckPermissions(sender, "pm") && stringManager.getUseTextChannel())
-				send(sender, Level.INFO, "&e/ts pm &a- Sends a certain person on TS a message.");
-			if (CheckPermissions(sender, "status"))
-				send(sender, Level.INFO, "&e/ts status &a- Shows some info about BukkitSpeak.");
-			if (CheckPermissions(sender, "reload"))
-				send(sender, Level.INFO, "&e/ts reload &a- Reloads the config and the listener.");
+		if (!cmd.getName().equalsIgnoreCase("ts")) {
 			return true;
 		}
-		if (!cmd.getName().equalsIgnoreCase("ts")) {
+		if (args.length == 0) {
+			Help.execute(sender, args);
 			return true;
 		}
 		

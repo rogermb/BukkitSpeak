@@ -50,6 +50,7 @@ public class StringManager {
 		{"PrivateMsg", "&e%target% &a-> &eMe&f: %msg%"}};
 	public static final String[][] COMMANDMESSAGES = {
 		{"OnlineList", "&aCurrently online: &e%list%"},
+		{"ChannelList", "&aCurrently inside the channel: &e%list%"},
 		{"Mute", "&aYou are now muted."},
 		{"Unmute", "&aYou aren't muted anymore."},
 		{"Broadcast", "&e%player_displayname% &a-> &f[&cTS&f]&f: %msg%"},

@@ -3,8 +3,8 @@ version: '0.44'
 description: 'This plugin will display Teamspeak 3 server joins, quits and messages in Minecraft.'
 main: net.but2002.minecraft.BukkitSpeak.BukkitSpeak
 load: POSTWORLD
-author: 'greycap'
-authors: [but2002, Firedroide]
+author: 'Firedroide'
+authors: [but2002, greycap]
 database: false
 commands:
   ts:

@@ -24,15 +24,15 @@ public abstract class BukkitSpeakCommand {
 			"[color=#00AAAA]",	// 3
 			"[color=#AA0000]",	// 4
 			"[color=#AA00AA]",	// 5
-			"[color=#FFAA00]",	// 6
-			"[color=#AAAAAA]",	// 7
+			"[color=#EEAA00]",	// 6
+			"[color=#999999]",	// 7
 			"[color=#555555]",	// 8
-			"[color=#5555FF]",	// 9
-			"[color=#55FF55]",	// 10
-			"[color=#55FFFF]",	// 11
-			"[color=#FF5555]",	// 12
-			"[color=#FF55FF]",	// 13
-			"[color=#FFFF55]",	// 14
+			"[color=#4444FF]",	// 9
+			"[color=#44DD44]",	// 10
+			"[color=#3399FF]",	// 11
+			"[color=#FF3333]",	// 12
+			"[color=#FF33FF]",	// 13
+			"[color=#DDBB00]",	// 14
 			"[color=#FFFFFF]",	// 15
 			"[b]",				// 16
 			"[u]",				// 17

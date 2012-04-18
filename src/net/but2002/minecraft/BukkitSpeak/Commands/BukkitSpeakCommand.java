@@ -47,10 +47,10 @@ public abstract class BukkitSpeakCommand {
 	
 	protected void send(CommandSender sender, Level level, String msg) {
 		if (sender instanceof Player) {
-			msg = msg.replaceAll("(&([a-fk-orA-FK-OR0-9]))", "§$2").replaceAll("($([a-fk-orA-FK-OR0-9]))", "§$2");
+			msg = msg.replaceAll("((&|$)([a-fk-orA-FK-OR0-9]))", "§$2");
 			sender.sendMessage(plugin + msg);
 		} else {
-			msg = msg.replaceAll("(&([a-fk-orA-FK-OR0-9]))", "").replaceAll("($([a-fk-orA-FK-OR0-9]))", "");
+			msg = msg.replaceAll("((&|$|§)([a-fk-orA-FK-OR0-9]))", "");
 			plugin.getLogger().log(level, msg);
 		}
 	}
@@ -65,7 +65,12 @@ public abstract class BukkitSpeakCommand {
 					Matcher m = Pattern.compile("(§([a-fk-orA-FK-OR0-9]))").matcher(s);
 					if (!m.find()) break;
 					Integer i = m.start();
-					Integer j = getIndex(s.charAt(i + 1));
+					Integer j;
+					try {
+						j = getIndex(s.charAt(i + 1));
+					} catch (Exception e) {
+						break;
+					}
 					if (j <= 15) {
 						if (colored) {
 							s = s.substring(0, i) + "[/color]" + s.substring(i);

@@ -29,8 +29,9 @@ public class CommandList extends BukkitSpeakCommand {
 			
 		} else if (args.length == 2 && stringManager.getUseChannel() && args[1].equalsIgnoreCase("channel")) {
 			StringBuilder online = new StringBuilder();
+			String id = String.valueOf(plugin.getStringManager().getChannelID());
 			for (TeamspeakUser user : ts.getUsers().values()) {
-				if (user.getValue("ctid").equals(plugin.getStringManager().getChannelID())) {
+				if (user.getValue("ctid").equals(id)) {
 					if (online.length() != 0) online.append(", ");
 					online.append(user.getName());
 				}

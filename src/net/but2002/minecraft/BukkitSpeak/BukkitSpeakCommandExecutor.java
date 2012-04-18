@@ -64,8 +64,8 @@ public class BukkitSpeakCommandExecutor implements CommandExecutor {
 			Chat.execute(sender, args);
 		} else if (args[0].equalsIgnoreCase("pm")) {
 			if (!CheckPermissions(sender, "pm")) return false;
-			if (!stringManager.getUseTextChannel()) {
-				send(sender, Level.INFO, "&4You need to enable ListenToPersonalMessages in the config to use this command.");
+			if (!stringManager.getUsePrivateMessages()) {
+				send(sender, Level.INFO, "&4You need to enable ListenToPrivateMessages in the config to use this command.");
 				return true;
 			}
 			Pm.execute(sender, args);

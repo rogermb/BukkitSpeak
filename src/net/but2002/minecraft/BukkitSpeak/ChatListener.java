@@ -22,6 +22,7 @@ public class ChatListener implements Listener {
 	
 	@EventHandler
 	public void onPlayerChat(PlayerChatEvent e) {
+		if (stringManager.getTeamspeakTarget() == TsTargetEnum.NONE) return;
 		if (e.getPlayer() == null || e.getMessage().isEmpty()) return;
 		
 		String tsMsg = stringManager.getMessage("MinecraftMessage");

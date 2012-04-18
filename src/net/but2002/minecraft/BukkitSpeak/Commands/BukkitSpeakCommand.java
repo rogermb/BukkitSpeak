@@ -66,9 +66,9 @@ public abstract class BukkitSpeakCommand {
 					if (!m.find()) break;
 					Integer i = m.start();
 					Integer j;
-					try {
+					if (i + 1 < s.length()) {
 						j = getIndex(s.charAt(i + 1));
-					} catch (Exception e) {
+					} else {
 						break;
 					}
 					if (j <= 15) {

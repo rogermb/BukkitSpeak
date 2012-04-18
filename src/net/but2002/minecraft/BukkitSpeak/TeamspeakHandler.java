@@ -20,26 +20,24 @@ public class TeamspeakHandler implements Runnable {
 	
 	BukkitSpeak plugin;
 	StringManager stringManager;
-	Boolean kill = false;
-	Boolean isRunning = false;
+	Boolean kill, isRunning;
+	Date tsStarted, tsStopped;
 	
-	Date tsStarted;
-	Date tsStopped;
-	
-	HashMap<Integer, TeamspeakUser> users = new HashMap<Integer, TeamspeakUser>();
+	HashMap<Integer, TeamspeakUser> users;
 	TeamspeakKeepAlive keepAliveThread;
 	
 	Socket socket;
 	PrintWriter out;
 	BufferedReader in;
 	
-	public TeamspeakHandler(BukkitSpeak plugin){
+	public TeamspeakHandler(BukkitSpeak plugin) {
 		this.plugin = plugin;
 		stringManager = plugin.getStringManager();
-		tsStarted = null;
-		tsStopped = null;
 		kill = false;
 		isRunning = false;
+		tsStarted = null;
+		tsStopped = null;
+		users = new HashMap<Integer, TeamspeakUser>();
 	}
 	
 	@Override
@@ -97,6 +95,7 @@ public class TeamspeakHandler implements Runnable {
 			}
 			if (stringManager.getUseChannel()) out.println("servernotifyregister event=channel id=" + stringManager.getChannelID());
 			if (stringManager.getUseTextChannel()) out.println("servernotifyregister event=textchannel id=" + stringManager.getChannelID());
+			if (stringManager.getUsePrivateMessages()) out.println("servernotifyregister event=textprivate");
 			out.println("clientlist");
 			
 			socket.setKeepAlive(true);
@@ -149,7 +148,7 @@ public class TeamspeakHandler implements Runnable {
 	
 	public void kill() {
 		this.kill = true;
-		out.println("clientupdate");
+		if (out != null) out.println("clientupdate");
 	}
 	
 	public Boolean getAlive() {

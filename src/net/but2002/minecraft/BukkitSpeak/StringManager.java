@@ -47,7 +47,7 @@ public class StringManager {
 		{"ChannelLeave","&e%client_nickname% &aleft the channel."},
 		{"ServerMsg", "[&cTS&f] &e%client_nickname%&a: %msg%"}, 
 		{"ChannelMsg", "&e%client_nickname%&f: %msg%"},
-		{"PrivateMsg", "&e%target% &a-> &eMe&f: %msg%"}};
+		{"PrivateMsg", "&e%client_nickname% &a-> &eMe&f: %msg%"}};
 	public static final String[][] COMMANDMESSAGES = {
 		{"OnlineList", "&aCurrently online: &e%list%"},
 		{"ChannelList", "&aCurrently in the channel: &e%list%"},

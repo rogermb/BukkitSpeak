@@ -9,8 +9,11 @@ import net.but2002.minecraft.BukkitSpeak.TeamspeakUser;
 
 public class CommandList extends BukkitSpeakCommand {
 	
+	String id;
+	
 	public CommandList(BukkitSpeak plugin) {
 		super(plugin);
+		id = String.valueOf(stringManager.getChannelID());
 	}
 	
 	@Override
@@ -29,7 +32,6 @@ public class CommandList extends BukkitSpeakCommand {
 			
 		} else if (args.length == 2 && stringManager.getUseChannel() && args[1].equalsIgnoreCase("channel")) {
 			StringBuilder online = new StringBuilder();
-			String id = String.valueOf(plugin.getStringManager().getChannelID());
 			for (TeamspeakUser user : ts.getUsers().values()) {
 				if (user.getValue("ctid").equals(id)) {
 					if (online.length() != 0) online.append(", ");

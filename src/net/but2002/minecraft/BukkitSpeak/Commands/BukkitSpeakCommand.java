@@ -47,7 +47,7 @@ public abstract class BukkitSpeakCommand {
 	
 	protected void send(CommandSender sender, Level level, String msg) {
 		if (sender instanceof Player) {
-			msg = msg.replaceAll("((&|$)([a-fk-orA-FK-OR0-9]))", "§$2");
+			msg = msg.replaceAll("((&|$)([a-fk-orA-FK-OR0-9]))", "§$3");
 			sender.sendMessage(plugin + msg);
 		} else {
 			msg = msg.replaceAll("((&|$|§)([a-fk-orA-FK-OR0-9]))", "");

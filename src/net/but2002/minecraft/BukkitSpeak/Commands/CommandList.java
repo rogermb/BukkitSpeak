@@ -1,8 +1,10 @@
 package net.but2002.minecraft.BukkitSpeak.Commands;
 
+import java.util.HashMap;
 import java.util.logging.Level;
 
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 
 import net.but2002.minecraft.BukkitSpeak.BukkitSpeak;
 import net.but2002.minecraft.BukkitSpeak.TeamspeakUser;
@@ -26,7 +28,21 @@ public class CommandList extends BukkitSpeakCommand {
 			}
 			
 			String message = stringManager.getMessage("OnlineList");
-			message = message.replaceAll("%list%", online.toString());
+			String Name, DisplayName;
+			if (sender instanceof Player) {
+				Name = ((Player) sender).getName();
+				DisplayName = ((Player) sender).getDisplayName();
+			} else {
+				Name = convertToMinecraft(stringManager.getConsoleName(), false, false);
+				DisplayName = stringManager.getConsoleName();
+			}
+			
+			HashMap<String, String> repl = new HashMap<String, String>();
+			repl.put("%player_name%", Name);
+			repl.put("%player_displayname%", DisplayName);
+			repl.put("%list%", online.toString());
+			
+			message = replaceKeys(message, repl);
 			
 			send(sender, Level.INFO, message);
 			
@@ -40,7 +56,21 @@ public class CommandList extends BukkitSpeakCommand {
 			}
 			
 			String message = stringManager.getMessage("ChannelList");
-			message = message.replaceAll("%list%", online.toString());
+			String Name, DisplayName;
+			if (sender instanceof Player) {
+				Name = ((Player) sender).getName();
+				DisplayName = ((Player) sender).getDisplayName();
+			} else {
+				Name = convertToMinecraft(stringManager.getConsoleName(), false, false);
+				DisplayName = stringManager.getConsoleName();
+			}
+			
+			HashMap<String, String> repl = new HashMap<String, String>();
+			repl.put("%player_name%", Name);
+			repl.put("%player_displayname%", DisplayName);
+			repl.put("%list%", online.toString());
+			
+			message = replaceKeys(message, repl);
 			
 			send(sender, Level.INFO, message);
 		} else {

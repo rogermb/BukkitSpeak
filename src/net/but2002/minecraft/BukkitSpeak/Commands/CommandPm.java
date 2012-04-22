@@ -63,6 +63,10 @@ public class CommandPm extends BukkitSpeakCommand {
 		ts.SendTextMessage(1, user.getID(), convertToTeamspeak(tsMsg, true, stringManager.getAllowLinks()));
 		plugin.registerRecipient(Name, user);
 		if (mcMsg.isEmpty()) return;
-		send(sender, Level.INFO, convertToMinecraft(mcMsg, true, stringManager.getAllowLinks()));
+		if (sender instanceof Player) {
+			sender.sendMessage(convertToMinecraft(mcMsg, true, stringManager.getAllowLinks()));
+		} else {
+			plugin.getLogger().info(convertToMinecraft(mcMsg, false, stringManager.getAllowLinks()));
+		}
 	}
 }

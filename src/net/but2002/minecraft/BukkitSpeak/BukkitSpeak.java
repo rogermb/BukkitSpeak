@@ -18,7 +18,7 @@ public class BukkitSpeak extends JavaPlugin {
 	BukkitSpeakCommandExecutor tsCommand;
 	ChatListener chatListener;
 	List<String> muted;
-	HashMap<TeamspeakUser, String> pmRecipients;
+	HashMap<Integer, String> pmRecipients;
 	
 	public void onEnable() {
 		logger = this.getLogger();
@@ -27,7 +27,7 @@ public class BukkitSpeak extends JavaPlugin {
 		tsCommand = new BukkitSpeakCommandExecutor(this);
 		chatListener = new ChatListener(this);
 		muted = new ArrayList<String>();
-		pmRecipients = new HashMap<TeamspeakUser, String>();
+		pmRecipients = new HashMap<Integer, String>();
 		
 		this.getServer().getPluginManager().registerEvents(chatListener, this);
 		this.getCommand("ts").setExecutor(tsCommand);
@@ -74,12 +74,12 @@ public class BukkitSpeak extends JavaPlugin {
 		if (pmRecipients.containsKey(tsUser)) {
 			pmRecipients.remove(tsUser);
 		}
-		pmRecipients.put(tsUser, player);
+		pmRecipients.put(tsUser.getID(), player);
 	}
 	
 	public String getRecipient(TeamspeakUser tsUser) {
-		if (pmRecipients.containsKey(tsUser)) {
-			return pmRecipients.get(tsUser);
+		if (pmRecipients.containsKey(tsUser.getID())) {
+			return pmRecipients.get(tsUser.getID());
 		}
 		return null;
 	}

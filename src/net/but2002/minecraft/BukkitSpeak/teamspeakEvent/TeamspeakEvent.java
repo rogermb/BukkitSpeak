@@ -60,9 +60,9 @@ public abstract class TeamspeakEvent {
 	
 	public String replaceValues(String input, boolean color) {
 		if (color) {
-			input = input.replaceAll("(&([a-fk-orA-FK-OR0-9]))", "§$2").replaceAll("($([a-fk-orA-FK-OR0-9]))", "§$2");
+			input = input.replaceAll("((&|$)([a-fk-orA-FK-OR0-9]))", "§$3");
 		} else {
-			input = input.replaceAll("(&([a-fk-orA-FK-OR0-9]))", "").replaceAll("($([a-fk-orA-FK-OR0-9]))", "");
+			input = input.replaceAll("((&|$|§)([a-fk-orA-FK-OR0-9]))", "");
 		}
 		
 		String[] keys = (String[]) this.user.getValues().keySet().toArray(new String[this.user.getValues().size()]);

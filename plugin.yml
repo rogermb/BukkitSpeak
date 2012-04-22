@@ -23,6 +23,7 @@ permissions:
       bukkitspeak.commands.list: true
       bukkitspeak.commands.mute: true
       bukkitspeak.commands.chat: true
+      bukkitspeak.commands.pm: true
       bukkitspeak.messages.*: true
   bukkitspeak.commands.*:
     description: Gives access to all BukkitSpeak commands.

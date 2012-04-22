@@ -34,9 +34,9 @@ public class ChatListener implements Listener {
 		tsMsg = replaceKeys(tsMsg, repl);
 		
 		if (stringManager.getTeamspeakTarget() == TsTargetEnum.CHANNEL) {
-			ts.SendTextMessage(2, stringManager.getChannelID(), convert(tsMsg, false, stringManager.getAllowLinks()));
+			ts.SendTextMessage(2, stringManager.getChannelID(), convert(tsMsg, true, stringManager.getAllowLinks()));
 		} else if (stringManager.getTeamspeakTarget() == TsTargetEnum.SERVER) {
-			ts.SendTextMessage(3, 0, convert(tsMsg, false, stringManager.getAllowLinks()));
+			ts.SendTextMessage(3, 0, convert(tsMsg, true, stringManager.getAllowLinks()));
 		}
 	}
 	

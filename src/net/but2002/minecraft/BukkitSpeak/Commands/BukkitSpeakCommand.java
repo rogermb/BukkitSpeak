@@ -163,10 +163,10 @@ public abstract class BukkitSpeakCommand {
 	}
 	
 	public static String replaceKeys(String input, HashMap<String, String> repl) {
-		if (input != null) {
+		if (input != null && repl != null) {
 			String s = input;
 			for (String key : repl.keySet()) {
-				s = s.replaceAll(key, repl.get(key));
+				s = s.replaceAll(key, repl.get(key).replaceAll("$", "\\$"));
 			}
 			return s;
 		}

@@ -13,14 +13,12 @@ public class BukkitSpeakCommandExecutor implements CommandExecutor {
 	
 	BukkitSpeak plugin;
 	StringManager stringManager;
-	TeamspeakHandler ts;
 	
 	BukkitSpeakCommand Help, List, Mute, Broadcast, Chat, Pm, Status;
 	
 	public BukkitSpeakCommandExecutor(BukkitSpeak plugin) {
 		this.plugin = plugin;
 		stringManager = plugin.getStringManager();
-		ts = plugin.getTs();
 		
 		Help = new CommandHelp(plugin);
 		List = new CommandList(plugin);

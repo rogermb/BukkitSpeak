@@ -1,14 +1,15 @@
 package net.but2002.minecraft.BukkitSpeak;
 
-import java.io.PrintWriter;
+import de.stefan1200.jts3serverquery.JTS3ServerQuery;
 
 public class TeamspeakKeepAlive extends Thread {
 	
-	private PrintWriter out;
+	private JTS3ServerQuery query;
 	private boolean kill = false;
+	private boolean killed = false;
 	
-	public TeamspeakKeepAlive(PrintWriter out) {
-		this.out = out;
+	public TeamspeakKeepAlive(JTS3ServerQuery query) {
+		this.query = query;
 	}
 	
 	@Override
@@ -17,19 +18,29 @@ public class TeamspeakKeepAlive extends Thread {
 			double time = System.currentTimeMillis();
 			while(!kill){
 				if((System.currentTimeMillis() - time) >= 300000){ //keep-alive every 60s
-					out.println("clientupdate");
+					query.doCommand("clientupdate");
 					time = System.currentTimeMillis();
 				}
-				Thread.sleep(2000);
+				Thread.sleep(1000);
 			}
 			
 		} catch (Exception e) {
 			e.printStackTrace();
+		} finally {
+			killed = true;
 		}
 	}
 	
 	public void kill(){
 		kill = true;
+		
+		try {
+			while (!killed) {
+				Thread.sleep(50);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 }

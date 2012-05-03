@@ -1,6 +1,7 @@
 package net.but2002.minecraft.BukkitSpeak;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.logging.Level;
@@ -10,20 +11,36 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import de.stefan1200.jts3serverquery.JTS3ServerQuery;
+import de.stefan1200.jts3serverquery.TeamspeakActionListener;
+
 public class BukkitSpeak extends JavaPlugin {
 	
 	Logger logger;
 	StringManager stringManager;
-	TeamspeakHandler ts;
+	
+	JTS3ServerQuery query;
+	TeamspeakActionListener ts;
+	TeamspeakKeepAlive tsKeepAlive;
 	BukkitSpeakCommandExecutor tsCommand;
+	
 	ChatListener chatListener;
 	List<String> muted;
 	HashMap<Integer, String> pmRecipients;
 	
+	Date started, stopped;
+	
 	public void onEnable() {
 		logger = this.getLogger();
 		stringManager = new StringManager(this);
-		ts = new TeamspeakHandler(this);
+		
+		query = new JTS3ServerQuery();
+		ts = new TeamspeakListener();
+		query.setTeamspeakActionListener(ts);
+		setupQuery();
+		tsKeepAlive = new TeamspeakKeepAlive(this);
+		new Thread(tsKeepAlive).start();
+		
 		tsCommand = new BukkitSpeakCommandExecutor(this);
 		chatListener = new ChatListener(this);
 		muted = new ArrayList<String>();
@@ -31,19 +48,42 @@ public class BukkitSpeak extends JavaPlugin {
 		
 		this.getServer().getPluginManager().registerEvents(chatListener, this);
 		this.getCommand("ts").setExecutor(tsCommand);
-		new Thread(ts).start();
 		
+		started = new Date();
 		logger.info("enabled.");
 	}
 	
 	public void onDisable() {
-		if (ts.getAlive()) ts.kill();
+		query.removeTeamspeakActionListener();
+		query.closeTS3Connection();
+		tsKeepAlive.kill();
 		
 		logger.info("disabled.");
 	}
 	
+	public void setupQuery() {
+		query.connectTS3Query(stringManager.getIp(), stringManager.getQueryPort());
+		query.loginTS3(stringManager.getServerAdmin(), stringManager.getServerPass());
+		
+		query.selectVirtualServer(stringManager.getServerPort(), true);
+		query.setDisplayName(stringManager.getTeamspeakNickname());
+		
+		if (stringManager.getUseServer()) query.addEventNotify(JTS3ServerQuery.EVENT_MODE_SERVER, 0);
+		if (stringManager.getUseTextServer()) query.addEventNotify(JTS3ServerQuery.EVENT_MODE_TEXTSERVER, 0);
+		if (stringManager.getChannelID() != 0 && (stringManager.getUseChannel() || stringManager.getUseTextChannel())) {
+			query.moveClient(0, stringManager.getChannelID(), stringManager.getChannelPass());
+		}
+		if (stringManager.getUseChannel()) query.addEventNotify(JTS3ServerQuery.EVENT_MODE_CHANNEL, stringManager.getChannelID());
+		if (stringManager.getUseTextChannel()) query.addEventNotify(JTS3ServerQuery.EVENT_MODE_TEXTCHANNEL, 0);
+		if (stringManager.getUseTextServer()) query.addEventNotify(JTS3ServerQuery.EVENT_MODE_TEXTSERVER, 0);
+	}
+	
 	public String toString() {
 		return "§a[§6" + this.getDescription().getName() + "§a]§f " ;
+	}
+	
+	public JTS3ServerQuery getQuery() {
+		return query;
 	}
 	
 	public StringManager getStringManager() {
@@ -52,10 +92,6 @@ public class BukkitSpeak extends JavaPlugin {
 	
 	public List<String> getMutedList() {
 		return muted;
-	}
-	
-	public TeamspeakHandler getTs() {
-		return ts;
 	}
 	
 	public boolean getMuted(Player player) {
@@ -84,19 +120,37 @@ public class BukkitSpeak extends JavaPlugin {
 		return null;
 	}
 	
+	public Date getStartedTime() {
+		return started;
+	}
+	
+	public Date getStoppedTime() {
+		return stopped;
+	}
+	
+	public void setStoppedTime(Date d) {
+		stopped = d;
+	}
+	
 	public void reload(BukkitSpeakCommandExecutor exec, CommandSender sender) {
 		try {
-			if (ts.getAlive()) ts.kill();
+			query.removeTeamspeakActionListener();
+			query.closeTS3Connection();
+			tsKeepAlive.kill();
+			
 			this.reloadConfig();
 			
 			stringManager = new StringManager(this);
-			ts = new TeamspeakHandler(this);
-			tsCommand = new BukkitSpeakCommandExecutor(this);
+			ts = new TeamspeakListener();
+			query.setTeamspeakActionListener(ts);
+			setupQuery();
+			tsKeepAlive = new TeamspeakKeepAlive(this);
+			new Thread(tsKeepAlive).start();
+			
 			chatListener.reload(this);
 			muted = new ArrayList<String>();
+			pmRecipients = new HashMap<Integer, String>();
 			
-			this.getCommand("ts").setExecutor(tsCommand);
-			new Thread(ts).start();
 			exec.send(sender, Level.INFO, "&areloaded.");
 		} catch (Exception e) {
 			exec.send(sender, Level.INFO, "&4Was unable to reload, an error happened.");

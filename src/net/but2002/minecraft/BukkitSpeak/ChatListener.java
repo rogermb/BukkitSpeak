@@ -8,15 +8,15 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerChatEvent;
 
+import de.stefan1200.jts3serverquery.JTS3ServerQuery;
+
 public class ChatListener implements Listener {
 	
 	BukkitSpeak plugin;
-	TeamspeakHandler ts;
 	StringManager stringManager;
 	
 	public ChatListener(BukkitSpeak plugin) {
 		this.plugin = plugin;
-		ts = plugin.getTs();
 		stringManager = plugin.getStringManager();
 	}
 	
@@ -32,11 +32,12 @@ public class ChatListener implements Listener {
 		repl.put("%msg%", e.getMessage());
 		
 		tsMsg = replaceKeys(tsMsg, repl);
+		tsMsg = convert(tsMsg, true, stringManager.getAllowLinks());
 		
 		if (stringManager.getTeamspeakTarget() == TsTargetEnum.CHANNEL) {
-			ts.SendTextMessage(2, stringManager.getChannelID(), convert(tsMsg, true, stringManager.getAllowLinks()));
+			plugin.query.sendTextMessage(stringManager.getChannelID(), JTS3ServerQuery.TEXTMESSAGE_TARGET_CHANNEL, tsMsg);
 		} else if (stringManager.getTeamspeakTarget() == TsTargetEnum.SERVER) {
-			ts.SendTextMessage(3, 0, convert(tsMsg, true, stringManager.getAllowLinks()));
+			plugin.query.sendTextMessage(0, JTS3ServerQuery.TEXTMESSAGE_TARGET_VIRTUALSERVER, tsMsg);
 		}
 	}
 	
@@ -50,7 +51,6 @@ public class ChatListener implements Listener {
 	
 	public void reload(BukkitSpeak plugin) {
 		this.plugin = plugin;
-		ts = plugin.getTs();
 		stringManager = plugin.getStringManager();
 	}
 }

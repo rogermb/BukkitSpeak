@@ -1,15 +1,15 @@
 package net.but2002.minecraft.BukkitSpeak;
 
-import de.stefan1200.jts3serverquery.JTS3ServerQuery;
+import java.util.Date;
 
 public class TeamspeakKeepAlive extends Thread {
 	
-	private JTS3ServerQuery query;
-	private boolean kill = false;
-	private boolean killed = false;
+	BukkitSpeak plugin;
+	boolean kill = false;
+	boolean killed = false;
 	
-	public TeamspeakKeepAlive(JTS3ServerQuery query) {
-		this.query = query;
+	public TeamspeakKeepAlive(BukkitSpeak plugin) {
+		this.plugin = plugin;
 	}
 	
 	@Override
@@ -18,7 +18,11 @@ public class TeamspeakKeepAlive extends Thread {
 			double time = System.currentTimeMillis();
 			while(!kill){
 				if((System.currentTimeMillis() - time) >= 300000){ //keep-alive every 60s
-					query.doCommand("clientupdate");
+					if (plugin.getQuery().isConnected()) {
+						plugin.getQuery().doCommand("clientupdate");
+					} else if (plugin.getStoppedTime() == null) {
+						plugin.setStoppedTime(new Date());
+					}
 					time = System.currentTimeMillis();
 				}
 				Thread.sleep(1000);

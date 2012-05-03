@@ -39,7 +39,7 @@ public class BukkitSpeak extends JavaPlugin {
 		query.setTeamspeakActionListener(ts);
 		setupQuery();
 		tsKeepAlive = new TeamspeakKeepAlive(this);
-		new Thread(tsKeepAlive).start();
+		this.getServer().getScheduler().scheduleAsyncRepeatingTask(this, tsKeepAlive, 600, 1200);
 		
 		tsCommand = new BukkitSpeakCommandExecutor(this);
 		chatListener = new ChatListener(this);
@@ -56,7 +56,6 @@ public class BukkitSpeak extends JavaPlugin {
 	public void onDisable() {
 		query.removeTeamspeakActionListener();
 		query.closeTS3Connection();
-		tsKeepAlive.kill();
 		
 		logger.info("disabled.");
 	}
@@ -136,7 +135,6 @@ public class BukkitSpeak extends JavaPlugin {
 		try {
 			query.removeTeamspeakActionListener();
 			query.closeTS3Connection();
-			tsKeepAlive.kill();
 			
 			this.reloadConfig();
 			
@@ -151,6 +149,8 @@ public class BukkitSpeak extends JavaPlugin {
 			muted = new ArrayList<String>();
 			pmRecipients = new HashMap<Integer, String>();
 			
+			stopped = null;
+			started = new Date();
 			exec.send(sender, Level.INFO, "&areloaded.");
 		} catch (Exception e) {
 			exec.send(sender, Level.INFO, "&4Was unable to reload, an error happened.");

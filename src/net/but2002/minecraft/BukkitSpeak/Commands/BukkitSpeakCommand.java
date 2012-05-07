@@ -7,7 +7,6 @@ import java.util.regex.Pattern;
 
 import net.but2002.minecraft.BukkitSpeak.BukkitSpeak;
 import net.but2002.minecraft.BukkitSpeak.StringManager;
-import net.but2002.minecraft.BukkitSpeak.TeamspeakHandler;
 
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -16,7 +15,7 @@ public abstract class BukkitSpeakCommand {
 	
 	BukkitSpeak plugin;
 	StringManager stringManager;
-	TeamspeakHandler ts;
+	
 	public static String[] COLORS = {
 			"",					// 0
 			"[color=#0000AA]",	// 1
@@ -42,7 +41,6 @@ public abstract class BukkitSpeakCommand {
 	public BukkitSpeakCommand(BukkitSpeak plugin) {
 		this.plugin = plugin;
 		stringManager = plugin.getStringManager();
-		ts = plugin.getTs();
 	}
 	
 	protected void send(CommandSender sender, Level level, String msg) {
@@ -121,9 +119,6 @@ public abstract class BukkitSpeakCommand {
 			} else {
 				s = s.replaceAll("(?i)((http://|ftp://).*\\.?.+\\..+(/.*)?)", "");
 			}
-			s = s.replaceAll("\\s", "\\\\s");
-			s = s.replaceAll("/", "\\\\/");
-			s = s.replaceAll("\\|", "\\\\p");
 			return s;
 		}
 		return null;

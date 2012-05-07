@@ -9,6 +9,8 @@ import net.but2002.minecraft.BukkitSpeak.BukkitSpeak;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import de.stefan1200.jts3serverquery.JTS3ServerQuery;
+
 public class CommandBroadcast extends BukkitSpeakCommand {
 	
 	public CommandBroadcast(BukkitSpeak plugin) {
@@ -21,7 +23,7 @@ public class CommandBroadcast extends BukkitSpeakCommand {
 			send(sender, Level.WARNING, "&aToo few arguments!");
 			send(sender, Level.WARNING, "&aUsage: /ts broadcast message");
 			return;
-		} else if (!ts.getAlive()) {
+		} else if (!plugin.getQuery().isConnected()) {
 			send(sender, Level.WARNING, "&4Can't communicate with the TeamSpeak server.");
 			return;
 		}
@@ -48,11 +50,11 @@ public class CommandBroadcast extends BukkitSpeakCommand {
 		repl.put("%player_displayname%", DisplayName);
 		repl.put("%msg%", sb.toString());
 		
-		tsMsg = replaceKeys(tsMsg, repl);
+		tsMsg = convertToTeamspeak(replaceKeys(tsMsg, repl), true, stringManager.getAllowLinks());
 		mcMsg = replaceKeys(mcMsg, repl);
 		
 		if (tsMsg.isEmpty()) return;
-		ts.SendTextMessage(3, 0, convertToTeamspeak(tsMsg, true, stringManager.getAllowLinks()));
+		plugin.getQuery().sendTextMessage(0, JTS3ServerQuery.TEXTMESSAGE_TARGET_VIRTUALSERVER, tsMsg);
 		if (mcMsg.isEmpty()) return;
 		for (Player pl : plugin.getServer().getOnlinePlayers()) {
 			if (!plugin.getMuted(pl)) pl.sendMessage(convertToMinecraft(mcMsg, true, stringManager.getAllowLinks()));

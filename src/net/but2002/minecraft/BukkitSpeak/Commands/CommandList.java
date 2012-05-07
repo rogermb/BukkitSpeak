@@ -1,13 +1,15 @@
 package net.but2002.minecraft.BukkitSpeak.Commands;
 
 import java.util.HashMap;
+import java.util.Vector;
 import java.util.logging.Level;
 
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import de.stefan1200.jts3serverquery.JTS3ServerQuery;
+
 import net.but2002.minecraft.BukkitSpeak.BukkitSpeak;
-import net.but2002.minecraft.BukkitSpeak.TeamspeakUser;
 
 public class CommandList extends BukkitSpeakCommand {
 	
@@ -21,10 +23,12 @@ public class CommandList extends BukkitSpeakCommand {
 	@Override
 	public void execute(CommandSender sender, String[] args) {
 		if (args.length < 2 || args[1].equalsIgnoreCase("server")) {
+			Vector<HashMap<String, String>> clients = plugin.getQuery().getList(JTS3ServerQuery.LISTMODE_CLIENTLIST);
 			StringBuilder online = new StringBuilder();
-			for (TeamspeakUser user : ts.getUsers().values()) {
+			
+			for (HashMap<String, String> user : clients) {
 				if (online.length() != 0) online.append(", ");
-				online.append(user.getName());
+				online.append(user.get("client_nickname"));
 			}
 			
 			String message = stringManager.getMessage("OnlineList");
@@ -47,11 +51,13 @@ public class CommandList extends BukkitSpeakCommand {
 			send(sender, Level.INFO, message);
 			
 		} else if (args.length == 2 && stringManager.getUseChannel() && args[1].equalsIgnoreCase("channel")) {
+			Vector<HashMap<String, String>> clients = plugin.getQuery().getList(JTS3ServerQuery.LISTMODE_CLIENTLIST);
 			StringBuilder online = new StringBuilder();
-			for (TeamspeakUser user : ts.getUsers().values()) {
-				if (user.getValue("ctid").equals(id)) {
+			
+			for (HashMap<String, String> user : clients) {
+				if (user.get("ctid").equals(id)) {
 					if (online.length() != 0) online.append(", ");
-					online.append(user.getName());
+					online.append(user.get("client_nickname"));
 				}
 			}
 			

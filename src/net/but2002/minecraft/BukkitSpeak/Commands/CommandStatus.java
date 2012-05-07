@@ -16,13 +16,13 @@ public class CommandStatus extends BukkitSpeakCommand {
 	@Override
 	public void execute(CommandSender sender, String[] args) {
 		send(sender, Level.INFO, "&eBukkitSpeak Version: &av" + plugin.getDescription().getVersion());
-		if (ts.getAlive()) {
+		if (plugin.getQuery().isConnected()) {
 			send(sender, Level.INFO, "&eTeamspeak Listener: &arunning");
-			if (ts.getStarted() != null) send(sender, Level.INFO, "&eRunning since: &a" + DateManager.DateToString(ts.getStarted()));
+			if (plugin.getStartedTime() != null) send(sender, Level.INFO, "&eRunning since: &a" + DateManager.DateToString(plugin.getStartedTime()));
 		} else {
 			send(sender, Level.WARNING, "&eTeamspeak Listener: &4dead");
-			if (ts.getStarted() != null) send(sender, Level.WARNING, "&eRunning since: &4" + DateManager.DateToString(ts.getStarted()));
-			if (ts.getStopped() != null) send(sender, Level.WARNING, "&eStopped since: &4" + DateManager.DateToString(ts.getStopped()));
+			if (plugin.getStartedTime() != null) send(sender, Level.WARNING, "&eRunning since: &4" + DateManager.DateToString(plugin.getStartedTime()));
+			if (plugin.getStoppedTime() != null) send(sender, Level.WARNING, "&eStopped since: &4" + DateManager.DateToString(plugin.getStoppedTime()));
 			send(sender, Level.WARNING, "&eUse &a/ts reload &eto restart the listener!");
 		}
 	}

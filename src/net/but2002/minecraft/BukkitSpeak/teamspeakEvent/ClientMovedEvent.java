@@ -1,34 +1,22 @@
 package net.but2002.minecraft.BukkitSpeak.teamspeakEvent;
 
+import java.util.HashMap;
+
 import org.bukkit.entity.Player;
 
 import net.but2002.minecraft.BukkitSpeak.BukkitSpeak;
 
 public class ClientMovedEvent extends TeamspeakEvent {
 	
-	public ClientMovedEvent(BukkitSpeak plugin, String msg) {
-		super(plugin, msg);
-		
-		localKeys.add("clid");
-		localKeys.add("ctid");
-		localKeys.add("reasonid");
-		parseLocalValues(msg);
-		
-		try {
-			setUser(plugin.getTs().getUserByID(Integer.parseInt(localValues.get("clid"))));
-			user.setValue("ctid", localValues.get("ctid"));
-		} catch(Exception e) {
-			plugin.getLogger().info("Could not identify user.");
-			return;
-		}
-		
-		sendMessage();
+	public ClientMovedEvent(BukkitSpeak plugin, HashMap<String, String> info) {
+		super(plugin, info);
+		setUser(Integer.parseInt(info.get("clid")));
 	}
 	
 	@Override
 	protected void sendMessage() {
-		if (user != null && !getUser().getName().startsWith("Unknown from") && getUser().getClientType() == 0) {
-			if (Integer.parseInt(localValues.get("ctid")) == plugin.getStringManager().getChannelID()) {
+		if (user != null && !getClientName().startsWith("Unknown from") && getClientType() == 0) {
+			if (Integer.parseInt(user.get("ctid")) == plugin.getStringManager().getChannelID()) {
 				String m = plugin.getStringManager().getMessage("ChannelEnter");
 				for (Player pl : plugin.getServer().getOnlinePlayers()) {
 					if (!plugin.getMuted(pl) && CheckPermissions(pl, "channelenter")) {

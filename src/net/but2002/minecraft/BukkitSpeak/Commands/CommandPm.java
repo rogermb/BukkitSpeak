@@ -34,7 +34,7 @@ public class CommandPm extends BukkitSpeakCommand {
 		Vector<HashMap<String, String>> users = plugin.getQuery().getList(JTS3ServerQuery.LISTMODE_CLIENTLIST);
 		List<HashMap<String, String>> result = new ArrayList<HashMap<String, String>>();
 		for (HashMap<String, String> user : users) {
-			if (user.get("client_nickname").startsWith(args[1])) {
+			if (user.get("client_nickname").startsWith(args[1]) && user.get("client_type").equals("0")) {
 				result.add(user);
 			}
 		}

@@ -7,6 +7,8 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import net.but2002.minecraft.BukkitSpeak.teamspeakEvent.TeamspeakListener;
+
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -35,8 +37,7 @@ public class BukkitSpeak extends JavaPlugin {
 		stringManager = new StringManager(this);
 		
 		query = new JTS3ServerQuery();
-		ts = new TeamspeakListener();
-		query.setTeamspeakActionListener(ts);
+		ts = new TeamspeakListener(this);
 		setupQuery();
 		tsKeepAlive = new TeamspeakKeepAlive(this);
 		this.getServer().getScheduler().scheduleAsyncRepeatingTask(this, tsKeepAlive, 600, 1200);
@@ -67,14 +68,18 @@ public class BukkitSpeak extends JavaPlugin {
 		query.selectVirtualServer(stringManager.getServerPort(), true);
 		query.setDisplayName(stringManager.getTeamspeakNickname());
 		
+		query.setTeamspeakActionListener(ts);
+		
 		if (stringManager.getUseServer()) query.addEventNotify(JTS3ServerQuery.EVENT_MODE_SERVER, 0);
 		if (stringManager.getUseTextServer()) query.addEventNotify(JTS3ServerQuery.EVENT_MODE_TEXTSERVER, 0);
 		if (stringManager.getChannelID() != 0 && (stringManager.getUseChannel() || stringManager.getUseTextChannel())) {
-			query.moveClient(0, stringManager.getChannelID(), stringManager.getChannelPass());
+			query.moveClient(query.getCurrentQueryClientID(), stringManager.getChannelID(), stringManager.getChannelPass());
 		}
 		if (stringManager.getUseChannel()) query.addEventNotify(JTS3ServerQuery.EVENT_MODE_CHANNEL, stringManager.getChannelID());
-		if (stringManager.getUseTextChannel()) query.addEventNotify(JTS3ServerQuery.EVENT_MODE_TEXTCHANNEL, 0);
-		if (stringManager.getUseTextServer()) query.addEventNotify(JTS3ServerQuery.EVENT_MODE_TEXTSERVER, 0);
+		if (stringManager.getUseTextChannel()) query.addEventNotify(JTS3ServerQuery.EVENT_MODE_TEXTCHANNEL, stringManager.getChannelID());
+		if (stringManager.getUsePrivateMessages()) query.addEventNotify(JTS3ServerQuery.EVENT_MODE_TEXTPRIVATE, 0);
+		
+		getLogger().info("SID: " + query.getCurrentQueryClientServerID() + ", CID: " + query.getCurrentQueryClientChannelID() + ", CLID: " + query.getCurrentQueryClientID());
 	}
 	
 	public String toString() {
@@ -105,16 +110,16 @@ public class BukkitSpeak extends JavaPlugin {
 		}
 	}
 	
-	public void registerRecipient(String player, TeamspeakUser tsUser) {
-		if (pmRecipients.containsKey(tsUser)) {
-			pmRecipients.remove(tsUser);
+	public void registerRecipient(String player, Integer clid) {
+		if (pmRecipients.containsKey(clid)) {
+			pmRecipients.remove(clid);
 		}
-		pmRecipients.put(tsUser.getID(), player);
+		pmRecipients.put(clid, player);
 	}
 	
-	public String getRecipient(TeamspeakUser tsUser) {
-		if (pmRecipients.containsKey(tsUser.getID())) {
-			return pmRecipients.get(tsUser.getID());
+	public String getRecipient(Integer clid) {
+		if (pmRecipients.containsKey(clid)) {
+			return pmRecipients.get(clid);
 		}
 		return null;
 	}
@@ -139,7 +144,7 @@ public class BukkitSpeak extends JavaPlugin {
 			this.reloadConfig();
 			
 			stringManager = new StringManager(this);
-			ts = new TeamspeakListener();
+			ts = new TeamspeakListener(this);
 			query.setTeamspeakActionListener(ts);
 			setupQuery();
 			tsKeepAlive = new TeamspeakKeepAlive(this);

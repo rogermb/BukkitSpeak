@@ -22,13 +22,21 @@ public class CommandList extends BukkitSpeakCommand {
 	
 	@Override
 	public void execute(CommandSender sender, String[] args) {
+		
+		if (!plugin.getQuery().isConnected()) {
+			send(sender, Level.WARNING, "&4Can't communicate with the TeamSpeak server.");
+			return;
+		}
+		
 		if (args.length < 2 || args[1].equalsIgnoreCase("server")) {
 			Vector<HashMap<String, String>> clients = plugin.getQuery().getList(JTS3ServerQuery.LISTMODE_CLIENTLIST);
 			StringBuilder online = new StringBuilder();
 			
 			for (HashMap<String, String> user : clients) {
-				if (online.length() != 0) online.append(", ");
-				online.append(user.get("client_nickname"));
+				if (user.get("client_type").equals("0")) {
+					if (online.length() != 0) online.append(", ");
+					online.append(user.get("client_nickname"));
+				}
 			}
 			
 			String message = stringManager.getMessage("OnlineList");
@@ -55,7 +63,7 @@ public class CommandList extends BukkitSpeakCommand {
 			StringBuilder online = new StringBuilder();
 			
 			for (HashMap<String, String> user : clients) {
-				if (user.get("ctid").equals(id)) {
+				if (user.get("client_type").equals("0") && user.get("cid").equals(id)) {
 					if (online.length() != 0) online.append(", ");
 					online.append(user.get("client_nickname"));
 				}

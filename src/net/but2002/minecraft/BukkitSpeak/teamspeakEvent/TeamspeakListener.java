@@ -1,8 +1,8 @@
-package net.but2002.minecraft.BukkitSpeak;
+package net.but2002.minecraft.BukkitSpeak.teamspeakEvent;
 
 import java.util.HashMap;
 
-import net.but2002.minecraft.BukkitSpeak.teamspeakEvent.*;
+import net.but2002.minecraft.BukkitSpeak.BukkitSpeak;
 
 import de.stefan1200.jts3serverquery.TeamspeakActionListener;
 

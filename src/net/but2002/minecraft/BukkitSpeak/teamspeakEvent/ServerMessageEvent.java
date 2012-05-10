@@ -21,7 +21,7 @@ public class ServerMessageEvent extends TeamspeakEvent{
 	@Override
 	protected void sendMessage() {
 		
-		if (user != null && info != null) {
+		if (user != null && info != null && getClientType() == 0) {
 			
 			String msg = info.get("msg");
 			msg = filterLinks(msg, plugin.getStringManager().getAllowLinks());

@@ -8,15 +8,18 @@ import net.but2002.minecraft.BukkitSpeak.BukkitSpeak;
 
 public class ClientMovedEvent extends TeamspeakEvent {
 	
+	HashMap<String, String> info;
+	
 	public ClientMovedEvent(BukkitSpeak plugin, HashMap<String, String> info) {
-		super(plugin, info);
-		setUser(Integer.parseInt(info.get("clid")));
+		super(plugin, Integer.parseInt(info.get("clid")));
+		this.info = info;
+		sendMessage();
 	}
 	
 	@Override
 	protected void sendMessage() {
 		if (user != null && !getClientName().startsWith("Unknown from") && getClientType() == 0) {
-			if (Integer.parseInt(user.get("ctid")) == plugin.getStringManager().getChannelID()) {
+			if (Integer.parseInt(info.get("ctid")) == plugin.getStringManager().getChannelID()) {
 				String m = plugin.getStringManager().getMessage("ChannelEnter");
 				for (Player pl : plugin.getServer().getOnlinePlayers()) {
 					if (!plugin.getMuted(pl) && CheckPermissions(pl, "channelenter")) {

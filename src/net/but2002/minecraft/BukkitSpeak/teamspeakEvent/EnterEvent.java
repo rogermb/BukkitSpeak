@@ -9,8 +9,8 @@ import net.but2002.minecraft.BukkitSpeak.BukkitSpeak;
 public class EnterEvent extends TeamspeakEvent{
 	
 	public EnterEvent(BukkitSpeak plugin, HashMap<String, String> info) {
-		super(plugin, info);
-		setUser(Integer.valueOf(info.get("clid")));
+		super(plugin, Integer.valueOf(info.get("clid")));
+		sendMessage();
 	}
 	
 	protected void sendMessage() {

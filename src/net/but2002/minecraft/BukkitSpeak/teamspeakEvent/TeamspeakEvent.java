@@ -13,9 +13,10 @@ public abstract class TeamspeakEvent {
 	protected HashMap<String, String> user;
 	protected BukkitSpeak plugin;
 	
-	public TeamspeakEvent(BukkitSpeak plugin, HashMap<String, String> info) {
+	public TeamspeakEvent(BukkitSpeak plugin, Integer clid) {
 		this.plugin = plugin;
-		sendMessage();
+		setUser(clid);
+		user.put("clid", clid.toString());
 	}
 	
 	public HashMap<String, String> getUser() {

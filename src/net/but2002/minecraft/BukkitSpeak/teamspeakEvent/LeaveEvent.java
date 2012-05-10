@@ -9,8 +9,8 @@ import net.but2002.minecraft.BukkitSpeak.BukkitSpeak;
 public class LeaveEvent extends TeamspeakEvent{
 	
 	public LeaveEvent(BukkitSpeak plugin, HashMap<String, String> info) {
-		super(plugin, info);
-		setUser(Integer.parseInt(info.get("clid")));
+		super(plugin, Integer.parseInt(info.get("clid")));
+		sendMessage();
 	}
 	
 	@Override

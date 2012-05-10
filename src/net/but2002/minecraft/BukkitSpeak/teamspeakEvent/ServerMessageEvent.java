@@ -8,21 +8,26 @@ import net.but2002.minecraft.BukkitSpeak.BukkitSpeak;
 
 public class ServerMessageEvent extends TeamspeakEvent{
 	
+	HashMap<String, String> info;
+	
 	public ServerMessageEvent(BukkitSpeak plugin, HashMap<String, String> info) {
-		super(plugin, info);
-		setUser(Integer.parseInt(info.get("invokerid")));
+		super(plugin, Integer.parseInt(info.get("invokerid")));
+		this.info = info;
 		
-		String msgValue = info.get("msg");
-		msgValue = filterLinks(msgValue, plugin.getStringManager().getAllowLinks());
-		if (msgValue == null || msgValue.isEmpty() || user == null) return;
-		user.remove("msg");
-		user.put("msg", msgValue);
+		user.put("targetmode", info.get("targetmode"));
+		sendMessage();
 	}
 	
 	@Override
 	protected void sendMessage() {
-		if (user != null) {
-			if (user.get("targetmode").equals("3")) {
+		
+		if (user != null && info != null) {
+			
+			String msg = info.get("msg");
+			msg = filterLinks(msg, plugin.getStringManager().getAllowLinks());
+			user.put("msg", msg);
+			
+			if (info.get("targetmode").equals("3")) {
 				String m = plugin.getStringManager().getMessage("ServerMsg");
 				for (Player pl : plugin.getServer().getOnlinePlayers()) {
 					if (!plugin.getMuted(pl) && CheckPermissions(pl, "broadcast")) {
@@ -30,7 +35,7 @@ public class ServerMessageEvent extends TeamspeakEvent{
 					}
 				}
 				plugin.getLogger().info(replaceValues(m, false));
-			} else if (user.get("targetmode").equals("2")) {
+			} else if (info.get("targetmode").equals("2")) {
 				String m = plugin.getStringManager().getMessage("ChannelMsg");
 				for (Player pl : plugin.getServer().getOnlinePlayers()) {
 					if (!plugin.getMuted(pl) && CheckPermissions(pl, "chat")) {
@@ -38,7 +43,7 @@ public class ServerMessageEvent extends TeamspeakEvent{
 					}
 				}
 				plugin.getLogger().info(replaceValues(m, false));
-			} else if (user.get("targetmode").equals("1")) {
+			} else if (info.get("targetmode").equals("1")) {
 				String m = plugin.getStringManager().getMessage("PrivateMsg");
 				String p = plugin.getRecipient(getClientId());
 				if (p != null && !p.isEmpty()) {

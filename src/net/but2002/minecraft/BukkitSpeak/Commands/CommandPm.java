@@ -1,10 +1,7 @@
 package net.but2002.minecraft.BukkitSpeak.Commands;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.List;
-import java.util.Vector;
 import java.util.logging.Level;
 
 import net.but2002.minecraft.BukkitSpeak.BukkitSpeak;
@@ -31,19 +28,16 @@ public class CommandPm extends BukkitSpeakCommand {
 			return;
 		} 
 		
-		Vector<HashMap<String, String>> users = plugin.getQuery().getList(JTS3ServerQuery.LISTMODE_CLIENTLIST);
-		List<HashMap<String, String>> result = new ArrayList<HashMap<String, String>>();
-		for (HashMap<String, String> user : users) {
-			if (user.get("client_nickname").startsWith(args[1]) && user.get("client_type").equals("0")) {
-				result.add(user);
-			}
+		HashMap<String, String> client;
+		try {
+			client = plugin.getClients().getByPartialName(args[1]);
+		} catch (Exception e) {
+			send(sender, Level.WARNING, "&4There are more than one clients matching &e" + args[1] + "&4.");
+			return;
 		}
 		
-		if (result.size() == 0) {
+		if (client == null) {
 			send(sender, Level.WARNING, "&4Can't find the user you want to PM.");
-			return;
-		} else if (result.size() > 1) {
-			send(sender, Level.WARNING, "&4There are more than one clients matching &e" + args[1] + "&4.");
 			return;
 		}
 		
@@ -67,14 +61,14 @@ public class CommandPm extends BukkitSpeakCommand {
 		HashMap<String, String> repl = new HashMap<String, String>();
 		repl.put("%player_name%", Name);
 		repl.put("%player_displayname%", DisplayName);
-		repl.put("%target%", result.get(0).get("client_nickname"));
+		repl.put("%target%", client.get("client_nickname"));
 		repl.put("%msg%", sb.toString());
 		
 		tsMsg = convertToTeamspeak(replaceKeys(tsMsg, repl), true, stringManager.getAllowLinks());
 		mcMsg = replaceKeys(mcMsg, repl);
 		
 		if (tsMsg.isEmpty()) return;
-		Integer i = Integer.valueOf(result.get(0).get("clid"));
+		Integer i = Integer.valueOf(client.get("clid"));
 		plugin.getQuery().sendTextMessage(i, JTS3ServerQuery.TEXTMESSAGE_TARGET_CLIENT, tsMsg);
 		plugin.registerRecipient(Name, i);
 		if (mcMsg.isEmpty()) return;

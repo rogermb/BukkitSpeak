@@ -10,6 +10,7 @@ public class LeaveEvent extends TeamspeakEvent{
 	
 	public LeaveEvent(BukkitSpeak plugin, HashMap<String, String> info) {
 		super(plugin, Integer.parseInt(info.get("clid")));
+		plugin.getClients().removeClient(Integer.parseInt(info.get("clid")));
 		sendMessage();
 	}
 	

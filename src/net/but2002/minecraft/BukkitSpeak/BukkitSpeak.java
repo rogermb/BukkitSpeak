@@ -25,6 +25,7 @@ public class BukkitSpeak extends JavaPlugin {
 	TeamspeakActionListener ts;
 	TeamspeakKeepAlive tsKeepAlive;
 	BukkitSpeakCommandExecutor tsCommand;
+	ClientList clients;
 	
 	ChatListener chatListener;
 	List<String> muted;
@@ -46,6 +47,7 @@ public class BukkitSpeak extends JavaPlugin {
 		chatListener = new ChatListener(this);
 		muted = new ArrayList<String>();
 		pmRecipients = new HashMap<Integer, String>();
+		clients = new ClientList(this);
 		
 		this.getServer().getPluginManager().registerEvents(chatListener, this);
 		this.getCommand("ts").setExecutor(tsCommand);
@@ -108,6 +110,10 @@ public class BukkitSpeak extends JavaPlugin {
 		} else if (!mute && muted.contains(player.getName())) {
 			muted.remove(player.getName());
 		}
+	}
+	
+	public ClientList getClients() {
+		return clients;
 	}
 	
 	public void registerRecipient(String player, Integer clid) {

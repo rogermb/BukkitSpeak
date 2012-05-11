@@ -161,9 +161,9 @@ public abstract class BukkitSpeakCommand {
 		if (!input.isEmpty() && repl != null && repl.size() > 0) {
 			String s = input;
 			for (String key : repl.keySet()) {
-				String v = repl.get(key).replace("$", "\\$").replace("\\", "\\\\");
+				String v = repl.get(key);
 				if (v.length() == 0) continue;
-				s = s.replaceAll(key, v);
+				s = s.replace(key, v);
 			}
 			return s;
 		}

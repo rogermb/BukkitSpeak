@@ -13,6 +13,8 @@ public class ClientMovedEvent extends TeamspeakEvent {
 	public ClientMovedEvent(BukkitSpeak plugin, HashMap<String, String> info) {
 		super(plugin, Integer.parseInt(info.get("clid")));
 		this.info = info;
+		plugin.getClients().asyncUpdateClient(Integer.parseInt(info.get("clid")));
+		user.put("cid", info.get("ctid"));
 		sendMessage();
 	}
 	

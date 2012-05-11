@@ -14,6 +14,7 @@ public class TeamspeakKeepAlive extends Thread {
 	public void run(){
 		if (plugin.getQuery().isConnected()) {
 			plugin.getQuery().doCommand("clientupdate");
+			plugin.getClients().asyncUpdateAll();
 		} else if (plugin.getStoppedTime() == null) {
 			plugin.setStoppedTime(new Date());
 		}

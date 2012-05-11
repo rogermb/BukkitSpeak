@@ -4,8 +4,6 @@ import java.util.HashMap;
 
 import org.bukkit.entity.Player;
 
-import de.stefan1200.jts3serverquery.JTS3ServerQuery;
-
 import net.but2002.minecraft.BukkitSpeak.BukkitSpeak;
 
 public abstract class TeamspeakEvent {
@@ -15,25 +13,16 @@ public abstract class TeamspeakEvent {
 	
 	public TeamspeakEvent(BukkitSpeak plugin, Integer clid) {
 		this.plugin = plugin;
+		if (!plugin.getClients().containsKey(clid)) plugin.getClients().addClient(clid);
 		setUser(clid);
-		user.put("clid", clid.toString());
 	}
 	
 	public HashMap<String, String> getUser() {
 		return user;
 	}
+	
 	protected void setUser(Integer clid) {
-		if (clid <= 0) return;
-		
-		try {
-			user = plugin.getQuery().getInfo(JTS3ServerQuery.INFOMODE_CLIENTINFO, clid);
-			if (user == null || user.size() == 0) {
-				plugin.getLogger().warning("Received no information for user id " + clid + ".");
-			}
-		} catch (Exception e) {
-			plugin.getLogger().severe("Error while receiving client information.");
-			e.printStackTrace();
-		}
+		user = plugin.getClients().get(clid);
 	}
 	
 	public String getClientName() {

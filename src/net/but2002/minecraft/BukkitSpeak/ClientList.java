@@ -144,7 +144,7 @@ public class ClientList {
 	
 	public HashMap<String, String> updateClient(Integer clid) {
 		
-		if (!clients.containsKey(clid)) return null;
+		if (!clients.containsKey(clid) || !query.isConnected()) return null;
 		
 		HashMap<String, String> user;
 		try {
@@ -185,6 +185,8 @@ class ClientUpdater implements Runnable {
 	
 	@Override
 	public void run() {
+		if (!query.isConnected()) return;
+		
 		HashMap<String, String> user;
 		try {
 			user = query.getInfo(JTS3ServerQuery.INFOMODE_CLIENTINFO, clid);

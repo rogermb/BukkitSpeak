@@ -52,6 +52,7 @@ public class BukkitSpeak extends JavaPlugin {
 		
 		this.getServer().getPluginManager().registerEvents(chatListener, this);
 		this.getCommand("ts").setExecutor(tsCommand);
+		this.getCommand("tsa").setExecutor(tsCommand);
 		
 		logger.info("enabled.");
 	}

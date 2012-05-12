@@ -10,6 +10,9 @@ commands:
   ts:
     description: BukkitSpeak commands
     usage: Type /ts for help.
+  tsa:
+    description: BukkitSpeak admin commands
+    usage: Type /tsa for help.
 permissions:
   bukkitspeak.*:
     description: Gives access to all BukkitSpeak commands and messages.
@@ -17,8 +20,13 @@ permissions:
     children:
       bukkitspeak.commands.*: true
       bukkitspeak.messages.*: true
+  bukkitspeak.moderator:
+    description: Gives access to all user commands, all the messages and some admin commands.
+    children:
+      bukkitspeak.commands.*: true
+      bukkitspeak.commands.admin.reload: true
   bukkitspeak.user:
-    description: Gives access to user commands and all messages.
+    description: Gives access to most of the user commands and all messages.
     children:
       bukkitspeak.commands.list: true
       bukkitspeak.commands.mute: true
@@ -28,6 +36,11 @@ permissions:
   bukkitspeak.commands.*:
     description: Gives access to all BukkitSpeak commands.
     children:
+      bukkitspeak.commands.user: true
+      bukkitspeak.commands.admin: true
+  bukkitspeak.commands.user:
+    description: Gives access to all user commands.
+    children:
       bukkitspeak.commands.list: true
       bukkitspeak.commands.mute: true
       bukkitspeak.commands.broadcast: true
@@ -35,6 +48,9 @@ permissions:
       bukkitspeak.commands.pm: true
       bukkitspeak.commands.poke: true
       bukkitspeak.commands.status: true
+  bukkitspeak.commands.admin:
+    description: Gives access to all admin commands.
+    children:
       bukkitspeak.commands.reload: true
   bukkitspeak.commands.list:
     description: Allows you to use /ts list
@@ -49,7 +65,7 @@ permissions:
   bukkitspeak.commands.poke:
     description: Allows you to use /ts poke target message
   bukkitspeak.commands.status:
-    description: Allows you to use /ts status
+    description: Allows you to use /ts status  
   bukkitspeak.commands.reload:
     description: Allows you to use /ts reload
   bukkitspeak.messages.*:

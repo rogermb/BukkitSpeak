@@ -1,5 +1,6 @@
 package net.but2002.minecraft.BukkitSpeak;
 
+import java.util.Arrays;
 import java.util.logging.Level;
 
 import net.but2002.minecraft.BukkitSpeak.Commands.*;
@@ -14,12 +15,13 @@ public class BukkitSpeakCommandExecutor implements CommandExecutor {
 	BukkitSpeak plugin;
 	StringManager stringManager;
 	
-	BukkitSpeakCommand Help, List, Mute, Broadcast, Chat, Pm, Poke, Status;
+	BukkitSpeakCommand AdminHelp, Help, List, Mute, Broadcast, Chat, Pm, Poke, Status;
 	
 	public BukkitSpeakCommandExecutor(BukkitSpeak plugin) {
 		this.plugin = plugin;
 		stringManager = plugin.getStringManager();
 		
+		AdminHelp = new CommandAdminHelp(plugin);
 		Help = new CommandHelp(plugin);
 		List = new CommandList(plugin);
 		Mute = new CommandMute(plugin);
@@ -33,9 +35,39 @@ public class BukkitSpeakCommandExecutor implements CommandExecutor {
 	@Override
 	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
 		
-		if (!cmd.getName().equalsIgnoreCase("ts")) {
+		if (cmd.getName().equals("ts")) {
+			if (args.length >= 1 && args[0].equals("admin")) {
+				return onTeamspeakAdminCommand(sender, cmd, label, Arrays.copyOfRange(args, 1, args.length));
+			} else {
+				return onTeamspeakCommand(sender, cmd, label, args);
+			}
+		} else if (cmd.getName().equals("tsa")) {
+			return onTeamspeakAdminCommand(sender, cmd, label, args);
+		} else {
 			return true;
 		}
+	}
+	
+	public void send(CommandSender sender, Level level, String msg) {
+		if (sender instanceof Player) {
+			msg = msg.replaceAll("&", "§").replaceAll("$", "§");
+			sender.sendMessage(plugin + msg);
+		} else {
+			msg = msg.replaceAll("&[a-fA-F0-9]", "").replaceAll("$[a-fA-F0-9]", "");
+			plugin.getLogger().log(level, msg);
+		}
+	}
+	
+	public Boolean CheckPermissions(CommandSender sender, String perm) {
+		if (sender instanceof Player) {
+			return sender.hasPermission("bukkitspeak.commands." + perm); 
+		} else {
+			return true;
+		}
+	}
+	
+	public boolean onTeamspeakCommand(CommandSender sender, Command cmd, String label, String[] args) {
+		
 		if (args.length == 0) {
 			Help.execute(sender, args);
 			return true;
@@ -74,7 +106,21 @@ public class BukkitSpeakCommandExecutor implements CommandExecutor {
 		} else if (args[0].equalsIgnoreCase("status")) {
 			if (!CheckPermissions(sender, "status")) return false;
 			Status.execute(sender, args);
-		} else if (args[0].equalsIgnoreCase("reload")) {
+		} else {
+			return false;
+		}
+		
+		return true;
+	}
+	
+	public boolean onTeamspeakAdminCommand(CommandSender sender, Command cmd, String label, String[] args) {
+		
+		if (args.length == 0) {
+			AdminHelp.execute(sender, args);
+			return true;
+		}
+		
+		if (args[0].equalsIgnoreCase("reload")) {
 			if (!CheckPermissions(sender, "reload")) return false;
 			plugin.reload(this, sender);
 		} else {
@@ -83,23 +129,4 @@ public class BukkitSpeakCommandExecutor implements CommandExecutor {
 		
 		return true;
 	}
-	
-	public void send(CommandSender sender, Level level, String msg) {
-		if (sender instanceof Player) {
-			msg = msg.replaceAll("&", "§").replaceAll("$", "§");
-			sender.sendMessage(plugin + msg);
-		} else {
-			msg = msg.replaceAll("&[a-fA-F0-9]", "").replaceAll("$[a-fA-F0-9]", "");
-			plugin.getLogger().log(level, msg);
-		}
-	}
-	
-	public Boolean CheckPermissions(CommandSender sender, String perm) {
-		if (sender instanceof Player) {
-			return sender.hasPermission("bukkitspeak.commands." + perm); 
-		} else {
-			return true;
-		}
-	}
-	
 }

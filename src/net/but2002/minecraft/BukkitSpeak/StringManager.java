@@ -55,11 +55,13 @@ public class StringManager {
 		{"Unmute", "&aYou aren't muted anymore."},
 		{"Broadcast", "&e%player_displayname% &a-> &f[&cTS&f]&f: %msg%"},
 		{"Chat", "&e%player_displayname% &a-> &eTS&f: %msg%"},
-		{"Pm", "&eMe &a-> &e%target%&f: %msg%"}};
+		{"Pm", "&eMe &a-> &e%target%&f: %msg%"},
+		{"Poke", "&e%player_displayname% &apoked &e%target%&f: %msg%"}};
 	public static final String[][] TEAMSPEAKMESSAGES = {
 		{"ServerMessage", "&4&l%msg%"},
 		{"ChannelMessage", "&4&l[%player_displayname%&4] &r%msg%"},
 		{"PrivateMessage", "&4&l[%player_displayname%&4] &r%msg%"},
+		{"PokeMessage", "&4&l[%player_displayname%&4] &r&a%msg%"},
 		{"MinecraftMessage", "&l%player_displayname%&r: %msg%"}};
 	
 	public static final String MUTED_SECTION = "muted";

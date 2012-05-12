@@ -9,11 +9,9 @@ import net.but2002.minecraft.BukkitSpeak.BukkitSpeak;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import de.stefan1200.jts3serverquery.JTS3ServerQuery;
-
-public class CommandPm extends BukkitSpeakCommand {
+public class CommandPoke extends BukkitSpeakCommand {
 	
-	public CommandPm(BukkitSpeak plugin) {
+	public CommandPoke(BukkitSpeak plugin) {
 		super(plugin);
 	}
 	
@@ -21,7 +19,7 @@ public class CommandPm extends BukkitSpeakCommand {
 	public void execute(CommandSender sender, String[] args) {
 		if (args.length < 3) {
 			send(sender, Level.WARNING, "&aToo few arguments!");
-			send(sender, Level.WARNING, "&aUsage: /ts pm target message");
+			send(sender, Level.WARNING, "&aUsage: /ts poke target message");
 			return;
 		} else if (!plugin.getQuery().isConnected()) {
 			send(sender, Level.WARNING, "&4Can't communicate with the TeamSpeak server.");
@@ -47,8 +45,8 @@ public class CommandPm extends BukkitSpeakCommand {
 			sb.append(" ");
 		}
 		
-		String tsMsg = stringManager.getMessage("PrivateMessage");
-		String mcMsg = stringManager.getMessage("Pm");
+		String tsMsg = stringManager.getMessage("PokeMessage");
+		String mcMsg = stringManager.getMessage("Poke");
 		String Name, DisplayName;
 		if (sender instanceof Player) {
 			Name = ((Player) sender).getName();
@@ -69,13 +67,11 @@ public class CommandPm extends BukkitSpeakCommand {
 		
 		if (tsMsg.isEmpty()) return;
 		Integer i = Integer.valueOf(client.get("clid"));
-		plugin.getQuery().sendTextMessage(i, JTS3ServerQuery.TEXTMESSAGE_TARGET_CLIENT, tsMsg);
-		plugin.registerRecipient(Name, i);
+		plugin.getQuery().pokeClient(i, tsMsg);
 		if (mcMsg.isEmpty()) return;
-		if (sender instanceof Player) {
-			sender.sendMessage(convertToMinecraft(mcMsg, true, stringManager.getAllowLinks()));
-		} else {
-			plugin.getLogger().info(convertToMinecraft(mcMsg, false, stringManager.getAllowLinks()));
+		for (Player pl : plugin.getServer().getOnlinePlayers()) {
+			if (!plugin.getMuted(pl)) pl.sendMessage(convertToMinecraft(mcMsg, true, stringManager.getAllowLinks()));
 		}
+		plugin.getLogger().info(convertToMinecraft(mcMsg, false, stringManager.getAllowLinks()));
 	}
 }

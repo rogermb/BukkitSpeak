@@ -61,6 +61,8 @@ public class BukkitSpeak extends JavaPlugin {
 		query.removeTeamspeakActionListener();
 		query.closeTS3Connection();
 		
+		this.getServer().getScheduler().cancelTasks(this);
+		
 		logger.info("disabled.");
 	}
 	

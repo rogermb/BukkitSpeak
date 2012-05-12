@@ -26,6 +26,8 @@ public class CommandHelp extends BukkitSpeakCommand {
 			send(sender, Level.INFO, "&e/ts chat &a- Displays a message only in the TS channel.");
 		if (CheckPermissions(sender, "pm") && stringManager.getUsePrivateMessages())
 			send(sender, Level.INFO, "&e/ts pm &a- Sends a certain person on TS a message.");
+		if (CheckPermissions(sender, "poke"))
+			send(sender, Level.INFO, "&e/ts poke &a- Pokes a client on Teamspeak.");
 		if (CheckPermissions(sender, "status"))
 			send(sender, Level.INFO, "&e/ts status &a- Shows some info about BukkitSpeak.");
 		if (CheckPermissions(sender, "reload"))

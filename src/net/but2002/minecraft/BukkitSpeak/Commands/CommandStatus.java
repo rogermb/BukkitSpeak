@@ -19,6 +19,9 @@ public class CommandStatus extends BukkitSpeakCommand {
 		if (plugin.getQuery().isConnected()) {
 			send(sender, Level.INFO, "&eTeamspeak Listener: &arunning");
 			if (plugin.getStartedTime() != null) send(sender, Level.INFO, "&eRunning since: &a" + DateManager.DateToString(plugin.getStartedTime()));
+		} else if (plugin.getStoppedTime() == null) {
+			send(sender, Level.WARNING, "&eTeamspeak Listener: &6connecting");
+			if (plugin.getStartedTime() != null) send(sender, Level.WARNING, "&eRunning since: &6" + DateManager.DateToString(plugin.getStartedTime()));
 		} else {
 			send(sender, Level.WARNING, "&eTeamspeak Listener: &4dead");
 			if (plugin.getStartedTime() != null) send(sender, Level.WARNING, "&eRunning since: &4" + DateManager.DateToString(plugin.getStartedTime()));

@@ -49,7 +49,6 @@ public class BukkitSpeak extends JavaPlugin {
 		chatListener = new ChatListener(this);
 		muted = new ArrayList<String>();
 		pmRecipients = new HashMap<Integer, String>();
-		clients = new ClientList(this);
 		
 		this.getServer().getPluginManager().registerEvents(chatListener, this);
 		this.getCommand("ts").setExecutor(tsCommand);
@@ -151,30 +150,33 @@ public class BukkitSpeak extends JavaPlugin {
 
 class QueryConnector implements Runnable {
 	
+	BukkitSpeak plugin;
 	JTS3ServerQuery query;
 	StringManager stringManager;
 	Logger logger;
-	TeamspeakActionListener ts;
-	Date started;
+	
 	
 	public QueryConnector(BukkitSpeak plugin) {
+		this.plugin = plugin;
 		query = plugin.getQuery();
 		stringManager = plugin.getStringManager();
 		logger = plugin.getLogger();
-		ts = plugin.ts;
-		started = plugin.started;
 	}
 	
 	public void run() {
+		setStartedTime();
+		
 		if (!query.connectTS3Query(stringManager.getIp(), stringManager.getQueryPort())) {
 			logger.severe("Could not connect to the TS3 server.");
 			logger.severe("Make sure that the IP and the QueryPort are correct!");
+			setStoppedTime();
 			return;
 		}
 		if (!query.loginTS3(stringManager.getServerAdmin(), stringManager.getServerPass())) {
 			logger.severe("Could not login to the Server Query.");
 			logger.severe("Make sure that \"QueryUsername\" and \"QueryPassword\" are correct.");
 			query.closeTS3Connection();
+			setStoppedTime();
 			return;
 		}
 		if (stringManager.getServerPort() > 0) {
@@ -182,6 +184,7 @@ class QueryConnector implements Runnable {
 				logger.severe("Could not select the virtual server.");
 				logger.severe("Make sure TeamSpeakPort is PortNumber OR -VirtualServerId");
 				query.closeTS3Connection();
+				setStoppedTime();
 				return;
 			}
 		} else {
@@ -189,12 +192,13 @@ class QueryConnector implements Runnable {
 				logger.severe("Could not select the virtual server.");
 				logger.severe("Make sure TeamSpeakPort is PortNumber OR -VirtualServerId");
 				query.closeTS3Connection();
+				setStoppedTime();
 				return;
 			}
 		}
 		query.setDisplayName(stringManager.getTeamspeakNickname());
 		
-		query.setTeamspeakActionListener(ts);
+		query.setTeamspeakActionListener(plugin.ts);
 		
 		if (stringManager.getUseServer()) query.addEventNotify(JTS3ServerQuery.EVENT_MODE_SERVER, 0);
 		if (stringManager.getUseTextServer()) query.addEventNotify(JTS3ServerQuery.EVENT_MODE_TEXTSERVER, 0);
@@ -203,6 +207,7 @@ class QueryConnector implements Runnable {
 				logger.severe("Could not move the QueryClient into the channel.");
 				logger.severe("Ensure that the ChannelID is correct and the password is set if required.");
 				query.closeTS3Connection();
+				setStoppedTime();
 				return;
 			}
 		}
@@ -210,9 +215,17 @@ class QueryConnector implements Runnable {
 		if (stringManager.getUseTextChannel()) query.addEventNotify(JTS3ServerQuery.EVENT_MODE_TEXTCHANNEL, stringManager.getChannelID());
 		if (stringManager.getUsePrivateMessages()) query.addEventNotify(JTS3ServerQuery.EVENT_MODE_TEXTPRIVATE, 0);
 		
-		started = new Date();
+		plugin.clients = new ClientList(plugin);
+		setStartedTime();
 		logger.info("Connected with SID = " + query.getCurrentQueryClientServerID() + ", CID = " + query.getCurrentQueryClientChannelID() + ", CLID = " + query.getCurrentQueryClientID());
 		
 	}
 	
+	private void setStoppedTime() {
+		plugin.stopped = new Date();
+	}
+	
+	private void setStartedTime() {
+		plugin.started = new Date();
+	}
 }

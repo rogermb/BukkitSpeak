@@ -1,6 +1,7 @@
 package net.but2002.minecraft.BukkitSpeak.teamspeakEvent;
 
 import java.util.HashMap;
+import java.util.regex.Matcher;
 
 import org.bukkit.entity.Player;
 
@@ -40,6 +41,7 @@ public abstract class TeamspeakEvent {
 	protected abstract void sendMessage();
 	
 	public String replaceValues(String input, boolean color) {
+		input = Matcher.quoteReplacement(input);
 		if (color) {
 			input = input.replaceAll("((&|$)([a-fk-orA-FK-OR0-9]))", "§$3");
 		} else {
@@ -48,7 +50,7 @@ public abstract class TeamspeakEvent {
 		
 		for (String key : user.keySet()) {
 			if ((key != null) && (user.get(key) != null)) {
-				input = input.replaceAll("%" + key + "%", user.get(key));
+				input = input.replace("%" + key + "%", user.get(key));
 			}
 		}
 		

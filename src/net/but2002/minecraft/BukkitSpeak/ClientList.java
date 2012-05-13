@@ -150,9 +150,12 @@ public class ClientList {
 		try {
 			user = query.getInfo(JTS3ServerQuery.INFOMODE_CLIENTINFO, clid);
 			if (user != null && user.size() != 0) {
-				user.put("clid", clid.toString());
-				clients.put(clid, user);
-				return user;
+				if (user.get("client_type").equals("0")) {
+					user.put("clid", clid.toString());
+					clients.put(clid, user);
+					return user;
+				}
+				return null;
 			} else {
 				logger.warning("Received no information for user id " + clid + ".");
 				return null;
@@ -191,8 +194,10 @@ class ClientUpdater implements Runnable {
 		try {
 			user = query.getInfo(JTS3ServerQuery.INFOMODE_CLIENTINFO, clid);
 			if (user != null && user.size() != 0) {
-				user.put("clid", clid.toString());
-				clients.put(clid, user);
+				if (user.get("client_type").equals("0")) {
+					user.put("clid", clid.toString());
+					clients.put(clid, user);
+				}
 			} else {
 				logger.warning("Received no information for user id " + clid + ".");
 			}

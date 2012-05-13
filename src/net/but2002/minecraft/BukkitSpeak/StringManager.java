@@ -56,13 +56,17 @@ public class StringManager {
 		{"Broadcast", "&e%player_displayname% &a-> &f[&cTS&f]&f: %msg%"},
 		{"Chat", "&e%player_displayname% &a-> &eTS&f: %msg%"},
 		{"Pm", "&eMe &a-> &e%target%&f: %msg%"},
-		{"Poke", "&e%player_displayname% &apoked &e%target%&f: %msg%"}};
+		{"Poke", "&e%player_displayname% &apoked &e%target%&f: %msg%"},
+		{"Kick", "&e%player_displayname% &akicked &e%target% &afrom the server for &e%msg%."},
+		{"ChannelKick", "&e%player_displayname% &akicked &e%target% &afrom the channel for &e%msg%."}};
 	public static final String[][] TEAMSPEAKMESSAGES = {
 		{"ServerMessage", "&4&l%msg%"},
 		{"ChannelMessage", "&4&l[%player_displayname%&4] &r%msg%"},
 		{"PrivateMessage", "&4&l[%player_displayname%&4] &r%msg%"},
 		{"PokeMessage", "&4&l[%player_displayname%&4] &r&a%msg%"},
-		{"MinecraftMessage", "&l%player_displayname%&r: %msg%"}};
+		{"MinecraftMessage", "&l%player_displayname%&r: %msg%"},
+		{"KickMessage", "[%player_displayname%] kicked you from the server for %msg%."},
+		{"ChannelKickMessage", "[%player_displayname%] kicked you from the server for %msg%."}};
 	
 	public static final String MUTED_SECTION = "muted";
 	

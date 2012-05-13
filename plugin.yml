@@ -24,6 +24,7 @@ permissions:
     description: Gives access to all user commands, all the messages and some admin commands.
     children:
       bukkitspeak.commands.user: true
+      bukkitspeak.commands.channelkick: true
       bukkitspeak.commands.admin.reload: true
   bukkitspeak.user:
     description: Gives access to most of the user commands and all messages.
@@ -53,6 +54,8 @@ permissions:
   bukkitspeak.commands.admin:
     description: Gives access to all admin commands.
     children:
+      bukkitspeak.commands.kick: true
+      bukkitspeak.commands.channelkick: true
       bukkitspeak.commands.reload: true
   bukkitspeak.commands.list:
     description: Allows you to use /ts list
@@ -70,6 +73,10 @@ permissions:
     description: Allows you to use /ts info
   bukkitspeak.commands.status:
     description: Allows you to use /ts status  
+  bukkitspeak.commands.kick:
+    description: Allows you to use /ts reload
+  bukkitspeak.commands.channelkick:
+    description: Allows you to use /ts reload
   bukkitspeak.commands.reload:
     description: Allows you to use /ts reload
   bukkitspeak.messages.*:

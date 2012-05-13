@@ -20,7 +20,7 @@ public class ClientMovedEvent extends TeamspeakEvent {
 	
 	@Override
 	protected void sendMessage() {
-		if (user != null && !getClientName().startsWith("Unknown from") && getClientType() == 0) {
+		if (user != null && !getClientName().startsWith("Unknown from") && getClientType() == 0 && !info.get("reasonid").equals("4")) {
 			if (Integer.parseInt(info.get("ctid")) == plugin.getStringManager().getChannelID()) {
 				String m = plugin.getStringManager().getMessage("ChannelEnter");
 				for (Player pl : plugin.getServer().getOnlinePlayers()) {

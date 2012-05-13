@@ -27,6 +27,8 @@ public class CommandHelp extends BukkitSpeakCommand {
 			send(sender, Level.INFO, "&e/ts pm &a- Sends a message to a certain client.");
 		if (CheckCommandPermission(sender, "poke"))
 			send(sender, Level.INFO, "&e/ts poke &a- Pokes a client on Teamspeak.");
+		if (CheckCommandPermission(sender, "info"))
+			send(sender, Level.INFO, "&e/ts info &a- Information about the TS server.");
 		if (CheckCommandPermission(sender, "status"))
 			send(sender, Level.INFO, "&e/ts status &a- Shows some info about BukkitSpeak.");
 		if (CheckCommandPermission(sender, "admin"))

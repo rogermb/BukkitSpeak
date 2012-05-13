@@ -15,7 +15,7 @@ public class BukkitSpeakCommandExecutor implements CommandExecutor {
 	BukkitSpeak plugin;
 	StringManager stringManager;
 	
-	BukkitSpeakCommand AdminHelp, Help, List, Mute, Broadcast, Chat, Pm, Poke, Status;
+	BukkitSpeakCommand AdminHelp, Help, Info, List, Mute, Broadcast, Chat, Pm, Poke, Status;
 	
 	public BukkitSpeakCommandExecutor(BukkitSpeak plugin) {
 		this.plugin = plugin;
@@ -23,6 +23,7 @@ public class BukkitSpeakCommandExecutor implements CommandExecutor {
 		
 		AdminHelp = new CommandAdminHelp(plugin);
 		Help = new CommandHelp(plugin);
+		Info = new CommandInfo(plugin);
 		List = new CommandList(plugin);
 		Mute = new CommandMute(plugin);
 		Broadcast = new CommandBroadcast(plugin);
@@ -103,6 +104,9 @@ public class BukkitSpeakCommandExecutor implements CommandExecutor {
 		} else if (args[0].equalsIgnoreCase("poke")) {
 			if (!CheckPermissions(sender, "poke")) return false;
 			Poke.execute(sender, args);
+		} else if (args[0].equalsIgnoreCase("info")) {
+			if (!CheckPermissions(sender, "info")) return false;
+			Info.execute(sender, args);
 		} else if (args[0].equalsIgnoreCase("status")) {
 			if (!CheckPermissions(sender, "status")) return false;
 			Status.execute(sender, args);

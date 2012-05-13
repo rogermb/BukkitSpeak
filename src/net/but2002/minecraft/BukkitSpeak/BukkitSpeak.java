@@ -169,6 +169,9 @@ class QueryConnector implements Runnable {
 	public void run() {
 		setStartedTime();
 		
+		query.closeTS3Connection();
+		query.removeTeamspeakActionListener();
+		
 		if (!query.connectTS3Query(stringManager.getIp(), stringManager.getQueryPort())) {
 			logger.severe("Could not connect to the TS3 server.");
 			logger.severe("Make sure that the IP and the QueryPort are correct!");

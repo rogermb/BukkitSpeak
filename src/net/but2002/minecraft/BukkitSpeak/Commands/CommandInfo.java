@@ -13,10 +13,10 @@ public class CommandInfo extends BukkitSpeakCommand {
 	@Override
 	public void execute(CommandSender sender, String[] args) {
 		if (Integer.valueOf(stringManager.getServerPort()) > 0) {
-			sender.sendMessage("Teamspeak IP: " + stringManager.getIp() + ":" + stringManager.getServerPort());
+			sender.sendMessage("&aTeamspeak IP: &e" + stringManager.getIp() + ":" + stringManager.getServerPort());
 		} else {
-			sender.sendMessage("Teamspeak IP: " + stringManager.getIp() + ", Virtual Server ID: " + -(Integer.valueOf(stringManager.getServerPort())));
+			sender.sendMessage("&aTeamspeak IP: &e" + stringManager.getIp() + ", Virtual Server ID: " + -(Integer.valueOf(stringManager.getServerPort())));
 		}
-		sender.sendMessage("Clients online: " + plugin.getClients().size());
+		sender.sendMessage("&aClients online: &e" + plugin.getClients().size());
 	}
 }

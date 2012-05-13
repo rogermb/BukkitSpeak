@@ -57,8 +57,8 @@ public class StringManager {
 		{"Chat", "&e%player_displayname% &a-> &eTS&f: %msg%"},
 		{"Pm", "&eMe &a-> &e%target%&f: %msg%"},
 		{"Poke", "&e%player_displayname% &apoked &e%target%&f: %msg%"},
-		{"Kick", "&e%player_displayname% &akicked &e%target% &afrom the server for &e%msg%."},
-		{"ChannelKick", "&e%player_displayname% &akicked &e%target% &afrom the channel for &e%msg%."}};
+		{"Kick", "&e%player_displayname% &akicked &e%target% &afrom the server for &e%msg%&a."},
+		{"ChannelKick", "&e%player_displayname% &akicked &e%target% &afrom the channel for &e%msg%&a."}};
 	public static final String[][] TEAMSPEAKMESSAGES = {
 		{"ServerMessage", "&4&l%msg%"},
 		{"ChannelMessage", "&4&l[%player_displayname%&4] &r%msg%"},

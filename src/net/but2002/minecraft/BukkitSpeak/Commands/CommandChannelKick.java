@@ -48,6 +48,7 @@ public class CommandChannelKick extends BukkitSpeakCommand {
 				sb.append(s);
 				sb.append(" ");
 			}
+			sb.deleteCharAt(sb.length() - 1);
 		} else {
 			sb.append("-");
 		}

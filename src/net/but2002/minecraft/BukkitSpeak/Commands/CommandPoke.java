@@ -44,6 +44,7 @@ public class CommandPoke extends BukkitSpeakCommand {
 			sb.append(s);
 			sb.append(" ");
 		}
+		sb.deleteCharAt(sb.length() - 1);
 		
 		String tsMsg = stringManager.getMessage("PokeMessage");
 		String mcMsg = stringManager.getMessage("Poke");

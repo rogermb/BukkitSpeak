@@ -45,6 +45,7 @@ public class CommandKick extends BukkitSpeakCommand {
 				sb.append(s);
 				sb.append(" ");
 			}
+			sb.deleteCharAt(sb.length() - 1);
 		} else {
 			sb.append("-");
 		}

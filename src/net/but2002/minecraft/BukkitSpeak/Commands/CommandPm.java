@@ -46,6 +46,7 @@ public class CommandPm extends BukkitSpeakCommand {
 			sb.append(s);
 			sb.append(" ");
 		}
+		sb.deleteCharAt(sb.length() - 1);
 		
 		String tsMsg = stringManager.getMessage("PrivateMessage");
 		String mcMsg = stringManager.getMessage("Pm");

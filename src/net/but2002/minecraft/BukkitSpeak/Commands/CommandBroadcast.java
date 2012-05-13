@@ -33,6 +33,7 @@ public class CommandBroadcast extends BukkitSpeakCommand {
 			sb.append(s);
 			sb.append(" ");
 		}
+		sb.deleteCharAt(sb.length() - 1);
 		
 		String tsMsg = stringManager.getMessage("ServerMessage");
 		String mcMsg = stringManager.getMessage("Broadcast");

@@ -33,6 +33,7 @@ public class CommandChat extends BukkitSpeakCommand {
 			sb.append(s);
 			sb.append(" ");
 		}
+		sb.deleteCharAt(sb.length() - 1);
 		
 		String tsMsg = stringManager.getMessage("ChannelMessage");
 		String mcMsg = stringManager.getMessage("Chat");

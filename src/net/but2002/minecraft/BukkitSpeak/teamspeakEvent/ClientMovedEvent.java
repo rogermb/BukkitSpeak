@@ -20,23 +20,25 @@ public class ClientMovedEvent extends TeamspeakEvent {
 	
 	@Override
 	protected void sendMessage() {
-		if (user != null && !getClientName().startsWith("Unknown from") && getClientType() == 0 && !info.get("reasonid").equals("4")) {
-			if (Integer.parseInt(info.get("ctid")) == plugin.getStringManager().getChannelID()) {
-				String m = plugin.getStringManager().getMessage("ChannelEnter");
-				for (Player pl : plugin.getServer().getOnlinePlayers()) {
-					if (!plugin.getMuted(pl) && CheckPermissions(pl, "channelenter")) {
-						pl.sendMessage(replaceValues(m, true));
+		if (user != null && !getClientName().startsWith("Unknown from") && getClientType() == 0) {
+			if (!info.get("reasonid").equals("4")) {
+				if (Integer.parseInt(info.get("ctid")) == plugin.getStringManager().getChannelID()) {
+					String m = plugin.getStringManager().getMessage("ChannelEnter");
+					for (Player pl : plugin.getServer().getOnlinePlayers()) {
+						if (!plugin.getMuted(pl) && CheckPermissions(pl, "channelenter")) {
+							pl.sendMessage(replaceValues(m, true));
+						}
 					}
-				}
-				plugin.getLogger().info(replaceValues(m, false));
-			} else {
-				String m = plugin.getStringManager().getMessage("ChannelLeave");
-				for (Player pl : plugin.getServer().getOnlinePlayers()) {
-					if (!plugin.getMuted(pl) && CheckPermissions(pl, "channelleave")) {
-						pl.sendMessage(replaceValues(m, true));
+					plugin.getLogger().info(replaceValues(m, false));
+				} else {
+					String m = plugin.getStringManager().getMessage("ChannelLeave");
+					for (Player pl : plugin.getServer().getOnlinePlayers()) {
+						if (!plugin.getMuted(pl) && CheckPermissions(pl, "channelleave")) {
+							pl.sendMessage(replaceValues(m, true));
+						}
 					}
+					plugin.getLogger().info(replaceValues(m, false));
 				}
-				plugin.getLogger().info(replaceValues(m, false));
 			}
 		}
 	}

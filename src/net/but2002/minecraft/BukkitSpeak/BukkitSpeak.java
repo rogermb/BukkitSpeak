@@ -168,6 +168,7 @@ class QueryConnector implements Runnable {
 	
 	public void run() {
 		setStartedTime();
+		plugin.setStoppedTime(null);
 		
 		query.closeTS3Connection();
 		query.removeTeamspeakActionListener();

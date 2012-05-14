@@ -32,7 +32,7 @@ public class BukkitSpeak extends JavaPlugin {
 	List<String> muted;
 	HashMap<Integer, String> pmRecipients;
 	
-	Date started, stopped;
+	Date started, stopped, laststarted, laststopped;
 	
 	public void onEnable() {
 		logger = this.getLogger();
@@ -120,8 +120,35 @@ public class BukkitSpeak extends JavaPlugin {
 		return stopped;
 	}
 	
+	public Date getLastStartedTime() {
+		return laststarted;
+	}
+	
+	public Date getLastStoppedTime() {
+		return laststopped;
+	}
+	
+	public void setStartedTime(Date d) {
+		if (d != null && started == null) {
+			started = d;
+			laststarted = null;
+		} else if (d != null) {
+			laststarted = d;
+		} else {
+			started = null;
+			laststarted = null;
+		}
+	}
+	
 	public void setStoppedTime(Date d) {
-		stopped = d;
+		if (d != null && stopped == null) {
+			stopped = d;
+		} else if (d != null) {
+			laststopped = d;
+		} else {
+			stopped = null;
+			laststopped = null;
+		}
 	}
 	
 	public void reload(BukkitSpeakCommandExecutor exec, CommandSender sender) {
@@ -130,6 +157,9 @@ public class BukkitSpeak extends JavaPlugin {
 			query.closeTS3Connection();
 			
 			this.reloadConfig();
+			
+			setStoppedTime(null);
+			setStartedTime(null);
 			
 			stringManager = new StringManager(this);
 			ts = new TeamspeakListener(this);
@@ -141,8 +171,6 @@ public class BukkitSpeak extends JavaPlugin {
 			muted = new ArrayList<String>();
 			pmRecipients = new HashMap<Integer, String>();
 			
-			stopped = null;
-			started = new Date();
 			exec.send(sender, Level.INFO, "&areloaded.");
 		} catch (Exception e) {
 			exec.send(sender, Level.INFO, "&4Was unable to reload, an error happened.");

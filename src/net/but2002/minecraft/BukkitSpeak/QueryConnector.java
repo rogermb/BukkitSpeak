@@ -20,15 +20,14 @@ public class QueryConnector implements Runnable {
 	}
 	
 	public void run() {
-		setStartedTime();
-		plugin.setStoppedTime(null);
+		plugin.setStartedTime(new Date());
 		query.removeTeamspeakActionListener();
 		
 		if (!query.connectTS3Query(stringManager.getIp(), stringManager.getQueryPort())) {
 			logger.severe("Could not connect to the TS3 server.");
 			logger.severe("Make sure that the IP and the QueryPort are correct!");
 			logger.severe("(" + query.getLastError() + ")");
-			setStoppedTime();
+			plugin.setStoppedTime(new Date());
 			return;
 		}
 		if (!query.loginTS3(stringManager.getServerAdmin(), stringManager.getServerPass())) {
@@ -36,7 +35,7 @@ public class QueryConnector implements Runnable {
 			logger.severe("Make sure that \"QueryUsername\" and \"QueryPassword\" are correct.");
 			logger.severe("(" + query.getLastError() + ")");
 			query.closeTS3Connection();
-			setStoppedTime();
+			plugin.setStoppedTime(new Date());
 			return;
 		}
 		if (stringManager.getServerPort() > 0) {
@@ -45,7 +44,7 @@ public class QueryConnector implements Runnable {
 				logger.severe("Make sure TeamSpeakPort is PortNumber OR -VirtualServerId");
 				logger.severe("(" + query.getLastError() + ")");
 				query.closeTS3Connection();
-				setStoppedTime();
+				plugin.setStoppedTime(new Date());
 				return;
 			}
 		} else {
@@ -54,7 +53,7 @@ public class QueryConnector implements Runnable {
 				logger.severe("Make sure TeamSpeakPort is PortNumber OR -VirtualServerId");
 				logger.severe("(" + query.getLastError() + ")");
 				query.closeTS3Connection();
-				setStoppedTime();
+				plugin.setStoppedTime(new Date());
 				return;
 			}
 		}
@@ -70,7 +69,7 @@ public class QueryConnector implements Runnable {
 				logger.severe("Ensure that the ChannelID is correct and the password is set if required.");
 				logger.severe("(" + query.getLastError() + ")");
 				query.closeTS3Connection();
-				setStoppedTime();
+				plugin.setStoppedTime(new Date());
 				return;
 			}
 		}
@@ -79,16 +78,10 @@ public class QueryConnector implements Runnable {
 		if (stringManager.getUsePrivateMessages()) query.addEventNotify(JTS3ServerQuery.EVENT_MODE_TEXTPRIVATE, 0);
 		
 		plugin.clients = new ClientList(plugin);
-		setStartedTime();
+		plugin.setStoppedTime(null);
+		plugin.setStartedTime(null);
+		plugin.setStartedTime(new Date());
 		logger.info("Connected with SID = " + query.getCurrentQueryClientServerID() + ", CID = " + query.getCurrentQueryClientChannelID() + ", CLID = " + query.getCurrentQueryClientID());
 		
-	}
-	
-	private void setStoppedTime() {
-		plugin.stopped = new Date();
-	}
-	
-	private void setStartedTime() {
-		plugin.started = new Date();
 	}
 }

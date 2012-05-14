@@ -28,10 +28,10 @@ public class CommandStatus extends BukkitSpeakCommand {
 			send(sender, Level.WARNING, "&eStopped since: &4" + DateManager.DateToString(plugin.getStoppedTime()));
 			send(sender, Level.WARNING, "&eUse &a/tsa reload &eto restart the listener!");
 		} else if (plugin.getLastStoppedTime() == null) {
-			send(sender, Level.WARNING, "&eTeamspeak Listener: &4reconnecting");
+			send(sender, Level.WARNING, "&eTeamspeak Listener: &6reconnecting");
 			send(sender, Level.WARNING, "&eListener started: &4" + DateManager.DateToString(plugin.getStartedTime()));
 			send(sender, Level.WARNING, "&eListener stopped: &4" + DateManager.DateToString(plugin.getStoppedTime()));
-			send(sender, Level.WARNING, "&eReconnecting since: &4" + DateManager.DateToString(plugin.getLastStartedTime()));
+			send(sender, Level.WARNING, "&eReconnecting since: &6" + DateManager.DateToString(plugin.getLastStartedTime()));
 			send(sender, Level.WARNING, "&eUse &a/tsa reload &eto restart the listener!");
 		} else {
 			send(sender, Level.WARNING, "&eTeamspeak Listener: &4dead");

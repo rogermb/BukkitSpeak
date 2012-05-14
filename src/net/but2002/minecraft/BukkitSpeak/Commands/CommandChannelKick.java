@@ -70,7 +70,7 @@ public class CommandChannelKick extends BukkitSpeakCommand {
 		repl.put("%target%", client.get("client_nickname"));
 		repl.put("%msg%", sb.toString());
 		
-		tsMsg = convertToTeamspeak(replaceKeys(tsMsg, repl), true, stringManager.getAllowLinks());
+		tsMsg = convertToTeamspeak(replaceKeys(tsMsg, repl), false, stringManager.getAllowLinks());
 		mcMsg = replaceKeys(mcMsg, repl);
 		
 		if (tsMsg.length() > 100) {

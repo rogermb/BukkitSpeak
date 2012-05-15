@@ -22,6 +22,10 @@ teamspeak:
   
   # Can be either 'server', 'channel' or 'none'
   SendChatToTeamspeak: none
+  
+  #Default Reason for Bans#
+  DefaultBan:
+  
 messages:
   events:
     Join: '&e%client_nickname% &ahas joined TeamSpeak'

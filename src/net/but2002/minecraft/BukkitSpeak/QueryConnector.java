@@ -57,7 +57,11 @@ public class QueryConnector implements Runnable {
 				return;
 			}
 		}
-		query.setDisplayName(stringManager.getTeamspeakNickname());
+		if (!query.setDisplayName(stringManager.getTeamspeakNickname())) {
+			logger.warning("Could not set the nickname on Teamspeak.");
+			logger.warning("Make sure that the name isn't occupied.");
+			logger.warning("(" + query.getLastError() + ")");
+		}
 		
 		query.setTeamspeakActionListener(plugin.ts);
 		

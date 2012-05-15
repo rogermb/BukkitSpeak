@@ -21,8 +21,6 @@ public class CommandBan extends BukkitSpeakCommand {
 				//sender.sendMessage(ChatColor.RED + "");
 				return;
 			}
-			
-			//Permissions
 			if (args.length < 1){
 				sender.sendMessage(ChatColor.GRAY + "/tsa ban {clientname} (reason)");
 				return;
@@ -37,7 +35,8 @@ public class CommandBan extends BukkitSpeakCommand {
 				sender.sendMessage(ChatColor.GRAY + newname + " was banned from TeamSpeak for " + banReason);
 				return;
 			}else{
-					
+				plugin.dquery.echoError();
+				return;
 			}
 			
 		}

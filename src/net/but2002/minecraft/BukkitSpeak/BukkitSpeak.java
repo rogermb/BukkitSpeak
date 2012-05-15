@@ -18,12 +18,12 @@ import de.stefan1200.jts3serverquery.TeamspeakActionListener;
 
 public class BukkitSpeak extends JavaPlugin {
 	
-	Logger logger;
-	StringManager stringManager;
+	public Logger logger;
+	public StringManager stringManager;
 	
-	JTS3ServerQuery query;
-	TeamspeakActionListener ts;
-	QueryConnector qc;
+	public JTS3ServerQuery query;
+	public TeamspeakActionListener ts;
+	public QueryConnector qc;
 	TeamspeakKeepAlive tsKeepAlive;
 	BukkitSpeakCommandExecutor tsCommand;
 	ClientList clients;
@@ -41,7 +41,7 @@ public class BukkitSpeak extends JavaPlugin {
 		query = new JTS3ServerQuery();
 		ts = new TeamspeakListener(this);
 		qc = new QueryConnector(this);
-		new Thread(qc).start();
+		this.getServer().getScheduler().scheduleAsyncDelayedTask(this, qc);
 		tsKeepAlive = new TeamspeakKeepAlive(this);
 		this.getServer().getScheduler().scheduleAsyncRepeatingTask(this, tsKeepAlive, 600, 1200);
 		

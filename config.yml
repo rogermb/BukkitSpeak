@@ -23,8 +23,8 @@ teamspeak:
   # Can be either 'server', 'channel' or 'none'
   SendChatToTeamspeak: none
   
-  #Default Reason for Bans#
-  DefaultBan:
+  #Default Reason for Bans
+  DefaultBan: '-'
   
 messages:
   events:
@@ -46,6 +46,7 @@ messages:
     Poke: '&e%player_displayname% &apoked &e%target%&f: %msg%'
     Kick: '&e%player_displayname% &akicked &e%target% &afrom the server for &e%msg%&a.'
     ChannelKick: '&e%player_displayname% &akicked &e%target% &afrom the channel for &e%msg%&a.'
+    Ban: '&e%player_displayname% &abanned &e%target% &afor &e%msg%&a.'
   teamspeak:
     ServerMessage: '&4&l%msg%'
     ChannelMessage: '&4&l[%player_displayname%&4] &r%msg%'
@@ -54,3 +55,4 @@ messages:
     MinecraftMessage: '&l%player_displayname%&r: %msg%'
     KickMessage: '[%player_displayname%] kicked you from the server for %msg%.'
     ChannelKickMessage: '[%player_displayname%] kicked you from the channel for %msg%.'
+    BanMessage: '[%player_displayname%] banned you from the server for %msg%.'

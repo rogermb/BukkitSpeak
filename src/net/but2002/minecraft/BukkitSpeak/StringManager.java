@@ -9,7 +9,7 @@ import net.but2002.minecraft.BukkitSpeak.util.ConfigReader;
 public class StringManager {
 	
 	private HashMap<String,String> strings = new HashMap<String,String>();
-	private String ip, serverAdmin, serverPass, tsName, tsConsoleName, tsChannelPass;
+	private String ip, serverAdmin, serverPass, tsName, tsConsoleName, tsChannelPass, tsDefaultReason;
 	private int queryPort, serverPort, tsChannelID, tsTarget;
 	private Boolean tsServer, tsTextServer, tsChannel, tsTextChannel, tsPrivateMessages, tsAllowLinks;
 	
@@ -32,6 +32,7 @@ public class StringManager {
 	public static final String TEAMSPEAK_PRIVATEMESSAGES = "ListenToPrivateMessages";
 	public static final String TEAMSPEAK_ALLOWLINKS = "AllowLinksInMessages";
 	public static final String TEAMSPEAK_TARGET = "SendChatToTeamspeak";
+	public static final String TEAMSPEAK_DEFAULTREASON = "DefaultBan";
 	public static final String[][] TEAMSPEAK_TARGETS = {
 		{"none", "nobody", "null", "noting"},
 		{"channel", "chat"},
@@ -98,6 +99,7 @@ public class StringManager {
 		tsPrivateMessages = reader.getBoolean(TEAMSPEAK_SECTION, TEAMSPEAK_PRIVATEMESSAGES, false);
 		tsAllowLinks = reader.getBoolean(TEAMSPEAK_SECTION, TEAMSPEAK_ALLOWLINKS, true);
 		tsTarget = reader.getChoice(TEAMSPEAK_SECTION, TEAMSPEAK_TARGET, 0, TEAMSPEAK_TARGETS);
+		tsDefaultReason = reader.getString(TEAMSPEAK_SECTION, TEAMSPEAK_DEFAULTREASON, "-");
 		
 		for (String[] keyPair : EVENTMESSAGES) {
 			try {
@@ -198,5 +200,9 @@ public class StringManager {
 	
 	public TsTargetEnum getTeamspeakTarget() {
 		return TsTargetEnum.values()[tsTarget];
+	}
+	
+	public String getDefaultReason() {
+		return tsDefaultReason;
 	}
 }

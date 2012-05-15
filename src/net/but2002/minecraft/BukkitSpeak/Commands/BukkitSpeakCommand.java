@@ -16,7 +16,7 @@ public abstract class BukkitSpeakCommand {
 	BukkitSpeak plugin;
 	StringManager stringManager;
 	
-	public static String[] COLORS = {
+	public final static String[] COLORS = {
 			"",					// 0
 			"[color=#0000AA]",	// 1
 			"[color=#00AA00]",	// 2

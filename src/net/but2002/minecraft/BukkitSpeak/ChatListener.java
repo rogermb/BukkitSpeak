@@ -4,7 +4,6 @@ import java.util.HashMap;
 
 import net.but2002.minecraft.BukkitSpeak.Commands.BukkitSpeakCommand;
 
-import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;

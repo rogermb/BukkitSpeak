@@ -54,6 +54,7 @@ permissions:
   bukkitspeak.commands.admin:
     description: Gives access to all admin commands.
     children:
+      bukkitspeak.commands.ban: true
       bukkitspeak.commands.kick: true
       bukkitspeak.commands.channelkick: true
       bukkitspeak.commands.reload: true
@@ -74,7 +75,9 @@ permissions:
   bukkitspeak.commands.status:
     description: Allows you to use /ts status  
   bukkitspeak.commands.kick:
-    description: Allows you to use /ts reload
+    description: Allows you to use /ts kick
+  bukkitspeak.commands.ban:
+    description: Allows the user to ban players from teamspeak
   bukkitspeak.commands.channelkick:
     description: Allows you to use /ts reload
   bukkitspeak.commands.reload:

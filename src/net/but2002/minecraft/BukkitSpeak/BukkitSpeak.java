@@ -13,11 +13,14 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import com.modcrafting.bukkitspeak.DTS3ServerQuery;
+
 import de.stefan1200.jts3serverquery.JTS3ServerQuery;
 import de.stefan1200.jts3serverquery.TeamspeakActionListener;
 
 public class BukkitSpeak extends JavaPlugin {
 	
+	public DTS3ServerQuery dquery;
 	public Logger logger;
 	public StringManager stringManager;
 	
@@ -37,7 +40,7 @@ public class BukkitSpeak extends JavaPlugin {
 	public void onEnable() {
 		logger = this.getLogger();
 		stringManager = new StringManager(this);
-		
+		dquery = new DTS3ServerQuery(this);
 		query = new JTS3ServerQuery();
 		ts = new TeamspeakListener(this);
 		qc = new QueryConnector(this);

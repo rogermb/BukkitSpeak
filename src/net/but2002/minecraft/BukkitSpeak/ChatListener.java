@@ -4,9 +4,13 @@ import java.util.HashMap;
 
 import net.but2002.minecraft.BukkitSpeak.Commands.BukkitSpeakCommand;
 
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerChatEvent;
+import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
 
 import de.stefan1200.jts3serverquery.JTS3ServerQuery;
 
@@ -41,6 +45,28 @@ public class ChatListener implements Listener {
 		}
 	}
 	
+	@EventHandler(priority = EventPriority.LOW)
+	public void onPlayerJoin(PlayerJoinEvent event){
+	        String name = event.getPlayer().getName();
+	        String format = "[MC]<" + name + "> : Joined the Game.";
+	        if (stringManager.getTeamspeakTarget() == TsTargetEnum.CHANNEL) {
+				plugin.query.sendTextMessage(stringManager.getChannelID(), JTS3ServerQuery.TEXTMESSAGE_TARGET_CHANNEL, format);
+			} else if (stringManager.getTeamspeakTarget() == TsTargetEnum.SERVER) {
+				plugin.query.sendTextMessage(0, JTS3ServerQuery.TEXTMESSAGE_TARGET_VIRTUALSERVER, format);
+			}
+	}
+	
+	@EventHandler(priority = EventPriority.LOW)
+	public void onPlayerQuit(PlayerQuitEvent event){
+	        String name = event.getPlayer().getName();
+	        String format = "[MC]<" + name + "> : Left the Game.";
+	        if (stringManager.getTeamspeakTarget() == TsTargetEnum.CHANNEL) {
+				plugin.query.sendTextMessage(stringManager.getChannelID(), JTS3ServerQuery.TEXTMESSAGE_TARGET_CHANNEL, format);
+			} else if (stringManager.getTeamspeakTarget() == TsTargetEnum.SERVER) {
+				plugin.query.sendTextMessage(0, JTS3ServerQuery.TEXTMESSAGE_TARGET_VIRTUALSERVER, format);
+			}
+		
+	}
 	private String convert(String input, Boolean color, Boolean links) {
 		return BukkitSpeakCommand.convertToTeamspeak(input, color, links);
 	}

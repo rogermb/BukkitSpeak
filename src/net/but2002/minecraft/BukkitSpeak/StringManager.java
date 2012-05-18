@@ -32,7 +32,7 @@ public class StringManager {
 	public static final String TEAMSPEAK_PRIVATEMESSAGES = "ListenToPrivateMessages";
 	public static final String TEAMSPEAK_ALLOWLINKS = "AllowLinksInMessages";
 	public static final String TEAMSPEAK_TARGET = "SendChatToTeamspeak";
-	public static final String TEAMSPEAK_DEFAULTREASON = "DefaultBan";
+	public static final String TEAMSPEAK_DEFAULTREASON = "DefaultReason";
 	public static final String[][] TEAMSPEAK_TARGETS = {
 		{"none", "nobody", "null", "noting"},
 		{"channel", "chat"},

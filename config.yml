@@ -5,7 +5,7 @@ main:
   QueryUsername: admin
   QueryPassword: '123456'
 teamspeak:
-  BroadcastNickname: Minecraft
+  TeamspeakNickname: Minecraft
   ConsoleName: '&9Server'
   
   # Only required if you use the channel functions!

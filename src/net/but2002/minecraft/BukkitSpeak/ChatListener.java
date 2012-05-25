@@ -23,12 +23,12 @@ public class ChatListener implements Listener {
 		stringManager = plugin.getStringManager();
 	}
 	
-	@EventHandler
+	@EventHandler(priority = EventPriority.LOWEST)
 	public void onPlayerChat(PlayerChatEvent e) {
 		if (stringManager.getTeamspeakTarget() == TsTargetEnum.NONE) return;
 		if (e.getPlayer() == null || e.getMessage().isEmpty()) return;
 		
-		String tsMsg = stringManager.getMessage("MinecraftMessage");
+		String tsMsg = stringManager.getMessage("ChatMessage");
 		HashMap<String, String> repl = new HashMap<String, String>();
 		repl.put("%player_name%", e.getPlayer().getName());
 		repl.put("%player_displayname%", e.getPlayer().getDisplayName());
@@ -37,6 +37,8 @@ public class ChatListener implements Listener {
 		tsMsg = replaceKeys(tsMsg, repl);
 		tsMsg = convert(tsMsg, true, stringManager.getAllowLinks());
 		
+		if (tsMsg.isEmpty()) return;
+		
 		if (stringManager.getTeamspeakTarget() == TsTargetEnum.CHANNEL) {
 			plugin.query.sendTextMessage(stringManager.getChannelID(), JTS3ServerQuery.TEXTMESSAGE_TARGET_CHANNEL, tsMsg);
 		} else if (stringManager.getTeamspeakTarget() == TsTargetEnum.SERVER) {
@@ -44,28 +46,52 @@ public class ChatListener implements Listener {
 		}
 	}
 	
-	@EventHandler(priority = EventPriority.LOW)
-	public void onPlayerJoin(PlayerJoinEvent event){
-	        String name = event.getPlayer().getName();
-	        String format = "[MC]<" + name + "> : Joined the Game.";
-	        if (stringManager.getTeamspeakTarget() == TsTargetEnum.CHANNEL) {
-				plugin.query.sendTextMessage(stringManager.getChannelID(), JTS3ServerQuery.TEXTMESSAGE_TARGET_CHANNEL, format);
-			} else if (stringManager.getTeamspeakTarget() == TsTargetEnum.SERVER) {
-				plugin.query.sendTextMessage(0, JTS3ServerQuery.TEXTMESSAGE_TARGET_VIRTUALSERVER, format);
-			}
+	@EventHandler(priority = EventPriority.LOWEST)
+	public void onPlayerJoin(PlayerJoinEvent e){
+		if (stringManager.getTeamspeakTarget() == TsTargetEnum.NONE) return;
+		if (e.getPlayer() == null) return;
+		
+		String tsMsg = stringManager.getMessage("LoginMessage");
+		HashMap<String, String> repl = new HashMap<String, String>();
+		repl.put("%player_name%", e.getPlayer().getName());
+		repl.put("%player_displayname%", e.getPlayer().getDisplayName());
+		repl.put("%msg%", e.getJoinMessage());
+		
+		tsMsg = replaceKeys(tsMsg, repl);
+		tsMsg = convert(tsMsg, true, stringManager.getAllowLinks());
+		
+		if (tsMsg.isEmpty()) return;
+		
+		if (stringManager.getTeamspeakTarget() == TsTargetEnum.CHANNEL) {
+			plugin.query.sendTextMessage(stringManager.getChannelID(), JTS3ServerQuery.TEXTMESSAGE_TARGET_CHANNEL, tsMsg);
+		} else if (stringManager.getTeamspeakTarget() == TsTargetEnum.SERVER) {
+			plugin.query.sendTextMessage(0, JTS3ServerQuery.TEXTMESSAGE_TARGET_VIRTUALSERVER, tsMsg);
+		}
 	}
 	
-	@EventHandler(priority = EventPriority.LOW)
-	public void onPlayerQuit(PlayerQuitEvent event){
-	        String name = event.getPlayer().getName();
-	        String format = "[MC]<" + name + "> : Left the Game.";
-	        if (stringManager.getTeamspeakTarget() == TsTargetEnum.CHANNEL) {
-				plugin.query.sendTextMessage(stringManager.getChannelID(), JTS3ServerQuery.TEXTMESSAGE_TARGET_CHANNEL, format);
-			} else if (stringManager.getTeamspeakTarget() == TsTargetEnum.SERVER) {
-				plugin.query.sendTextMessage(0, JTS3ServerQuery.TEXTMESSAGE_TARGET_VIRTUALSERVER, format);
-			}
+	@EventHandler(priority = EventPriority.LOWEST)
+	public void onPlayerQuit(PlayerQuitEvent e){
+		if (stringManager.getTeamspeakTarget() == TsTargetEnum.NONE) return;
+		if (e.getPlayer() == null) return;
 		
+		String tsMsg = stringManager.getMessage("LoginMessage");
+		HashMap<String, String> repl = new HashMap<String, String>();
+		repl.put("%player_name%", e.getPlayer().getName());
+		repl.put("%player_displayname%", e.getPlayer().getDisplayName());
+		repl.put("%msg%", e.getQuitMessage());
+		
+		tsMsg = replaceKeys(tsMsg, repl);
+		tsMsg = convert(tsMsg, true, stringManager.getAllowLinks());
+		
+		if (tsMsg.isEmpty()) return;
+		
+		if (stringManager.getTeamspeakTarget() == TsTargetEnum.CHANNEL) {
+			plugin.query.sendTextMessage(stringManager.getChannelID(), JTS3ServerQuery.TEXTMESSAGE_TARGET_CHANNEL, tsMsg);
+		} else if (stringManager.getTeamspeakTarget() == TsTargetEnum.SERVER) {
+			plugin.query.sendTextMessage(0, JTS3ServerQuery.TEXTMESSAGE_TARGET_VIRTUALSERVER, tsMsg);
+		}
 	}
+	
 	private String convert(String input, Boolean color, Boolean links) {
 		return BukkitSpeakCommand.convertToTeamspeak(input, color, links);
 	}

@@ -65,8 +65,8 @@ public class StringManager {
 	// Used in BukkitSpeak.ChatListener
 	public static final String[][] MINECRAFTEVENTMESSAGES = {
 		{"ChatMessage", "&l%player_displayname%&r: %msg%"},
-		{"LoginMessage", ""},
-		{"LogoutMessage", ""}};
+		{"LoginMessage", "&l%player_displayname%&r logged in."},
+		{"LogoutMessage", "&l%player_displayname%&r logged out."}};
 	
 	// Used in BukkitSpeak.Commands.* for the mcMsg
 	public static final String[][] COMMANDMESSAGES = {

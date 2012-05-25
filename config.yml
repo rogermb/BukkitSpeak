@@ -45,8 +45,8 @@ messages:
     BanMessage: '[%player_displayname%] banned you from the server for %msg%.'
   MinecraftEvents:
     ChatMessage: '&l%player_displayname%&r: %msg%'
-    LoginMessage: ''
-    LogoutMessage: ''
+    LoginMessage: '&l%player_displayname%&r logged in.'
+    LogoutMessage: '&l%player_displayname%&r logged out.'
   MinecraftCommandMessages:
     OnlineList: '&aCurrently online: &e%list%'
     ChannelList: '&aCurrently in the channel: &e%list%'

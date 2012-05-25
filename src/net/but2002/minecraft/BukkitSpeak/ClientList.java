@@ -27,18 +27,17 @@ public class ClientList {
 	
 	public void addClient(Integer clid) {
 		if (clid <= 0) return;
-		if (!query.isConnected()) return;
 		
 		HashMap<String, String> user;
 		try {
 			user = query.getInfo(JTS3ServerQuery.INFOMODE_CLIENTINFO, clid);
 			if (user != null && user.size() != 0) {
-				if (user.get("client_type").equals("0") && !clients.containsKey(clid)) {
+				if (user.get("client_type").equals("0")) {
 					user.put("clid", clid.toString());
 					clients.put(clid, user);
 				}
 			} else {
-				logger.warning("Received no information for user id " + clid + ". (Adding)");
+				logger.warning("Received no information for user id " + clid + ".");
 			}
 		} catch (Exception e) {
 			logger.severe("Error while receiving client information.");
@@ -158,7 +157,7 @@ public class ClientList {
 				}
 				return null;
 			} else {
-				logger.warning("Received no information for user id " + clid + ". (ClientUpdate)");
+				logger.warning("Received no information for user id " + clid + ".");
 				return null;
 			}
 		} catch (Exception e) {
@@ -189,7 +188,7 @@ class ClientUpdater implements Runnable {
 	
 	@Override
 	public void run() {
-		if (!clients.containsKey(clid) || !query.isConnected()) return;
+		if (!query.isConnected()) return;
 		
 		HashMap<String, String> user;
 		try {
@@ -200,7 +199,7 @@ class ClientUpdater implements Runnable {
 					clients.put(clid, user);
 				}
 			} else {
-				logger.warning("Received no information for user id " + clid + ". (AsyncClientUpdate)");
+				logger.warning("Received no information for user id " + clid + ".");
 			}
 		} catch (Exception e) {
 			logger.severe("Error while receiving client information.");

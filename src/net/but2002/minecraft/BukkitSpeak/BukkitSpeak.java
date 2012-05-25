@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import net.but2002.minecraft.BukkitSpeak.teamspeakEvent.TeamspeakListener;
@@ -154,7 +153,7 @@ public class BukkitSpeak extends JavaPlugin {
 		}
 	}
 	
-	public void reload(BukkitSpeakCommandExecutor exec, CommandSender sender) {
+	public void reload(CommandSender sender) {
 		try {
 			query.removeTeamspeakActionListener();
 			query.closeTS3Connection();
@@ -174,9 +173,15 @@ public class BukkitSpeak extends JavaPlugin {
 			muted = new ArrayList<String>();
 			pmRecipients = new HashMap<Integer, String>();
 			
-			exec.send(sender, Level.INFO, "&areloaded.");
+			if (sender instanceof Player) {
+				sender.sendMessage(this + "§areloaded.");
+			}
+			this.getLogger().info("reloaded.");
 		} catch (Exception e) {
-			exec.send(sender, Level.INFO, "&4Was unable to reload, an error happened.");
+			if (sender instanceof Player) {
+				sender.sendMessage(this + "§4was unable to reload, an error happened.");
+			}
+			this.getLogger().info("was unable to reload, an error happened..");
 			e.printStackTrace();
 		}
 	}

@@ -138,7 +138,7 @@ public class BukkitSpeakCommandExecutor implements CommandExecutor {
 			Kick.execute(sender, args);
 		} else if (args[0].equalsIgnoreCase("reload")) {
 			if (!CheckPermissions(sender, "reload")) return false;
-			plugin.reload(this, sender);
+			plugin.reload(sender);
 		} else {
 			return false;
 		}

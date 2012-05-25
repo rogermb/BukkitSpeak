@@ -15,9 +15,9 @@ teamspeak:
   # Can only be true or false
   ListenToServerEvents: true
   ListenToServerBroadcasts: true
-  ListenToChannel: false
-  ListenToChannelChat: false
-  ListenToPrivateMessages: false
+  ListenToChannel: true
+  ListenToChannelChat: true
+  ListenToPrivateMessages: true
   AllowLinksInMessages: true
   
   # Can be either 'server', 'channel' or 'none'

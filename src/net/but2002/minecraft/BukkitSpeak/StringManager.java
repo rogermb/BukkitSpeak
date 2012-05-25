@@ -81,8 +81,6 @@ public class StringManager {
 		{"Kick", "&e%player_displayname% &akicked &e%target% &afrom the server for &e%msg%&a."},
 		{"ChannelKick", "&e%player_displayname% &akicked &e%target% &afrom the channel for &e%msg%&a."}};
 	
-	public static final String MUTED_SECTION = "muted";
-	
 	public StringManager(BukkitSpeak plugin) {
 		
 		ConfigReader reader = new ConfigReader(plugin);
@@ -106,9 +104,9 @@ public class StringManager {
 		tsChannelPass = reader.getString(TEAMSPEAK_SECTION, TEAMSPEAK_CHANNELPW, "");
 		tsServer = reader.getBoolean(TEAMSPEAK_SECTION, TEAMSPEAK_SERVER, true);
 		tsTextServer = reader.getBoolean(TEAMSPEAK_SECTION, TEAMSPEAK_TEXTSERVER, true);
-		tsChannel = reader.getBoolean(TEAMSPEAK_SECTION, TEAMSPEAK_CHANNEL, false);
-		tsTextChannel = reader.getBoolean(TEAMSPEAK_SECTION, TEAMSPEAK_TEXTCHANNEL, false);
-		tsPrivateMessages = reader.getBoolean(TEAMSPEAK_SECTION, TEAMSPEAK_PRIVATEMESSAGES, false);
+		tsChannel = reader.getBoolean(TEAMSPEAK_SECTION, TEAMSPEAK_CHANNEL, true);
+		tsTextChannel = reader.getBoolean(TEAMSPEAK_SECTION, TEAMSPEAK_TEXTCHANNEL, true);
+		tsPrivateMessages = reader.getBoolean(TEAMSPEAK_SECTION, TEAMSPEAK_PRIVATEMESSAGES, true);
 		tsAllowLinks = reader.getBoolean(TEAMSPEAK_SECTION, TEAMSPEAK_ALLOWLINKS, true);
 		tsTarget = reader.getChoice(TEAMSPEAK_SECTION, TEAMSPEAK_TARGET, 0, TEAMSPEAK_TARGETS);
 		tsDefaultReason = reader.getString(TEAMSPEAK_SECTION, TEAMSPEAK_DEFAULTREASON, "-");

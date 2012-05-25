@@ -189,7 +189,7 @@ class ClientUpdater implements Runnable {
 	
 	@Override
 	public void run() {
-		if (!clients.containsKey(clid) || !query.isConnected()) return;
+		if (!query.isConnected()) return;
 		
 		HashMap<String, String> user;
 		try {

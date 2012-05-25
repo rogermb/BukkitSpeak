@@ -74,7 +74,7 @@ public class ChatListener implements Listener {
 		if (stringManager.getTeamspeakTarget() == TsTargetEnum.NONE) return;
 		if (e.getPlayer() == null) return;
 		
-		String tsMsg = stringManager.getMessage("LoginMessage");
+		String tsMsg = stringManager.getMessage("LogoutMessage");
 		HashMap<String, String> repl = new HashMap<String, String>();
 		repl.put("%player_name%", e.getPlayer().getName());
 		repl.put("%player_displayname%", e.getPlayer().getDisplayName());

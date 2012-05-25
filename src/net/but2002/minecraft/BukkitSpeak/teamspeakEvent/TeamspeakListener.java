@@ -2,13 +2,9 @@ package net.but2002.minecraft.BukkitSpeak.teamspeakEvent;
 
 import java.util.HashMap;
 
-import org.bukkit.entity.Player;
-
 import net.but2002.minecraft.BukkitSpeak.BukkitSpeak;
 import net.but2002.minecraft.BukkitSpeak.StringManager;
-import net.but2002.minecraft.BukkitSpeak.TsTargetEnum;
 
-import de.stefan1200.jts3serverquery.JTS3ServerQuery;
 import de.stefan1200.jts3serverquery.TeamspeakActionListener;
 
 public class TeamspeakListener implements TeamspeakActionListener {
@@ -34,6 +30,7 @@ public class TeamspeakListener implements TeamspeakActionListener {
 			new ClientMovedEvent(plugin, eventInfo);
 		}
 		
+		/*
 		String msg = eventInfo.remove("msg");
 		
 		//Add Team Speak Commands ingame commands.
@@ -55,7 +52,7 @@ public class TeamspeakListener implements TeamspeakActionListener {
 			}
 			return;
 		}
-		/*
+		
 		//Example of usage
 		if(msg.contains("!reload")){
 			if(plugin.query.removeAllEvents()){

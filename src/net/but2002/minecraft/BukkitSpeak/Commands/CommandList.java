@@ -21,7 +21,7 @@ public class CommandList extends BukkitSpeakCommand {
 	@Override
 	public void execute(CommandSender sender, String[] args) {
 		
-		if (!plugin.getQuery().isConnected()) {
+		if (!plugin.getQuery().isConnected() || plugin.getClients() == null) {
 			send(sender, Level.WARNING, "&4Can't communicate with the TeamSpeak server.");
 			return;
 		}

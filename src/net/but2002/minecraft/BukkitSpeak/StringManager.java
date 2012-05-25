@@ -58,7 +58,7 @@ public class StringManager {
 		{"ServerMessage", "&4&l%msg%"},
 		{"ChannelMessage", "&4&l[%player_displayname%&4] &r%msg%"},
 		{"PrivateMessage", "&4&l[%player_displayname%&4] &r%msg%"},
-		{"PokeMessage", "&4&l[%player_displayname%&4] &r&a%msg%"},
+		{"PokeMessage", "&l[%player_displayname%] &r%msg%"},
 		{"KickMessage", "[%player_displayname%] kicked you from the server for %msg%."},
 		{"ChannelKickMessage", "[%player_displayname%] kicked you from the server for %msg%."}};
 	

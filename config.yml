@@ -27,7 +27,7 @@ teamspeak:
   DefaultReason: '-'
   
 messages:
-  events:
+  TeamspeakEvents:
     Join: '&e%client_nickname% &ahas joined TeamSpeak'
     Quit: '&e%client_nickname% &ahas left TeamSpeak'
     ChannelEnter: '&e%client_nickname% &aentered the channel.'
@@ -35,7 +35,19 @@ messages:
     ServerMsg: '[&cTS&f] &e%client_nickname%&a: %msg%'
     ChannelMsg: '&e%client_nickname%&f: %msg%'
     PrivateMsg: '&e%client_nickname% &a-> &eMe&f: %msg%'
-  commands:
+  TeamspeakMessages:
+    ServerMessage: '&4&l%msg%'
+    ChannelMessage: '&4&l[%player_displayname%&4] &r%msg%'
+    PrivateMessage: '&4&l[%player_displayname%&4] &r%msg%'
+    PokeMessage: '&l[%player_displayname%] &r%msg%'
+    KickMessage: '[%player_displayname%] kicked you from the server for %msg%.'
+    ChannelKickMessage: '[%player_displayname%] kicked you from the channel for %msg%.'
+    BanMessage: '[%player_displayname%] banned you from the server for %msg%.'
+  MinecraftEvents:
+    ChatMessage: '&l%player_displayname%&r: %msg%'
+    LoginMessage: ''
+    LogoutMessage: ''
+  MinecraftCommandMessages:
     OnlineList: '&aCurrently online: &e%list%'
     ChannelList: '&aCurrently in the channel: &e%list%'
     Mute: '&aYou are now muted.'
@@ -47,12 +59,3 @@ messages:
     Kick: '&e%player_displayname% &akicked &e%target% &afrom the server for &e%msg%&a.'
     ChannelKick: '&e%player_displayname% &akicked &e%target% &afrom the channel for &e%msg%&a.'
     Ban: '&e%player_displayname% &abanned &e%target% &afor &e%msg%&a.'
-  teamspeak:
-    ServerMessage: '&4&l%msg%'
-    ChannelMessage: '&4&l[%player_displayname%&4] &r%msg%'
-    PrivateMessage: '&4&l[%player_displayname%&4] &r%msg%'
-    PokeMessage: '&l[%player_displayname%] &r%msg%'
-    MinecraftMessage: '&l%player_displayname%&r: %msg%'
-    KickMessage: '[%player_displayname%] kicked you from the server for %msg%.'
-    ChannelKickMessage: '[%player_displayname%] kicked you from the channel for %msg%.'
-    BanMessage: '[%player_displayname%] banned you from the server for %msg%.'

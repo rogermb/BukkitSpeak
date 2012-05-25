@@ -21,7 +21,7 @@ public class StringManager {
 	public static final String CONFIG_SERVERPASS = "QueryPassword";
 	
 	public static final String TEAMSPEAK_SECTION = "teamspeak";
-	public static final String TEAMSPEAK_NAME = "BroadcastNickname";
+	public static final String TEAMSPEAK_NAME = "TeamspeakNickname";
 	public static final String TEAMSPEAK_CONSOLENAME = "ConsoleName";
 	public static final String TEAMSPEAK_CHANNELID = "ChannelID";
 	public static final String TEAMSPEAK_CHANNELPW = "ChannelPassword";
@@ -38,10 +38,13 @@ public class StringManager {
 		{"channel", "chat"},
 		{"server", "broadcast"}};
 	
-	public static final String[] EVENTMESSAGES_SECTION = {"messages", "events"};
-	public static final String[] COMMANDMESSAGES_SECTION = {"messages", "commands"};
-	public static final String[] TEAMSPEAKMESSAGES_SECTION = {"messages", "teamspeak"};	
-	public static final String[][] EVENTMESSAGES = {
+	public static final String[] TEAMSPEAKEVENTMESSAGES_SECTION = {"messages", "TeamspeakEvents"};
+	public static final String[] TEAMSPEAKMESSAGES_SECTION = {"messages", "TeamspeakMessages"};
+	public static final String[] MINECRAFTEVENTMESSAGES_SECTION = {"messages", "MinecraftEvents"};
+	public static final String[] COMMANDMESSAGES_SECTION = {"messages", "MinecraftCommandMessages"};
+	
+	// Used in BukkitSpeak.teamspeakEvent.*
+	public static final String[][] TEAMSPEAKEVENTMESSAGES = {
 		{"Join", "&e%client_nickname% &ahas joined TeamSpeak"}, 
 		{"Quit", "&e%client_nickname% &ahas left TeamSpeak"}, 
 		{"ChannelEnter","&e%client_nickname% &aentered the channel."},
@@ -49,6 +52,23 @@ public class StringManager {
 		{"ServerMsg", "[&cTS&f] &e%client_nickname%&a: %msg%"}, 
 		{"ChannelMsg", "&e%client_nickname%&f: %msg%"},
 		{"PrivateMsg", "&e%client_nickname% &a-> &eMe&f: %msg%"}};
+	
+	// Used in BukkitSpeak.Commands.* for the tsMsg
+	public static final String[][] TEAMSPEAKMESSAGES = {
+		{"ServerMessage", "&4&l%msg%"},
+		{"ChannelMessage", "&4&l[%player_displayname%&4] &r%msg%"},
+		{"PrivateMessage", "&4&l[%player_displayname%&4] &r%msg%"},
+		{"PokeMessage", "&4&l[%player_displayname%&4] &r&a%msg%"},
+		{"KickMessage", "[%player_displayname%] kicked you from the server for %msg%."},
+		{"ChannelKickMessage", "[%player_displayname%] kicked you from the server for %msg%."}};
+	
+	// Used in BukkitSpeak.ChatListener
+	public static final String[][] MINECRAFTEVENTMESSAGES = {
+		{"ChatMessage", "&l%player_displayname%&r: %msg%"},
+		{"LoginMessage", ""},
+		{"LogoutMessage", ""}};
+	
+	// Used in BukkitSpeak.Commands.* for the mcMsg
 	public static final String[][] COMMANDMESSAGES = {
 		{"OnlineList", "&aCurrently online: &e%list%"},
 		{"ChannelList", "&aCurrently in the channel: &e%list%"},
@@ -60,14 +80,6 @@ public class StringManager {
 		{"Poke", "&e%player_displayname% &apoked &e%target%&f: %msg%"},
 		{"Kick", "&e%player_displayname% &akicked &e%target% &afrom the server for &e%msg%&a."},
 		{"ChannelKick", "&e%player_displayname% &akicked &e%target% &afrom the channel for &e%msg%&a."}};
-	public static final String[][] TEAMSPEAKMESSAGES = {
-		{"ServerMessage", "&4&l%msg%"},
-		{"ChannelMessage", "&4&l[%player_displayname%&4] &r%msg%"},
-		{"PrivateMessage", "&4&l[%player_displayname%&4] &r%msg%"},
-		{"PokeMessage", "&4&l[%player_displayname%&4] &r&a%msg%"},
-		{"MinecraftMessage", "&l%player_displayname%&r: %msg%"},
-		{"KickMessage", "[%player_displayname%] kicked you from the server for %msg%."},
-		{"ChannelKickMessage", "[%player_displayname%] kicked you from the server for %msg%."}};
 	
 	public static final String MUTED_SECTION = "muted";
 	
@@ -101,17 +113,9 @@ public class StringManager {
 		tsTarget = reader.getChoice(TEAMSPEAK_SECTION, TEAMSPEAK_TARGET, 0, TEAMSPEAK_TARGETS);
 		tsDefaultReason = reader.getString(TEAMSPEAK_SECTION, TEAMSPEAK_DEFAULTREASON, "-");
 		
-		for (String[] keyPair : EVENTMESSAGES) {
+		for (String[] keyPair : TEAMSPEAKEVENTMESSAGES) {
 			try {
-				String currentValue = reader.getString(EVENTMESSAGES_SECTION, keyPair[0], keyPair[1]);
-				strings.put(keyPair[0], currentValue);
-			} catch (Exception e) {
-				plugin.getLogger().severe("Was unable to load all the messages. This is probably a programming error.");
-			}
-		}
-		for (String[] keyPair : COMMANDMESSAGES) {
-			try {
-				String currentValue = reader.getString(COMMANDMESSAGES_SECTION, keyPair[0], keyPair[1]);
+				String currentValue = reader.getString(TEAMSPEAKEVENTMESSAGES_SECTION, keyPair[0], keyPair[1]);
 				strings.put(keyPair[0], currentValue);
 			} catch (Exception e) {
 				plugin.getLogger().severe("Was unable to load all the messages. This is probably a programming error.");
@@ -120,6 +124,22 @@ public class StringManager {
 		for (String[] keyPair : TEAMSPEAKMESSAGES) {
 			try {
 				String currentValue = reader.getString(TEAMSPEAKMESSAGES_SECTION, keyPair[0], keyPair[1]);
+				strings.put(keyPair[0], currentValue);
+			} catch (Exception e) {
+				plugin.getLogger().severe("Was unable to load all the messages. This is probably a programming error.");
+			}
+		}
+		for (String[] keyPair : MINECRAFTEVENTMESSAGES) {
+			try {
+				String currentValue = reader.getString(MINECRAFTEVENTMESSAGES_SECTION, keyPair[0], keyPair[1]);
+				strings.put(keyPair[0], currentValue);
+			} catch (Exception e) {
+				plugin.getLogger().severe("Was unable to load all the messages. This is probably a programming error.");
+			}
+		}
+		for (String[] keyPair : COMMANDMESSAGES) {
+			try {
+				String currentValue = reader.getString(COMMANDMESSAGES_SECTION, keyPair[0], keyPair[1]);
 				strings.put(keyPair[0], currentValue);
 			} catch (Exception e) {
 				plugin.getLogger().severe("Was unable to load all the messages. This is probably a programming error.");

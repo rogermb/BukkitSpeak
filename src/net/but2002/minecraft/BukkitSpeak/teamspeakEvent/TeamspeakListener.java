@@ -20,6 +20,8 @@ public class TeamspeakListener implements TeamspeakActionListener {
 	@Override
 	public void teamspeakActionPerformed(String eventType, HashMap<String, String> eventInfo) {
 		
+		if (eventInfo == null || !eventInfo.get("client_type").equals("0") || eventInfo.get("client_nickname").startsWith("Unknown from")) return;
+		
 		if (eventType.equals("notifycliententerview")) {
 			new EnterEvent(plugin, eventInfo);
 		} else if (eventType.equals("notifyclientleftview")) {

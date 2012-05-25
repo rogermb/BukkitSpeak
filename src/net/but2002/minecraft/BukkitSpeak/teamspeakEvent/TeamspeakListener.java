@@ -21,6 +21,7 @@ public class TeamspeakListener implements TeamspeakActionListener {
 	public void teamspeakActionPerformed(String eventType, HashMap<String, String> eventInfo) {
 		
 		if (eventType.equals("notifycliententerview")) {
+			if (eventInfo == null || !eventInfo.get("client_type").equals("0") || eventInfo.get("client_nickname").startsWith("Unknown from")) return;
 			new EnterEvent(plugin, eventInfo);
 		} else if (eventType.equals("notifyclientleftview")) {
 			new LeaveEvent(plugin, eventInfo);

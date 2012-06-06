@@ -26,6 +26,11 @@ teamspeak:
   # Default reason for bans and (channel) kicks
   DefaultReason: '-'
   
+  # Debug Mode
+  # Use if the plugin doesn't work at all
+  # Or for posting error logs in the forum
+  Debug: false
+  
 messages:
   TeamspeakEvents:
     Join: '&e%client_nickname% &ahas joined TeamSpeak'

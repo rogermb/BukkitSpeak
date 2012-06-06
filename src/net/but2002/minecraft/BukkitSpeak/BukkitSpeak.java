@@ -41,6 +41,7 @@ public class BukkitSpeak extends JavaPlugin {
 		stringManager = new StringManager(this);
 		dquery = new DTS3ServerQuery(this);
 		query = new JTS3ServerQuery();
+		query.DEBUG = stringManager.getDebugMode();
 		ts = new TeamspeakListener(this);
 		qc = new QueryConnector(this);
 		this.getServer().getScheduler().scheduleAsyncDelayedTask(this, qc);

@@ -77,6 +77,10 @@ public class BukkitSpeak extends JavaPlugin {
 		return query;
 	}
 	
+	public DTS3ServerQuery getDQuery() {
+		return dquery;
+	}
+	
 	public StringManager getStringManager() {
 		return stringManager;
 	}

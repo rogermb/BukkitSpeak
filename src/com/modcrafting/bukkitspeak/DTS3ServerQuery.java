@@ -52,6 +52,33 @@ public class DTS3ServerQuery{
 		}
 		return true;
 	}
+	public boolean banClient(Integer clid, String banReason){
+		if (!plugin.query.isConnected()){
+			log.log(Level.INFO, "banClient(): Not connected to TS3 server!");
+			return false;
+		}
+		HashMap<String, String> hmIn;
+		try{
+			String command = "banclient";
+			if (clid != null && clid > 0){
+			command += " clid=" + String.valueOf(clid);
+			}
+			if (banReason != null && banReason.length() > 0){
+			command += " banreason=" + plugin.query.encodeTS3String(banReason);
+			}
+			
+			hmIn = plugin.query.doCommand(command);
+			
+			if (!hmIn.get("id").equals("0")){
+				log.log(Level.INFO, "banClient()" + hmIn.get("id") + hmIn.get("msg") + hmIn.get("extra_msg") + hmIn.get("failed_permid"));
+				return false;
+			}
+		}catch (Exception e){
+			e.printStackTrace();
+			return false;
+		}
+		return true;
+	}
 	public boolean changeGroup(String groupid, String nameid){
 		if (!plugin.query.isConnected()){
 			log.log(Level.INFO, "changeGroup(): Not connected to TS3 server!");

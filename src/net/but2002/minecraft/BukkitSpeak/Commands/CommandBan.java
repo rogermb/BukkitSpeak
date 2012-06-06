@@ -18,7 +18,7 @@ public class CommandBan extends BukkitSpeakCommand {
 	public void execute(CommandSender sender, String[] args) {
 		if (args.length < 2) {
 			send(sender, Level.WARNING, "&aToo few arguments!");
-			send(sender, Level.WARNING, "&aUsage: /ts kick client (message)");
+			send(sender, Level.WARNING, "&aUsage: /ts ban client (message)");
 			return;
 		} else if (!plugin.getQuery().isConnected()) {
 			send(sender, Level.WARNING, "&4Can't communicate with the TeamSpeak server.");
@@ -34,7 +34,7 @@ public class CommandBan extends BukkitSpeakCommand {
 		}
 		
 		if (client == null) {
-			send(sender, Level.WARNING, "&4Can't find the user you want to kick from the server.");
+			send(sender, Level.WARNING, "&4Can't find the user you want to ban from the server.");
 			return;
 		}
 		
@@ -69,7 +69,7 @@ public class CommandBan extends BukkitSpeakCommand {
 		
 		if (tsMsg.isEmpty()) return;
 		Integer i = Integer.valueOf(client.get("clid"));
-		plugin.getQuery().kickClient(i, false, tsMsg);
+		plugin.getDQuery().banClient(i, tsMsg);
 		if (mcMsg.isEmpty()) return;
 		for (Player pl : plugin.getServer().getOnlinePlayers()) {
 			if (!plugin.getMuted(pl)) pl.sendMessage(convertToMinecraft(mcMsg, true, stringManager.getAllowLinks()));

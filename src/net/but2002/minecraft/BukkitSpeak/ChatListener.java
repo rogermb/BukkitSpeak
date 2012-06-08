@@ -40,9 +40,9 @@ public class ChatListener implements Listener {
 		if (tsMsg.isEmpty()) return;
 		
 		if (stringManager.getTeamspeakTarget() == TsTargetEnum.CHANNEL) {
-			plugin.query.sendTextMessage(stringManager.getChannelID(), JTS3ServerQuery.TEXTMESSAGE_TARGET_CHANNEL, tsMsg);
+			plugin.query.sendTextMessage(plugin.query.getCurrentQueryClientChannelID(), JTS3ServerQuery.TEXTMESSAGE_TARGET_CHANNEL, tsMsg);
 		} else if (stringManager.getTeamspeakTarget() == TsTargetEnum.SERVER) {
-			plugin.query.sendTextMessage(0, JTS3ServerQuery.TEXTMESSAGE_TARGET_VIRTUALSERVER, tsMsg);
+			plugin.query.sendTextMessage(plugin.query.getCurrentQueryClientServerID(), JTS3ServerQuery.TEXTMESSAGE_TARGET_VIRTUALSERVER, tsMsg);
 		}
 	}
 	
@@ -63,9 +63,9 @@ public class ChatListener implements Listener {
 		if (tsMsg.isEmpty()) return;
 		
 		if (stringManager.getTeamspeakTarget() == TsTargetEnum.CHANNEL) {
-			plugin.query.sendTextMessage(stringManager.getChannelID(), JTS3ServerQuery.TEXTMESSAGE_TARGET_CHANNEL, tsMsg);
+			plugin.query.sendTextMessage(plugin.query.getCurrentQueryClientChannelID(), JTS3ServerQuery.TEXTMESSAGE_TARGET_CHANNEL, tsMsg);
 		} else if (stringManager.getTeamspeakTarget() == TsTargetEnum.SERVER) {
-			plugin.query.sendTextMessage(0, JTS3ServerQuery.TEXTMESSAGE_TARGET_VIRTUALSERVER, tsMsg);
+			plugin.query.sendTextMessage(plugin.query.getCurrentQueryClientServerID(), JTS3ServerQuery.TEXTMESSAGE_TARGET_VIRTUALSERVER, tsMsg);
 		}
 	}
 	
@@ -86,9 +86,9 @@ public class ChatListener implements Listener {
 		if (tsMsg.isEmpty()) return;
 		
 		if (stringManager.getTeamspeakTarget() == TsTargetEnum.CHANNEL) {
-			plugin.query.sendTextMessage(stringManager.getChannelID(), JTS3ServerQuery.TEXTMESSAGE_TARGET_CHANNEL, tsMsg);
+			plugin.query.sendTextMessage(plugin.query.getCurrentQueryClientChannelID(), JTS3ServerQuery.TEXTMESSAGE_TARGET_CHANNEL, tsMsg);
 		} else if (stringManager.getTeamspeakTarget() == TsTargetEnum.SERVER) {
-			plugin.query.sendTextMessage(0, JTS3ServerQuery.TEXTMESSAGE_TARGET_VIRTUALSERVER, tsMsg);
+			plugin.query.sendTextMessage(plugin.query.getCurrentQueryClientServerID(), JTS3ServerQuery.TEXTMESSAGE_TARGET_VIRTUALSERVER, tsMsg);
 		}
 	}
 	

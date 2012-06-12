@@ -14,6 +14,7 @@ public class ServerMessageEvent extends TeamspeakEvent{
 		super(plugin, Integer.parseInt(info.get("invokerid")));
 		this.info = info;
 		
+		if (user == null) return;
 		user.put("targetmode", info.get("targetmode"));
 		sendMessage();
 	}
@@ -29,6 +30,7 @@ public class ServerMessageEvent extends TeamspeakEvent{
 			
 			if (info.get("targetmode").equals("3")) {
 				String m = plugin.getStringManager().getMessage("ServerMsg");
+				if (m.isEmpty()) return;
 				for (Player pl : plugin.getServer().getOnlinePlayers()) {
 					if (!plugin.getMuted(pl) && CheckPermissions(pl, "broadcast")) {
 						pl.sendMessage(replaceValues(m, true));
@@ -37,6 +39,7 @@ public class ServerMessageEvent extends TeamspeakEvent{
 				plugin.getLogger().info(replaceValues(m, false));
 			} else if (info.get("targetmode").equals("2")) {
 				String m = plugin.getStringManager().getMessage("ChannelMsg");
+				if (m.isEmpty()) return;
 				for (Player pl : plugin.getServer().getOnlinePlayers()) {
 					if (!plugin.getMuted(pl) && CheckPermissions(pl, "chat")) {
 						pl.sendMessage(replaceValues(m, true));
@@ -46,7 +49,7 @@ public class ServerMessageEvent extends TeamspeakEvent{
 			} else if (info.get("targetmode").equals("1")) {
 				String m = plugin.getStringManager().getMessage("PrivateMsg");
 				String p = plugin.getRecipient(getClientId());
-				if (p != null && !p.isEmpty()) {
+				if (!m.isEmpty() && p != null && !p.isEmpty()) {
 					if (!replaceValues(plugin.getStringManager().getConsoleName(), false).equals(p)) {
 						Player pl = plugin.getServer().getPlayerExact(p);
 						if (pl == null) return;

@@ -171,6 +171,7 @@ public class BukkitSpeak extends JavaPlugin {
 			stringManager = new StringManager(this);
 			ts = new TeamspeakListener(this);
 			query.setTeamspeakActionListener(ts);
+			query.DEBUG = stringManager.getDebugMode();
 			qc = new QueryConnector(this);
 			this.getServer().getScheduler().scheduleAsyncDelayedTask(this, qc);
 			

@@ -24,6 +24,7 @@ public class ClientMovedEvent extends TeamspeakEvent {
 			if (!info.get("reasonid").equals("4")) {
 				if (Integer.parseInt(info.get("ctid")) == plugin.getStringManager().getChannelID()) {
 					String m = plugin.getStringManager().getMessage("ChannelEnter");
+					if (m.isEmpty()) return;
 					for (Player pl : plugin.getServer().getOnlinePlayers()) {
 						if (!plugin.getMuted(pl) && CheckPermissions(pl, "channelenter")) {
 							pl.sendMessage(replaceValues(m, true));
@@ -32,6 +33,7 @@ public class ClientMovedEvent extends TeamspeakEvent {
 					plugin.getLogger().info(replaceValues(m, false));
 				} else {
 					String m = plugin.getStringManager().getMessage("ChannelLeave");
+					if (m.isEmpty()) return;
 					for (Player pl : plugin.getServer().getOnlinePlayers()) {
 						if (!plugin.getMuted(pl) && CheckPermissions(pl, "channelleave")) {
 							pl.sendMessage(replaceValues(m, true));

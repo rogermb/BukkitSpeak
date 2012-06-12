@@ -15,6 +15,7 @@ public class EnterEvent extends TeamspeakEvent{
 	
 	protected void sendMessage() {
 		String m = plugin.getStringManager().getMessage("Join");
+		if (m.isEmpty()) return;
 		for (Player pl : plugin.getServer().getOnlinePlayers()) {
 			if (!plugin.getMuted(pl) && CheckPermissions(pl, "join")) {
 				pl.sendMessage(replaceValues(m, true));

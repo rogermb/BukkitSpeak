@@ -22,7 +22,7 @@ public class CommandAdminHelp extends BukkitSpeakCommand {
 		if (CheckCommandPermission(sender, "channelkick"))
 			send(sender, Level.INFO, "&e/tsa channelkick target (reason) &2- Kicks from the channel and moves the client to the default channel.");
 		if (CheckCommandPermission(sender, "status"))
-			send(sender, Level.INFO, "&e/ts status &a- Shows some info about BukkitSpeak.");
+			send(sender, Level.INFO, "&e/tsa status &a- Shows some info about BukkitSpeak.");
 		if (CheckCommandPermission(sender, "reload"))
 			send(sender, Level.INFO, "&e/tsa reload &2- Reloads the config and the query.");
 	}

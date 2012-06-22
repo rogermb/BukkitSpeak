@@ -15,7 +15,8 @@ public class BukkitSpeakCommandExecutor implements CommandExecutor {
 	BukkitSpeak plugin;
 	StringManager stringManager;
 	
-	BukkitSpeakCommand AdminHelp, Ban, ChannelKick, Help, Info, Kick, List, Mute, Broadcast, Chat, Pm, Poke, Status;
+	BukkitSpeakCommand Help, Info, List, Mute, Broadcast, Chat, Pm, Poke, Reply;
+	BukkitSpeakCommand AdminHelp, Ban, ChannelKick, Kick, Status;
 	
 	public BukkitSpeakCommandExecutor(BukkitSpeak plugin) {
 		this.plugin = plugin;
@@ -33,6 +34,7 @@ public class BukkitSpeakCommandExecutor implements CommandExecutor {
 		Chat = new CommandChat(plugin);
 		Pm = new CommandPm(plugin);
 		Poke = new CommandPoke(plugin);
+		Reply = new CommandReply(plugin);
 		Status = new CommandStatus(plugin);
 	}
 	
@@ -110,9 +112,9 @@ public class BukkitSpeakCommandExecutor implements CommandExecutor {
 		} else if (args[0].equalsIgnoreCase("info")) {
 			if (!CheckPermissions(sender, "info")) return false;
 			Info.execute(sender, args);
-		} else if (args[0].equalsIgnoreCase("status")) {
-			if (!CheckPermissions(sender, "status")) return false;
-			Status.execute(sender, args);
+		} else if (args[0].equalsIgnoreCase("reply") || args[0].equalsIgnoreCase("r")) {
+			if (!CheckPermissions(sender, "reply")) return false;
+			Reply.execute(sender, args);
 		} else {
 			return false;
 		}
@@ -136,6 +138,9 @@ public class BukkitSpeakCommandExecutor implements CommandExecutor {
 		} else if (args[0].equalsIgnoreCase("kick")) {
 			if (!CheckPermissions(sender, "kick")) return false;
 			Kick.execute(sender, args);
+		} else if (args[0].equalsIgnoreCase("status")) {
+			if (!CheckPermissions(sender, "status")) return false;
+			Status.execute(sender, args);
 		} else if (args[0].equalsIgnoreCase("reload")) {
 			if (!CheckPermissions(sender, "reload")) return false;
 			plugin.reload(sender);
@@ -144,5 +149,25 @@ public class BukkitSpeakCommandExecutor implements CommandExecutor {
 		}
 		
 		return true;
+	}
+	
+	public void reload(BukkitSpeak plugin) {
+		this.plugin = plugin;
+		stringManager = plugin.getStringManager();
+		
+		AdminHelp = new CommandAdminHelp(plugin);
+		Ban = new CommandBan(plugin);
+		ChannelKick = new CommandChannelKick(plugin);
+		Help = new CommandHelp(plugin);
+		Info = new CommandInfo(plugin);
+		Kick = new CommandKick(plugin);
+		List = new CommandList(plugin);
+		Mute = new CommandMute(plugin);
+		Broadcast = new CommandBroadcast(plugin);
+		Chat = new CommandChat(plugin);
+		Pm = new CommandPm(plugin);
+		Poke = new CommandPoke(plugin);
+		Reply = new CommandReply(plugin);
+		Status = new CommandStatus(plugin);
 	}
 }

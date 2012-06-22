@@ -33,6 +33,7 @@ public class BukkitSpeak extends JavaPlugin {
 	ChatListener chatListener;
 	List<String> muted;
 	HashMap<Integer, String> pmRecipients;
+	HashMap<String, Integer> pmSenders;
 	
 	Date started, stopped, laststarted, laststopped;
 	
@@ -52,6 +53,7 @@ public class BukkitSpeak extends JavaPlugin {
 		chatListener = new ChatListener(this);
 		muted = new ArrayList<String>();
 		pmRecipients = new HashMap<Integer, String>();
+		pmSenders = new HashMap<String, Integer>();
 		
 		this.getServer().getPluginManager().registerEvents(chatListener, this);
 		this.getCommand("ts").setExecutor(tsCommand);
@@ -106,15 +108,23 @@ public class BukkitSpeak extends JavaPlugin {
 	}
 	
 	public void registerRecipient(String player, Integer clid) {
-		if (pmRecipients.containsKey(clid)) {
-			pmRecipients.remove(clid);
-		}
+		if (pmRecipients.containsKey(clid)) pmRecipients.remove(clid);
+		if (pmSenders.containsKey(player)) pmSenders.remove(player);
+		
 		pmRecipients.put(clid, player);
+		pmSenders.put(player, clid);
 	}
 	
 	public String getRecipient(Integer clid) {
 		if (pmRecipients.containsKey(clid)) {
 			return pmRecipients.get(clid);
+		}
+		return null;
+	}
+	
+	public Integer getSender(String player) {
+		if (pmSenders.containsKey(player)) {
+			return pmSenders.get(player);
 		}
 		return null;
 	}
@@ -175,9 +185,11 @@ public class BukkitSpeak extends JavaPlugin {
 			qc = new QueryConnector(this);
 			this.getServer().getScheduler().scheduleAsyncDelayedTask(this, qc);
 			
+			tsCommand.reload(this);
 			chatListener.reload(this);
 			muted = new ArrayList<String>();
 			pmRecipients = new HashMap<Integer, String>();
+			pmSenders = new HashMap<String, Integer>();
 			
 			if (sender instanceof Player) {
 				sender.sendMessage(this + "§areloaded.");

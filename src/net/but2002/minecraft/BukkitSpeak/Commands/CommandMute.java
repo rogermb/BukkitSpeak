@@ -31,6 +31,7 @@ public class CommandMute extends BukkitSpeakCommand {
 				
 				message = replaceKeys(message, repl);
 				
+				if (message == null || message.isEmpty()) return;
 				send(sender, Level.INFO, message);
 			} else {
 				plugin.setMuted((Player) sender, true);
@@ -46,6 +47,7 @@ public class CommandMute extends BukkitSpeakCommand {
 				
 				message = replaceKeys(message, repl);
 				
+				if (message == null || message.isEmpty()) return;
 				send(sender, Level.INFO, message);
 			}
 		} else {

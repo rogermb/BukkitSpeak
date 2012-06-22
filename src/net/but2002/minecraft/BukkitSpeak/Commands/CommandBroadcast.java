@@ -54,9 +54,9 @@ public class CommandBroadcast extends BukkitSpeakCommand {
 		tsMsg = convertToTeamspeak(replaceKeys(tsMsg, repl), true, stringManager.getAllowLinks());
 		mcMsg = replaceKeys(mcMsg, repl);
 		
-		if (tsMsg.isEmpty()) return;
+		if (tsMsg == null || tsMsg.isEmpty()) return;
 		plugin.getQuery().sendTextMessage(plugin.getQuery().getCurrentQueryClientServerID(), JTS3ServerQuery.TEXTMESSAGE_TARGET_VIRTUALSERVER, tsMsg);
-		if (mcMsg.isEmpty()) return;
+		if (tsMsg == null || mcMsg.isEmpty()) return;
 		for (Player pl : plugin.getServer().getOnlinePlayers()) {
 			if (!plugin.getMuted(pl)) pl.sendMessage(convertToMinecraft(mcMsg, true, stringManager.getAllowLinks()));
 		}

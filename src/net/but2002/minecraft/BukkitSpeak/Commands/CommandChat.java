@@ -54,9 +54,9 @@ public class CommandChat extends BukkitSpeakCommand {
 		tsMsg = convertToTeamspeak(replaceKeys(tsMsg, repl), true, stringManager.getAllowLinks());
 		mcMsg = replaceKeys(mcMsg, repl);
 		
-		if (tsMsg.isEmpty()) return;
+		if (tsMsg == null || tsMsg.isEmpty()) return;
 		plugin.getQuery().sendTextMessage(stringManager.getChannelID(), JTS3ServerQuery.TEXTMESSAGE_TARGET_CHANNEL, tsMsg, stringManager.getChannelPass());
-		if (mcMsg.isEmpty()) return;
+		if (mcMsg == null || mcMsg.isEmpty()) return;
 		for (Player pl : plugin.getServer().getOnlinePlayers()) {
 			if (!plugin.getMuted(pl)) pl.sendMessage(convertToMinecraft(mcMsg, true, stringManager.getAllowLinks()));
 		}

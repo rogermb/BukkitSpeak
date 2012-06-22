@@ -67,10 +67,10 @@ public class CommandBan extends BukkitSpeakCommand {
 			return;
 		}
 		
-		if (tsMsg.isEmpty()) return;
+		if (tsMsg == null || tsMsg.isEmpty()) return;
 		Integer i = Integer.valueOf(client.get("clid"));
 		plugin.getDQuery().banClient(i, tsMsg);
-		if (mcMsg.isEmpty()) return;
+		if (tsMsg == null || mcMsg.isEmpty()) return;
 		for (Player pl : plugin.getServer().getOnlinePlayers()) {
 			if (!plugin.getMuted(pl)) pl.sendMessage(convertToMinecraft(mcMsg, true, stringManager.getAllowLinks()));
 		}

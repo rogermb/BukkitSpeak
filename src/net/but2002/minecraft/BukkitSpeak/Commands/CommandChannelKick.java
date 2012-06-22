@@ -78,10 +78,10 @@ public class CommandChannelKick extends BukkitSpeakCommand {
 			return;
 		}
 		
-		if (tsMsg.isEmpty()) return;
+		if (tsMsg == null || tsMsg.isEmpty()) return;
 		Integer i = Integer.valueOf(client.get("clid"));
 		plugin.getQuery().kickClient(i, true, tsMsg);
-		if (mcMsg.isEmpty()) return;
+		if (mcMsg == null || mcMsg.isEmpty()) return;
 		for (Player pl : plugin.getServer().getOnlinePlayers()) {
 			if (!plugin.getMuted(pl)) pl.sendMessage(convertToMinecraft(mcMsg, true, stringManager.getAllowLinks()));
 		}

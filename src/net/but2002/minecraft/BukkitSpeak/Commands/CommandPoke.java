@@ -66,15 +66,15 @@ public class CommandPoke extends BukkitSpeakCommand {
 		tsMsg = convertToTeamspeak(replaceKeys(tsMsg, repl), true, stringManager.getAllowLinks());
 		mcMsg = replaceKeys(mcMsg, repl);
 		
+		if (tsMsg == null || tsMsg.isEmpty()) return;
 		if (tsMsg.length() > 100) {
 			send(sender, Level.WARNING, "&4The message is too long! (> 100 characters)");
 			return;
 		}
 		
-		if (tsMsg.isEmpty()) return;
 		Integer i = Integer.valueOf(client.get("clid"));
 		plugin.getQuery().pokeClient(i, tsMsg);
-		if (mcMsg.isEmpty()) return;
+		if (mcMsg == null || mcMsg.isEmpty()) return;
 		for (Player pl : plugin.getServer().getOnlinePlayers()) {
 			if (!plugin.getMuted(pl)) pl.sendMessage(convertToMinecraft(mcMsg, true, stringManager.getAllowLinks()));
 		}

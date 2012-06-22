@@ -68,11 +68,11 @@ public class CommandPm extends BukkitSpeakCommand {
 		tsMsg = convertToTeamspeak(replaceKeys(tsMsg, repl), true, stringManager.getAllowLinks());
 		mcMsg = replaceKeys(mcMsg, repl);
 		
-		if (tsMsg.isEmpty()) return;
+		if (tsMsg == null || tsMsg.isEmpty()) return;
 		Integer i = Integer.valueOf(client.get("clid"));
 		plugin.getQuery().sendTextMessage(i, JTS3ServerQuery.TEXTMESSAGE_TARGET_CLIENT, tsMsg);
 		plugin.registerRecipient(Name, i);
-		if (mcMsg.isEmpty()) return;
+		if (mcMsg == null || mcMsg.isEmpty()) return;
 		if (sender instanceof Player) {
 			sender.sendMessage(convertToMinecraft(mcMsg, true, stringManager.getAllowLinks()));
 		} else {

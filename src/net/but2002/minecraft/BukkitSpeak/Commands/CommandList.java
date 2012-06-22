@@ -58,6 +58,7 @@ public class CommandList extends BukkitSpeakCommand {
 			
 			message = replaceKeys(message, repl);
 			
+			if (message == null || message.isEmpty()) return;
 			send(sender, Level.INFO, message);
 			
 		} else if (args.length == 2 && stringManager.getUseChannel() && args[1].equalsIgnoreCase("channel")) {
@@ -92,6 +93,7 @@ public class CommandList extends BukkitSpeakCommand {
 			
 			message = replaceKeys(message, repl);
 			
+			if (message == null || message.isEmpty()) return;
 			send(sender, Level.INFO, message);
 		} else {
 			send(sender, Level.INFO, "&4Usage:");

@@ -70,12 +70,12 @@ public class CommandKick extends BukkitSpeakCommand {
 		tsMsg = convertToTeamspeak(replaceKeys(tsMsg, repl), false, stringManager.getAllowLinks());
 		mcMsg = replaceKeys(mcMsg, repl);
 		
+		if (tsMsg == null || tsMsg.isEmpty()) return;
 		if (tsMsg.length() > 100) {
 			send(sender, Level.WARNING, "&4The message is too long! (> 100 characters)");
 			return;
 		}
 		
-		if (tsMsg == null || tsMsg.isEmpty()) return;
 		Integer i = Integer.valueOf(client.get("clid"));
 		plugin.getQuery().kickClient(i, false, tsMsg);
 		if (mcMsg == null || mcMsg.isEmpty()) return;

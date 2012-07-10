@@ -35,8 +35,7 @@ public abstract class BukkitSpeakCommand {
 			"[color=#FFFFFF]",	// 15
 			"[b]",				// 16
 			"[u]",				// 17
-			"[i]",				// 18
-			""};				// 19
+			"[i]"};				// 18
 	
 	public BukkitSpeakCommand(BukkitSpeak plugin) {
 		this.plugin = plugin;
@@ -94,6 +93,8 @@ public abstract class BukkitSpeakCommand {
 						}
 						s = s.replaceFirst("§[oO]", COLORS[j]);
 						italics = true;
+					} else if (j == 19 || j == 20) {
+						s = s.replaceFirst("§[mMkK]", "");
 					} else {
 						s = s.replaceFirst("§r", "");
 						if (colored) s = s.substring(0, i) + "[/color]" + s.substring(i);
@@ -136,8 +137,12 @@ public abstract class BukkitSpeakCommand {
 			return 17;
 		} else if (s.equalsIgnoreCase("o")) {
 			return 18;
-		} else {
+		} else if (s.equalsIgnoreCase("m")) {
 			return 19;
+		} else if (s.equalsIgnoreCase("k")) {
+			return 20;
+		} else {
+			return 21;
 		}
 	}
 	
@@ -186,7 +191,7 @@ public abstract class BukkitSpeakCommand {
 			builder.append(seperator);
 		}
 		
-		builder.deleteCharAt(builder.length() - seperator.length()); // remove
+		builder.deleteCharAt(builder.length() - seperator.length());
 		return builder.toString();
 	}
 	

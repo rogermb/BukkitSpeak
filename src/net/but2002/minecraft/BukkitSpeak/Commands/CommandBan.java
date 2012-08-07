@@ -74,5 +74,8 @@ public class CommandBan extends BukkitSpeakCommand {
 		for (Player pl : plugin.getServer().getOnlinePlayers()) {
 			if (!plugin.getMuted(pl)) pl.sendMessage(convertToMinecraft(mcMsg, true, stringManager.getAllowLinks()));
 		}
+		if (!(sender instanceof Player) || (stringManager.getLogInConsole())) {
+			plugin.getLogger().info(convertToMinecraft(mcMsg, false, stringManager.getAllowLinks()));
+		}
 	}
 }

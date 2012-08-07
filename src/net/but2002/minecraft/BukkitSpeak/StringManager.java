@@ -11,7 +11,7 @@ public class StringManager {
 	private HashMap<String,String> strings = new HashMap<String,String>();
 	private String ip, serverAdmin, serverPass, tsName, tsConsoleName, tsChannelPass, tsDefaultReason;
 	private int queryPort, serverPort, tsChannelID, tsTarget;
-	private Boolean tsServer, tsTextServer, tsChannel, tsTextChannel, tsPrivateMessages, tsAllowLinks, tsDebug;
+	private Boolean tsServer, tsTextServer, tsChannel, tsTextChannel, tsPrivateMessages, tsAllowLinks, tsConsole, tsDebug;
 	
 	public static final String CONFIG_SECTION = "main";
 	public static final String CONFIG_IP = "TeamSpeakIp";
@@ -32,6 +32,7 @@ public class StringManager {
 	public static final String TEAMSPEAK_PRIVATEMESSAGES = "ListenToPrivateMessages";
 	public static final String TEAMSPEAK_ALLOWLINKS = "AllowLinksInMessages";
 	public static final String TEAMSPEAK_TARGET = "SendChatToTeamspeak";
+	public static final String TEAMSPEAK_CONSOLE = "LogChatInConsole";
 	public static final String TEAMSPEAK_DEFAULTREASON = "DefaultReason";
 	public static final String TEAMSPEAK_DEBUG = "Debug";
 	public static final String[][] TEAMSPEAK_TARGETS = {
@@ -110,8 +111,11 @@ public class StringManager {
 		tsPrivateMessages = reader.getBoolean(TEAMSPEAK_SECTION, TEAMSPEAK_PRIVATEMESSAGES, true);
 		tsAllowLinks = reader.getBoolean(TEAMSPEAK_SECTION, TEAMSPEAK_ALLOWLINKS, true);
 		tsTarget = reader.getChoice(TEAMSPEAK_SECTION, TEAMSPEAK_TARGET, 0, TEAMSPEAK_TARGETS);
+		tsConsole = reader.getBoolean(TEAMSPEAK_SECTION, TEAMSPEAK_CONSOLE, true);
 		tsDefaultReason = reader.getString(TEAMSPEAK_SECTION, TEAMSPEAK_DEFAULTREASON, "-");
 		tsDebug = reader.getBoolean(TEAMSPEAK_SECTION, TEAMSPEAK_DEBUG, false);
+		
+		
 		
 		for (String[] keyPair : TEAMSPEAKEVENTMESSAGES) {
 			try {
@@ -220,6 +224,10 @@ public class StringManager {
 	
 	public TsTargetEnum getTeamspeakTarget() {
 		return TsTargetEnum.values()[tsTarget];
+	}
+	
+	public boolean getLogInConsole() {
+		return tsConsole;
 	}
 	
 	public String getDefaultReason() {

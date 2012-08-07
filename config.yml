@@ -23,6 +23,9 @@ teamspeak:
   # Can be either 'server', 'channel' or 'none'
   SendChatToTeamspeak: none
   
+  # Can only be true or false
+  LogChatInConsole: true
+  
   # Default reason for bans and (channel) kicks
   DefaultReason: '-'
   

@@ -24,11 +24,11 @@ public class LeaveEvent extends TeamspeakEvent{
 				String m = plugin.getStringManager().getMessage("Quit");
 				if (m.isEmpty()) return;
 				for (Player pl : plugin.getServer().getOnlinePlayers()) {
-					if (!plugin.getMuted(pl) && CheckPermissions(pl, "leave")) {
+					if (!plugin.getMuted(pl) && checkPermissions(pl, "leave")) {
 						pl.sendMessage(replaceValues(m, true));
 					}
 				}
-				plugin.getLogger().info(replaceValues(m, false));
+				if (plugin.getStringManager().getLogInConsole()) plugin.getLogger().info(replaceValues(m, false));
 			}
 		}
 	}

@@ -32,20 +32,20 @@ public class ServerMessageEvent extends TeamspeakEvent{
 				String m = plugin.getStringManager().getMessage("ServerMsg");
 				if (m.isEmpty()) return;
 				for (Player pl : plugin.getServer().getOnlinePlayers()) {
-					if (!plugin.getMuted(pl) && CheckPermissions(pl, "broadcast")) {
+					if (!plugin.getMuted(pl) && checkPermissions(pl, "broadcast")) {
 						pl.sendMessage(replaceValues(m, true));
 					}
 				}
-				plugin.getLogger().info(replaceValues(m, false));
+				if (plugin.getStringManager().getLogInConsole()) plugin.getLogger().info(replaceValues(m, false));
 			} else if (info.get("targetmode").equals("2")) {
 				String m = plugin.getStringManager().getMessage("ChannelMsg");
 				if (m.isEmpty()) return;
 				for (Player pl : plugin.getServer().getOnlinePlayers()) {
-					if (!plugin.getMuted(pl) && CheckPermissions(pl, "chat")) {
+					if (!plugin.getMuted(pl) && checkPermissions(pl, "chat")) {
 						pl.sendMessage(replaceValues(m, true));
 					}
 				}
-				plugin.getLogger().info(replaceValues(m, false));
+				if (plugin.getStringManager().getLogInConsole()) plugin.getLogger().info(replaceValues(m, false));
 			} else if (info.get("targetmode").equals("1")) {
 				String m = plugin.getStringManager().getMessage("PrivateMsg");
 				String p = plugin.getRecipient(getClientId());
@@ -53,7 +53,7 @@ public class ServerMessageEvent extends TeamspeakEvent{
 					if (!replaceValues(plugin.getStringManager().getConsoleName(), false).equals(p)) {
 						Player pl = plugin.getServer().getPlayerExact(p);
 						if (pl == null) return;
-						if (!plugin.getMuted(pl) && CheckPermissions(pl, "pm")) {
+						if (!plugin.getMuted(pl) && checkPermissions(pl, "pm")) {
 							pl.sendMessage(replaceValues(m, true));
 						}
 					}

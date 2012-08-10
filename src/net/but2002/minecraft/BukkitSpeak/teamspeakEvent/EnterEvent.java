@@ -17,10 +17,10 @@ public class EnterEvent extends TeamspeakEvent{
 		String m = plugin.getStringManager().getMessage("Join");
 		if (m.isEmpty()) return;
 		for (Player pl : plugin.getServer().getOnlinePlayers()) {
-			if (!plugin.getMuted(pl) && CheckPermissions(pl, "join")) {
+			if (!plugin.getMuted(pl) && checkPermissions(pl, "join")) {
 				pl.sendMessage(replaceValues(m, true));
 			}
 		}
-		plugin.getLogger().info(replaceValues(m, false));
+		if (plugin.getStringManager().getLogInConsole()) plugin.getLogger().info(replaceValues(m, false));
 	}
 }

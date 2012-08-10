@@ -57,7 +57,7 @@ public abstract class TeamspeakEvent {
 		return input;
 	}
 	
-	public Boolean CheckPermissions(Player player, String perm) {
+	public boolean checkPermissions(Player player, String perm) {
 		return player.hasPermission("bukkitspeak.messages." + perm);
 	}
 }

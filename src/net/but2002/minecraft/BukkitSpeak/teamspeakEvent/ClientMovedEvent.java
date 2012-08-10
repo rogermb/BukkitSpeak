@@ -26,20 +26,20 @@ public class ClientMovedEvent extends TeamspeakEvent {
 					String m = plugin.getStringManager().getMessage("ChannelEnter");
 					if (m.isEmpty()) return;
 					for (Player pl : plugin.getServer().getOnlinePlayers()) {
-						if (!plugin.getMuted(pl) && CheckPermissions(pl, "channelenter")) {
+						if (!plugin.getMuted(pl) && checkPermissions(pl, "channelenter")) {
 							pl.sendMessage(replaceValues(m, true));
 						}
 					}
-					plugin.getLogger().info(replaceValues(m, false));
+					if (plugin.getStringManager().getLogInConsole()) plugin.getLogger().info(replaceValues(m, false));
 				} else {
 					String m = plugin.getStringManager().getMessage("ChannelLeave");
 					if (m.isEmpty()) return;
 					for (Player pl : plugin.getServer().getOnlinePlayers()) {
-						if (!plugin.getMuted(pl) && CheckPermissions(pl, "channelleave")) {
+						if (!plugin.getMuted(pl) && checkPermissions(pl, "channelleave")) {
 							pl.sendMessage(replaceValues(m, true));
 						}
 					}
-					plugin.getLogger().info(replaceValues(m, false));
+					if (plugin.getStringManager().getLogInConsole()) plugin.getLogger().info(replaceValues(m, false));
 				}
 			}
 		}

@@ -11,10 +11,6 @@ import net.but2002.minecraft.BukkitSpeak.BukkitSpeak;
 
 public class DTS3ServerQuery{
 	public final static Logger log = Logger.getLogger("Minecraft");
-	public BukkitSpeak plugin;
-	public DTS3ServerQuery(BukkitSpeak bukkit){
-		this.plugin = bukkit;
-	}
 	/* Adding to the commands from JTS3ServerQuery
 	 * There weren't enough for me.
 	 */
@@ -25,7 +21,7 @@ public class DTS3ServerQuery{
 	 * @param banReason = Can be anything.
 	 */
 	public boolean banClient(String name, String banReason){
-		if (!plugin.query.isConnected()){
+		if (!BukkitSpeak.getQuery().isConnected()){
 			log.log(Level.INFO, "banClient(): Not connected to TS3 server!");
 			return false;
 		}
@@ -37,10 +33,10 @@ public class DTS3ServerQuery{
 			command += " clid=" + clid;
 			}
 			if (banReason != null && banReason.length() > 0){
-			command += " banreason=" + plugin.query.encodeTS3String(banReason);
+			command += " banreason=" + BukkitSpeak.getQuery().encodeTS3String(banReason);
 			}
 			
-			hmIn = plugin.query.doCommand(command);
+			hmIn = BukkitSpeak.getQuery().doCommand(command);
 			
 			if (!hmIn.get("id").equals("0")){
 				log.log(Level.INFO, "banClient()" + hmIn.get("id") + hmIn.get("msg") + hmIn.get("extra_msg") + hmIn.get("failed_permid"));
@@ -53,7 +49,7 @@ public class DTS3ServerQuery{
 		return true;
 	}
 	public boolean banClient(Integer clid, String banReason){
-		if (!plugin.query.isConnected()){
+		if (!BukkitSpeak.getQuery().isConnected()){
 			log.log(Level.INFO, "banClient(): Not connected to TS3 server!");
 			return false;
 		}
@@ -64,10 +60,10 @@ public class DTS3ServerQuery{
 			command += " clid=" + String.valueOf(clid);
 			}
 			if (banReason != null && banReason.length() > 0){
-			command += " banreason=" + plugin.query.encodeTS3String(banReason);
+			command += " banreason=" + BukkitSpeak.getQuery().encodeTS3String(banReason);
 			}
 			
-			hmIn = plugin.query.doCommand(command);
+			hmIn = BukkitSpeak.getQuery().doCommand(command);
 			
 			if (!hmIn.get("id").equals("0")){
 				log.log(Level.INFO, "banClient()" + hmIn.get("id") + hmIn.get("msg") + hmIn.get("extra_msg") + hmIn.get("failed_permid"));
@@ -80,14 +76,14 @@ public class DTS3ServerQuery{
 		return true;
 	}
 	public boolean changeGroup(String groupid, String nameid){
-		if (!plugin.query.isConnected()){
+		if (!BukkitSpeak.getQuery().isConnected()){
 			log.log(Level.INFO, "changeGroup(): Not connected to TS3 server!");
 			return false;
 		}
-
+		
 		HashMap<String, String> hmIn;
 		try{
-			String command = "servergroupaddclient";					
+			String command = "servergroupaddclient";
 			if (groupid != null && groupid.length() > 0){
 			command += " sgid=" + groupid;
 			}
@@ -95,7 +91,7 @@ public class DTS3ServerQuery{
 			command += " cldbid=" + nameid;
 			}
 			
-			hmIn = plugin.query.doCommand(command);
+			hmIn = BukkitSpeak.getQuery().doCommand(command);
 			if (!hmIn.get("id").equals("0")){
 				log.log(Level.INFO, "changeGroup()" + hmIn.get("id") + hmIn.get("msg") + hmIn.get("extra_msg") + hmIn.get("failed_permid"));
 				return false;
@@ -107,11 +103,11 @@ public class DTS3ServerQuery{
 		return true;
 	}
 	public String clientFindID(String clientname){
-		if (!plugin.query.isConnected()){
+		if (!BukkitSpeak.getQuery().isConnected()){
 			log.log(Level.INFO, "clientfind(): Not connected to TS3 server!");
 			return null;
 		}
-
+		
 		HashMap<String, String> hmIn;
 		try{
 			String command = "clientfind";					
@@ -119,7 +115,7 @@ public class DTS3ServerQuery{
 			command += " pattern=" + clientname;
 			}
 			
-			hmIn = plugin.query.doCommand(command);
+			hmIn = BukkitSpeak.getQuery().doCommand(command);
 			HashMap<String, String> info = parseLine(hmIn.get("response"));
 			if (!hmIn.get("msg").equalsIgnoreCase("ok")){
 				log.log(Level.INFO, "clientfind()" + hmIn.get("id") + hmIn.get("msg") + hmIn.get("extra_msg") + hmIn.get("failed_permid"));
@@ -134,11 +130,11 @@ public class DTS3ServerQuery{
 		
 	}
 	public String clientFind(String clientname){
-		if (!plugin.query.isConnected()){
+		if (!BukkitSpeak.getQuery().isConnected()){
 			log.log(Level.INFO, "clientfind(): Not connected to TS3 server!");
 			return null;
 		}
-
+		
 		HashMap<String, String> hmIn;
 		try{
 			String command = "clientfind";					
@@ -146,7 +142,7 @@ public class DTS3ServerQuery{
 			command += " pattern=" + clientname;
 			}
 			
-			hmIn = plugin.query.doCommand(command);
+			hmIn = BukkitSpeak.getQuery().doCommand(command);
 			HashMap<String, String> info = parseLine(hmIn.get("response"));
 			if (!hmIn.get("msg").equalsIgnoreCase("ok")){
 				log.log(Level.INFO, "clientfind()" + hmIn.get("id") + hmIn.get("msg") + hmIn.get("extra_msg") + hmIn.get("failed_permid"));
@@ -161,19 +157,19 @@ public class DTS3ServerQuery{
 		
 	}
 	public String channelFind(String channelname){
-		if (!plugin.query.isConnected()){
+		if (!BukkitSpeak.getQuery().isConnected()){
 			log.log(Level.INFO, "channelFind(): Not connected to TS3 server!");
 			return null;
 		}
-
+		
 		HashMap<String, String> hmIn;
 		try{
-			String command = "channelfind";					
+			String command = "channelfind";
 			if (channelname != null && channelname.length() > 0){
 			command += " pattern=" + channelname;
 			}
 			
-			hmIn = plugin.query.doCommand(command);
+			hmIn = BukkitSpeak.getQuery().doCommand(command);
 			HashMap<String, String> info = parseLine(hmIn.get("response"));
 			if (!hmIn.get("msg").equalsIgnoreCase("ok")){
 				log.log(Level.INFO, "clientfind()" + hmIn.get("id") + hmIn.get("msg") + hmIn.get("extra_msg") + hmIn.get("failed_permid"));
@@ -188,7 +184,7 @@ public class DTS3ServerQuery{
 		
 	}
 	public boolean poke(String player, String message){
-		if (!plugin.query.isConnected()){
+		if (!BukkitSpeak.getQuery().isConnected()){
 			log.log(Level.INFO, "poke(): Not connected to TS3 server!");
 			return false;
 		}
@@ -197,10 +193,10 @@ public class DTS3ServerQuery{
 		try{
 			String command = "clientpoke";					
 			if (player != null && message != null){
-			command += " clid=" + clid + " msg=" + plugin.query.encodeTS3String(message);
+			command += " clid=" + clid + " msg=" + BukkitSpeak.getQuery().encodeTS3String(message);
 			}
 			
-			hmIn = plugin.query.doCommand(command);
+			hmIn = BukkitSpeak.getQuery().doCommand(command);
 			if (!hmIn.get("msg").equalsIgnoreCase("ok")){
 				log.log(Level.INFO, "clientfind()" + hmIn.get("id") + hmIn.get("msg") + hmIn.get("extra_msg") + hmIn.get("failed_permid"));
 				return false;
@@ -218,10 +214,10 @@ public class DTS3ServerQuery{
 			return;
 		}
 		
-	    Collection<String> cValue = hm.values();
-	    Collection<String> cKey = hm.keySet();
-	    Iterator<String> itrValue = cValue.iterator();
-	    Iterator<String> itrKey = cKey.iterator();
+		Collection<String> cValue = hm.values();
+		Collection<String> cKey = hm.keySet();
+		Iterator<String> itrValue = cValue.iterator();
+		Iterator<String> itrKey = cKey.iterator();
 		
 		while (itrValue.hasNext() && itrKey.hasNext())
 		{
@@ -256,20 +252,20 @@ public class DTS3ServerQuery{
 			else
 			{
 				key = temp.substring(0, pos);
-				retValue.put(key, plugin.query.decodeTS3String(temp.substring(pos+1)));
+				retValue.put(key, BukkitSpeak.getQuery().decodeTS3String(temp.substring(pos+1)));
 			}
 		}
 		
 		return retValue;
 	}
 	public void echoError(){
-		String error = plugin.query.getLastError();
+		String error = BukkitSpeak.getQuery().getLastError();
 		if (error != null)
 		{
 			System.out.println(error);
-			if (plugin.query.getLastErrorPermissionID() != -1)
+			if (BukkitSpeak.getQuery().getLastErrorPermissionID() != -1)
 			{
-				HashMap<String, String> permInfo = plugin.query.getPermissionInfo(plugin.query.getLastErrorPermissionID());
+				HashMap<String, String> permInfo = BukkitSpeak.getQuery().getPermissionInfo(BukkitSpeak.getQuery().getLastErrorPermissionID());
 				if (permInfo != null)
 				{
 					System.out.println("Missing Permission: " + permInfo.get("permname"));

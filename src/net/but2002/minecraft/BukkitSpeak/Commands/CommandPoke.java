@@ -5,7 +5,9 @@ import java.util.HashMap;
 import java.util.logging.Level;
 
 import net.but2002.minecraft.BukkitSpeak.BukkitSpeak;
+import net.but2002.minecraft.BukkitSpeak.AsyncQueryUtils.QueryPoke;
 
+import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -69,7 +71,8 @@ public class CommandPoke extends BukkitSpeakCommand {
 		}
 		
 		Integer i = Integer.valueOf(client.get("clid"));
-		BukkitSpeak.getQuery().pokeClient(i, tsMsg);
+		QueryPoke qp = new QueryPoke(i, tsMsg);
+		Bukkit.getScheduler().scheduleAsyncDelayedTask(BukkitSpeak.getInstance(), qp);
 		broadcastMessage(mcMsg, sender);
 	}
 }

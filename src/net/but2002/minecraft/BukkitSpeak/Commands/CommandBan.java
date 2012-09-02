@@ -4,7 +4,9 @@ import java.util.HashMap;
 import java.util.logging.Level;
 
 import net.but2002.minecraft.BukkitSpeak.BukkitSpeak;
+import net.but2002.minecraft.BukkitSpeak.AsyncQueryUtils.QueryBan;
 
+import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -71,7 +73,8 @@ public class CommandBan extends BukkitSpeakCommand {
 		//FIXME
 		
 		Integer i = Integer.valueOf(client.get("clid"));
-		BukkitSpeak.getDQuery().banClient(i, tsMsg);
+		QueryBan qb = new QueryBan(i, tsMsg);
+		Bukkit.getScheduler().scheduleAsyncDelayedTask(BukkitSpeak.getInstance(), qb);
 		broadcastMessage(mcMsg, sender);
 	}
 }

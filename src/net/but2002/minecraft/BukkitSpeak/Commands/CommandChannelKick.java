@@ -5,7 +5,9 @@ import java.util.HashMap;
 import java.util.logging.Level;
 
 import net.but2002.minecraft.BukkitSpeak.BukkitSpeak;
+import net.but2002.minecraft.BukkitSpeak.AsyncQueryUtils.QueryKick;
 
+import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -76,7 +78,8 @@ public class CommandChannelKick extends BukkitSpeakCommand {
 		}
 		
 		Integer i = Integer.valueOf(client.get("clid"));
-		BukkitSpeak.getQuery().kickClient(i, true, tsMsg);
+		QueryKick qk = new QueryKick(i, true, tsMsg);
+		Bukkit.getScheduler().scheduleAsyncDelayedTask(BukkitSpeak.getInstance(), qk);
 		broadcastMessage(mcMsg, sender);
 	}
 }

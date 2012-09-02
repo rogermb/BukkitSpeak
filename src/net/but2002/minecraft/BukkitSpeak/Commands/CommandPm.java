@@ -5,7 +5,9 @@ import java.util.HashMap;
 import java.util.logging.Level;
 
 import net.but2002.minecraft.BukkitSpeak.BukkitSpeak;
+import net.but2002.minecraft.BukkitSpeak.QuerySender;
 
+import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -66,7 +68,8 @@ public class CommandPm extends BukkitSpeakCommand {
 		
 		if (tsMsg == null || tsMsg.isEmpty()) return;
 		Integer i = Integer.valueOf(client.get("clid"));
-		BukkitSpeak.getQuery().sendTextMessage(i, JTS3ServerQuery.TEXTMESSAGE_TARGET_CLIENT, tsMsg);
+		QuerySender qs = new QuerySender(i, JTS3ServerQuery.TEXTMESSAGE_TARGET_CLIENT, tsMsg);
+		Bukkit.getScheduler().scheduleAsyncDelayedTask(BukkitSpeak.getInstance(), qs);
 		BukkitSpeak.registerRecipient(Name, i);
 		if (mcMsg == null || mcMsg.isEmpty()) return;
 		if (sender instanceof Player) {

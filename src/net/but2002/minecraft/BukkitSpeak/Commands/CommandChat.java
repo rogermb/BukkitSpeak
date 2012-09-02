@@ -5,7 +5,9 @@ import java.util.HashMap;
 import java.util.logging.Level;
 
 import net.but2002.minecraft.BukkitSpeak.BukkitSpeak;
+import net.but2002.minecraft.BukkitSpeak.QuerySender;
 
+import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -51,8 +53,9 @@ public class CommandChat extends BukkitSpeakCommand {
 		mcMsg = replaceKeys(mcMsg, repl);
 		
 		if (tsMsg == null || tsMsg.isEmpty()) return;
-		BukkitSpeak.getQuery().sendTextMessage(BukkitSpeak.getStringManager().getChannelID(),
+		QuerySender qs = new QuerySender(BukkitSpeak.getStringManager().getChannelID(),
 				JTS3ServerQuery.TEXTMESSAGE_TARGET_CHANNEL, tsMsg);
+		Bukkit.getScheduler().scheduleSyncDelayedTask(BukkitSpeak.getInstance(), qs);
 		broadcastMessage(mcMsg, sender);
 	}
 }

@@ -11,6 +11,11 @@ public class CommandInfo extends BukkitSpeakCommand {
 	@Override
 	public void execute(CommandSender sender, String[] args) {
 		
+		if (!BukkitSpeak.getQuery().isConnected() || BukkitSpeak.getClients() == null) {
+			send(sender, Level.WARNING, "&4Can't communicate with the TeamSpeak server.");
+			return;
+		}
+		
 		if (Integer.valueOf(BukkitSpeak.getStringManager().getServerPort()) > 0) {
 			StringBuilder sb = new StringBuilder();
 			

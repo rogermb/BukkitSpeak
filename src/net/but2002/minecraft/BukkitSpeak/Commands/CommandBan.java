@@ -10,8 +10,8 @@ import org.bukkit.entity.Player;
 
 public class CommandBan extends BukkitSpeakCommand {
 	
-	public CommandBan(BukkitSpeak plugin) {
-		super(plugin);
+	public CommandBan() {
+		super();
 	}
 	
 	@Override
@@ -20,14 +20,14 @@ public class CommandBan extends BukkitSpeakCommand {
 			send(sender, Level.WARNING, "&aToo few arguments!");
 			send(sender, Level.WARNING, "&aUsage: /ts ban client (message)");
 			return;
-		} else if (!plugin.getQuery().isConnected()) {
+		} else if (!BukkitSpeak.getQuery().isConnected()) {
 			send(sender, Level.WARNING, "&4Can't communicate with the TeamSpeak server.");
 			return;
 		}
 		
 		HashMap<String, String> client;
 		try {
-			client = plugin.getClients().getByPartialName(args[1]);
+			client = BukkitSpeak.getClients().getByPartialName(args[1]);
 		} catch (Exception e) {
 			send(sender, Level.WARNING, "&4There are more than one clients matching &e" + args[1] + "&4.");
 			return;
@@ -38,15 +38,15 @@ public class CommandBan extends BukkitSpeakCommand {
 			return;
 		}
 		
-		String tsMsg = stringManager.getMessage("BanMessage");
-		String mcMsg = stringManager.getMessage("Ban");
+		String tsMsg = BukkitSpeak.getStringManager().getMessage("BanMessage");
+		String mcMsg = BukkitSpeak.getStringManager().getMessage("Ban");
 		String Name, DisplayName;
 		if (sender instanceof Player) {
 			Name = ((Player) sender).getName();
 			DisplayName = ((Player) sender).getDisplayName();
 		} else {
-			Name = convertToMinecraft(stringManager.getConsoleName(), false, false);
-			DisplayName = stringManager.getConsoleName();
+			Name = convertToMinecraft(BukkitSpeak.getStringManager().getConsoleName(), false, false);
+			DisplayName = BukkitSpeak.getStringManager().getConsoleName();
 		}
 		
 		HashMap<String, String> repl = new HashMap<String, String>();
@@ -56,10 +56,10 @@ public class CommandBan extends BukkitSpeakCommand {
 		if (args.length > 2) {
 			repl.put("%msg%", combineSplit(2, args, " "));
 		} else {
-			repl.put("%msg%", stringManager.getDefaultReason());
+			repl.put("%msg%", BukkitSpeak.getStringManager().getDefaultReason());
 		}
 		
-		tsMsg = convertToTeamspeak(replaceKeys(tsMsg, repl), false, stringManager.getAllowLinks());
+		tsMsg = convertToTeamspeak(replaceKeys(tsMsg, repl), false, BukkitSpeak.getStringManager().getAllowLinks());
 		mcMsg = replaceKeys(mcMsg, repl);
 		
 		if (tsMsg == null || tsMsg.isEmpty()) return;
@@ -68,14 +68,10 @@ public class CommandBan extends BukkitSpeakCommand {
 			return;
 		}
 		
+		//FIXME
+		
 		Integer i = Integer.valueOf(client.get("clid"));
-		plugin.getDQuery().banClient(i, tsMsg);
-		if (tsMsg == null || mcMsg.isEmpty()) return;
-		for (Player pl : plugin.getServer().getOnlinePlayers()) {
-			if (!plugin.getMuted(pl)) pl.sendMessage(convertToMinecraft(mcMsg, true, stringManager.getAllowLinks()));
-		}
-		if (!(sender instanceof Player) || (stringManager.getLogInConsole())) {
-			plugin.getLogger().info(convertToMinecraft(mcMsg, false, stringManager.getAllowLinks()));
-		}
+		BukkitSpeak.getDQuery().banClient(i, tsMsg);
+		broadcastMessage(mcMsg, sender);
 	}
 }

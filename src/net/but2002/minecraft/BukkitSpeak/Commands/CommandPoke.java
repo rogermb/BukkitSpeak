@@ -11,24 +11,20 @@ import org.bukkit.entity.Player;
 
 public class CommandPoke extends BukkitSpeakCommand {
 	
-	public CommandPoke(BukkitSpeak plugin) {
-		super(plugin);
-	}
-	
 	@Override
 	public void execute(CommandSender sender, String[] args) {
 		if (args.length < 3) {
 			send(sender, Level.WARNING, "&aToo few arguments!");
 			send(sender, Level.WARNING, "&aUsage: /ts poke target message");
 			return;
-		} else if (!plugin.getQuery().isConnected()) {
+		} else if (!BukkitSpeak.getQuery().isConnected()) {
 			send(sender, Level.WARNING, "&4Can't communicate with the TeamSpeak server.");
 			return;
 		}
 		
 		HashMap<String, String> client;
 		try {
-			client = plugin.getClients().getByPartialName(args[1]);
+			client = BukkitSpeak.getClients().getByPartialName(args[1]);
 		} catch (Exception e) {
 			send(sender, Level.WARNING, "&4There are more than one clients matching &e" + args[1] + "&4.");
 			return;
@@ -46,15 +42,15 @@ public class CommandPoke extends BukkitSpeakCommand {
 		}
 		sb.deleteCharAt(sb.length() - 1);
 		
-		String tsMsg = stringManager.getMessage("PokeMessage");
-		String mcMsg = stringManager.getMessage("Poke");
+		String tsMsg = BukkitSpeak.getStringManager().getMessage("PokeMessage");
+		String mcMsg = BukkitSpeak.getStringManager().getMessage("Poke");
 		String Name, DisplayName;
 		if (sender instanceof Player) {
 			Name = ((Player) sender).getName();
 			DisplayName = ((Player) sender).getDisplayName();
 		} else {
-			Name = convertToMinecraft(stringManager.getConsoleName(), false, false);
-			DisplayName = stringManager.getConsoleName();
+			Name = convertToMinecraft(BukkitSpeak.getStringManager().getConsoleName(), false, false);
+			DisplayName = BukkitSpeak.getStringManager().getConsoleName();
 		}
 		
 		HashMap<String, String> repl = new HashMap<String, String>();
@@ -63,7 +59,7 @@ public class CommandPoke extends BukkitSpeakCommand {
 		repl.put("%target%", client.get("client_nickname"));
 		repl.put("%msg%", sb.toString());
 		
-		tsMsg = convertToTeamspeak(replaceKeys(tsMsg, repl), true, stringManager.getAllowLinks());
+		tsMsg = convertToTeamspeak(replaceKeys(tsMsg, repl), true, BukkitSpeak.getStringManager().getAllowLinks());
 		mcMsg = replaceKeys(mcMsg, repl);
 		
 		if (tsMsg == null || tsMsg.isEmpty()) return;
@@ -73,13 +69,7 @@ public class CommandPoke extends BukkitSpeakCommand {
 		}
 		
 		Integer i = Integer.valueOf(client.get("clid"));
-		plugin.getQuery().pokeClient(i, tsMsg);
-		if (mcMsg == null || mcMsg.isEmpty()) return;
-		for (Player pl : plugin.getServer().getOnlinePlayers()) {
-			if (!plugin.getMuted(pl)) pl.sendMessage(convertToMinecraft(mcMsg, true, stringManager.getAllowLinks()));
-		}
-		if (!(sender instanceof Player) || (stringManager.getLogInConsole())) {
-			plugin.getLogger().info(convertToMinecraft(mcMsg, false, stringManager.getAllowLinks()));
-		}
+		BukkitSpeak.getQuery().pokeClient(i, tsMsg);
+		broadcastMessage(mcMsg, sender);
 	}
 }

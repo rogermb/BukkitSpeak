@@ -18,7 +18,7 @@ public class ClientList {
 	Logger logger;
 	
 	public ClientList(BukkitSpeak plugin) {
-		query = plugin.getQuery();
+		query = BukkitSpeak.getQuery();
 		logger = plugin.getLogger();
 		clients = new ConcurrentHashMap<Integer, HashMap<String, String>>();
 		
@@ -104,7 +104,7 @@ public class ClientList {
 		
 	}
 	
-	public HashMap<String, String> getByPartialName(String name) throws TwoOrMoreResultsException {
+	public HashMap<String, String> getByPartialName(String name) throws Exception {
 		
 		ArrayList<HashMap<String, String>> results = new ArrayList<HashMap<String, String>>();
 		
@@ -119,7 +119,7 @@ public class ClientList {
 		} else if (results.size() == 1) {
 			return results.get(0);
 		} else {
-			throw new TwoOrMoreResultsException();
+			throw new Exception("There is more than one client matching " + name);
 		}
 	}
 	
@@ -207,10 +207,4 @@ class ClientUpdater implements Runnable {
 			e.printStackTrace();
 		}
 	}
-}
-
-class TwoOrMoreResultsException extends Exception {
-	
-	private static final long serialVersionUID = -1337430017338302854L;
-	
 }

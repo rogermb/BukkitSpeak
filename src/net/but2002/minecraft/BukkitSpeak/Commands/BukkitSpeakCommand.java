@@ -6,15 +6,15 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import net.but2002.minecraft.BukkitSpeak.BukkitSpeak;
-import net.but2002.minecraft.BukkitSpeak.StringManager;
 
+import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 public abstract class BukkitSpeakCommand {
 	
-	BukkitSpeak plugin;
-	StringManager stringManager;
+	//BukkitSpeak plugin;
+	//StringManager stringManager;
 	
 	public final static String[] COLORS = {
 			"",					// 0
@@ -37,18 +37,25 @@ public abstract class BukkitSpeakCommand {
 			"[u]",				// 17
 			"[i]"};				// 18
 	
-	public BukkitSpeakCommand(BukkitSpeak plugin) {
-		this.plugin = plugin;
-		stringManager = plugin.getStringManager();
-	}
-	
 	protected void send(CommandSender sender, Level level, String msg) {
 		if (sender instanceof Player) {
 			msg = msg.replaceAll("((&|$)([a-fk-orA-FK-OR0-9]))", "§$3");
-			sender.sendMessage(plugin + msg);
+			sender.sendMessage(BukkitSpeak.getFullName() + msg);
 		} else {
 			msg = msg.replaceAll("((&|$|§)([a-fk-orA-FK-OR0-9]))", "");
-			plugin.getLogger().log(level, msg);
+			BukkitSpeak.log().log(level, msg);
+		}
+	}
+	
+	public void broadcastMessage(String mcMsg, CommandSender sender) {
+		if (mcMsg == null || mcMsg.isEmpty()) return;
+		for (Player pl : Bukkit.getServer().getOnlinePlayers()) {
+			if (!BukkitSpeak.getMuted(pl)) {
+				pl.sendMessage(convertToMinecraft(mcMsg, true, BukkitSpeak.getStringManager().getAllowLinks()));
+			}
+		}
+		if (!(sender instanceof Player) || (BukkitSpeak.getStringManager().getLogInConsole())) {
+			BukkitSpeak.log().info(convertToMinecraft(mcMsg, false, BukkitSpeak.getStringManager().getAllowLinks()));
 		}
 	}
 	

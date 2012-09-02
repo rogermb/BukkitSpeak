@@ -12,30 +12,24 @@ import org.bukkit.entity.Player;
 
 public class BukkitSpeakCommandExecutor implements CommandExecutor {
 	
-	BukkitSpeak plugin;
-	StringManager stringManager;
-	
 	BukkitSpeakCommand Help, Info, List, Mute, Broadcast, Chat, Pm, Poke, Reply;
 	BukkitSpeakCommand AdminHelp, Ban, ChannelKick, Kick, Status;
 	
-	public BukkitSpeakCommandExecutor(BukkitSpeak plugin) {
-		this.plugin = plugin;
-		stringManager = plugin.getStringManager();
-		
-		AdminHelp = new CommandAdminHelp(plugin);
-		Ban = new CommandBan(plugin);
-		ChannelKick = new CommandChannelKick(plugin);
-		Help = new CommandHelp(plugin);
-		Info = new CommandInfo(plugin);
-		Kick = new CommandKick(plugin);
-		List = new CommandList(plugin);
-		Mute = new CommandMute(plugin);
-		Broadcast = new CommandBroadcast(plugin);
-		Chat = new CommandChat(plugin);
-		Pm = new CommandPm(plugin);
-		Poke = new CommandPoke(plugin);
-		Reply = new CommandReply(plugin);
-		Status = new CommandStatus(plugin);
+	public BukkitSpeakCommandExecutor() {
+		AdminHelp = new CommandAdminHelp();
+		Ban = new CommandBan();
+		ChannelKick = new CommandChannelKick();
+		Help = new CommandHelp();
+		Info = new CommandInfo();
+		Kick = new CommandKick();
+		List = new CommandList();
+		Mute = new CommandMute();
+		Broadcast = new CommandBroadcast();
+		Chat = new CommandChat();
+		Pm = new CommandPm();
+		Poke = new CommandPoke();
+		Reply = new CommandReply();
+		Status = new CommandStatus();
 	}
 	
 	@Override
@@ -57,10 +51,10 @@ public class BukkitSpeakCommandExecutor implements CommandExecutor {
 	public void send(CommandSender sender, Level level, String msg) {
 		if (sender instanceof Player) {
 			msg = msg.replaceAll("&", "§").replaceAll("$", "§");
-			sender.sendMessage(plugin + msg);
+			sender.sendMessage(BukkitSpeak.getFullName() + msg);
 		} else {
 			msg = msg.replaceAll("&[a-fA-F0-9]", "").replaceAll("$[a-fA-F0-9]", "");
-			plugin.getLogger().log(level, msg);
+			BukkitSpeak.log().log(level, msg);
 		}
 	}
 	
@@ -87,21 +81,21 @@ public class BukkitSpeakCommandExecutor implements CommandExecutor {
 			Mute.execute(sender, args);
 		} else if (args[0].equalsIgnoreCase("broadcast")) {
 			if (!CheckPermissions(sender, "broadcast")) return false;
-			if (!stringManager.getUseTextServer()) {
+			if (!BukkitSpeak.getStringManager().getUseTextServer()) {
 				send(sender, Level.INFO, "&4You need to enable ListenToServerBroadcasts in the config to use this command.");
 				return true;
 			}
 			Broadcast.execute(sender, args);
 		} else if (args[0].equalsIgnoreCase("chat")) {
 			if (!CheckPermissions(sender, "chat")) return false;
-			if (!stringManager.getUseTextChannel()) {
+			if (!BukkitSpeak.getStringManager().getUseTextChannel()) {
 				send(sender, Level.INFO, "&4You need to enable ListenToChannelChat in the config to use this command.");
 				return true;
 			}
 			Chat.execute(sender, args);
 		} else if (args[0].equalsIgnoreCase("pm")) {
 			if (!CheckPermissions(sender, "pm")) return false;
-			if (!stringManager.getUsePrivateMessages()) {
+			if (!BukkitSpeak.getStringManager().getUsePrivateMessages()) {
 				send(sender, Level.INFO, "&4You need to enable ListenToPrivateMessages in the config to use this command.");
 				return true;
 			}
@@ -143,31 +137,11 @@ public class BukkitSpeakCommandExecutor implements CommandExecutor {
 			Status.execute(sender, args);
 		} else if (args[0].equalsIgnoreCase("reload")) {
 			if (!CheckPermissions(sender, "reload")) return false;
-			plugin.reload(sender);
+			BukkitSpeak.getInstance().reload(sender);
 		} else {
 			return false;
 		}
 		
 		return true;
-	}
-	
-	public void reload(BukkitSpeak plugin) {
-		this.plugin = plugin;
-		stringManager = plugin.getStringManager();
-		
-		AdminHelp = new CommandAdminHelp(plugin);
-		Ban = new CommandBan(plugin);
-		ChannelKick = new CommandChannelKick(plugin);
-		Help = new CommandHelp(plugin);
-		Info = new CommandInfo(plugin);
-		Kick = new CommandKick(plugin);
-		List = new CommandList(plugin);
-		Mute = new CommandMute(plugin);
-		Broadcast = new CommandBroadcast(plugin);
-		Chat = new CommandChat(plugin);
-		Pm = new CommandPm(plugin);
-		Poke = new CommandPoke(plugin);
-		Reply = new CommandReply(plugin);
-		Status = new CommandStatus(plugin);
 	}
 }

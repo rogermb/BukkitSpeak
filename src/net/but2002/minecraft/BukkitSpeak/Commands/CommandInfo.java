@@ -8,17 +8,25 @@ import org.bukkit.command.CommandSender;
 
 public class CommandInfo extends BukkitSpeakCommand {
 	
-	public CommandInfo(BukkitSpeak plugin) {
-		super(plugin);
-	}
-	
 	@Override
 	public void execute(CommandSender sender, String[] args) {
-		if (Integer.valueOf(stringManager.getServerPort()) > 0) {
-			send(sender, Level.INFO, "&aTeamspeak IP: &e" + stringManager.getIp() + ":" + stringManager.getServerPort());
+		
+		if (Integer.valueOf(BukkitSpeak.getStringManager().getServerPort()) > 0) {
+			StringBuilder sb = new StringBuilder();
+			
+			sb.append("&aTeamspeak IP: &e").append(BukkitSpeak.getStringManager().getIp());
+			sb.append(":").append(BukkitSpeak.getStringManager().getServerPort());
+			
+			send(sender, Level.INFO, sb.toString());
 		} else {
-			send(sender, Level.INFO, "&aTeamspeak IP: &e" + stringManager.getIp() + ", Virtual Server ID: " + -(Integer.valueOf(stringManager.getServerPort())));
+			int port = -(Integer.valueOf(BukkitSpeak.getStringManager().getServerPort()));
+			StringBuilder sb = new StringBuilder();
+			
+			sb.append("&aTeamspeak IP: &e").append(BukkitSpeak.getStringManager().getIp());
+			sb.append(", Virtual Server ID: ").append(String.valueOf(port));
+			
+			send(sender, Level.INFO, sb.toString());
 		}
-		send(sender, Level.INFO, "&aClients online: &e" + plugin.getClients().size());
+		send(sender, Level.INFO, "&aClients online: &e" + BukkitSpeak.getClients().size());
 	}
 }

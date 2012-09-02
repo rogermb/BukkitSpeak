@@ -13,24 +13,20 @@ import de.stefan1200.jts3serverquery.JTS3ServerQuery;
 
 public class CommandPm extends BukkitSpeakCommand {
 	
-	public CommandPm(BukkitSpeak plugin) {
-		super(plugin);
-	}
-	
 	@Override
 	public void execute(CommandSender sender, String[] args) {
 		if (args.length < 3) {
 			send(sender, Level.WARNING, "&aToo few arguments!");
 			send(sender, Level.WARNING, "&aUsage: /ts pm target message");
 			return;
-		} else if (!plugin.getQuery().isConnected()) {
+		} else if (!BukkitSpeak.getQuery().isConnected()) {
 			send(sender, Level.WARNING, "&4Can't communicate with the TeamSpeak server.");
 			return;
 		}
 		
 		HashMap<String, String> client;
 		try {
-			client = plugin.getClients().getByPartialName(args[1]);
+			client = BukkitSpeak.getClients().getByPartialName(args[1]);
 		} catch (Exception e) {
 			send(sender, Level.WARNING, "&4There are more than one clients matching &e" + args[1] + "&4.");
 			return;
@@ -48,15 +44,15 @@ public class CommandPm extends BukkitSpeakCommand {
 		}
 		sb.deleteCharAt(sb.length() - 1);
 		
-		String tsMsg = stringManager.getMessage("PrivateMessage");
-		String mcMsg = stringManager.getMessage("Pm");
+		String tsMsg = BukkitSpeak.getStringManager().getMessage("PrivateMessage");
+		String mcMsg = BukkitSpeak.getStringManager().getMessage("Pm");
 		String Name, DisplayName;
 		if (sender instanceof Player) {
 			Name = ((Player) sender).getName();
 			DisplayName = ((Player) sender).getDisplayName();
 		} else {
-			Name = convertToMinecraft(stringManager.getConsoleName(), false, false);
-			DisplayName = stringManager.getConsoleName();
+			Name = convertToMinecraft(BukkitSpeak.getStringManager().getConsoleName(), false, false);
+			DisplayName = BukkitSpeak.getStringManager().getConsoleName();
 		}
 		
 		HashMap<String, String> repl = new HashMap<String, String>();
@@ -65,18 +61,18 @@ public class CommandPm extends BukkitSpeakCommand {
 		repl.put("%target%", client.get("client_nickname"));
 		repl.put("%msg%", sb.toString());
 		
-		tsMsg = convertToTeamspeak(replaceKeys(tsMsg, repl), true, stringManager.getAllowLinks());
+		tsMsg = convertToTeamspeak(replaceKeys(tsMsg, repl), true, BukkitSpeak.getStringManager().getAllowLinks());
 		mcMsg = replaceKeys(mcMsg, repl);
 		
 		if (tsMsg == null || tsMsg.isEmpty()) return;
 		Integer i = Integer.valueOf(client.get("clid"));
-		plugin.getQuery().sendTextMessage(i, JTS3ServerQuery.TEXTMESSAGE_TARGET_CLIENT, tsMsg);
-		plugin.registerRecipient(Name, i);
+		BukkitSpeak.getQuery().sendTextMessage(i, JTS3ServerQuery.TEXTMESSAGE_TARGET_CLIENT, tsMsg);
+		BukkitSpeak.registerRecipient(Name, i);
 		if (mcMsg == null || mcMsg.isEmpty()) return;
 		if (sender instanceof Player) {
-			sender.sendMessage(convertToMinecraft(mcMsg, true, stringManager.getAllowLinks()));
+			sender.sendMessage(convertToMinecraft(mcMsg, true, BukkitSpeak.getStringManager().getAllowLinks()));
 		} else {
-			plugin.getLogger().info(convertToMinecraft(mcMsg, false, stringManager.getAllowLinks()));
+			BukkitSpeak.log().info(convertToMinecraft(mcMsg, false, BukkitSpeak.getStringManager().getAllowLinks()));
 		}
 	}
 }

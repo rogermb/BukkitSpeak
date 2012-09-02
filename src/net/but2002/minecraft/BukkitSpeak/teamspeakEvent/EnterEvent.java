@@ -8,19 +8,19 @@ import net.but2002.minecraft.BukkitSpeak.BukkitSpeak;
 
 public class EnterEvent extends TeamspeakEvent{
 	
-	public EnterEvent(BukkitSpeak plugin, HashMap<String, String> info) {
-		super(plugin, Integer.valueOf(info.get("clid")));
+	public EnterEvent(HashMap<String, String> info) {
+		super(Integer.valueOf(info.get("clid")));
 		sendMessage();
 	}
 	
 	protected void sendMessage() {
-		String m = plugin.getStringManager().getMessage("Join");
+		String m = BukkitSpeak.getStringManager().getMessage("Join");
 		if (m.isEmpty()) return;
-		for (Player pl : plugin.getServer().getOnlinePlayers()) {
-			if (!plugin.getMuted(pl) && checkPermissions(pl, "join")) {
+		for (Player pl : getOnlinePlayers()) {
+			if (!isMuted(pl) && checkPermissions(pl, "join")) {
 				pl.sendMessage(replaceValues(m, true));
 			}
 		}
-		if (plugin.getStringManager().getLogInConsole()) plugin.getLogger().info(replaceValues(m, false));
+		if (BukkitSpeak.getStringManager().getLogInConsole()) BukkitSpeak.log().info(replaceValues(m, false));
 	}
 }

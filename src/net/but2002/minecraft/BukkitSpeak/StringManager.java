@@ -83,16 +83,16 @@ public class StringManager {
 		{"Kick", "&e%player_displayname% &akicked &e%target% &afrom the server for &e%msg%&a."},
 		{"ChannelKick", "&e%player_displayname% &akicked &e%target% &afrom the channel for &e%msg%&a."}};
 	
-	public StringManager(BukkitSpeak plugin) {
+	public StringManager() {
 		
-		ConfigReader reader = new ConfigReader(plugin);
+		ConfigReader reader = new ConfigReader(BukkitSpeak.getInstance());
 		
-		if (plugin.getConfig().getKeys(true).size() == 0) {
-			plugin.saveResource("config.yml", false);
-			plugin.getLogger().info("Default config created!");
-			plugin.reloadConfig();
+		if (BukkitSpeak.getInstance().getConfig().getKeys(true).size() == 0) {
+			BukkitSpeak.getInstance().saveResource("config.yml", false);
+			BukkitSpeak.log().info("Default config created!");
+			BukkitSpeak.getInstance().reloadConfig();
 		}
-		plugin.getConfig().setDefaults(new MemoryConfiguration());
+		BukkitSpeak.getInstance().getConfig().setDefaults(new MemoryConfiguration());
 		
 		ip = reader.getString(CONFIG_SECTION, CONFIG_IP, "1.2.3.4");
 		serverPort = reader.getInteger(CONFIG_SECTION, CONFIG_SERVERPORT, 9987);
@@ -122,7 +122,7 @@ public class StringManager {
 				String currentValue = reader.getString(TEAMSPEAKEVENTMESSAGES_SECTION, keyPair[0], keyPair[1]);
 				strings.put(keyPair[0], currentValue);
 			} catch (Exception e) {
-				plugin.getLogger().severe("Was unable to load all the messages. This is probably a programming error.");
+				BukkitSpeak.log().severe("Was unable to load all the messages. This is probably a programming error.");
 			}
 		}
 		for (String[] keyPair : TEAMSPEAKMESSAGES) {
@@ -130,7 +130,7 @@ public class StringManager {
 				String currentValue = reader.getString(TEAMSPEAKMESSAGES_SECTION, keyPair[0], keyPair[1]);
 				strings.put(keyPair[0], currentValue);
 			} catch (Exception e) {
-				plugin.getLogger().severe("Was unable to load all the messages. This is probably a programming error.");
+				BukkitSpeak.log().severe("Was unable to load all the messages. This is probably a programming error.");
 			}
 		}
 		for (String[] keyPair : MINECRAFTEVENTMESSAGES) {
@@ -138,7 +138,7 @@ public class StringManager {
 				String currentValue = reader.getString(MINECRAFTEVENTMESSAGES_SECTION, keyPair[0], keyPair[1]);
 				strings.put(keyPair[0], currentValue);
 			} catch (Exception e) {
-				plugin.getLogger().severe("Was unable to load all the messages. This is probably a programming error.");
+				BukkitSpeak.log().severe("Was unable to load all the messages. This is probably a programming error.");
 			}
 		}
 		for (String[] keyPair : COMMANDMESSAGES) {
@@ -146,11 +146,11 @@ public class StringManager {
 				String currentValue = reader.getString(COMMANDMESSAGES_SECTION, keyPair[0], keyPair[1]);
 				strings.put(keyPair[0], currentValue);
 			} catch (Exception e) {
-				plugin.getLogger().severe("Was unable to load all the messages. This is probably a programming error.");
+				BukkitSpeak.log().severe("Was unable to load all the messages. This is probably a programming error.");
 			}
 		}
 		
-		if (reader.gotErrors()) plugin.saveConfig();
+		if (reader.gotErrors()) BukkitSpeak.getInstance().saveConfig();
 	}
 	
 	public String getMessage(String key) {

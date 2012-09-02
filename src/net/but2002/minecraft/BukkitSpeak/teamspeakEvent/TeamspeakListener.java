@@ -3,33 +3,24 @@ package net.but2002.minecraft.BukkitSpeak.teamspeakEvent;
 import java.util.HashMap;
 
 import net.but2002.minecraft.BukkitSpeak.BukkitSpeak;
-import net.but2002.minecraft.BukkitSpeak.StringManager;
 
 import de.stefan1200.jts3serverquery.TeamspeakActionListener;
 
 public class TeamspeakListener implements TeamspeakActionListener {
-	
-	BukkitSpeak plugin;
-	StringManager stringManager;
-	
-	public TeamspeakListener(BukkitSpeak plugin) {
-		this.plugin = plugin;
-		stringManager = plugin.getStringManager();
-	}
 	
 	@Override
 	public void teamspeakActionPerformed(String eventType, HashMap<String, String> eventInfo) {
 		
 		if (eventType.equals("notifycliententerview")) {
 			if (eventInfo == null || !eventInfo.get("client_type").equals("0") || eventInfo.get("client_nickname").startsWith("Unknown from")) return;
-			new EnterEvent(plugin, eventInfo);
+			new EnterEvent(eventInfo);
 		} else if (eventType.equals("notifyclientleftview")) {
-			if (!plugin.getClients().containsKey(Integer.parseInt(eventInfo.get("clid")))) return;
-			new LeaveEvent(plugin, eventInfo);
+			if (!BukkitSpeak.getClients().containsKey(Integer.parseInt(eventInfo.get("clid")))) return;
+			new LeaveEvent(eventInfo);
 		} else if (eventType.equals("notifytextmessage")) {
-			new ServerMessageEvent(plugin, eventInfo);
+			new ServerMessageEvent(eventInfo);
 		} else if (eventType.equals("notifyclientmoved")) {
-			new ClientMovedEvent(plugin, eventInfo);
+			new ClientMovedEvent(eventInfo);
 		}
 		
 		/*

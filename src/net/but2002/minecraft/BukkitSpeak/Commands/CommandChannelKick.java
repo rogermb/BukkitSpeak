@@ -11,24 +11,20 @@ import org.bukkit.entity.Player;
 
 public class CommandChannelKick extends BukkitSpeakCommand {
 	
-	public CommandChannelKick(BukkitSpeak plugin) {
-		super(plugin);
-	}
-	
 	@Override
 	public void execute(CommandSender sender, String[] args) {
 		if (args.length < 2) {
 			send(sender, Level.WARNING, "&aToo few arguments!");
 			send(sender, Level.WARNING, "&aUsage: /ts channelkick client (message)");
 			return;
-		} else if (!plugin.getQuery().isConnected()) {
+		} else if (!BukkitSpeak.getQuery().isConnected()) {
 			send(sender, Level.WARNING, "&4Can't communicate with the TeamSpeak server.");
 			return;
 		}
 		
 		HashMap<String, String> client;
 		try {
-			client = plugin.getClients().getByPartialName(args[1]);
+			client = BukkitSpeak.getClients().getByPartialName(args[1]);
 		} catch (Exception e) {
 			send(sender, Level.WARNING, "&4There are more than one clients matching &e" + args[1] + "&4.");
 			return;
@@ -37,7 +33,7 @@ public class CommandChannelKick extends BukkitSpeakCommand {
 		if (client == null) {
 			send(sender, Level.WARNING, "&4Can't find the user you want to kick from the channel.");
 			return;
-		} else if (Integer.valueOf(client.get("cid")) != stringManager.getChannelID()) {
+		} else if (Integer.valueOf(client.get("cid")) != BukkitSpeak.getStringManager().getChannelID()) {
 			send(sender, Level.WARNING, "&4The client is not in the channel!");
 			return;
 		}
@@ -53,15 +49,15 @@ public class CommandChannelKick extends BukkitSpeakCommand {
 			sb.append("-");
 		}
 		
-		String tsMsg = stringManager.getMessage("ChannelKickMessage");
-		String mcMsg = stringManager.getMessage("ChannelKick");
+		String tsMsg = BukkitSpeak.getStringManager().getMessage("ChannelKickMessage");
+		String mcMsg = BukkitSpeak.getStringManager().getMessage("ChannelKick");
 		String Name, DisplayName;
 		if (sender instanceof Player) {
 			Name = ((Player) sender).getName();
 			DisplayName = ((Player) sender).getDisplayName();
 		} else {
-			Name = convertToMinecraft(stringManager.getConsoleName(), false, false);
-			DisplayName = stringManager.getConsoleName();
+			Name = convertToMinecraft(BukkitSpeak.getStringManager().getConsoleName(), false, false);
+			DisplayName = BukkitSpeak.getStringManager().getConsoleName();
 		}
 		
 		HashMap<String, String> repl = new HashMap<String, String>();
@@ -70,7 +66,7 @@ public class CommandChannelKick extends BukkitSpeakCommand {
 		repl.put("%target%", client.get("client_nickname"));
 		repl.put("%msg%", sb.toString());
 		
-		tsMsg = convertToTeamspeak(replaceKeys(tsMsg, repl), false, stringManager.getAllowLinks());
+		tsMsg = convertToTeamspeak(replaceKeys(tsMsg, repl), false, BukkitSpeak.getStringManager().getAllowLinks());
 		mcMsg = replaceKeys(mcMsg, repl);
 		
 		if (tsMsg == null || tsMsg.isEmpty()) return;
@@ -80,13 +76,7 @@ public class CommandChannelKick extends BukkitSpeakCommand {
 		}
 		
 		Integer i = Integer.valueOf(client.get("clid"));
-		plugin.getQuery().kickClient(i, true, tsMsg);
-		if (mcMsg == null || mcMsg.isEmpty()) return;
-		for (Player pl : plugin.getServer().getOnlinePlayers()) {
-			if (!plugin.getMuted(pl)) pl.sendMessage(convertToMinecraft(mcMsg, true, stringManager.getAllowLinks()));
-		}
-		if (!(sender instanceof Player) || (stringManager.getLogInConsole())) {
-			plugin.getLogger().info(convertToMinecraft(mcMsg, false, stringManager.getAllowLinks()));
-		}
+		BukkitSpeak.getQuery().kickClient(i, true, tsMsg);
+		broadcastMessage(mcMsg, sender);
 	}
 }

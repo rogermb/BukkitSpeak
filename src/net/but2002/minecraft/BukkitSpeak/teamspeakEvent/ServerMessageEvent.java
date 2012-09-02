@@ -10,8 +10,8 @@ public class ServerMessageEvent extends TeamspeakEvent{
 	
 	HashMap<String, String> info;
 	
-	public ServerMessageEvent(BukkitSpeak plugin, HashMap<String, String> info) {
-		super(plugin, Integer.parseInt(info.get("invokerid")));
+	public ServerMessageEvent(HashMap<String, String> info) {
+		super(Integer.parseInt(info.get("invokerid")));
 		this.info = info;
 		
 		if (user == null) return;
@@ -25,39 +25,39 @@ public class ServerMessageEvent extends TeamspeakEvent{
 		if (user != null && info != null && getClientType() == 0) {
 			
 			String msg = info.get("msg");
-			msg = filterLinks(msg, plugin.getStringManager().getAllowLinks());
+			msg = filterLinks(msg, BukkitSpeak.getStringManager().getAllowLinks());
 			user.put("msg", msg);
 			
 			if (info.get("targetmode").equals("3")) {
-				String m = plugin.getStringManager().getMessage("ServerMsg");
+				String m = BukkitSpeak.getStringManager().getMessage("ServerMsg");
 				if (m.isEmpty()) return;
-				for (Player pl : plugin.getServer().getOnlinePlayers()) {
-					if (!plugin.getMuted(pl) && checkPermissions(pl, "broadcast")) {
+				for (Player pl : getOnlinePlayers()) {
+					if (!isMuted(pl) && checkPermissions(pl, "broadcast")) {
 						pl.sendMessage(replaceValues(m, true));
 					}
 				}
-				if (plugin.getStringManager().getLogInConsole()) plugin.getLogger().info(replaceValues(m, false));
+				if (BukkitSpeak.getStringManager().getLogInConsole()) BukkitSpeak.log().info(replaceValues(m, false));
 			} else if (info.get("targetmode").equals("2")) {
-				String m = plugin.getStringManager().getMessage("ChannelMsg");
+				String m = BukkitSpeak.getStringManager().getMessage("ChannelMsg");
 				if (m.isEmpty()) return;
-				for (Player pl : plugin.getServer().getOnlinePlayers()) {
-					if (!plugin.getMuted(pl) && checkPermissions(pl, "chat")) {
+				for (Player pl : getOnlinePlayers()) {
+					if (!isMuted(pl) && checkPermissions(pl, "chat")) {
 						pl.sendMessage(replaceValues(m, true));
 					}
 				}
-				if (plugin.getStringManager().getLogInConsole()) plugin.getLogger().info(replaceValues(m, false));
+				if (BukkitSpeak.getStringManager().getLogInConsole()) BukkitSpeak.log().info(replaceValues(m, false));
 			} else if (info.get("targetmode").equals("1")) {
-				String m = plugin.getStringManager().getMessage("PrivateMsg");
-				String p = plugin.getRecipient(getClientId());
+				String m = BukkitSpeak.getStringManager().getMessage("PrivateMsg");
+				String p = BukkitSpeak.getInstance().getRecipient(getClientId());
 				if (!m.isEmpty() && p != null && !p.isEmpty()) {
-					if (!replaceValues(plugin.getStringManager().getConsoleName(), false).equals(p)) {
-						Player pl = plugin.getServer().getPlayerExact(p);
+					if (!replaceValues(BukkitSpeak.getStringManager().getConsoleName(), false).equals(p)) {
+						Player pl = BukkitSpeak.getInstance().getServer().getPlayerExact(p);
 						if (pl == null) return;
-						if (!plugin.getMuted(pl) && checkPermissions(pl, "pm")) {
+						if (!isMuted(pl) && checkPermissions(pl, "pm")) {
 							pl.sendMessage(replaceValues(m, true));
 						}
 					}
-					plugin.getLogger().info(replaceValues(m, false));
+					BukkitSpeak.log().info(replaceValues(m, false));
 				}
 			}
 		}

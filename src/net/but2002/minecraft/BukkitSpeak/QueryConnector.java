@@ -12,10 +12,10 @@ public class QueryConnector implements Runnable {
 	StringManager stringManager;
 	Logger logger;
 	
-	public QueryConnector(BukkitSpeak plugin) {
-		this.plugin = plugin;
-		query = plugin.getQuery();
-		stringManager = plugin.getStringManager();
+	public QueryConnector() {
+		this.plugin = BukkitSpeak.getInstance();
+		query = BukkitSpeak.getQuery();
+		stringManager = BukkitSpeak.getStringManager();
 		logger = plugin.getLogger();
 	}
 	
@@ -81,7 +81,7 @@ public class QueryConnector implements Runnable {
 		if (stringManager.getUseTextChannel()) query.addEventNotify(JTS3ServerQuery.EVENT_MODE_TEXTCHANNEL, stringManager.getChannelID());
 		if (stringManager.getUsePrivateMessages()) query.addEventNotify(JTS3ServerQuery.EVENT_MODE_TEXTPRIVATE, 0);
 		
-		plugin.clients = new ClientList(plugin);
+		BukkitSpeak.clients = new ClientList(plugin);
 		plugin.setStoppedTime(null);
 		plugin.setStartedTime(null);
 		plugin.setStartedTime(new Date());

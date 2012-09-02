@@ -3,6 +3,7 @@ package net.but2002.minecraft.BukkitSpeak.teamspeakEvent;
 import java.util.HashMap;
 import java.util.regex.Matcher;
 
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 import net.but2002.minecraft.BukkitSpeak.BukkitSpeak;
@@ -10,11 +11,9 @@ import net.but2002.minecraft.BukkitSpeak.BukkitSpeak;
 public abstract class TeamspeakEvent {
 	
 	protected HashMap<String, String> user;
-	protected BukkitSpeak plugin;
 	
-	public TeamspeakEvent(BukkitSpeak plugin, Integer clid) {
-		this.plugin = plugin;
-		if (!plugin.getClients().containsKey(clid)) plugin.getClients().addClient(clid);
+	public TeamspeakEvent(Integer clid) {
+		if (!BukkitSpeak.getClients().containsKey(clid)) BukkitSpeak.getClients().addClient(clid);
 		setUser(clid);
 	}
 	
@@ -23,7 +22,15 @@ public abstract class TeamspeakEvent {
 	}
 	
 	protected void setUser(Integer clid) {
-		user = plugin.getClients().get(clid);
+		user = BukkitSpeak.getClients().get(clid);
+	}
+	
+	protected Player[] getOnlinePlayers() {
+		return Bukkit.getServer().getOnlinePlayers();
+	}
+	
+	protected boolean isMuted(Player p) {
+		return BukkitSpeak.getMuted(p);
 	}
 	
 	public String getClientName() {

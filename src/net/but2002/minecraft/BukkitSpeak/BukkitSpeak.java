@@ -19,38 +19,46 @@ import de.stefan1200.jts3serverquery.TeamspeakActionListener;
 
 public class BukkitSpeak extends JavaPlugin {
 	
-	public DTS3ServerQuery dquery;
-	public Logger logger;
-	public StringManager stringManager;
+	static BukkitSpeak instance;
+	static StringManager stringManager;
+	static ClientList clients;
+	static JTS3ServerQuery query;
+	static DTS3ServerQuery dquery;
 	
-	public JTS3ServerQuery query;
-	public TeamspeakActionListener ts;
-	public QueryConnector qc;
+	static List<String> muted;
+	static HashMap<Integer, String> pmRecipients;
+	static HashMap<String, Integer> pmSenders;
+	
+	QueryConnector qc;
+	TeamspeakActionListener ts;
 	TeamspeakKeepAlive tsKeepAlive;
 	BukkitSpeakCommandExecutor tsCommand;
-	ClientList clients;
-	
 	ChatListener chatListener;
-	List<String> muted;
-	HashMap<Integer, String> pmRecipients;
-	HashMap<String, Integer> pmSenders;
+	Logger logger;
 	
 	Date started, stopped, laststarted, laststopped;
 	
+	public static BukkitSpeak getInstance() {
+		return instance;
+	}
+	
 	public void onEnable() {
+		
+		instance = this;
 		logger = this.getLogger();
-		stringManager = new StringManager(this);
-		dquery = new DTS3ServerQuery(this);
+		stringManager = new StringManager();
 		query = new JTS3ServerQuery();
 		query.DEBUG = stringManager.getDebugMode();
-		ts = new TeamspeakListener(this);
-		qc = new QueryConnector(this);
+		
+		dquery = new DTS3ServerQuery();
+		ts = new TeamspeakListener();
+		qc = new QueryConnector();
 		this.getServer().getScheduler().scheduleAsyncDelayedTask(this, qc);
 		tsKeepAlive = new TeamspeakKeepAlive(this);
 		this.getServer().getScheduler().scheduleAsyncRepeatingTask(this, tsKeepAlive, 600, 1200);
 		
-		tsCommand = new BukkitSpeakCommandExecutor(this);
-		chatListener = new ChatListener(this);
+		tsCommand = new BukkitSpeakCommandExecutor();
+		chatListener = new ChatListener();
 		muted = new ArrayList<String>();
 		pmRecipients = new HashMap<Integer, String>();
 		pmSenders = new HashMap<String, Integer>();
@@ -75,27 +83,35 @@ public class BukkitSpeak extends JavaPlugin {
 		return "§a[§6" + this.getDescription().getName() + "§a]§f " ;
 	}
 	
-	public JTS3ServerQuery getQuery() {
+	public static String getFullName() {
+		return instance.toString();
+	}
+	
+	public static Logger log() {
+		return instance.getLogger();
+	}
+	
+	public static JTS3ServerQuery getQuery() {
 		return query;
 	}
 	
-	public DTS3ServerQuery getDQuery() {
+	public static DTS3ServerQuery getDQuery() {
 		return dquery;
 	}
 	
-	public StringManager getStringManager() {
+	public static StringManager getStringManager() {
 		return stringManager;
 	}
 	
-	public List<String> getMutedList() {
+	public static List<String> getMutedList() {
 		return muted;
 	}
 	
-	public boolean getMuted(Player player) {
+	public static boolean getMuted(Player player) {
 		return muted.contains(player.getName());
 	}
 	
-	public void setMuted(Player player, boolean mute) {
+	public static void setMuted(Player player, boolean mute) {
 		if (mute && !muted.contains(player.getName())) {
 			muted.add(player.getName());
 		} else if (!mute && muted.contains(player.getName())) {
@@ -103,11 +119,11 @@ public class BukkitSpeak extends JavaPlugin {
 		}
 	}
 	
-	public ClientList getClients() {
+	public static ClientList getClients() {
 		return clients;
 	}
 	
-	public void registerRecipient(String player, Integer clid) {
+	public static void registerRecipient(String player, Integer clid) {
 		if (pmRecipients.containsKey(clid)) pmRecipients.remove(clid);
 		if (pmSenders.containsKey(player)) pmSenders.remove(player);
 		
@@ -170,7 +186,6 @@ public class BukkitSpeak extends JavaPlugin {
 	
 	public void reload(CommandSender sender) {
 		try {
-			query.removeTeamspeakActionListener();
 			query.closeTS3Connection();
 			
 			this.reloadConfig();
@@ -178,28 +193,22 @@ public class BukkitSpeak extends JavaPlugin {
 			setStoppedTime(null);
 			setStartedTime(null);
 			
-			stringManager = new StringManager(this);
-			ts = new TeamspeakListener(this);
-			query.setTeamspeakActionListener(ts);
+			stringManager = new StringManager();
 			query.DEBUG = stringManager.getDebugMode();
-			qc = new QueryConnector(this);
+			qc = new QueryConnector();
 			this.getServer().getScheduler().scheduleAsyncDelayedTask(this, qc);
 			
-			tsCommand.reload(this);
-			chatListener.reload(this);
 			muted = new ArrayList<String>();
 			pmRecipients = new HashMap<Integer, String>();
 			pmSenders = new HashMap<String, Integer>();
 			
-			if (sender instanceof Player) {
-				sender.sendMessage(this + "§areloaded.");
-			}
+			if (sender instanceof Player) sender.sendMessage(this + "§areloaded.");
 			this.getLogger().info("reloaded.");
 		} catch (Exception e) {
 			if (sender instanceof Player) {
 				sender.sendMessage(this + "§4was unable to reload, an error happened.");
 			}
-			this.getLogger().info("was unable to reload, an error happened..");
+			this.getLogger().info("was unable to reload, an error happened.");
 			e.printStackTrace();
 		}
 	}

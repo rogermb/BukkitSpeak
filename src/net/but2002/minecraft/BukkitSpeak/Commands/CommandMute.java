@@ -10,17 +10,13 @@ import org.bukkit.entity.Player;
 
 public class CommandMute extends BukkitSpeakCommand {
 	
-	public CommandMute(BukkitSpeak plugin) {
-		super(plugin);
-	}
-	
 	@Override
 	public void execute(CommandSender sender, String[] args) {
 		if (sender instanceof Player) {
-			if (plugin.getMuted((Player) sender)) {
-				plugin.setMuted((Player) sender, false);
+			if (BukkitSpeak.getMuted((Player) sender)) {
+				BukkitSpeak.setMuted((Player) sender, false);
 				
-				String message = stringManager.getMessage("Unmute");
+				String message = BukkitSpeak.getStringManager().getMessage("Unmute");
 				String Name, DisplayName;
 				Name = ((Player) sender).getName();
 				DisplayName = ((Player) sender).getDisplayName();
@@ -34,9 +30,9 @@ public class CommandMute extends BukkitSpeakCommand {
 				if (message == null || message.isEmpty()) return;
 				send(sender, Level.INFO, message);
 			} else {
-				plugin.setMuted((Player) sender, true);
+				BukkitSpeak.setMuted((Player) sender, true);
 				
-				String message = stringManager.getMessage("Mute");
+				String message = BukkitSpeak.getStringManager().getMessage("Mute");
 				String Name, DisplayName;
 				Name = ((Player) sender).getName();
 				DisplayName = ((Player) sender).getDisplayName();

@@ -8,10 +8,6 @@ import org.bukkit.command.CommandSender;
 
 public class CommandHelp extends BukkitSpeakCommand {
 	
-	public CommandHelp(BukkitSpeak plugin) {
-		super(plugin);
-	}
-	
 	@Override
 	public void execute(CommandSender sender, String[] args) {
 		send(sender, Level.INFO, "&aHelp");
@@ -19,11 +15,11 @@ public class CommandHelp extends BukkitSpeakCommand {
 			send(sender, Level.INFO, "&e/ts list &a- Displays who's currently on TeamSpeak.");
 		if (CheckCommandPermission(sender, "mute"))
 			send(sender, Level.INFO, "&e/ts mute &a- Mutes / unmutes BukkitSpeak for you.");
-		if (CheckCommandPermission(sender, "broadcast") && stringManager.getUseTextServer())
+		if (CheckCommandPermission(sender, "broadcast") && BukkitSpeak.getStringManager().getUseTextServer())
 			send(sender, Level.INFO, "&e/ts broadcast &a- Broadcast a global TS message.");
-		if (CheckCommandPermission(sender, "chat") && stringManager.getUseTextChannel())
+		if (CheckCommandPermission(sender, "chat") && BukkitSpeak.getStringManager().getUseTextChannel())
 			send(sender, Level.INFO, "&e/ts chat &a- Displays a message in the TS channel.");
-		if (CheckCommandPermission(sender, "pm") && stringManager.getUsePrivateMessages())
+		if (CheckCommandPermission(sender, "pm") && BukkitSpeak.getStringManager().getUsePrivateMessages())
 			send(sender, Level.INFO, "&e/ts pm &a- Sends a message to a certain client.");
 		if (CheckCommandPermission(sender, "poke"))
 			send(sender, Level.INFO, "&e/ts poke &a- Pokes a client on Teamspeak.");

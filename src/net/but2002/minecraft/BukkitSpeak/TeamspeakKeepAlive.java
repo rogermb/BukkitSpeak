@@ -4,6 +4,8 @@ import java.util.Date;
 
 public class TeamspeakKeepAlive extends Thread {
 	
+	//XXX
+	
 	BukkitSpeak plugin;
 	int c;
 	
@@ -14,11 +16,11 @@ public class TeamspeakKeepAlive extends Thread {
 	
 	@Override
 	public void run() {
-		if (plugin.getQuery().isConnected()) {
+		if (BukkitSpeak.getQuery().isConnected()) {
 			if (plugin.getStoppedTime() != null) plugin.setStoppedTime(null);
 			try {
-				plugin.getQuery().doCommand("clientupdate");
-				plugin.getClients().asyncUpdateAll();
+				BukkitSpeak.getQuery().doCommand("clientupdate");
+				BukkitSpeak.getClients().asyncUpdateAll();
 			} catch (Exception e) {
 				plugin.setStoppedTime(new Date());
 				c = 0;

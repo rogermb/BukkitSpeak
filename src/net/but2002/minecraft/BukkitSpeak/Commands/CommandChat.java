@@ -52,8 +52,7 @@ public class CommandChat extends BukkitSpeakCommand {
 		
 		if (tsMsg == null || tsMsg.isEmpty()) return;
 		BukkitSpeak.getQuery().sendTextMessage(BukkitSpeak.getStringManager().getChannelID(),
-				JTS3ServerQuery.TEXTMESSAGE_TARGET_CHANNEL, tsMsg,
-				BukkitSpeak.getStringManager().getChannelPass());
+				JTS3ServerQuery.TEXTMESSAGE_TARGET_CHANNEL, tsMsg);
 		broadcastMessage(mcMsg, sender);
 	}
 }

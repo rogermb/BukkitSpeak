@@ -1,4 +1,6 @@
-package net.but2002.minecraft.BukkitSpeak;
+package net.but2002.minecraft.BukkitSpeak.AsyncQueryUtils;
+
+import net.but2002.minecraft.BukkitSpeak.BukkitSpeak;
 
 public class QuerySender implements Runnable {
 	

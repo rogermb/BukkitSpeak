@@ -5,7 +5,7 @@ import java.util.HashMap;
 import java.util.logging.Level;
 
 import net.but2002.minecraft.BukkitSpeak.BukkitSpeak;
-import net.but2002.minecraft.BukkitSpeak.QuerySender;
+import net.but2002.minecraft.BukkitSpeak.AsyncQueryUtils.QuerySender;
 
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;

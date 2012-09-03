@@ -70,8 +70,6 @@ public class CommandBan extends BukkitSpeakCommand {
 			return;
 		}
 		
-		//FIXME
-		
 		Integer i = Integer.valueOf(client.get("clid"));
 		QueryBan qb = new QueryBan(i, tsMsg);
 		Bukkit.getScheduler().scheduleAsyncDelayedTask(BukkitSpeak.getInstance(), qb);

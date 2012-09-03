@@ -62,7 +62,8 @@ public class StringManager {
 		{"PrivateMessage", "&4&l[%player_displayname%&4] &r%msg%"},
 		{"PokeMessage", "&l[%player_displayname%] &r%msg%"},
 		{"KickMessage", "[%player_displayname%] kicked you from the server for %msg%."},
-		{"ChannelKickMessage", "[%player_displayname%] kicked you from the server for %msg%."}};
+		{"ChannelKickMessage", "[%player_displayname%] kicked you from the server for %msg%."},
+		{"BanMessage", "[%player_displayname%] banned you from the server for %msg%."}};
 	
 	// Used in BukkitSpeak.ChatListener
 	public static final String[][] MINECRAFTEVENTMESSAGES = {
@@ -81,7 +82,8 @@ public class StringManager {
 		{"Pm", "&eMe &a-> &e%target%&f: %msg%"},
 		{"Poke", "&e%player_displayname% &apoked &e%target%&f: %msg%"},
 		{"Kick", "&e%player_displayname% &akicked &e%target% &afrom the server for &e%msg%&a."},
-		{"ChannelKick", "&e%player_displayname% &akicked &e%target% &afrom the channel for &e%msg%&a."}};
+		{"ChannelKick", "&e%player_displayname% &akicked &e%target% &afrom the channel for &e%msg%&a."},
+		{"Ban", "&e%player_displayname% &abanned &e%target% &afor &e%msg%&a."}};
 	
 	public StringManager() {
 		

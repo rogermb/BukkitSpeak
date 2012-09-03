@@ -188,13 +188,11 @@ public class BukkitSpeak extends JavaPlugin {
 		try {
 			query.closeTS3Connection();
 			
-			this.reloadConfig();
-			
 			setStoppedTime(null);
 			setStartedTime(null);
 			
-			stringManager = new StringManager();
-			query.DEBUG = stringManager.getDebugMode();
+			reloadStringManager();
+			
 			qc = new QueryConnector();
 			this.getServer().getScheduler().scheduleAsyncDelayedTask(this, qc);
 			
@@ -211,5 +209,11 @@ public class BukkitSpeak extends JavaPlugin {
 			this.getLogger().info("was unable to reload, an error happened.");
 			e.printStackTrace();
 		}
+	}
+	
+	public void reloadStringManager() {
+		this.reloadConfig();
+		stringManager = new StringManager();
+		query.DEBUG = stringManager.getDebugMode();
 	}
 }

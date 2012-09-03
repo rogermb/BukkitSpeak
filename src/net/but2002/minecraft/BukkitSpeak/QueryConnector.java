@@ -67,7 +67,8 @@ public class QueryConnector implements Runnable {
 		
 		if (stringManager.getUseServer()) query.addEventNotify(JTS3ServerQuery.EVENT_MODE_SERVER, 0);
 		if (stringManager.getUseTextServer()) query.addEventNotify(JTS3ServerQuery.EVENT_MODE_TEXTSERVER, 0);
-		if ((stringManager.getChannelID() != 0 && stringManager.getChannelID() != query.getCurrentQueryClientChannelID()) && (stringManager.getUseChannel() || stringManager.getUseTextChannel())) {
+		if ((stringManager.getChannelID() != 0 && stringManager.getChannelID() != query.getCurrentQueryClientChannelID())
+				&& (stringManager.getUseChannel() || stringManager.getUseTextChannel())) {
 			if (!query.moveClient(query.getCurrentQueryClientID(), stringManager.getChannelID(), stringManager.getChannelPass())) {
 				logger.severe("Could not move the QueryClient into the channel.");
 				logger.severe("Ensure that the ChannelID is correct and the password is set if required.");

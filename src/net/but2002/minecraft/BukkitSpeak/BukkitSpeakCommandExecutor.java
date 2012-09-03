@@ -13,7 +13,7 @@ import org.bukkit.entity.Player;
 public class BukkitSpeakCommandExecutor implements CommandExecutor {
 	
 	BukkitSpeakCommand Help, Info, List, Mute, Broadcast, Chat, Pm, Poke, Reply;
-	BukkitSpeakCommand AdminHelp, Ban, ChannelKick, Kick, Status;
+	BukkitSpeakCommand AdminHelp, Ban, ChannelKick, Kick, Set, Status;
 	
 	public BukkitSpeakCommandExecutor() {
 		AdminHelp = new CommandAdminHelp();
@@ -29,6 +29,7 @@ public class BukkitSpeakCommandExecutor implements CommandExecutor {
 		Pm = new CommandPm();
 		Poke = new CommandPoke();
 		Reply = new CommandReply();
+		Set = new CommandSet();
 		Status = new CommandStatus();
 	}
 	
@@ -132,6 +133,9 @@ public class BukkitSpeakCommandExecutor implements CommandExecutor {
 		} else if (args[0].equalsIgnoreCase("kick")) {
 			if (!CheckPermissions(sender, "kick")) return false;
 			Kick.execute(sender, args);
+		} else if (args[0].equalsIgnoreCase("set")) {
+			if (!CheckPermissions(sender, "set")) return false;
+			Set.execute(sender, args);
 		} else if (args[0].equalsIgnoreCase("status")) {
 			if (!CheckPermissions(sender, "status")) return false;
 			Status.execute(sender, args);

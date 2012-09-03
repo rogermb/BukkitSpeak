@@ -85,15 +85,16 @@ public class CommandSet extends BukkitSpeakCommand {
 		} else if (args.length == 2) {
 			int i = getPropsIndex(args[1]);
 			if (i == -1) {
-				send(sender, Level.INFO, "&4This is not a valid property.");
-				send(sender, Level.INFO, "&aProperties you can set:");
-				send(sender, Level.INFO, props);
+				send(sender, Level.WARNING, "&4This is not a valid property.");
+				send(sender, Level.WARNING, "&aProperties you can set:");
+				send(sender, Level.WARNING, props);
 			} else {
 				send(sender, Level.INFO, "&4You need to add a value to set.");
 				send(sender, Level.INFO, "&aPossible values:");
 				send(sender, Level.INFO, "&6" + PROPERTIES[i][1]);
 				send(sender, Level.INFO, "&aDescription:");
 				send(sender, Level.INFO, "&6" + PROPERTIES[i][2]);
+				send(sender, Level.INFO, "&aCurrently set to: " + tsSection.getString(args[1]));
 			}
 		} else if (args.length == 3) {
 			int i = getPropsIndex(args[1]);

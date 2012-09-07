@@ -24,7 +24,7 @@ public class CommandSet extends BukkitSpeakCommand {
 				"BukkitSpeak will try to move itself into the channel with the stated ID. Set ChannelPassword &lfirst&r!"},
 		{StringManager.TEAMSPEAK_CHANNELPW,
 				"Any string",
-				"BukkitSpeak will try to use this password to connect to the channel with the cid of ChannelID."},
+				"BukkitSpeak will try to use this password to connect to the channel with the cid of ChannelID, '' represents no password."},
 		{StringManager.TEAMSPEAK_SERVER,
 				"true or false",
 				"If this is set to true, BukkitSpeak will notice if somebody joins or leaves the TS3 server."},
@@ -56,7 +56,6 @@ public class CommandSet extends BukkitSpeakCommand {
 				"true or false",
 				"True sets the plugin to debug mode."}};
 	String props;
-	ConfigurationSection tsSection;
 	
 	public CommandSet() {
 		super();
@@ -67,11 +66,12 @@ public class CommandSet extends BukkitSpeakCommand {
 			sb.append(PROPERTIES[j][0]);
 		}
 		props = sb.toString();
-		tsSection = BukkitSpeak.getInstance().getConfig().getConfigurationSection(StringManager.TEAMSPEAK_SECTION);
 	}
 	
 	@Override
 	public void execute(CommandSender sender, String[] args) {
+		
+		ConfigurationSection tsSection = BukkitSpeak.getInstance().getConfig().getConfigurationSection(StringManager.TEAMSPEAK_SECTION);
 		
 		if (!BukkitSpeak.getQuery().isConnected() || BukkitSpeak.getClients() == null) {
 			send(sender, Level.WARNING, "&4Can't communicate with the TeamSpeak server.");
@@ -96,7 +96,8 @@ public class CommandSet extends BukkitSpeakCommand {
 				send(sender, Level.INFO, "&6" + PROPERTIES[i][2]);
 				send(sender, Level.INFO, "&aCurrently set to: " + tsSection.getString(args[1]));
 			}
-		} else if (args.length == 3) {
+		} else if (args.length > 2) {
+			String arg = combineSplit(2, args, " ");
 			int i = getPropsIndex(args[1]);
 			switch (i) {
 			case -1:
@@ -105,6 +106,10 @@ public class CommandSet extends BukkitSpeakCommand {
 				send(sender, Level.INFO, props);
 				return;
 			case 0:
+				if (args.length > 3) {
+					send(sender, Level.WARNING, "&4The display name can't contain any spaces.");
+					return;
+				}
 				if (BukkitSpeak.getQuery().setDisplayName(args[2])) {
 					tsSection.set(StringManager.TEAMSPEAK_NAME, args[2]);
 					send(sender, Level.INFO, "&aThe display name was successfully set to " + args[2]);
@@ -115,10 +120,14 @@ public class CommandSet extends BukkitSpeakCommand {
 				}
 				break;
 			case 1:
-				tsSection.set(StringManager.TEAMSPEAK_CONSOLENAME, args[2]);
-				send(sender, Level.INFO, "&aThe console name was successfully set to " + args[2]);
+				tsSection.set(StringManager.TEAMSPEAK_CONSOLENAME, arg);
+				send(sender, Level.INFO, "&aThe console name was successfully set to " + arg);
 				break;
 			case 2:
+				if (args.length > 3) {
+					send(sender, Level.WARNING, "&4The value must be an Integer greater than 0.");
+					return;
+				}
 				if (!(BukkitSpeak.getStringManager().getUseChannel()) && !(BukkitSpeak.getStringManager().getUseTextChannel())) {
 					send(sender, Level.WARNING, "&4Set " + StringManager.TEAMSPEAK_CHANNEL 
 							+ " or " + StringManager.TEAMSPEAK_TEXTCHANNEL + " to true to use this feature.");
@@ -138,7 +147,7 @@ public class CommandSet extends BukkitSpeakCommand {
 				int clid = BukkitSpeak.getQuery().getCurrentQueryClientID();
 				String pw = BukkitSpeak.getStringManager().getChannelPass();
 				if (BukkitSpeak.getQuery().moveClient(clid, cid, pw)) {
-					tsSection.set(StringManager.TEAMSPEAK_CHANNELID, args[2]);
+					tsSection.set(StringManager.TEAMSPEAK_CHANNELID, cid);
 					send(sender, Level.INFO, "&aThe channel ID was successfully set to " + args[2]);
 				} else {
 					send(sender, Level.WARNING, "&4The channel ID could not be set.");
@@ -153,34 +162,37 @@ public class CommandSet extends BukkitSpeakCommand {
 							+ " or " + StringManager.TEAMSPEAK_TEXTCHANNEL + " to true to use this feature.");
 					return;
 				}
-				tsSection.set(StringManager.TEAMSPEAK_CHANNELPW, args[2]);
-				send(sender, Level.INFO, "&aThe channel password was successfully set to " + args[2]);
+				if (arg.equals("\'\'")) arg = "";
+				tsSection.set(StringManager.TEAMSPEAK_CHANNELPW, arg);
+				send(sender, Level.INFO, "&aThe channel password was successfully set to \'" + arg + "\'");
 				break;
 			case 4:
-				if (args[2].equalsIgnoreCase("true")) {
+				if (arg.equalsIgnoreCase("true")) {
 					tsSection.set(StringManager.TEAMSPEAK_SERVER, true);
 					send(sender, Level.INFO, "&aServer joins and quits will now be broadcasted in Minecraft.");
-				} else if (args[2].equalsIgnoreCase("false")) {
+				} else if (arg.equalsIgnoreCase("false")) {
 					tsSection.set(StringManager.TEAMSPEAK_SERVER, false);
 					send(sender, Level.INFO, "&aServer joins and quits won't be broadcasted in Minecraft anymore.");
 				} else {
 					send(sender, Level.WARNING, "Only 'true' or 'false' are accepted.");
 					return;
 				}
+				BukkitSpeak.getInstance().saveConfig();
 				BukkitSpeak.getInstance().reloadStringManager();
 				reloadListener();
 				return;
 			case 5:
-				if (args[2].equalsIgnoreCase("true")) {
+				if (arg.equalsIgnoreCase("true")) {
 					tsSection.set(StringManager.TEAMSPEAK_TEXTSERVER, true);
 					send(sender, Level.INFO, "&aTeamSpeak broadcasts will now be sent to Minecraft.");
-				} else if (args[2].equalsIgnoreCase("false")) {
+				} else if (arg.equalsIgnoreCase("false")) {
 					tsSection.set(StringManager.TEAMSPEAK_TEXTSERVER, false);
 					send(sender, Level.INFO, "&aTeamSpeak broadcasts won't be sent to Minecraft anymore.");
 				} else {
 					send(sender, Level.WARNING, "Only 'true' or 'false' are accepted.");
 					return;
 				}
+				BukkitSpeak.getInstance().saveConfig();
 				BukkitSpeak.getInstance().reloadStringManager();
 				reloadListener();
 				return;
@@ -188,17 +200,18 @@ public class CommandSet extends BukkitSpeakCommand {
 				boolean o1 = ((BukkitSpeak.getStringManager().getUseChannel())
 						|| (BukkitSpeak.getStringManager().getUseTextChannel()));
 				boolean n1 = false;
-				if (args[2].equalsIgnoreCase("true")) {
+				if (arg.equalsIgnoreCase("true")) {
 					tsSection.set(StringManager.TEAMSPEAK_CHANNEL, true);
 					n1 = true;
 					send(sender, Level.INFO, "&aChannel joins and quits will now be broadcasted in Minecraft.");
-				} else if (args[2].equalsIgnoreCase("false")) {
+				} else if (arg.equalsIgnoreCase("false")) {
 					tsSection.set(StringManager.TEAMSPEAK_CHANNEL, false);
 					send(sender, Level.INFO, "&aChannel joins and quits won't be broadcasted in Minecraft anymore.");
 				} else {
 					send(sender, Level.WARNING, "Only 'true' or 'false' are accepted.");
 					return;
 				}
+				BukkitSpeak.getInstance().saveConfig();
 				BukkitSpeak.getInstance().reloadStringManager();
 				reloadListener();
 				if (!o1 && n1) connectChannel(sender);
@@ -207,40 +220,42 @@ public class CommandSet extends BukkitSpeakCommand {
 				boolean o2 = ((BukkitSpeak.getStringManager().getUseChannel())
 						|| (BukkitSpeak.getStringManager().getUseTextChannel()));
 				boolean n2 = false;
-				if (args[2].equalsIgnoreCase("true")) {
+				if (arg.equalsIgnoreCase("true")) {
 					tsSection.set(StringManager.TEAMSPEAK_TEXTCHANNEL, true);
 					n2 = true;
 					send(sender, Level.INFO, "&aChat messages from the TeamSpeak channel will now be broadcasted in Minecraft.");
-				} else if (args[2].equalsIgnoreCase("false")) {
+				} else if (arg.equalsIgnoreCase("false")) {
 					tsSection.set(StringManager.TEAMSPEAK_TEXTCHANNEL, false);
 					send(sender, Level.INFO, "&aChat messages from the TeamSpeak channel won't be broadcasted in Minecraft anymore.");
 				} else {
 					send(sender, Level.WARNING, "Only 'true' or 'false' are accepted.");
 					return;
 				}
+				BukkitSpeak.getInstance().saveConfig();
 				BukkitSpeak.getInstance().reloadStringManager();
 				reloadListener();
 				if (!o2 && n2) connectChannel(sender);
 				return;
 			case 8:
-				if (args[2].equalsIgnoreCase("true")) {
+				if (arg.equalsIgnoreCase("true")) {
 					tsSection.set(StringManager.TEAMSPEAK_PRIVATEMESSAGES, true);
 					send(sender, Level.INFO, "&aPrivate messages can now be sent and received.");
-				} else if (args[2].equalsIgnoreCase("false")) {
+				} else if (arg.equalsIgnoreCase("false")) {
 					tsSection.set(StringManager.TEAMSPEAK_PRIVATEMESSAGES, false);
 					send(sender, Level.INFO, "&aPrivate messages can't be sent or received anymore.");
 				} else {
 					send(sender, Level.WARNING, "Only 'true' or 'false' are accepted.");
 					return;
 				}
+				BukkitSpeak.getInstance().saveConfig();
 				BukkitSpeak.getInstance().reloadStringManager();
 				reloadListener();
 				return;
 			case 9:
-				if (args[2].equalsIgnoreCase("true")) {
+				if (arg.equalsIgnoreCase("true")) {
 					tsSection.set(StringManager.TEAMSPEAK_ALLOWLINKS, true);
 					send(sender, Level.INFO, "&aLinks in messages are now allowed.");
-				} else if (args[2].equalsIgnoreCase("false")) {
+				} else if (arg.equalsIgnoreCase("false")) {
 					tsSection.set(StringManager.TEAMSPEAK_ALLOWLINKS, false);
 					send(sender, Level.INFO, "&aLinks in messages are now forbidden.");
 				} else {
@@ -249,13 +264,13 @@ public class CommandSet extends BukkitSpeakCommand {
 				}
 				break;
 			case 10:
-				if (args[2].equalsIgnoreCase("none") || args[2].equalsIgnoreCase("noting")) {
+				if (arg.equalsIgnoreCase("none") || args[2].equalsIgnoreCase("noting")) {
 					tsSection.set(StringManager.TEAMSPEAK_TARGET, "none");
 					send(sender, Level.INFO, "&aMinecraft chat won't be sent to the TeamSpeak server anymore.");
-				} else if (args[2].equalsIgnoreCase("channel") || args[2].equalsIgnoreCase("chat")) {
+				} else if (arg.equalsIgnoreCase("channel") || args[2].equalsIgnoreCase("chat")) {
 					tsSection.set(StringManager.TEAMSPEAK_TARGET, "channel");
 					send(sender, Level.INFO, "&aMinecraft chat will now be sent to the TeamSpeak channel.");
-				} else if (args[2].equalsIgnoreCase("server") || args[2].equalsIgnoreCase("broadcast")) {
+				} else if (arg.equalsIgnoreCase("server") || args[2].equalsIgnoreCase("broadcast")) {
 					tsSection.set(StringManager.TEAMSPEAK_TARGET, "server");
 					send(sender, Level.INFO, "&aMinecraft chat will now be broadcasted on the TeamSpeak server.");
 				} else {
@@ -264,10 +279,10 @@ public class CommandSet extends BukkitSpeakCommand {
 				}
 				break;
 			case 11:
-				if (args[2].equalsIgnoreCase("true")) {
+				if (arg.equalsIgnoreCase("true")) {
 					tsSection.set(StringManager.TEAMSPEAK_CONSOLE, true);
 					send(sender, Level.INFO, "&aTeamspeak actions will now be logged in the console.");
-				} else if (args[2].equalsIgnoreCase("false")) {
+				} else if (arg.equalsIgnoreCase("false")) {
 					tsSection.set(StringManager.TEAMSPEAK_CONSOLE, false);
 					send(sender, Level.INFO, "&aTeamspeak actions won't be logged in the console anymore.");
 				} else {
@@ -276,14 +291,14 @@ public class CommandSet extends BukkitSpeakCommand {
 				}
 				break;
 			case 12:
-				tsSection.set(StringManager.TEAMSPEAK_DEFAULTREASON, args[2]);
-				send(sender, Level.INFO, "&aThe default reason was successfully set to " + args[2]);
+				tsSection.set(StringManager.TEAMSPEAK_DEFAULTREASON, arg);
+				send(sender, Level.INFO, "&aThe default reason was successfully set to " + arg);
 				break;
 			case 13:
-				if (args[2].equalsIgnoreCase("true")) {
+				if (arg.equalsIgnoreCase("true")) {
 					tsSection.set(StringManager.TEAMSPEAK_DEBUG, true);
 					send(sender, Level.INFO, "&aDebug mode was successfully enabled.");
-				} else if (args[2].equalsIgnoreCase("false")) {
+				} else if (arg.equalsIgnoreCase("false")) {
 					tsSection.set(StringManager.TEAMSPEAK_DEBUG, false);
 					send(sender, Level.INFO, "&aDebug mode was successfully disabled.");
 				} else {
@@ -294,6 +309,7 @@ public class CommandSet extends BukkitSpeakCommand {
 			default:
 				return;
 			}
+			BukkitSpeak.getInstance().saveConfig();
 			BukkitSpeak.getInstance().reloadStringManager();
 		}
 	}

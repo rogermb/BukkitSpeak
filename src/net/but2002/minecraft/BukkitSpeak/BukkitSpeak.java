@@ -80,7 +80,7 @@ public class BukkitSpeak extends JavaPlugin {
 	}
 	
 	public String toString() {
-		return "§a[§6" + this.getDescription().getName() + "§a]§f " ;
+		return "\u00A7a[\u00A76" + this.getDescription().getName() + "\u00A7a]\u00A7f " ;
 	}
 	
 	public static String getFullName() {
@@ -200,11 +200,11 @@ public class BukkitSpeak extends JavaPlugin {
 			pmRecipients = new HashMap<Integer, String>();
 			pmSenders = new HashMap<String, Integer>();
 			
-			if (sender instanceof Player) sender.sendMessage(this + "§areloaded.");
+			if (sender instanceof Player) sender.sendMessage(this + "\u00A7areloaded.");
 			this.getLogger().info("reloaded.");
 		} catch (Exception e) {
 			if (sender instanceof Player) {
-				sender.sendMessage(this + "§4was unable to reload, an error happened.");
+				sender.sendMessage(this + "\u00A74was unable to reload, an error happened.");
 			}
 			this.getLogger().info("was unable to reload, an error happened.");
 			e.printStackTrace();

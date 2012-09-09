@@ -51,7 +51,7 @@ public class BukkitSpeakCommandExecutor implements CommandExecutor {
 	
 	public void send(CommandSender sender, Level level, String msg) {
 		if (sender instanceof Player) {
-			msg = msg.replaceAll("&", "§").replaceAll("$", "§");
+			msg = msg.replaceAll("&", "\u00A7").replaceAll("$", "\u00A7");
 			sender.sendMessage(BukkitSpeak.getFullName() + msg);
 		} else {
 			msg = msg.replaceAll("&[a-fA-F0-9]", "").replaceAll("$[a-fA-F0-9]", "");

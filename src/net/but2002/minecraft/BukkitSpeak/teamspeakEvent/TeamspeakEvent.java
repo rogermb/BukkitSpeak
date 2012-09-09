@@ -50,9 +50,9 @@ public abstract class TeamspeakEvent {
 	public String replaceValues(String input, boolean color) {
 		input = Matcher.quoteReplacement(input);
 		if (color) {
-			input = input.replaceAll("((&|$)([a-fk-orA-FK-OR0-9]))", "§$3");
+			input = input.replaceAll("((&|$)([a-fk-orA-FK-OR0-9]))", "\u00A7$3");
 		} else {
-			input = input.replaceAll("((&|$|§)([a-fk-orA-FK-OR0-9]))", "");
+			input = input.replaceAll("((&|$|\u00A7)([a-fk-orA-FK-OR0-9]))", "");
 		}
 		
 		for (String key : user.keySet()) {

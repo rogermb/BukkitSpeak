@@ -39,10 +39,10 @@ public abstract class BukkitSpeakCommand {
 	
 	protected void send(CommandSender sender, Level level, String msg) {
 		if (sender instanceof Player) {
-			msg = msg.replaceAll("((&|$)([a-fk-orA-FK-OR0-9]))", "§$3");
+			msg = msg.replaceAll("((&|$)([a-fk-orA-FK-OR0-9]))", "\u00A7$3");
 			sender.sendMessage(BukkitSpeak.getFullName() + msg);
 		} else {
-			msg = msg.replaceAll("((&|$|§)([a-fk-orA-FK-OR0-9]))", "");
+			msg = msg.replaceAll("((&|$|\u00A7)([a-fk-orA-FK-OR0-9]))", "");
 			BukkitSpeak.log().log(level, msg);
 		}
 	}
@@ -64,9 +64,9 @@ public abstract class BukkitSpeakCommand {
 			Boolean colored = false, bold = false, underlined = false, italics = false;
 			String s = input;
 			if (color) {
-				s = s.replaceAll("((&|$)([a-fk-orA-FK-OR0-9]))", "§$3");
-				while (s.matches(".*§[a-fk-orA-FK-OR0-9].*")) {
-					Matcher m = Pattern.compile("(§([a-fk-orA-FK-OR0-9]))").matcher(s);
+				s = s.replaceAll("((&|$)([a-fk-orA-FK-OR0-9]))", "\u00A7$3");
+				while (s.matches(".*\u00A7[a-fk-orA-FK-OR0-9].*")) {
+					Matcher m = Pattern.compile("(\u00A7([a-fk-orA-FK-OR0-9]))").matcher(s);
 					if (!m.find()) break;
 					Integer i = m.start();
 					Integer j;
@@ -80,30 +80,30 @@ public abstract class BukkitSpeakCommand {
 							s = s.substring(0, i) + "[/color]" + s.substring(i);
 							colored = false;
 						}
-						s = s.replaceFirst("§([a-fA-F0-9])", COLORS[j]);
+						s = s.replaceFirst("\u00A7([a-fA-F0-9])", COLORS[j]);
 						if (j != 0) colored = true;
 					} else if (j == 16) {
 						if (bold) {
 							s = s.substring(0, i) + "[/b]" + s.substring(i);
 						}
-						s = s.replaceFirst("§[lL]", COLORS[j]);
+						s = s.replaceFirst("\u00A7[lL]", COLORS[j]);
 						bold = true;
 					} else if (j == 17) {
 						if (underlined) {
 							s = s.substring(0, i) + "[/u]" + s.substring(i);
 						}
-						s = s.replaceFirst("§[nN]", COLORS[j]);
+						s = s.replaceFirst("\u00A7[nN]", COLORS[j]);
 						underlined = true;
 					} else if (j == 18) {
 						if (italics) {
 							s = s.substring(0, i) + "[/i]" + s.substring(i);
 						}
-						s = s.replaceFirst("§[oO]", COLORS[j]);
+						s = s.replaceFirst("\u00A7[oO]", COLORS[j]);
 						italics = true;
 					} else if (j == 19 || j == 20) {
-						s = s.replaceFirst("§[mMkK]", "");
+						s = s.replaceFirst("\u00A7[mMkK]", "");
 					} else {
-						s = s.replaceFirst("§r", "");
+						s = s.replaceFirst("\u00A7r", "");
 						if (colored) s = s.substring(0, i) + "[/color]" + s.substring(i);
 						if (bold) s = s.substring(0, i) + "[/b]" + s.substring(i);
 						if (italics) s = s.substring(0, i) + "[/i]" + s.substring(i);
@@ -120,7 +120,7 @@ public abstract class BukkitSpeakCommand {
 				if (underlined) s += "[/u]";
 				
 			} else {
-				s = s.replaceAll("((&|$|§)([a-fk-orA-FK-OR0-9]))", "");
+				s = s.replaceAll("((&|$|\u00A7)([a-fk-orA-FK-OR0-9]))", "");
 			}
 			if (links) {
 				s = s.replaceAll("(?i)((http://|ftp://).*\\.?.+\\..+(/.*)?)", "\\[URL]$1\\[/URL]");
@@ -157,9 +157,9 @@ public abstract class BukkitSpeakCommand {
 		if (input != null) {
 			String s = input;
 			if (color) {
-				s = s.replaceAll("((&|$)([a-fk-orA-FK-OR0-9]))", "§$3");
+				s = s.replaceAll("((&|$)([a-fk-orA-FK-OR0-9]))", "\u00A7$3");
 			} else {
-				s = s.replaceAll("((&|$|§)([a-fk-orA-FK-OR0-9]))", "");
+				s = s.replaceAll("((&|$|\u00A7)([a-fk-orA-FK-OR0-9]))", "");
 			}
 			if (!links) {
 				s = s.replaceAll("(?i)((http://|ftp://).*\\.?.+\\..+(/.*)?)", "");

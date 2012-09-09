@@ -34,9 +34,6 @@
   </dependencies>
 
   <build>
-    <sourceDirectory>src\</sourceDirectory>
-    <outputDirectory>bin\</outputDirectory>
-
     <plugins>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>

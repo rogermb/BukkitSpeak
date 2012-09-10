@@ -32,7 +32,7 @@ public class TeamspeakKeepAlive extends Thread {
 			c += 1;
 			if (c >= 5) {
 				c = 0;
-				new Thread(plugin.qc).start();
+				new Thread(plugin.getQueryConnector()).start();
 			}
 		}
 	}

@@ -19,24 +19,26 @@ import de.stefan1200.jts3serverquery.TeamspeakActionListener;
 
 public class BukkitSpeak extends JavaPlugin {
 	
-	static BukkitSpeak instance;
-	static StringManager stringManager;
-	static ClientList clients;
-	static JTS3ServerQuery query;
-	static DTS3ServerQuery dquery;
+	private static final int KEEP_ALIVE_DELAY = 1200;
 	
-	static List<String> muted;
-	static HashMap<Integer, String> pmRecipients;
-	static HashMap<String, Integer> pmSenders;
+	private static BukkitSpeak instance;
+	private static StringManager stringManager;
+	private static ClientList clients;
+	private static JTS3ServerQuery query;
+	private static DTS3ServerQuery dquery;
 	
-	QueryConnector qc;
-	TeamspeakActionListener ts;
-	TeamspeakKeepAlive tsKeepAlive;
-	BukkitSpeakCommandExecutor tsCommand;
-	ChatListener chatListener;
-	Logger logger;
+	private static List<String> muted;
+	private static HashMap<Integer, String> pmRecipients;
+	private static HashMap<String, Integer> pmSenders;
 	
-	Date started, stopped, laststarted, laststopped;
+	private QueryConnector qc;
+	private TeamspeakActionListener ts;
+	private TeamspeakKeepAlive tsKeepAlive;
+	private BukkitSpeakCommandExecutor tsCommand;
+	private ChatListener chatListener;
+	private Logger logger;
+	
+	private Date started, stopped, laststarted, laststopped;
 	
 	public static BukkitSpeak getInstance() {
 		return instance;
@@ -55,7 +57,7 @@ public class BukkitSpeak extends JavaPlugin {
 		qc = new QueryConnector();
 		this.getServer().getScheduler().scheduleAsyncDelayedTask(this, qc);
 		tsKeepAlive = new TeamspeakKeepAlive(this);
-		this.getServer().getScheduler().scheduleAsyncRepeatingTask(this, tsKeepAlive, 600, 1200);
+		this.getServer().getScheduler().scheduleAsyncRepeatingTask(this, tsKeepAlive, KEEP_ALIVE_DELAY / 2, KEEP_ALIVE_DELAY);
 		
 		tsCommand = new BukkitSpeakCommandExecutor();
 		chatListener = new ChatListener();
@@ -80,7 +82,7 @@ public class BukkitSpeak extends JavaPlugin {
 	}
 	
 	public String toString() {
-		return "\u00A7a[\u00A76" + this.getDescription().getName() + "\u00A7a]\u00A7f " ;
+		return "\u00A7a[\u00A76" + this.getDescription().getName() + "\u00A7a]\u00A7f ";
 	}
 	
 	public static String getFullName() {
@@ -123,6 +125,10 @@ public class BukkitSpeak extends JavaPlugin {
 		return clients;
 	}
 	
+	public void resetClientList() {
+		clients = new ClientList(this);
+	}
+	
 	public static void registerRecipient(String player, Integer clid) {
 		if (pmRecipients.containsKey(clid)) pmRecipients.remove(clid);
 		if (pmSenders.containsKey(player)) pmSenders.remove(player);
@@ -143,6 +149,14 @@ public class BukkitSpeak extends JavaPlugin {
 			return pmSenders.get(player);
 		}
 		return null;
+	}
+	
+	public QueryConnector getQueryConnector() {
+		return qc;
+	}
+	
+	public TeamspeakActionListener getTSActionListener() {
+		return ts;
 	}
 	
 	public Date getStartedTime() {

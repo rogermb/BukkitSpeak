@@ -63,7 +63,7 @@ public class QueryConnector implements Runnable {
 			logger.warning("(" + query.getLastError() + ")");
 		}
 		
-		query.setTeamspeakActionListener(plugin.ts);
+		query.setTeamspeakActionListener(plugin.getTSActionListener());
 		
 		if (stringManager.getUseServer()) query.addEventNotify(JTS3ServerQuery.EVENT_MODE_SERVER, 0);
 		if (stringManager.getUseTextServer()) query.addEventNotify(JTS3ServerQuery.EVENT_MODE_TEXTSERVER, 0);
@@ -82,7 +82,7 @@ public class QueryConnector implements Runnable {
 		if (stringManager.getUseTextChannel()) query.addEventNotify(JTS3ServerQuery.EVENT_MODE_TEXTCHANNEL, stringManager.getChannelID());
 		if (stringManager.getUsePrivateMessages()) query.addEventNotify(JTS3ServerQuery.EVENT_MODE_TEXTPRIVATE, 0);
 		
-		BukkitSpeak.clients = new ClientList(plugin);
+		BukkitSpeak.getInstance().resetClientList();
 		plugin.setStoppedTime(null);
 		plugin.setStartedTime(null);
 		plugin.setStartedTime(new Date());

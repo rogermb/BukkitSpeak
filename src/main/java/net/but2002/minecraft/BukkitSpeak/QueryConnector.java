@@ -7,10 +7,10 @@ import de.stefan1200.jts3serverquery.JTS3ServerQuery;
 
 public class QueryConnector implements Runnable {
 	
-	BukkitSpeak plugin;
-	JTS3ServerQuery query;
-	StringManager stringManager;
-	Logger logger;
+	private BukkitSpeak plugin;
+	private JTS3ServerQuery query;
+	private StringManager stringManager;
+	private Logger logger;
 	
 	public QueryConnector() {
 		this.plugin = BukkitSpeak.getInstance();

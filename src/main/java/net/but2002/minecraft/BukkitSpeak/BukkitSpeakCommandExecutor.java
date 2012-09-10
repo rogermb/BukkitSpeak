@@ -12,8 +12,8 @@ import org.bukkit.entity.Player;
 
 public class BukkitSpeakCommandExecutor implements CommandExecutor {
 	
-	BukkitSpeakCommand Help, Info, List, Mute, Broadcast, Chat, Pm, Poke, Reply;
-	BukkitSpeakCommand AdminHelp, Ban, ChannelKick, Kick, Set, Status;
+	private BukkitSpeakCommand Help, Info, List, Mute, Broadcast, Chat, Pm, Poke, Reply;
+	private BukkitSpeakCommand AdminHelp, Ban, ChannelKick, Kick, Set, Status;
 	
 	public BukkitSpeakCommandExecutor() {
 		AdminHelp = new CommandAdminHelp();

@@ -45,7 +45,7 @@ public class ChatListener implements Listener {
 	}
 	
 	@EventHandler(priority = EventPriority.LOWEST)
-	public void onPlayerJoin(PlayerJoinEvent e){
+	public void onPlayerJoin(PlayerJoinEvent e) {
 		if (BukkitSpeak.getStringManager().getTeamspeakTarget() == TsTargetEnum.NONE) return;
 		if (e.getPlayer() == null) return;
 		
@@ -72,7 +72,7 @@ public class ChatListener implements Listener {
 	}
 	
 	@EventHandler(priority = EventPriority.LOWEST)
-	public void onPlayerQuit(PlayerQuitEvent e){
+	public void onPlayerQuit(PlayerQuitEvent e) {
 		if (BukkitSpeak.getStringManager().getTeamspeakTarget() == TsTargetEnum.NONE) return;
 		if (e.getPlayer() == null) return;
 		

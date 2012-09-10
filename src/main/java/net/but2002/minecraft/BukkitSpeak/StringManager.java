@@ -8,7 +8,7 @@ import net.but2002.minecraft.BukkitSpeak.util.ConfigReader;
 
 public class StringManager {
 	
-	private HashMap<String,String> strings = new HashMap<String,String>();
+	private HashMap<String, String> strings = new HashMap<String,String>();
 	private String ip, serverAdmin, serverPass, tsName, tsConsoleName, tsChannelPass, tsDefaultReason;
 	private int queryPort, serverPort, tsChannelID, tsTarget;
 	private Boolean tsServer, tsTextServer, tsChannel, tsTextChannel, tsPrivateMessages, tsAllowLinks, tsConsole, tsDebug;
@@ -47,11 +47,11 @@ public class StringManager {
 	
 	// Used in BukkitSpeak.teamspeakEvent.*
 	public static final String[][] TEAMSPEAKEVENTMESSAGES = {
-		{"Join", "&e%client_nickname% &ahas joined TeamSpeak"}, 
-		{"Quit", "&e%client_nickname% &ahas left TeamSpeak"}, 
-		{"ChannelEnter","&e%client_nickname% &aentered the channel."},
-		{"ChannelLeave","&e%client_nickname% &aleft the channel."},
-		{"ServerMsg", "[&cTS&f] &e%client_nickname%&a: %msg%"}, 
+		{"Join", "&e%client_nickname% &ahas joined TeamSpeak"},
+		{"Quit", "&e%client_nickname% &ahas left TeamSpeak"},
+		{"ChannelEnter", "&e%client_nickname% &aentered the channel."},
+		{"ChannelLeave", "&e%client_nickname% &aleft the channel."},
+		{"ServerMsg", "[&cTS&f] &e%client_nickname%&a: %msg%"},
 		{"ChannelMsg", "&e%client_nickname%&f: %msg%"},
 		{"PrivateMsg", "&e%client_nickname% &a-> &eMe&f: %msg%"}};
 	

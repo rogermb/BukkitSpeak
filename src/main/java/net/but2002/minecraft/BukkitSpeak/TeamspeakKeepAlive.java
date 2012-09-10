@@ -6,11 +6,13 @@ public class TeamspeakKeepAlive extends Thread {
 	
 	//XXX
 	
-	BukkitSpeak plugin;
-	int c;
+	private static final int RETRY_TIME = 5;
 	
-	public TeamspeakKeepAlive(BukkitSpeak plugin) {
-		this.plugin = plugin;
+	private BukkitSpeak plugin;
+	private int c;
+	
+	public TeamspeakKeepAlive(BukkitSpeak bukkitSpeak) {
+		plugin = bukkitSpeak;
 		c = 0;
 	}
 	
@@ -30,7 +32,7 @@ public class TeamspeakKeepAlive extends Thread {
 			c = 0;
 		} else {
 			c += 1;
-			if (c >= 5) {
+			if (c >= RETRY_TIME) {
 				c = 0;
 				new Thread(plugin.getQueryConnector()).start();
 			}

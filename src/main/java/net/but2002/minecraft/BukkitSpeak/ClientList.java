@@ -13,9 +13,9 @@ import de.stefan1200.jts3serverquery.JTS3ServerQuery;
 
 public class ClientList {
 	
-	ConcurrentHashMap<Integer, HashMap<String, String>> clients;
-	JTS3ServerQuery query;
-	Logger logger;
+	private ConcurrentHashMap<Integer, HashMap<String, String>> clients;
+	private JTS3ServerQuery query;
+	private Logger logger;
 	
 	public ClientList(BukkitSpeak plugin) {
 		query = BukkitSpeak.getQuery();
@@ -175,16 +175,16 @@ public class ClientList {
 
 class ClientUpdater implements Runnable {
 	
-	ConcurrentHashMap<Integer, HashMap<String, String>> clients;
-	JTS3ServerQuery query;
-	Logger logger;
-	Integer clid;
+	private ConcurrentHashMap<Integer, HashMap<String, String>> clients;
+	private JTS3ServerQuery query;
+	private Logger log;
+	private Integer clid;
 	
-	public ClientUpdater(ConcurrentHashMap<Integer, HashMap<String, String>> clients, JTS3ServerQuery query, Logger logger, Integer clid) {
-		this.clients = clients;
-		this.query = query;
-		this.logger = logger;
-		this.clid = clid;
+	public ClientUpdater(ConcurrentHashMap<Integer, HashMap<String, String>> clientsMap, JTS3ServerQuery teamspeakQuery, Logger logger, Integer clientID) {
+		clients = clientsMap;
+		query = teamspeakQuery;
+		log = logger;
+		clid = clientID;
 	}
 	
 	@Override
@@ -200,10 +200,10 @@ class ClientUpdater implements Runnable {
 					clients.put(clid, user);
 				}
 			} else {
-				logger.warning("Received no information for user id " + clid + ". (AsyncClientUpdate)");
+				log.warning("Received no information for user id " + clid + ". (AsyncClientUpdate)");
 			}
 		} catch (Exception e) {
-			logger.severe("Error while receiving client information.");
+			log.severe("Error while receiving client information.");
 			e.printStackTrace();
 		}
 	}

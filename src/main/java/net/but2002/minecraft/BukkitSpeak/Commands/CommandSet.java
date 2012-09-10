@@ -148,6 +148,9 @@ public class CommandSet extends BukkitSpeakCommand {
 				String pw = BukkitSpeak.getStringManager().getChannelPass();
 				if (BukkitSpeak.getQuery().moveClient(clid, cid, pw)) {
 					tsSection.set(StringManager.TEAMSPEAK_CHANNELID, cid);
+					BukkitSpeak.getInstance().saveConfig();
+					BukkitSpeak.getInstance().reloadStringManager();
+					reloadListener();
 					send(sender, Level.INFO, "&aThe channel ID was successfully set to " + args[2]);
 				} else {
 					send(sender, Level.WARNING, "&4The channel ID could not be set.");
@@ -155,7 +158,7 @@ public class CommandSet extends BukkitSpeakCommand {
 					send(sender, Level.WARNING, "&4" + BukkitSpeak.getQuery().getLastError());
 					return;
 				}
-				break;
+				return;
 			case 3:
 				if (!(BukkitSpeak.getStringManager().getUseChannel()) && !(BukkitSpeak.getStringManager().getUseTextChannel())) {
 					send(sender, Level.WARNING, "&4Set " + StringManager.TEAMSPEAK_CHANNEL 

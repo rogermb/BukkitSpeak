@@ -5,14 +5,16 @@ import java.util.Date;
 
 public abstract class DateManager {
 	
-	public static String DateToString(Date date) {
+	private static final int TIME_TOLERANCE = 2000;
+	
+	public static String dateToString(Date date) {
 		
 		Calendar c = Calendar.getInstance();
 		Date d = new Date();
 		c.setTime(date);
 		
 		if (date == null) return null;
-		if (d.getTime() - date.getTime() < 2000) {
+		if (d.getTime() - date.getTime() < TIME_TOLERANCE) {
 			return "Just now";
 		}
 		

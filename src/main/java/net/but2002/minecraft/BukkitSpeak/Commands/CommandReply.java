@@ -48,18 +48,18 @@ public class CommandReply extends BukkitSpeakCommand {
 		
 		String tsMsg = BukkitSpeak.getStringManager().getMessage("PrivateMessage");
 		String mcMsg = BukkitSpeak.getStringManager().getMessage("Pm");
-		String Name, DisplayName;
+		String name, displayName;
 		if (sender instanceof Player) {
-			Name = ((Player) sender).getName();
-			DisplayName = ((Player) sender).getDisplayName();
+			name = ((Player) sender).getName();
+			displayName = ((Player) sender).getDisplayName();
 		} else {
-			Name = convertToMinecraft(BukkitSpeak.getStringManager().getConsoleName(), false, false);
-			DisplayName = BukkitSpeak.getStringManager().getConsoleName();
+			name = convertToMinecraft(BukkitSpeak.getStringManager().getConsoleName(), false, false);
+			displayName = BukkitSpeak.getStringManager().getConsoleName();
 		}
 		
 		HashMap<String, String> repl = new HashMap<String, String>();
-		repl.put("%player_name%", Name);
-		repl.put("%player_displayname%", DisplayName);
+		repl.put("%player_name%", name);
+		repl.put("%player_displayname%", displayName);
 		repl.put("%target%", BukkitSpeak.getClients().get(clid).get("client_nickname"));
 		repl.put("%msg%", sb.toString());
 		
@@ -69,7 +69,7 @@ public class CommandReply extends BukkitSpeakCommand {
 		if (tsMsg == null || tsMsg.isEmpty()) return;
 		QuerySender qs = new QuerySender(clid, JTS3ServerQuery.TEXTMESSAGE_TARGET_CLIENT, tsMsg);
 		Bukkit.getScheduler().scheduleAsyncDelayedTask(BukkitSpeak.getInstance(), qs);
-		BukkitSpeak.registerRecipient(Name, clid);
+		BukkitSpeak.registerRecipient(name, clid);
 		broadcastMessage(mcMsg, sender);
 	}
 }

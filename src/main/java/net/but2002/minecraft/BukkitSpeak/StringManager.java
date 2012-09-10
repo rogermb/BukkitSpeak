@@ -8,7 +8,7 @@ import net.but2002.minecraft.BukkitSpeak.util.ConfigReader;
 
 public class StringManager {
 	
-	private HashMap<String, String> strings = new HashMap<String,String>();
+	private HashMap<String, String> strings = new HashMap<String, String>();
 	private String ip, serverAdmin, serverPass, tsName, tsConsoleName, tsChannelPass, tsDefaultReason;
 	private int queryPort, serverPort, tsChannelID, tsTarget;
 	private Boolean tsServer, tsTextServer, tsChannel, tsTextChannel, tsPrivateMessages, tsAllowLinks, tsConsole, tsDebug;

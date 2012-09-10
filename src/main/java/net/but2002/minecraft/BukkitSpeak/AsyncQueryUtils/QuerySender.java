@@ -4,8 +4,8 @@ import net.but2002.minecraft.BukkitSpeak.BukkitSpeak;
 
 public class QuerySender implements Runnable {
 	
-	int id, mode;
-	String msg;
+	private int id, mode;
+	private String msg;
 	
 	public QuerySender(int targetID, int targetMode, String message) {
 		id = targetID;

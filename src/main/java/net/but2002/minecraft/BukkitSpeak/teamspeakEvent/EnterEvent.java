@@ -6,10 +6,10 @@ import org.bukkit.entity.Player;
 
 import net.but2002.minecraft.BukkitSpeak.BukkitSpeak;
 
-public class EnterEvent extends TeamspeakEvent{
+public class EnterEvent extends TeamspeakEvent {
 	
-	public EnterEvent(HashMap<String, String> info) {
-		super(Integer.valueOf(info.get("clid")));
+	public EnterEvent(HashMap<String, String> infoMap) {
+		super(Integer.valueOf(infoMap.get("clid")));
 		sendMessage();
 	}
 	

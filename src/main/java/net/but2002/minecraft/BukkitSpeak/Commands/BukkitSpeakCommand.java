@@ -13,10 +13,9 @@ import org.bukkit.entity.Player;
 
 public abstract class BukkitSpeakCommand {
 	
-	//BukkitSpeak plugin;
-	//StringManager stringManager;
+	protected static final int TS_MAXLENGHT = 100;
 	
-	public final static String[] COLORS = {
+	public static final String[] COLORS = {
 			"",					// 0
 			"[color=#0000AA]",	// 1
 			"[color=#00AA00]",	// 2
@@ -182,7 +181,7 @@ public abstract class BukkitSpeakCommand {
 		return null;
 	}
 	
-	public Boolean CheckCommandPermission(CommandSender sender, String perm) {
+	public Boolean checkCommandPermission(CommandSender sender, String perm) {
 		if (sender instanceof Player) {
 			return sender.hasPermission("bukkitspeak.commands." + perm); 
 		} else {

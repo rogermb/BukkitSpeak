@@ -46,18 +46,18 @@ public class CommandPoke extends BukkitSpeakCommand {
 		
 		String tsMsg = BukkitSpeak.getStringManager().getMessage("PokeMessage");
 		String mcMsg = BukkitSpeak.getStringManager().getMessage("Poke");
-		String Name, DisplayName;
+		String name, displayName;
 		if (sender instanceof Player) {
-			Name = ((Player) sender).getName();
-			DisplayName = ((Player) sender).getDisplayName();
+			name = ((Player) sender).getName();
+			displayName = ((Player) sender).getDisplayName();
 		} else {
-			Name = convertToMinecraft(BukkitSpeak.getStringManager().getConsoleName(), false, false);
-			DisplayName = BukkitSpeak.getStringManager().getConsoleName();
+			name = convertToMinecraft(BukkitSpeak.getStringManager().getConsoleName(), false, false);
+			displayName = BukkitSpeak.getStringManager().getConsoleName();
 		}
 		
 		HashMap<String, String> repl = new HashMap<String, String>();
-		repl.put("%player_name%", Name);
-		repl.put("%player_displayname%", DisplayName);
+		repl.put("%player_name%", name);
+		repl.put("%player_displayname%", displayName);
 		repl.put("%target%", client.get("client_nickname"));
 		repl.put("%msg%", sb.toString());
 		
@@ -65,7 +65,7 @@ public class CommandPoke extends BukkitSpeakCommand {
 		mcMsg = replaceKeys(mcMsg, repl);
 		
 		if (tsMsg == null || tsMsg.isEmpty()) return;
-		if (tsMsg.length() > 100) {
+		if (tsMsg.length() > TS_MAXLENGHT) {
 			send(sender, Level.WARNING, "&4The message is too long! (> 100 characters)");
 			return;
 		}

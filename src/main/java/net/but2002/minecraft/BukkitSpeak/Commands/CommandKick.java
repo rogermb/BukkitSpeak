@@ -1,6 +1,5 @@
 package net.but2002.minecraft.BukkitSpeak.Commands;
 
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.logging.Level;
 
@@ -37,39 +36,32 @@ public class CommandKick extends BukkitSpeakCommand {
 			return;
 		}
 		
-		StringBuilder sb = new StringBuilder();
-		if (args.length > 2) {
-			for (String s : Arrays.copyOfRange(args, 2, args.length)) {
-				sb.append(s);
-				sb.append(" ");
-			}
-			sb.deleteCharAt(sb.length() - 1);
-		} else {
-			sb.append("-");
-		}
-		
 		String tsMsg = BukkitSpeak.getStringManager().getMessage("KickMessage");
 		String mcMsg = BukkitSpeak.getStringManager().getMessage("Kick");
-		String Name, DisplayName;
+		String name, displayName;
 		if (sender instanceof Player) {
-			Name = ((Player) sender).getName();
-			DisplayName = ((Player) sender).getDisplayName();
+			name = ((Player) sender).getName();
+			displayName = ((Player) sender).getDisplayName();
 		} else {
-			Name = convertToMinecraft(BukkitSpeak.getStringManager().getConsoleName(), false, false);
-			DisplayName = BukkitSpeak.getStringManager().getConsoleName();
+			name = convertToMinecraft(BukkitSpeak.getStringManager().getConsoleName(), false, false);
+			displayName = BukkitSpeak.getStringManager().getConsoleName();
 		}
 		
 		HashMap<String, String> repl = new HashMap<String, String>();
-		repl.put("%player_name%", Name);
-		repl.put("%player_displayname%", DisplayName);
+		repl.put("%player_name%", name);
+		repl.put("%player_displayname%", displayName);
 		repl.put("%target%", client.get("client_nickname"));
-		repl.put("%msg%", sb.toString());
+		if (args.length > 2) {
+			repl.put("%msg%", combineSplit(2, args, " "));
+		} else {
+			repl.put("%msg%", BukkitSpeak.getStringManager().getDefaultReason());
+		}
 		
 		tsMsg = convertToTeamspeak(replaceKeys(tsMsg, repl), false, BukkitSpeak.getStringManager().getAllowLinks());
 		mcMsg = replaceKeys(mcMsg, repl);
 		
 		if (tsMsg == null || tsMsg.isEmpty()) return;
-		if (tsMsg.length() > 100) {
+		if (tsMsg.length() > TS_MAXLENGHT) {
 			send(sender, Level.WARNING, "&4The message is too long! (> 100 characters)");
 			return;
 		}

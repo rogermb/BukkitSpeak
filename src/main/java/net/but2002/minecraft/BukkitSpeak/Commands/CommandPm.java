@@ -48,18 +48,18 @@ public class CommandPm extends BukkitSpeakCommand {
 		
 		String tsMsg = BukkitSpeak.getStringManager().getMessage("PrivateMessage");
 		String mcMsg = BukkitSpeak.getStringManager().getMessage("Pm");
-		String Name, DisplayName;
+		String name, displayName;
 		if (sender instanceof Player) {
-			Name = ((Player) sender).getName();
-			DisplayName = ((Player) sender).getDisplayName();
+			name = ((Player) sender).getName();
+			displayName = ((Player) sender).getDisplayName();
 		} else {
-			Name = convertToMinecraft(BukkitSpeak.getStringManager().getConsoleName(), false, false);
-			DisplayName = BukkitSpeak.getStringManager().getConsoleName();
+			name = convertToMinecraft(BukkitSpeak.getStringManager().getConsoleName(), false, false);
+			displayName = BukkitSpeak.getStringManager().getConsoleName();
 		}
 		
 		HashMap<String, String> repl = new HashMap<String, String>();
-		repl.put("%player_name%", Name);
-		repl.put("%player_displayname%", DisplayName);
+		repl.put("%player_name%", name);
+		repl.put("%player_displayname%", displayName);
 		repl.put("%target%", client.get("client_nickname"));
 		repl.put("%msg%", sb.toString());
 		
@@ -70,7 +70,7 @@ public class CommandPm extends BukkitSpeakCommand {
 		Integer i = Integer.valueOf(client.get("clid"));
 		QuerySender qs = new QuerySender(i, JTS3ServerQuery.TEXTMESSAGE_TARGET_CLIENT, tsMsg);
 		Bukkit.getScheduler().scheduleAsyncDelayedTask(BukkitSpeak.getInstance(), qs);
-		BukkitSpeak.registerRecipient(Name, i);
+		BukkitSpeak.registerRecipient(name, i);
 		if (mcMsg == null || mcMsg.isEmpty()) return;
 		if (sender instanceof Player) {
 			sender.sendMessage(convertToMinecraft(mcMsg, true, BukkitSpeak.getStringManager().getAllowLinks()));

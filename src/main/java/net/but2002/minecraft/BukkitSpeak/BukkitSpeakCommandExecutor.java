@@ -59,7 +59,7 @@ public class BukkitSpeakCommandExecutor implements CommandExecutor {
 		}
 	}
 	
-	public Boolean CheckPermissions(CommandSender sender, String perm) {
+	public Boolean checkPermissions(CommandSender sender, String perm) {
 		if (sender instanceof Player) {
 			return sender.hasPermission("bukkitspeak.commands." + perm); 
 		} else {
@@ -75,40 +75,40 @@ public class BukkitSpeakCommandExecutor implements CommandExecutor {
 		}
 		
 		if (args[0].equalsIgnoreCase("list")) {
-			if (!CheckPermissions(sender, "list")) return false;
+			if (!checkPermissions(sender, "list")) return false;
 			List.execute(sender, args);
 		} else if (args[0].equalsIgnoreCase("mute")) {
-			if (!CheckPermissions(sender, "mute")) return false;
+			if (!checkPermissions(sender, "mute")) return false;
 			Mute.execute(sender, args);
 		} else if (args[0].equalsIgnoreCase("broadcast")) {
-			if (!CheckPermissions(sender, "broadcast")) return false;
+			if (!checkPermissions(sender, "broadcast")) return false;
 			if (!BukkitSpeak.getStringManager().getUseTextServer()) {
 				send(sender, Level.INFO, "&4You need to enable ListenToServerBroadcasts in the config to use this command.");
 				return true;
 			}
 			Broadcast.execute(sender, args);
 		} else if (args[0].equalsIgnoreCase("chat")) {
-			if (!CheckPermissions(sender, "chat")) return false;
+			if (!checkPermissions(sender, "chat")) return false;
 			if (!BukkitSpeak.getStringManager().getUseTextChannel()) {
 				send(sender, Level.INFO, "&4You need to enable ListenToChannelChat in the config to use this command.");
 				return true;
 			}
 			Chat.execute(sender, args);
 		} else if (args[0].equalsIgnoreCase("pm")) {
-			if (!CheckPermissions(sender, "pm")) return false;
+			if (!checkPermissions(sender, "pm")) return false;
 			if (!BukkitSpeak.getStringManager().getUsePrivateMessages()) {
 				send(sender, Level.INFO, "&4You need to enable ListenToPrivateMessages in the config to use this command.");
 				return true;
 			}
 			Pm.execute(sender, args);
 		} else if (args[0].equalsIgnoreCase("poke")) {
-			if (!CheckPermissions(sender, "poke")) return false;
+			if (!checkPermissions(sender, "poke")) return false;
 			Poke.execute(sender, args);
 		} else if (args[0].equalsIgnoreCase("info")) {
-			if (!CheckPermissions(sender, "info")) return false;
+			if (!checkPermissions(sender, "info")) return false;
 			Info.execute(sender, args);
 		} else if (args[0].equalsIgnoreCase("reply") || args[0].equalsIgnoreCase("r")) {
-			if (!CheckPermissions(sender, "reply")) return false;
+			if (!checkPermissions(sender, "reply")) return false;
 			Reply.execute(sender, args);
 		} else {
 			return false;
@@ -125,22 +125,22 @@ public class BukkitSpeakCommandExecutor implements CommandExecutor {
 		}
 		
 		if (args[0].equalsIgnoreCase("ban")) {
-			if (!CheckPermissions(sender, "ban")) return false;
+			if (!checkPermissions(sender, "ban")) return false;
 			Ban.execute(sender, args);
 		} else if (args[0].equalsIgnoreCase("channelkick")) {
-			if (!CheckPermissions(sender, "channelkick")) return false;
+			if (!checkPermissions(sender, "channelkick")) return false;
 			ChannelKick.execute(sender, args);
 		} else if (args[0].equalsIgnoreCase("kick")) {
-			if (!CheckPermissions(sender, "kick")) return false;
+			if (!checkPermissions(sender, "kick")) return false;
 			Kick.execute(sender, args);
 		} else if (args[0].equalsIgnoreCase("set")) {
-			if (!CheckPermissions(sender, "set")) return false;
+			if (!checkPermissions(sender, "set")) return false;
 			Set.execute(sender, args);
 		} else if (args[0].equalsIgnoreCase("status")) {
-			if (!CheckPermissions(sender, "status")) return false;
+			if (!checkPermissions(sender, "status")) return false;
 			Status.execute(sender, args);
 		} else if (args[0].equalsIgnoreCase("reload")) {
-			if (!CheckPermissions(sender, "reload")) return false;
+			if (!checkPermissions(sender, "reload")) return false;
 			BukkitSpeak.getInstance().reload(sender);
 		} else {
 			return false;

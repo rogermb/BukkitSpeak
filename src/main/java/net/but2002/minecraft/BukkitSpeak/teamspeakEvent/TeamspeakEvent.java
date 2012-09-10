@@ -10,7 +10,7 @@ import net.but2002.minecraft.BukkitSpeak.BukkitSpeak;
 
 public abstract class TeamspeakEvent {
 	
-	protected HashMap<String, String> user;
+	private HashMap<String, String> user;
 	
 	public TeamspeakEvent(Integer clid) {
 		if (!BukkitSpeak.getClients().containsKey(clid)) BukkitSpeak.getClients().addClient(clid);

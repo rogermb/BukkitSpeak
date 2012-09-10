@@ -31,18 +31,18 @@ public class CommandList extends BukkitSpeakCommand {
 			}
 			
 			String message = BukkitSpeak.getStringManager().getMessage("OnlineList");
-			String Name, DisplayName;
+			String name, displayName;
 			if (sender instanceof Player) {
-				Name = ((Player) sender).getName();
-				DisplayName = ((Player) sender).getDisplayName();
+				name = ((Player) sender).getName();
+				displayName = ((Player) sender).getDisplayName();
 			} else {
-				Name = convertToMinecraft(BukkitSpeak.getStringManager().getConsoleName(), false, false);
-				DisplayName = BukkitSpeak.getStringManager().getConsoleName();
+				name = convertToMinecraft(BukkitSpeak.getStringManager().getConsoleName(), false, false);
+				displayName = BukkitSpeak.getStringManager().getConsoleName();
 			}
 			
 			HashMap<String, String> repl = new HashMap<String, String>();
-			repl.put("%player_name%", Name);
-			repl.put("%player_displayname%", DisplayName);
+			repl.put("%player_name%", name);
+			repl.put("%player_displayname%", displayName);
 			if (online.length() == 0) {
 				repl.put("%list%", "-");
 			} else {
@@ -67,18 +67,18 @@ public class CommandList extends BukkitSpeakCommand {
 			}
 			
 			String message = BukkitSpeak.getStringManager().getMessage("ChannelList");
-			String Name, DisplayName;
+			String name, displayName;
 			if (sender instanceof Player) {
-				Name = ((Player) sender).getName();
-				DisplayName = ((Player) sender).getDisplayName();
+				name = ((Player) sender).getName();
+				displayName = ((Player) sender).getDisplayName();
 			} else {
-				Name = convertToMinecraft(BukkitSpeak.getStringManager().getConsoleName(), false, false);
-				DisplayName = BukkitSpeak.getStringManager().getConsoleName();
+				name = convertToMinecraft(BukkitSpeak.getStringManager().getConsoleName(), false, false);
+				displayName = BukkitSpeak.getStringManager().getConsoleName();
 			}
 			
 			HashMap<String, String> repl = new HashMap<String, String>();
-			repl.put("%player_name%", Name);
-			repl.put("%player_displayname%", DisplayName);
+			repl.put("%player_name%", name);
+			repl.put("%player_displayname%", displayName);
 			if (online.length() == 0) {
 				repl.put("%list%", "-");
 			} else {

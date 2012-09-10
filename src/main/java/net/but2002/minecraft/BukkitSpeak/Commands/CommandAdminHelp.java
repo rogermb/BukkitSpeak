@@ -9,17 +9,17 @@ public class CommandAdminHelp extends BukkitSpeakCommand {
 	@Override
 	public void execute(CommandSender sender, String[] args) {
 		send(sender, Level.INFO, "&2Admin Commands Help");
-		if (CheckCommandPermission(sender, "kick"))
+		if (checkCommandPermission(sender, "kick"))
 			send(sender, Level.INFO, "&e/tsa kick target (reason) &2- Kicks from the TS.");
-		if (CheckCommandPermission(sender, "ban"))
+		if (checkCommandPermission(sender, "ban"))
 			send(sender, Level.INFO, "&e/tsa ban target (reason) &2- Bans a client.");
-		if (CheckCommandPermission(sender, "channelkick"))
+		if (checkCommandPermission(sender, "channelkick"))
 			send(sender, Level.INFO, "&e/tsa channelkick target (reason) &2- Kicks from the channel and moves the client to the default channel.");
-		if (CheckCommandPermission(sender, "set"))
+		if (checkCommandPermission(sender, "set"))
 			send(sender, Level.INFO, "&e/tsa set (property) (value) &a- Change BukkitSpeak's config.");
-		if (CheckCommandPermission(sender, "status"))
+		if (checkCommandPermission(sender, "status"))
 			send(sender, Level.INFO, "&e/tsa status &a- Shows some info about BukkitSpeak.");
-		if (CheckCommandPermission(sender, "reload"))
+		if (checkCommandPermission(sender, "reload"))
 			send(sender, Level.INFO, "&e/tsa reload &2- Reloads the config and the query.");
 	}
 }

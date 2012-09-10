@@ -17,13 +17,13 @@ public class CommandMute extends BukkitSpeakCommand {
 				BukkitSpeak.setMuted((Player) sender, false);
 				
 				String message = BukkitSpeak.getStringManager().getMessage("Unmute");
-				String Name, DisplayName;
-				Name = ((Player) sender).getName();
-				DisplayName = ((Player) sender).getDisplayName();
+				String name, displayName;
+				name = ((Player) sender).getName();
+				displayName = ((Player) sender).getDisplayName();
 				
 				HashMap<String, String> repl = new HashMap<String, String>();
-				repl.put("%player_name%", Name);
-				repl.put("%player_displayname%", DisplayName);
+				repl.put("%player_name%", name);
+				repl.put("%player_displayname%", displayName);
 				
 				message = replaceKeys(message, repl);
 				
@@ -33,13 +33,13 @@ public class CommandMute extends BukkitSpeakCommand {
 				BukkitSpeak.setMuted((Player) sender, true);
 				
 				String message = BukkitSpeak.getStringManager().getMessage("Mute");
-				String Name, DisplayName;
-				Name = ((Player) sender).getName();
-				DisplayName = ((Player) sender).getDisplayName();
+				String name, displayName;
+				name = ((Player) sender).getName();
+				displayName = ((Player) sender).getDisplayName();
 				
 				HashMap<String, String> repl = new HashMap<String, String>();
-				repl.put("%player_name%", Name);
-				repl.put("%player_displayname%", DisplayName);
+				repl.put("%player_name%", name);
+				repl.put("%player_displayname%", displayName);
 				
 				message = replaceKeys(message, repl);
 				

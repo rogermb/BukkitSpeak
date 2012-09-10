@@ -12,7 +12,7 @@ import de.stefan1200.jts3serverquery.JTS3ServerQuery;
 
 public class CommandSet extends BukkitSpeakCommand {
 	
-	private final static String[][] PROPERTIES = {
+	private static final String[][] PROPERTIES = {
 		{StringManager.TEAMSPEAK_NAME,
 				"Any string",
 				"This name will prefix every message in TeamSpeak. It's the nickname of the ServerQuery client."},
@@ -55,7 +55,7 @@ public class CommandSet extends BukkitSpeakCommand {
 		{StringManager.TEAMSPEAK_DEBUG,
 				"true or false",
 				"True sets the plugin to debug mode."}};
-	String props;
+	private String props;
 	
 	public CommandSet() {
 		super();

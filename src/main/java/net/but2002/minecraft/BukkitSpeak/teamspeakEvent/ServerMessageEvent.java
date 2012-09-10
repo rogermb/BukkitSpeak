@@ -6,27 +6,27 @@ import org.bukkit.entity.Player;
 
 import net.but2002.minecraft.BukkitSpeak.BukkitSpeak;
 
-public class ServerMessageEvent extends TeamspeakEvent{
+public class ServerMessageEvent extends TeamspeakEvent {
 	
-	HashMap<String, String> info;
+	private HashMap<String, String> info;
 	
-	public ServerMessageEvent(HashMap<String, String> info) {
-		super(Integer.parseInt(info.get("invokerid")));
-		this.info = info;
+	public ServerMessageEvent(HashMap<String, String> infoMap) {
+		super(Integer.parseInt(infoMap.get("invokerid")));
+		info = infoMap;
 		
-		if (user == null) return;
-		user.put("targetmode", info.get("targetmode"));
+		if (getUser() == null) return;
+		getUser().put("targetmode", infoMap.get("targetmode"));
 		sendMessage();
 	}
 	
 	@Override
 	protected void sendMessage() {
 		
-		if (user != null && info != null && getClientType() == 0) {
+		if (getUser() != null && info != null && getClientType() == 0) {
 			
 			String msg = info.get("msg");
 			msg = filterLinks(msg, BukkitSpeak.getStringManager().getAllowLinks());
-			user.put("msg", msg);
+			getUser().put("msg", msg);
 			
 			if (info.get("targetmode").equals("3")) {
 				String m = BukkitSpeak.getStringManager().getMessage("ServerMsg");

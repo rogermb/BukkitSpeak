@@ -11,23 +11,23 @@ public class CommandHelp extends BukkitSpeakCommand {
 	@Override
 	public void execute(CommandSender sender, String[] args) {
 		send(sender, Level.INFO, "&aHelp");
-		if (CheckCommandPermission(sender, "list"))
+		if (checkCommandPermission(sender, "list"))
 			send(sender, Level.INFO, "&e/ts list &a- Displays who's currently on TeamSpeak.");
-		if (CheckCommandPermission(sender, "mute"))
+		if (checkCommandPermission(sender, "mute"))
 			send(sender, Level.INFO, "&e/ts mute &a- Mutes / unmutes BukkitSpeak for you.");
-		if (CheckCommandPermission(sender, "broadcast") && BukkitSpeak.getStringManager().getUseTextServer())
+		if (checkCommandPermission(sender, "broadcast") && BukkitSpeak.getStringManager().getUseTextServer())
 			send(sender, Level.INFO, "&e/ts broadcast &a- Broadcast a global TS message.");
-		if (CheckCommandPermission(sender, "chat") && BukkitSpeak.getStringManager().getUseTextChannel())
+		if (checkCommandPermission(sender, "chat") && BukkitSpeak.getStringManager().getUseTextChannel())
 			send(sender, Level.INFO, "&e/ts chat &a- Displays a message in the TS channel.");
-		if (CheckCommandPermission(sender, "pm") && BukkitSpeak.getStringManager().getUsePrivateMessages())
+		if (checkCommandPermission(sender, "pm") && BukkitSpeak.getStringManager().getUsePrivateMessages())
 			send(sender, Level.INFO, "&e/ts pm &a- Sends a message to a certain client.");
-		if (CheckCommandPermission(sender, "poke"))
+		if (checkCommandPermission(sender, "poke"))
 			send(sender, Level.INFO, "&e/ts poke &a- Pokes a client on Teamspeak.");
-		if (CheckCommandPermission(sender, "info"))
+		if (checkCommandPermission(sender, "info"))
 			send(sender, Level.INFO, "&e/ts info &a- Information about the TS server.");
-		if (CheckCommandPermission(sender, "reply"))
+		if (checkCommandPermission(sender, "reply"))
 			send(sender, Level.INFO, "&e/ts r(eply) &a- Replies to a PM.");
-		if (CheckCommandPermission(sender, "admin"))
+		if (checkCommandPermission(sender, "admin"))
 			send(sender, Level.INFO, "&e/ts admin &2or &e/tsa &2- BukkitSpeak admin commands.");
 	}
 }

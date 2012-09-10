@@ -23,10 +23,18 @@
              files=".*\.java"/>
   <suppress checks="MagicNumberCheck"
              files="StringManager.java"/>
+  <suppress checks="MagicNumberCheck"
+             files="BukkitSpeakCommand.java"/>
+  <suppress checks="MagicNumberCheck"
+             files="CommandSet.java"/>
+  <suppress checks="MemberNameCheck"
+             files="BukkitSpeakCommandExecutor.java"/>
   <suppress checks=".*"
              files="DTS3ServerQuery.java"/>
   <suppress checks=".*"
              files="JTS3ServerQuery.java"/>
   <suppress checks=".*"
              files="TeamspeakActionListener.java"/>
+  <suppress checks=".*"
+             files="ConfigReader.java"/>
 </suppressions>

@@ -6,27 +6,27 @@
 
 <suppressions>
   <suppress checks="JavadocStyleCheck"
-             files="*.java"/>
+             files=".*\.java"/>
   <suppress checks="FileTabCharacterCheck"
-             files="*.java"/>
+             files=".*\.java"/>
   <suppress checks="AvoidStarImportCheck"
-             files="*.java"/>
+             files=".*\.java"/>
   <suppress checks="RegexpSinglelineCheck"
-             files="*.java"/>
+             files=".*\.java"/>
   <suppress checks="JavadocMethodCheck"
-             files="*.java"/>
+             files=".*\.java"/>
   <suppress checks="JavadocPackageCheck"
-             files="*.java"/>
+             files=".*\.java"/>
   <suppress checks="JavadocTypeCheck"
-             files="*.java"/>
+             files=".*\.java"/>
   <suppress checks="JavadocVariableCheck"
-             files="*.java"/>
+             files=".*\.java"/>
   <suppress checks="MagicNumberCheck"
              files="StringManager.java"/>
-  <suppress checks="*"
+  <suppress checks=".*"
              files="DTS3ServerQuery.java"/>
-  <suppress checks="*"
+  <suppress checks=".*"
              files="JTS3ServerQuery.java"/>
-  <suppress checks="*"
+  <suppress checks=".*"
              files="TeamspeakActionListener.java"/>
 </suppressions>

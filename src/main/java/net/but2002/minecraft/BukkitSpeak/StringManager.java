@@ -8,11 +8,6 @@ import net.but2002.minecraft.BukkitSpeak.util.ConfigReader;
 
 public class StringManager {
 	
-	private HashMap<String, String> strings = new HashMap<String, String>();
-	private String ip, serverAdmin, serverPass, tsName, tsConsoleName, tsChannelPass, tsDefaultReason;
-	private int queryPort, serverPort, tsChannelID, tsTarget;
-	private Boolean tsServer, tsTextServer, tsChannel, tsTextChannel, tsPrivateMessages, tsAllowLinks, tsConsole, tsDebug;
-	
 	public static final String CONFIG_SECTION = "main";
 	public static final String CONFIG_IP = "TeamSpeakIp";
 	public static final String CONFIG_SERVERPORT = "TeamSpeakPort";
@@ -84,6 +79,11 @@ public class StringManager {
 		{"Kick", "&e%player_displayname% &akicked &e%target% &afrom the server for &e%msg%&a."},
 		{"ChannelKick", "&e%player_displayname% &akicked &e%target% &afrom the channel for &e%msg%&a."},
 		{"Ban", "&e%player_displayname% &abanned &e%target% &afor &e%msg%&a."}};
+	
+	private HashMap<String, String> strings = new HashMap<String, String>();
+	private String ip, serverAdmin, serverPass, tsName, tsConsoleName, tsChannelPass, tsDefaultReason;
+	private int queryPort, serverPort, tsChannelID, tsTarget;
+	private Boolean tsServer, tsTextServer, tsChannel, tsTextChannel, tsPrivateMessages, tsAllowLinks, tsConsole, tsDebug;
 	
 	public StringManager() {
 		

@@ -13,8 +13,6 @@ import org.bukkit.entity.Player;
 
 public abstract class BukkitSpeakCommand {
 	
-	protected static final int TS_MAXLENGHT = 100;
-	
 	public static final String[] COLORS = {
 			"",					// 0
 			"[color=#0000AA]",	// 1
@@ -35,6 +33,8 @@ public abstract class BukkitSpeakCommand {
 			"[b]",				// 16
 			"[u]",				// 17
 			"[i]"};				// 18
+	
+	protected static final int TS_MAXLENGHT = 100;
 	
 	protected void send(CommandSender sender, Level level, String msg) {
 		if (sender instanceof Player) {

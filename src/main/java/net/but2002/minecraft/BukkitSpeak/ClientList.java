@@ -104,7 +104,7 @@ public class ClientList {
 		
 	}
 	
-	public HashMap<String, String> getByPartialName(String name) throws IllegalArgumentException {
+	public HashMap<String, String> getByPartialName(String name) {
 		
 		ArrayList<HashMap<String, String>> results = new ArrayList<HashMap<String, String>>();
 		

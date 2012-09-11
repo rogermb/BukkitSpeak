@@ -269,10 +269,6 @@
         <module name="FallThrough">
             <property name="severity" value="warning"/>
         </module>
-        <module name="MultipleStringLiterals">
-            <property name="severity" value="warning"/>
-            <property name="allowedDuplicates" value="3"/>
-        </module>
         <module name="UnnecessaryParentheses">
             <property name="severity" value="warning"/>
         </module>

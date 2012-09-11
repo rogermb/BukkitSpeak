@@ -120,36 +120,20 @@ public class StringManager {
 		
 		
 		for (String[] keyPair : TEAMSPEAKEVENTMESSAGES) {
-			try {
-				String currentValue = reader.getString(TEAMSPEAKEVENTMESSAGES_SECTION, keyPair[0], keyPair[1]);
-				strings.put(keyPair[0], currentValue);
-			} catch (Exception e) {
-				BukkitSpeak.log().severe("Was unable to load all the messages. This is probably a programming error.");
-			}
+			String currentValue = reader.getString(TEAMSPEAKEVENTMESSAGES_SECTION, keyPair[0], keyPair[1]);
+			strings.put(keyPair[0], currentValue);
 		}
 		for (String[] keyPair : TEAMSPEAKMESSAGES) {
-			try {
-				String currentValue = reader.getString(TEAMSPEAKMESSAGES_SECTION, keyPair[0], keyPair[1]);
-				strings.put(keyPair[0], currentValue);
-			} catch (Exception e) {
-				BukkitSpeak.log().severe("Was unable to load all the messages. This is probably a programming error.");
-			}
+			String currentValue = reader.getString(TEAMSPEAKMESSAGES_SECTION, keyPair[0], keyPair[1]);
+			strings.put(keyPair[0], currentValue);
 		}
 		for (String[] keyPair : MINECRAFTEVENTMESSAGES) {
-			try {
-				String currentValue = reader.getString(MINECRAFTEVENTMESSAGES_SECTION, keyPair[0], keyPair[1]);
-				strings.put(keyPair[0], currentValue);
-			} catch (Exception e) {
-				BukkitSpeak.log().severe("Was unable to load all the messages. This is probably a programming error.");
-			}
+			String currentValue = reader.getString(MINECRAFTEVENTMESSAGES_SECTION, keyPair[0], keyPair[1]);
+			strings.put(keyPair[0], currentValue);
 		}
 		for (String[] keyPair : COMMANDMESSAGES) {
-			try {
-				String currentValue = reader.getString(COMMANDMESSAGES_SECTION, keyPair[0], keyPair[1]);
-				strings.put(keyPair[0], currentValue);
-			} catch (Exception e) {
-				BukkitSpeak.log().severe("Was unable to load all the messages. This is probably a programming error.");
-			}
+			String currentValue = reader.getString(COMMANDMESSAGES_SECTION, keyPair[0], keyPair[1]);
+			strings.put(keyPair[0], currentValue);
 		}
 		
 		if (reader.gotErrors()) BukkitSpeak.getInstance().saveConfig();

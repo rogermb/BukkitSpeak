@@ -104,7 +104,7 @@ public class ClientList {
 		
 	}
 	
-	public HashMap<String, String> getByPartialName(String name) throws Exception {
+	public HashMap<String, String> getByPartialName(String name) throws IllegalArgumentException {
 		
 		ArrayList<HashMap<String, String>> results = new ArrayList<HashMap<String, String>>();
 		
@@ -119,7 +119,7 @@ public class ClientList {
 		} else if (results.size() == 1) {
 			return results.get(0);
 		} else {
-			throw new Exception("There is more than one client matching " + name);
+			throw new IllegalArgumentException("There is more than one client matching " + name);
 		}
 	}
 	

@@ -27,7 +27,7 @@ public class CommandPoke extends BukkitSpeakCommand {
 		HashMap<String, String> client;
 		try {
 			client = BukkitSpeak.getClients().getByPartialName(args[1]);
-		} catch (Exception e) {
+		} catch (IllegalArgumentException e) {
 			send(sender, Level.WARNING, "&4There are more than one clients matching &e" + args[1] + "&4.");
 			return;
 		}

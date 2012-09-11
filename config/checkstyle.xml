@@ -236,7 +236,7 @@
         </module>
         <module name="MagicNumber">
             <property name="severity" value="info"/>
-            <property name="ignoreNumbers" value"-1, 0, 1, 2, 3, 4"/>
+            <property name="ignoreNumbers" value="-1, 0, 1, 2, 3, 4"/>
         </module>
         <module name="MissingSwitchDefault">
             <property name="severity" value="error"/>

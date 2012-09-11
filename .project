@@ -10,13 +10,19 @@
 			<arguments>
 			</arguments>
 		</buildCommand>
+		<buildCommand>
+			<name>org.eclipse.m2e.core.maven2Builder</name>
+			<arguments>
+			</arguments>
+		</buildCommand>
 	</buildSpec>
 	<natures>
+		<nature>org.eclipse.m2e.core.maven2Nature</nature>
 		<nature>org.eclipse.jdt.core.javanature</nature>
 	</natures>
 	<filteredResources>
 		<filter>
-			<id>1336576819514</id>
+			<id>1347125760521</id>
 			<name></name>
 			<type>10</type>
 			<matcher>
@@ -25,7 +31,7 @@
 			</matcher>
 		</filter>
 		<filter>
-			<id>1336576819610</id>
+			<id>1347125761038</id>
 			<name></name>
 			<type>6</type>
 			<matcher>
@@ -34,7 +40,7 @@
 			</matcher>
 		</filter>
 		<filter>
-			<id>1336576819754</id>
+			<id>1347125761112</id>
 			<name></name>
 			<type>6</type>
 			<matcher>
@@ -43,7 +49,7 @@
 			</matcher>
 		</filter>
 		<filter>
-			<id>1336576820162</id>
+			<id>1347125761208</id>
 			<name></name>
 			<type>6</type>
 			<matcher>
@@ -52,12 +58,21 @@
 			</matcher>
 		</filter>
 		<filter>
-			<id>1336576820656</id>
+			<id>1347125761285</id>
 			<name></name>
 			<type>10</type>
 			<matcher>
 				<id>org.eclipse.ui.ide.multiFilter</id>
 				<arguments>1.0-name-matches-true-false-oldClasses</arguments>
+			</matcher>
+		</filter>
+		<filter>
+			<id>1347125761501</id>
+			<name></name>
+			<type>10</type>
+			<matcher>
+				<id>org.eclipse.ui.ide.multiFilter</id>
+				<arguments>1.0-name-matches-false-false-.settings</arguments>
 			</matcher>
 		</filter>
 	</filteredResources>

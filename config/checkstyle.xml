@@ -50,6 +50,7 @@
 
     <module name="FileLength">
         <property name="severity" value="warning"/>
+        <property name="max" value="145"/>
     </module>
 
     <module name="TreeWalker">

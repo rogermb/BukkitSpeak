@@ -24,7 +24,7 @@ public class CommandSet extends BukkitSpeakCommand {
 				"BukkitSpeak will try to move itself into the channel with the stated ID. Set ChannelPassword &lfirst&r&6!"},
 		{StringManager.TEAMSPEAK_CHANNELPW,
 				"Any string",
-				"BukkitSpeak will try to use this password to connect to the channel with the cid of ChannelID, '' represents no password."},
+				"BukkitSpeak will use this password to enter the channel with the cid of ChannelID. '' means no password."},
 		{StringManager.TEAMSPEAK_SERVER,
 				"true or false",
 				"If this is set to true, BukkitSpeak will notice if somebody joins or leaves the TS3 server."},
@@ -135,7 +135,7 @@ public class CommandSet extends BukkitSpeakCommand {
 				int cid = -1;
 				try {
 					cid = Integer.valueOf(args[2]);
-				} catch (Exception e) {
+				} catch (NumberFormatException nfe) {
 					send(sender, Level.WARNING, "&4The value must be an Integer greater than 0.");
 					return;
 				}
@@ -199,8 +199,8 @@ public class CommandSet extends BukkitSpeakCommand {
 				reloadListener();
 				return;
 			case 6:
-				boolean o1 = ((BukkitSpeak.getStringManager().getUseChannel())
-						|| (BukkitSpeak.getStringManager().getUseTextChannel()));
+				boolean o1 = (BukkitSpeak.getStringManager().getUseChannel())
+							|| (BukkitSpeak.getStringManager().getUseTextChannel());
 				boolean n1 = false;
 				if (arg.equalsIgnoreCase("true")) {
 					tsSection.set(StringManager.TEAMSPEAK_CHANNEL, true);
@@ -219,16 +219,16 @@ public class CommandSet extends BukkitSpeakCommand {
 				if (!o1 && n1) connectChannel(sender);
 				return;
 			case 7:
-				boolean o2 = ((BukkitSpeak.getStringManager().getUseChannel())
-						|| (BukkitSpeak.getStringManager().getUseTextChannel()));
+				boolean o2 = (BukkitSpeak.getStringManager().getUseChannel())
+							|| (BukkitSpeak.getStringManager().getUseTextChannel());
 				boolean n2 = false;
 				if (arg.equalsIgnoreCase("true")) {
 					tsSection.set(StringManager.TEAMSPEAK_TEXTCHANNEL, true);
 					n2 = true;
-					send(sender, Level.INFO, "&aChat messages from the TeamSpeak channel will now be broadcasted in Minecraft.");
+					send(sender, Level.INFO, "&aChat messages from the channel will now be broadcasted in Minecraft.");
 				} else if (arg.equalsIgnoreCase("false")) {
 					tsSection.set(StringManager.TEAMSPEAK_TEXTCHANNEL, false);
-					send(sender, Level.INFO, "&aChat messages from the TeamSpeak channel won't be broadcasted in Minecraft anymore.");
+					send(sender, Level.INFO, "&aChat messages from the channel won't be broadcasted in Minecraft anymore.");
 				} else {
 					send(sender, Level.WARNING, "Only 'true' or 'false' are accepted.");
 					return;

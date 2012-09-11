@@ -90,11 +90,10 @@ public class CommandSet extends BukkitSpeakCommand {
 				send(sender, Level.WARNING, props);
 			} else {
 				send(sender, Level.INFO, "&4You need to add a value to set.");
-				send(sender, Level.INFO, "&aPossible values:");
-				send(sender, Level.INFO, "&6" + PROPERTIES[i][1]);
+				send(sender, Level.INFO, "&aPossible values: &6" + PROPERTIES[i][1]);
+				send(sender, Level.INFO, "&aCurrently set to: " + tsSection.getString(PROPERTIES[i][0]));
 				send(sender, Level.INFO, "&aDescription:");
 				send(sender, Level.INFO, "&6" + PROPERTIES[i][2]);
-				send(sender, Level.INFO, "&aCurrently set to: " + tsSection.getString(args[1]));
 			}
 		} else if (args.length > 2) {
 			String arg = combineSplit(2, args, " ");

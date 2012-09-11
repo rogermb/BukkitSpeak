@@ -217,9 +217,6 @@
         <module name="EmptyStatement">
             <property name="severity" value="error"/>
         </module>
-        <module name="EqualsAvoidNull">
-            <property name="severity" value="warning"/>
-        </module>
         <module name="EqualsHashCode">
             <property name="severity" value="warning"/>
         </module>
@@ -227,9 +224,6 @@
             <property name="severity" value="error"/>
         </module>
         <module name="IllegalInstantiation">
-            <property name="severity" value="warning"/>
-        </module>
-        <module name="IllegalToken">
             <property name="severity" value="warning"/>
         </module>
         <module name="InnerAssignment">
@@ -275,14 +269,12 @@
         <module name="DefaultComesLast">
             <property name="severity" value="warning"/>
         </module>
-        <module name="MissingCtor">
-            <property name="severity" value="warning"/>
-        </module>
         <module name="FallThrough">
             <property name="severity" value="warning"/>
         </module>
         <module name="MultipleStringLiterals">
             <property name="severity" value="warning"/>
+            <property name="allowedDuplicates" value="3"/>
         </module>
         <module name="UnnecessaryParentheses">
             <property name="severity" value="warning"/>

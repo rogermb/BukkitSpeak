@@ -48,20 +48,21 @@ public abstract class TeamspeakEvent {
 	protected abstract void sendMessage();
 	
 	public String replaceValues(String input, boolean color) {
-		input = Matcher.quoteReplacement(input);
+		String output = input;
+		output = Matcher.quoteReplacement(output);
 		if (color) {
-			input = input.replaceAll("((&|$)([a-fk-orA-FK-OR0-9]))", "\u00A7$3");
+			output = output.replaceAll("((&|$)([a-fk-orA-FK-OR0-9]))", "\u00A7$3");
 		} else {
-			input = input.replaceAll("((&|$|\u00A7)([a-fk-orA-FK-OR0-9]))", "");
+			output = output.replaceAll("((&|$|\u00A7)([a-fk-orA-FK-OR0-9]))", "");
 		}
 		
 		for (String key : user.keySet()) {
 			if ((key != null) && (user.get(key) != null)) {
-				input = input.replace("%" + key + "%", user.get(key));
+				output = output.replace("%" + key + "%", user.get(key));
 			}
 		}
 		
-		return input;
+		return output;
 	}
 	
 	public boolean checkPermissions(Player player, String perm) {

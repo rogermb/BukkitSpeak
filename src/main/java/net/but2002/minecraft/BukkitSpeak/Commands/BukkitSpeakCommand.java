@@ -37,12 +37,13 @@ public abstract class BukkitSpeakCommand {
 	protected static final int TS_MAXLENGHT = 100;
 	
 	protected void send(CommandSender sender, Level level, String msg) {
+		String m = msg;
 		if (sender instanceof Player) {
-			msg = msg.replaceAll("((&|$)([a-fk-orA-FK-OR0-9]))", "\u00A7$3");
-			sender.sendMessage(BukkitSpeak.getFullName() + msg);
+			m = m.replaceAll("((&|$)([a-fk-orA-FK-OR0-9]))", "\u00A7$3");
+			sender.sendMessage(BukkitSpeak.getFullName() + m);
 		} else {
-			msg = msg.replaceAll("((&|$|\u00A7)([a-fk-orA-FK-OR0-9]))", "");
-			BukkitSpeak.log().log(level, msg);
+			m = m.replaceAll("((&|$|\u00A7)([a-fk-orA-FK-OR0-9]))", "");
+			BukkitSpeak.log().log(level, m);
 		}
 	}
 	

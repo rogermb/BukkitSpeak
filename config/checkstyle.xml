@@ -50,7 +50,6 @@
 
     <module name="FileLength">
         <property name="severity" value="warning"/>
-        <property name="max" value="145"/>
     </module>
 
     <module name="TreeWalker">
@@ -126,6 +125,7 @@
         <!-- Checks for Size Violations.                    -->
         <!-- See http://checkstyle.sf.net/config_sizes.html -->
         <module name="LineLength">
+            <property name="max" value="145"/>
             <property name="severity" value="info"/>
         </module>
         <module name="MethodLength">

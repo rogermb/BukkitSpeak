@@ -205,9 +205,6 @@
 
         <!-- Checks for common coding problems               -->
         <!-- See http://checkstyle.sf.net/config_coding.html -->
-        <module name="ArrayTrailingComma">
-            <property name="severity" value="warning"/>
-        </module>
         <module name="AvoidInlineConditionals">
             <property name="severity" value="info"/>
         </module>

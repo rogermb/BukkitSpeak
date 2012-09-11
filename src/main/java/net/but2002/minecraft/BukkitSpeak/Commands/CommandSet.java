@@ -21,7 +21,7 @@ public class CommandSet extends BukkitSpeakCommand {
 				"This name will be used if a message is sent by the console."},
 		{StringManager.TEAMSPEAK_CHANNELID,
 				"An integer greater than 0",
-				"BukkitSpeak will try to move itself into the channel with the stated ID. Set ChannelPassword &lfirst&r!"},
+				"BukkitSpeak will try to move itself into the channel with the stated ID. Set ChannelPassword &lfirst&r&6!"},
 		{StringManager.TEAMSPEAK_CHANNELPW,
 				"Any string",
 				"BukkitSpeak will try to use this password to connect to the channel with the cid of ChannelID, '' represents no password."},

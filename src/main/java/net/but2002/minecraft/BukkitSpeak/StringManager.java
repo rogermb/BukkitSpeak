@@ -140,12 +140,7 @@ public class StringManager {
 	}
 	
 	public String getMessage(String key) {
-		try {
-			return strings.get(key);
-		} catch (Exception e) {
-			e.printStackTrace();
-			return null;
-		}
+		return strings.get(key);
 	}
 	
 	public String getIp() {

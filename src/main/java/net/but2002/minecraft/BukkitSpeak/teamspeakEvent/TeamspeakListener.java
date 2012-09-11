@@ -12,7 +12,8 @@ public class TeamspeakListener implements TeamspeakActionListener {
 	public void teamspeakActionPerformed(String eventType, HashMap<String, String> eventInfo) {
 		
 		if (eventType.equals("notifycliententerview")) {
-			if (eventInfo == null || !eventInfo.get("client_type").equals("0") || eventInfo.get("client_nickname").startsWith("Unknown from")) return;
+			if (eventInfo == null || !eventInfo.get("client_type").equals("0")
+					|| eventInfo.get("client_nickname").startsWith("Unknown from")) return;
 			new EnterEvent(eventInfo);
 		} else if (eventType.equals("notifyclientleftview")) {
 			if (!BukkitSpeak.getClients().containsKey(Integer.parseInt(eventInfo.get("clid")))) return;
@@ -30,15 +31,18 @@ public class TeamspeakListener implements TeamspeakActionListener {
 		if(msg.contains("!playerlist")){
 			Player[] pl = plugin.getServer().getOnlinePlayers();
 			if (stringManager.getTeamspeakTarget() == TsTargetEnum.CHANNEL) {
-				plugin.query.sendTextMessage(stringManager.getChannelID(), JTS3ServerQuery.TEXTMESSAGE_TARGET_CHANNEL, "==Minecraft PlayerList==");
+				plugin.query.sendTextMessage(stringManager.getChannelID(),
+						JTS3ServerQuery.TEXTMESSAGE_TARGET_CHANNEL, "==Minecraft PlayerList==");
 			} else if (stringManager.getTeamspeakTarget() == TsTargetEnum.SERVER) {
-				plugin.query.sendTextMessage(0, JTS3ServerQuery.TEXTMESSAGE_TARGET_VIRTUALSERVER, "==Minecraft PlayerList==");
+				plugin.query.sendTextMessage(0, JTS3ServerQuery.TEXTMESSAGE_TARGET_VIRTUALSERVER,
+						"==Minecraft PlayerList==");
 			}
 			for (int i=0; i<pl.length; i++){
 				String name = pl[i].getName();
 				String format = "[MC]" + name;
 				if (stringManager.getTeamspeakTarget() == TsTargetEnum.CHANNEL) {
-					plugin.query.sendTextMessage(stringManager.getChannelID(), JTS3ServerQuery.TEXTMESSAGE_TARGET_CHANNEL, format);
+					plugin.query.sendTextMessage(stringManager.getChannelID(),
+							JTS3ServerQuery.TEXTMESSAGE_TARGET_CHANNEL, format);
 				} else if (stringManager.getTeamspeakTarget() == TsTargetEnum.SERVER) {
 					plugin.query.sendTextMessage(0, JTS3ServerQuery.TEXTMESSAGE_TARGET_VIRTUALSERVER, format);
 				}
@@ -56,7 +60,8 @@ public class TeamspeakListener implements TeamspeakActionListener {
 			plugin.getServer().getPluginManager().enablePlugin(plugin);
 			String format = "Example";
 			if (stringManager.getTeamspeakTarget() == TsTargetEnum.CHANNEL) {
-					plugin.query.sendTextMessage(stringManager.getChannelID(), JTS3ServerQuery.TEXTMESSAGE_TARGET_CHANNEL, format);
+					plugin.query.sendTextMessage(stringManager.getChannelID(),
+							JTS3ServerQuery.TEXTMESSAGE_TARGET_CHANNEL, format);
 				} else if (stringManager.getTeamspeakTarget() == TsTargetEnum.SERVER) {
 					plugin.query.sendTextMessage(0, JTS3ServerQuery.TEXTMESSAGE_TARGET_VIRTUALSERVER, format);
 				}

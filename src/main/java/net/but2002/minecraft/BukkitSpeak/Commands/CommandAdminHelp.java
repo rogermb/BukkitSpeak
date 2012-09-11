@@ -14,7 +14,8 @@ public class CommandAdminHelp extends BukkitSpeakCommand {
 		if (checkCommandPermission(sender, "ban"))
 			send(sender, Level.INFO, "&e/tsa ban target (reason) &2- Bans a client.");
 		if (checkCommandPermission(sender, "channelkick"))
-			send(sender, Level.INFO, "&e/tsa channelkick target (reason) &2- Kicks from the channel and moves the client to the default channel.");
+			send(sender, Level.INFO, "&e/tsa channelkick target (reason) &2- " + 
+					"Kicks from the channel and moves the client to the default channel.");
 		if (checkCommandPermission(sender, "set"))
 			send(sender, Level.INFO, "&e/tsa set (property) (value) &2- Change BukkitSpeak's config.");
 		if (checkCommandPermission(sender, "status"))

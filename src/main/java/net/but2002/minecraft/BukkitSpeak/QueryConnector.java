@@ -69,7 +69,8 @@ public class QueryConnector implements Runnable {
 		if (stringManager.getUseTextServer()) query.addEventNotify(JTS3ServerQuery.EVENT_MODE_TEXTSERVER, 0);
 		if ((stringManager.getChannelID() != 0 && stringManager.getChannelID() != query.getCurrentQueryClientChannelID())
 				&& (stringManager.getUseChannel() || stringManager.getUseTextChannel())) {
-			if (!query.moveClient(query.getCurrentQueryClientID(), stringManager.getChannelID(), stringManager.getChannelPass())) {
+			if (!query.moveClient(query.getCurrentQueryClientID(), 
+					stringManager.getChannelID(), stringManager.getChannelPass())) {
 				logger.severe("Could not move the QueryClient into the channel.");
 				logger.severe("Ensure that the ChannelID is correct and the password is set if required.");
 				logger.severe("(" + query.getLastError() + ")");
@@ -78,15 +79,25 @@ public class QueryConnector implements Runnable {
 				return;
 			}
 		}
-		if (stringManager.getUseChannel()) query.addEventNotify(JTS3ServerQuery.EVENT_MODE_CHANNEL, stringManager.getChannelID());
-		if (stringManager.getUseTextChannel()) query.addEventNotify(JTS3ServerQuery.EVENT_MODE_TEXTCHANNEL, stringManager.getChannelID());
-		if (stringManager.getUsePrivateMessages()) query.addEventNotify(JTS3ServerQuery.EVENT_MODE_TEXTPRIVATE, 0);
+		
+		if (stringManager.getUseChannel()) {
+			query.addEventNotify(JTS3ServerQuery.EVENT_MODE_CHANNEL, stringManager.getChannelID());
+		}
+		if (stringManager.getUseTextChannel()) {
+			query.addEventNotify(JTS3ServerQuery.EVENT_MODE_TEXTCHANNEL, stringManager.getChannelID());
+		}
+		if (stringManager.getUsePrivateMessages()) {
+			query.addEventNotify(JTS3ServerQuery.EVENT_MODE_TEXTPRIVATE, 0);
+		}
 		
 		BukkitSpeak.getInstance().resetClientList();
 		plugin.setStoppedTime(null);
 		plugin.setStartedTime(null);
 		plugin.setStartedTime(new Date());
-		logger.info("Connected with SID = " + query.getCurrentQueryClientServerID() + ", CID = " + query.getCurrentQueryClientChannelID() + ", CLID = " + query.getCurrentQueryClientID());
+		logger.info("Connected with" +
+				" SID = " + query.getCurrentQueryClientServerID() +
+				", CID = " + query.getCurrentQueryClientChannelID() +
+				", CLID = " + query.getCurrentQueryClientID());
 		
 	}
 }

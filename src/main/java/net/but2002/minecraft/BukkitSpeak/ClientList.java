@@ -180,7 +180,8 @@ class ClientUpdater implements Runnable {
 	private Logger log;
 	private Integer clid;
 	
-	public ClientUpdater(ConcurrentHashMap<Integer, HashMap<String, String>> clientsMap, JTS3ServerQuery teamspeakQuery, Logger logger, Integer clientID) {
+	public ClientUpdater(ConcurrentHashMap<Integer, HashMap<String, String>> clientsMap,
+			JTS3ServerQuery teamspeakQuery, Logger logger, Integer clientID) {
 		clients = clientsMap;
 		query = teamspeakQuery;
 		log = logger;

@@ -15,8 +15,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import com.modcrafting.bukkitspeak.DTS3ServerQuery;
 
-import de.stefan1200.jts3serverquery.JTS3ServerQuery;
-import de.stefan1200.jts3serverquery.TeamspeakActionListener;
+import de.stefan1200.jts3serverquery.*;
 
 public class BukkitSpeak extends JavaPlugin {
 	

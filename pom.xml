@@ -21,8 +21,17 @@
         <updatePolicy>always</updatePolicy>
       </snapshots>
     </repository>
+    <repository>
+      <id>stutz-repo</id>
+      <url>http://stutz.dontexist.com:8081/nexus/content/groups/public</url>
+      <releases>
+        <updatePolicy>always</updatePolicy>
+      </releases>
+      <snapshots>
+        <updatePolicy>always</updatePolicy>
+      </snapshots>
+    </repository>
   </repositories>
-
 
   <build>
     <finalName>BukkitSpeak</finalName>
@@ -75,7 +84,7 @@
   	<dependency>
   		<groupId>com.massivecraft</groupId>
   		<artifactId>Factions</artifactId>
-  		<version>1.7.5</version>
+  		<version>1.7.7_beta</version>
   	</dependency>
   </dependencies>
 </project>

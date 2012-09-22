@@ -13,6 +13,9 @@ import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 
+import com.massivecraft.factions.FPlayers;
+import com.massivecraft.factions.struct.ChatMode;
+
 import de.stefan1200.jts3serverquery.JTS3ServerQuery;
 
 public class ChatListener implements Listener {
@@ -21,6 +24,13 @@ public class ChatListener implements Listener {
 	public void onPlayerChat(AsyncPlayerChatEvent e) {
 		if (BukkitSpeak.getStringManager().getTeamspeakTarget() == TsTargetEnum.NONE) return;
 		if (e.getPlayer() == null || e.getMessage().isEmpty()) return;
+		
+		/* Factions check */
+		if (BukkitSpeak.hasFactions()) {
+			if (FPlayers.i.get(e.getPlayer()).getChatMode() != ChatMode.PUBLIC) {
+				return;
+			}
+		}
 		
 		String tsMsg = BukkitSpeak.getStringManager().getMessage("ChatMessage");
 		HashMap<String, String> repl = new HashMap<String, String>();

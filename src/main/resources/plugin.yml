@@ -7,6 +7,8 @@ author: 'Firedroide'
 authors: [but2002, greycap, deathmarine]
 website: 'http://forums.bukkit.org/threads/misc-bukkitspeak-v0-55-connect-minecraft-and-teamspeak3-1-3-1-r1-0.65971/'
 database: false
+softdepend:
+  - Factions
 commands:
   ts:
     description: BukkitSpeak commands

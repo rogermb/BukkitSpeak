@@ -8,6 +8,7 @@ import java.util.logging.Logger;
 
 import net.but2002.minecraft.BukkitSpeak.teamspeakEvent.TeamspeakListener;
 
+import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -40,6 +41,8 @@ public class BukkitSpeak extends JavaPlugin {
 	
 	private Date started, stopped, laststarted, laststopped;
 	
+	private static boolean factions;
+	
 	public static BukkitSpeak getInstance() {
 		return instance;
 	}
@@ -68,6 +71,9 @@ public class BukkitSpeak extends JavaPlugin {
 		this.getServer().getPluginManager().registerEvents(chatListener, this);
 		this.getCommand("ts").setExecutor(tsCommand);
 		this.getCommand("tsa").setExecutor(tsCommand);
+		
+		/* PlugIn hooks after everything else */
+		factions = Bukkit.getPluginManager().isPluginEnabled("Factions");
 		
 		logger.info("enabled.");
 	}
@@ -196,6 +202,10 @@ public class BukkitSpeak extends JavaPlugin {
 			stopped = null;
 			laststopped = null;
 		}
+	}
+	
+	public static boolean hasFactions() {
+		return factions;
 	}
 	
 	public void reload(CommandSender sender) {

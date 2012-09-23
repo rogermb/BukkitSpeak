@@ -6,6 +6,7 @@ import net.but2002.minecraft.BukkitSpeak.AsyncQueryUtils.QuerySender;
 import net.but2002.minecraft.BukkitSpeak.Commands.BukkitSpeakCommand;
 
 import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -31,6 +32,8 @@ public class ChatListener implements Listener {
 				return;
 			}
 		}
+		
+		if (!hasPermission(e.getPlayer(), "chat")) return;
 		
 		String tsMsg = BukkitSpeak.getStringManager().getMessage("ChatMessage");
 		HashMap<String, String> repl = new HashMap<String, String>();
@@ -59,6 +62,8 @@ public class ChatListener implements Listener {
 		if (BukkitSpeak.getStringManager().getTeamspeakTarget() == TsTargetEnum.NONE) return;
 		if (e.getPlayer() == null) return;
 		
+		if (!hasPermission(e.getPlayer(), "join")) return;
+		
 		String tsMsg = BukkitSpeak.getStringManager().getMessage("LoginMessage");
 		HashMap<String, String> repl = new HashMap<String, String>();
 		repl.put("%player_name%", e.getPlayer().getName());
@@ -85,6 +90,8 @@ public class ChatListener implements Listener {
 	public void onPlayerQuit(PlayerQuitEvent e) {
 		if (BukkitSpeak.getStringManager().getTeamspeakTarget() == TsTargetEnum.NONE) return;
 		if (e.getPlayer() == null) return;
+		
+		if (!hasPermission(e.getPlayer(), "quit")) return;
 		
 		String tsMsg = BukkitSpeak.getStringManager().getMessage("LogoutMessage");
 		HashMap<String, String> repl = new HashMap<String, String>();
@@ -114,5 +121,9 @@ public class ChatListener implements Listener {
 	
 	private String replaceKeys(String input, HashMap<String, String> repl) {
 		return BukkitSpeakCommand.replaceKeys(input, repl);
+	}
+	
+	private boolean hasPermission(Player player, String perm) {
+		return player.hasPermission("bukkitspeak.sendteamspeak." + perm);
 	}
 }

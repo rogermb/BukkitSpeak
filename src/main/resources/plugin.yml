@@ -114,3 +114,16 @@ permissions:
     description: Shows you chat messages in the channel BukkitSpeak is listening to.
   bukkitspeak.messages.pm:
     description: Shows you a message, if somebody replies to your private message.
+  bukkitspeak.sendteamspeak.*:
+    description: All Teamspeak messages will be sent.
+    default: true
+    children:
+      bukkitspeak.sendteamspeak.chat: true
+      bukkitspeak.sendteamspeak.join: true
+      bukkitspeak.sendteamspeak.quit: true
+  bukkitspeak.sendteamspeak.chat:
+    description: Sends chat messages to Teamspeak, if SendChatToTeamspeak is set in the config.
+  bukkitspeak.sendteamspeak.join:
+    desctiption: Sends a Teamspeak message when the user joins the Minecraft server.
+  bukkitspeak.sendteamspeak.quit:
+    description: Sends a Teamspeak message when the user leaves the Minecraft server.

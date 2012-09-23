@@ -30,6 +30,7 @@ permissions:
       bukkitspeak.commands.channelkick: true
       bukkitspeak.commands.reload: true
       bukkitspeak.commands.status: true
+      bukkitspeak.messages.*: true
   bukkitspeak.user:
     description: Gives access to most of the user commands and all messages.
     children:

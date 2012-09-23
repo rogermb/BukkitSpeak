@@ -4,16 +4,13 @@ import java.util.Date;
 
 public class TeamspeakKeepAlive extends Thread {
 	
-	//XXX
-	
-	private static final int RETRY_TIME = 5;
-	
 	private BukkitSpeak plugin;
-	private int c;
+	private int wait, failed;
 	
 	public TeamspeakKeepAlive(BukkitSpeak bukkitSpeak) {
 		plugin = bukkitSpeak;
-		c = 0;
+		wait = 0;
+		failed = 0;
 	}
 	
 	@Override
@@ -23,19 +20,31 @@ public class TeamspeakKeepAlive extends Thread {
 			try {
 				BukkitSpeak.getQuery().doCommand("clientupdate");
 				BukkitSpeak.getClients().asyncUpdateAll();
-			} catch (Exception e) {
+			} catch (NullPointerException e) {
 				plugin.setStoppedTime(new Date());
-				c = 0;
+				wait = 0;
+				failed = 0;
 			}
 		} else if (plugin.getStoppedTime() == null) {
 			plugin.setStoppedTime(new Date());
-			c = 0;
+			wait = 0;
+			failed = 0;
 		} else {
-			c += 1;
-			if (c >= RETRY_TIME) {
-				c = 0;
+			wait += 1;
+			if (wait >= getRetryTime(failed)) {
+				wait = 0;
+				failed += 1;
 				new Thread(plugin.getQueryConnector()).start();
 			}
+		}
+	}
+	
+	private int getRetryTime(int d) {
+		int p = d / 2;
+		if (p < 6) {
+			return (int) Math.pow(2, p);
+		} else {
+			return 60;
 		}
 	}
 }

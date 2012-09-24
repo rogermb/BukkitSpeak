@@ -72,6 +72,7 @@ public class StringManager {
 		{"ChannelList", "&aCurrently in the channel: &e%list%"},
 		{"Mute", "&aYou are now muted."},
 		{"Unmute", "&aYou aren't muted anymore."},
+		{"ChannelChange", "&aYou are now talking in the TeamSpeak channel &6%channel%&a."},
 		{"Broadcast", "&e%player_displayname% &a-> &f[&cTS&f]&f: %msg%"},
 		{"Chat", "&e%player_displayname% &a-> &eTS&f: %msg%"},
 		{"Pm", "&eMe &a-> &e%target%&f: %msg%"},

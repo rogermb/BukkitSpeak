@@ -1,5 +1,6 @@
 package net.but2002.minecraft.BukkitSpeak.Commands;
 
+import java.util.HashMap;
 import java.util.logging.Level;
 
 import net.but2002.minecraft.BukkitSpeak.BukkitSpeak;
@@ -7,6 +8,7 @@ import net.but2002.minecraft.BukkitSpeak.StringManager;
 
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.entity.Player;
 
 import de.stefan1200.jts3serverquery.JTS3ServerQuery;
 
@@ -356,6 +358,27 @@ public class CommandSet extends BukkitSpeakCommand {
 			send(sender, Level.WARNING, "&4The channel ID could not be set.");
 			send(sender, Level.WARNING, "&4Ensure that the ChannelID is really assigned to a valid channel.");
 			send(sender, Level.WARNING, "&4" + BukkitSpeak.getQuery().getLastError());
+			return;
 		}
+		
+		String m = BukkitSpeak.getStringManager().getMessage("ChannelChange");
+		String name, displayName;
+		if (sender instanceof Player) {
+			name = ((Player) sender).getName();
+			displayName = ((Player) sender).getDisplayName();
+		} else {
+			name = convertToMinecraft(BukkitSpeak.getStringManager().getConsoleName(), false, false);
+			displayName = BukkitSpeak.getStringManager().getConsoleName();
+		}
+		HashMap<String, String> info = BukkitSpeak.getQuery().getInfo(JTS3ServerQuery.INFOMODE_CHANNELINFO,
+				BukkitSpeak.getQuery().getCurrentQueryClientChannelID());
+		m.replaceAll("%channel%", info.get("channel_name"));
+		m.replaceAll("%description%", info.get("channel_description"));
+		m.replaceAll("%topic%", info.get("channel_topic"));
+		m.replaceAll("%player_name%", name);
+		m.replaceAll("%player_displayname%", displayName);
+		
+		if (m.isEmpty()) return;
+		broadcastMessage(m, sender);
 	}
 }

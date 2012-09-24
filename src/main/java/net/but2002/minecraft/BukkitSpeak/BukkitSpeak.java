@@ -31,6 +31,8 @@ public class BukkitSpeak extends JavaPlugin {
 	private static HashMap<Integer, String> pmRecipients;
 	private static HashMap<String, Integer> pmSenders;
 	
+	private static boolean factions;
+	
 	private QueryConnector qc;
 	private TeamspeakActionListener ts;
 	private TeamspeakKeepAlive tsKeepAlive;
@@ -39,8 +41,6 @@ public class BukkitSpeak extends JavaPlugin {
 	private Logger logger;
 	
 	private Date started, stopped, laststarted, laststopped;
-	
-	private static boolean factions;
 	
 	public static BukkitSpeak getInstance() {
 		return instance;

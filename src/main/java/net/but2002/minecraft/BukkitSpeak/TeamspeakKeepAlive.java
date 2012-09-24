@@ -4,11 +4,11 @@ import java.util.Date;
 
 public class TeamspeakKeepAlive extends Thread {
 	
-	private BukkitSpeak plugin;
-	private int wait, failed;
-	
 	private static final int MAX_STEPS = 6;
 	private static final int MAX_WAIT = 60;
+	
+	private BukkitSpeak plugin;
+	private int wait, failed;
 	
 	public TeamspeakKeepAlive(BukkitSpeak bukkitSpeak) {
 		plugin = bukkitSpeak;

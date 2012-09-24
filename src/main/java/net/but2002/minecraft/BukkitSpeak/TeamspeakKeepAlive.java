@@ -7,6 +7,9 @@ public class TeamspeakKeepAlive extends Thread {
 	private BukkitSpeak plugin;
 	private int wait, failed;
 	
+	private static final int MAX_STEPS = 6;
+	private static final int MAX_WAIT = 60;
+	
 	public TeamspeakKeepAlive(BukkitSpeak bukkitSpeak) {
 		plugin = bukkitSpeak;
 		wait = 0;
@@ -41,10 +44,10 @@ public class TeamspeakKeepAlive extends Thread {
 	
 	private int getRetryTime(int d) {
 		int p = d / 2;
-		if (p < 6) {
+		if (p < MAX_STEPS) {
 			return (int) Math.pow(2, p);
 		} else {
-			return 60;
+			return MAX_WAIT;
 		}
 	}
 }

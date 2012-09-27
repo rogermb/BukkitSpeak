@@ -58,6 +58,7 @@ public class CommandSet extends BukkitSpeakCommand {
 				"true or false",
 				"True sets the plugin to debug mode."}};
 	private String props;
+	private ConfigurationSection tsSection;
 	
 	public CommandSet() {
 		super();
@@ -73,7 +74,7 @@ public class CommandSet extends BukkitSpeakCommand {
 	@Override
 	public void execute(CommandSender sender, String[] args) {
 		
-		ConfigurationSection tsSection = BukkitSpeak.getInstance().getConfig().getConfigurationSection(StringManager.TEAMSPEAK_SECTION);
+		tsSection = BukkitSpeak.getInstance().getConfig().getConfigurationSection(StringManager.TEAMSPEAK_SECTION);
 		
 		if (!BukkitSpeak.getQuery().isConnected() || BukkitSpeak.getClients() == null) {
 			send(sender, Level.WARNING, "&4Can't communicate with the TeamSpeak server.");
@@ -106,61 +107,17 @@ public class CommandSet extends BukkitSpeakCommand {
 				send(sender, Level.INFO, "&aProperties you can set:");
 				send(sender, Level.INFO, props);
 				return;
-			case 0:
-				if (args.length > 3) {
-					send(sender, Level.WARNING, "&4The display name can't contain any spaces.");
-					return;
-				}
-				if (BukkitSpeak.getQuery().setDisplayName(args[2])) {
-					tsSection.set(StringManager.TEAMSPEAK_NAME, args[2]);
-					send(sender, Level.INFO, "&aThe display name was successfully set to " + args[2]);
-				} else {
-					send(sender, Level.WARNING, "&4The display name could not be set.");
-					send(sender, Level.WARNING, "&4" + BukkitSpeak.getQuery().getLastError());
-					return;
-				}
+			case 0:		// DisplayName
+				if (!changeDisplayname(sender, args)) return;
 				break;
-			case 1:
+			case 1:		// ConsoleName
 				tsSection.set(StringManager.TEAMSPEAK_CONSOLENAME, arg);
 				send(sender, Level.INFO, "&aThe console name was successfully set to " + arg);
 				break;
-			case 2:
-				if (args.length > 3) {
-					send(sender, Level.WARNING, "&4The value must be an Integer greater than 0.");
-					return;
-				}
-				if (!(BukkitSpeak.getStringManager().getUseChannel()) && !(BukkitSpeak.getStringManager().getUseTextChannel())) {
-					send(sender, Level.WARNING, "&4Set " + StringManager.TEAMSPEAK_CHANNEL 
-							+ " or " + StringManager.TEAMSPEAK_TEXTCHANNEL + " to true to use this feature.");
-					return;
-				}
-				int cid = -1;
-				try {
-					cid = Integer.valueOf(args[2]);
-				} catch (NumberFormatException nfe) {
-					send(sender, Level.WARNING, "&4The value must be an Integer greater than 0.");
-					return;
-				}
-				if (cid < 1) {
-					send(sender, Level.WARNING, "&4The value must be an Integer greater than 0.");
-					return;
-				}
-				int clid = BukkitSpeak.getQuery().getCurrentQueryClientID();
-				String pw = BukkitSpeak.getStringManager().getChannelPass();
-				if (BukkitSpeak.getQuery().moveClient(clid, cid, pw)) {
-					tsSection.set(StringManager.TEAMSPEAK_CHANNELID, cid);
-					BukkitSpeak.getInstance().saveConfig();
-					BukkitSpeak.getInstance().reloadStringManager();
-					reloadListener();
-					send(sender, Level.INFO, "&aThe channel ID was successfully set to " + args[2]);
-				} else {
-					send(sender, Level.WARNING, "&4The channel ID could not be set.");
-					send(sender, Level.WARNING, "&4Ensure that this ID is really assigned to a channel.");
-					send(sender, Level.WARNING, "&4" + BukkitSpeak.getQuery().getLastError());
-					return;
-				}
+			case 2:		// ChannelID
+				setChannelID(sender, args);
 				return;
-			case 3:
+			case 3:		// ChannelPassword
 				if (!(BukkitSpeak.getStringManager().getUseChannel()) && !(BukkitSpeak.getStringManager().getUseTextChannel())) {
 					send(sender, Level.WARNING, "&4Set " + StringManager.TEAMSPEAK_CHANNEL 
 							+ " or " + StringManager.TEAMSPEAK_TEXTCHANNEL + " to true to use this feature.");
@@ -380,5 +337,59 @@ public class CommandSet extends BukkitSpeakCommand {
 		
 		if (m.isEmpty()) return;
 		broadcastMessage(m, sender);
+	}
+	
+	private boolean changeDisplayname(CommandSender s, String[] p) {
+		if (p.length > 3) {
+			send(s, Level.WARNING, "&4The display name can't contain any spaces.");
+			return false;
+		}
+		if (BukkitSpeak.getQuery().setDisplayName(p[2])) {
+			tsSection.set(StringManager.TEAMSPEAK_NAME, p[2]);
+			send(s, Level.INFO, "&aThe display name was successfully set to " + p[2]);
+			return true;
+		} else {
+			send(s, Level.WARNING, "&4The display name could not be set.");
+			send(s, Level.WARNING, "&4" + BukkitSpeak.getQuery().getLastError());
+			return false;
+		}
+	}
+	
+	private boolean setChannelID(CommandSender s, String[] p) {
+		if (p.length > 3) {
+			send(s, Level.WARNING, "&4The value must be an Integer greater than 0.");
+			return false;
+		}
+		if (!(BukkitSpeak.getStringManager().getUseChannel()) && !(BukkitSpeak.getStringManager().getUseTextChannel())) {
+			send(s, Level.WARNING, "&4Set " + StringManager.TEAMSPEAK_CHANNEL 
+					+ " or " + StringManager.TEAMSPEAK_TEXTCHANNEL + " to true to use this feature.");
+			return false;
+		}
+		int cid = -1;
+		try {
+			cid = Integer.valueOf(p[2]);
+		} catch (NumberFormatException nfe) {
+			send(s, Level.WARNING, "&4The value must be an Integer greater than 0.");
+			return false;
+		}
+		if (cid < 1) {
+			send(s, Level.WARNING, "&4The value must be an Integer greater than 0.");
+			return false;
+		}
+		int clid = BukkitSpeak.getQuery().getCurrentQueryClientID();
+		String pw = BukkitSpeak.getStringManager().getChannelPass();
+		if (BukkitSpeak.getQuery().moveClient(clid, cid, pw)) {
+			tsSection.set(StringManager.TEAMSPEAK_CHANNELID, cid);
+			BukkitSpeak.getInstance().saveConfig();
+			BukkitSpeak.getInstance().reloadStringManager();
+			reloadListener();
+			send(s, Level.INFO, "&aThe channel ID was successfully set to " + p[2]);
+			return true;
+		} else {
+			send(s, Level.WARNING, "&4The channel ID could not be set.");
+			send(s, Level.WARNING, "&4Ensure that this ID is really assigned to a channel.");
+			send(s, Level.WARNING, "&4" + BukkitSpeak.getQuery().getLastError());
+			return false;
+		}
 	}
 }

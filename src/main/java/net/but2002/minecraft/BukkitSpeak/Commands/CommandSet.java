@@ -317,26 +317,7 @@ public class CommandSet extends BukkitSpeakCommand {
 			send(sender, Level.WARNING, "&4" + BukkitSpeak.getQuery().getLastError());
 			return;
 		}
-		
-		String m = BukkitSpeak.getStringManager().getMessage("ChannelChange");
-		String name, displayName;
-		if (sender instanceof Player) {
-			name = ((Player) sender).getName();
-			displayName = ((Player) sender).getDisplayName();
-		} else {
-			name = convertToMinecraft(BukkitSpeak.getStringManager().getConsoleName(), false, false);
-			displayName = BukkitSpeak.getStringManager().getConsoleName();
-		}
-		HashMap<String, String> info = BukkitSpeak.getQuery().getInfo(JTS3ServerQuery.INFOMODE_CHANNELINFO,
-				BukkitSpeak.getQuery().getCurrentQueryClientChannelID());
-		m.replaceAll("%channel%", info.get("channel_name"));
-		m.replaceAll("%description%", info.get("channel_description"));
-		m.replaceAll("%topic%", info.get("channel_topic"));
-		m.replaceAll("%player_name%", name);
-		m.replaceAll("%player_displayname%", displayName);
-		
-		if (m.isEmpty()) return;
-		broadcastMessage(m, sender);
+		sendChannelChangeMessage(sender);
 	}
 	
 	private boolean changeDisplayname(CommandSender s, String[] p) {
@@ -384,6 +365,7 @@ public class CommandSet extends BukkitSpeakCommand {
 			BukkitSpeak.getInstance().reloadStringManager();
 			reloadListener();
 			send(s, Level.INFO, "&aThe channel ID was successfully set to " + p[2]);
+			sendChannelChangeMessage(s);
 			return true;
 		} else {
 			send(s, Level.WARNING, "&4The channel ID could not be set.");
@@ -391,5 +373,27 @@ public class CommandSet extends BukkitSpeakCommand {
 			send(s, Level.WARNING, "&4" + BukkitSpeak.getQuery().getLastError());
 			return false;
 		}
+	}
+	
+	private void sendChannelChangeMessage(CommandSender sender) {
+		String m = BukkitSpeak.getStringManager().getMessage("ChannelChange");
+		String name, displayName;
+		if (sender instanceof Player) {
+			name = ((Player) sender).getName();
+			displayName = ((Player) sender).getDisplayName();
+		} else {
+			name = convertToMinecraft(BukkitSpeak.getStringManager().getConsoleName(), false, false);
+			displayName = BukkitSpeak.getStringManager().getConsoleName();
+		}
+		HashMap<String, String> info = BukkitSpeak.getQuery().getInfo(JTS3ServerQuery.INFOMODE_CHANNELINFO,
+				BukkitSpeak.getQuery().getCurrentQueryClientChannelID());
+		m = m.replaceAll("%channel%", info.get("channel_name"));
+		m = m.replaceAll("%description%", info.get("channel_description"));
+		m = m.replaceAll("%topic%", info.get("channel_topic"));
+		m = m.replaceAll("%player_name%", name);
+		m = m.replaceAll("%player_displayname%", displayName);
+		
+		if (m.isEmpty()) return;
+		broadcastMessage(m, sender);
 	}
 }

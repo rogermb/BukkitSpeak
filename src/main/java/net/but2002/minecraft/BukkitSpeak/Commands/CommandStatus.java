@@ -14,7 +14,7 @@ public class CommandStatus extends BukkitSpeakCommand {
 		
 		//XXX
 		
-		send(sender, Level.INFO, "&eBukkitSpeak Version: &av" + BukkitSpeak.getInstance().getDescription().getVersion());
+		send(sender, Level.INFO, "&eBukkitSpeak Version: &a" + BukkitSpeak.getInstance().getDescription().getVersion());
 		if (BukkitSpeak.getQuery().isConnected()) {
 			send(sender, Level.INFO, "&eTeamspeak Listener: &arunning");
 			send(sender, Level.INFO, "&eRunning since: &a"

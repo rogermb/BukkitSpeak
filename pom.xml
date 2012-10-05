@@ -4,7 +4,7 @@
 
   <groupId>me.firedroide.plugins</groupId>
   <artifactId>BukkitSpeak</artifactId>
-  <version>v0.60</version>
+  <version>v0.61-SNAPSHOT</version>
   <packaging>jar</packaging>
 
   <name>BukkitSpeak</name>

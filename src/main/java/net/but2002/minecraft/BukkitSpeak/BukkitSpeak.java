@@ -71,8 +71,9 @@ public class BukkitSpeak extends JavaPlugin {
 		this.getCommand("ts").setExecutor(tsCommand);
 		this.getCommand("tsa").setExecutor(tsCommand);
 		
-		/* PlugIn hooks after everything else */
+		/* PlugIn hooks after the initialization */
 		factions = Bukkit.getPluginManager().isPluginEnabled("Factions");
+		if (factions) logger.info("Hooked into Factions!");
 		
 		logger.info("enabled.");
 	}

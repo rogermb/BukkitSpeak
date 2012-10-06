@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.logging.Logger;
 
+import net.but2002.minecraft.BukkitSpeak.Metrics.MetricsUtil;
 import net.but2002.minecraft.BukkitSpeak.teamspeakEvent.TeamspeakListener;
 
 import org.bukkit.Bukkit;
@@ -74,6 +75,9 @@ public class BukkitSpeak extends JavaPlugin {
 		/* PlugIn hooks after the initialization */
 		factions = Bukkit.getPluginManager().isPluginEnabled("Factions");
 		if (factions) logger.info("Hooked into Factions!");
+		
+		/* Metrics stuff after everything else */
+		MetricsUtil.setupMetrics();
 		
 		logger.info("enabled.");
 	}

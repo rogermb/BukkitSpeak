@@ -37,4 +37,6 @@
              files="TeamspeakActionListener.java"/>
   <suppress checks=".*"
              files="ConfigReader.java"/>
+  <suppress checks=".*"
+             files="Metrics.java"/>
 </suppressions>

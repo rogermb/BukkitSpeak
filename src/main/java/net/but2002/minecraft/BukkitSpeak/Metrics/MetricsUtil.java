@@ -23,38 +23,97 @@ public class MetricsUtil {
 			
 			/* Listeners stuff */
 			Metrics.Graph teamspeakGraph = metrics.createGraph("Listeners active");
-			teamspeakGraph.addPlotter(new SPlotter("Server events listener", BukkitSpeak.getStringManager().getUseServer()));
-			teamspeakGraph.addPlotter(new SPlotter("Server text messages listener", BukkitSpeak.getStringManager().getUseTextServer()));
-			teamspeakGraph.addPlotter(new SPlotter("Channel events listener", BukkitSpeak.getStringManager().getUseServer()));
-			teamspeakGraph.addPlotter(new SPlotter("Channel text messages listener", BukkitSpeak.getStringManager().getUseServer()));
-			teamspeakGraph.addPlotter(new SPlotter("Private messages listener", BukkitSpeak.getStringManager().getUseServer()));
+			teamspeakGraph.addPlotter(new Metrics.Plotter("Server events listener") {
+				
+				@Override
+				public int getValue() {
+					return BukkitSpeak.getStringManager().getUseServer() ? 1 : 0;
+				}
+			});
+			teamspeakGraph.addPlotter(new Metrics.Plotter("Server text messages listener") {
+				
+				@Override
+				public int getValue() {
+					return BukkitSpeak.getStringManager().getUseTextServer() ? 1 : 0;
+				}
+			});
+			teamspeakGraph.addPlotter(new Metrics.Plotter("Channel events listener") {
+				
+				@Override
+				public int getValue() {
+					return BukkitSpeak.getStringManager().getUseChannel() ? 1 : 0;
+				}
+			});
+			teamspeakGraph.addPlotter(new Metrics.Plotter("Channel text messages listener") {
+				
+				@Override
+				public int getValue() {
+					return BukkitSpeak.getStringManager().getUseTextChannel() ? 1 : 0;
+				}
+			});
+			teamspeakGraph.addPlotter(new Metrics.Plotter("Private messages listener") {
+				
+				@Override
+				public int getValue() {
+					return BukkitSpeak.getStringManager().getUsePrivateMessages() ? 1 : 0;
+				}
+			});
 			
 			/* Text message sender */
 			Metrics.Graph minecraftGraph = metrics.createGraph("Chat listener target");
 			switch (BukkitSpeak.getStringManager().getTeamspeakTarget()) {
 			case SERVER:
-				minecraftGraph.addPlotter(new SPlotter("Server", 1));
+				minecraftGraph.addPlotter(new Metrics.Plotter("Server") {
+					
+					@Override
+					public int getValue() {
+						return 1;
+					}
+				});
 				break;
 			case CHANNEL:
-				minecraftGraph.addPlotter(new SPlotter("Channel", 1));
+				minecraftGraph.addPlotter(new Metrics.Plotter("Channel") {
+					
+					@Override
+					public int getValue() {
+						return 1;
+					}
+				});
 				break;
 			case NONE:
 			default:
-				minecraftGraph.addPlotter(new SPlotter("None", 0));
+				minecraftGraph.addPlotter(new Metrics.Plotter("None") {
+					
+					@Override
+					public int getValue() {
+						return 1;
+					}
+				});
 				break;
 			}
 			
-			/* Clients on the TS3
+			/* Clients on the TS3 */
 			metrics.addCustomData(new Metrics.Plotter("Clients on TeamSpeak3 servers") {
 				
 				@Override
 				public int getValue() {
-					return clients.size();
+					if (BukkitSpeak.getClients() != null) {
+						return BukkitSpeak.getClients().size();
+					} else {
+						return 0;
+					}
 				}
-			}); */
+			});
 			
-			/* Factions stuff */
-			metrics.addCustomData(new SPlotter("Factions", BukkitSpeak.hasFactions()));
+			/* Dependency stuff */
+			Metrics.Graph dependencyGraph = metrics.createGraph("Dependencies");
+			dependencyGraph.addPlotter(new Metrics.Plotter("Factions") {
+				
+				@Override
+				public int getValue() {
+					return BukkitSpeak.hasFactions() ? 1 : 0;
+				}
+			});
 			
 			metrics.start();
 		} catch (IOException e) {

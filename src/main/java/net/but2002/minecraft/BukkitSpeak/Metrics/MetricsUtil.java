@@ -116,8 +116,9 @@ public class MetricsUtil {
 			});
 			
 			metrics.start();
+			logger.info("Connected to mcstats.org.");
 		} catch (IOException e) {
-			logger.info("Failed to connect to Metrics - " + e.getMessage());
+			logger.info("Failed to connect to mcstats.org - " + e.getMessage());
 		}
 	}
 }

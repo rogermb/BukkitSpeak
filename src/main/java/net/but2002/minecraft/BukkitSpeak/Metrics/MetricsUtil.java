@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.logging.Logger;
 
 import net.but2002.minecraft.BukkitSpeak.BukkitSpeak;
+import net.but2002.minecraft.BukkitSpeak.Metrics.Metrics.*;
 
 public class MetricsUtil {
 	
@@ -22,36 +23,36 @@ public class MetricsUtil {
 			logger = BukkitSpeak.log();
 			
 			/* Listeners stuff */
-			Metrics.Graph teamspeakGraph = metrics.createGraph("Listeners active");
-			teamspeakGraph.addPlotter(new Metrics.Plotter("Server events listener") {
+			Graph teamspeakGraph = metrics.createGraph("Listeners active");
+			teamspeakGraph.addPlotter(new Plotter("Server events listener") {
 				
 				@Override
 				public int getValue() {
 					return BukkitSpeak.getStringManager().getUseServer() ? 1 : 0;
 				}
 			});
-			teamspeakGraph.addPlotter(new Metrics.Plotter("Server text messages listener") {
+			teamspeakGraph.addPlotter(new Plotter("Server text messages listener") {
 				
 				@Override
 				public int getValue() {
 					return BukkitSpeak.getStringManager().getUseTextServer() ? 1 : 0;
 				}
 			});
-			teamspeakGraph.addPlotter(new Metrics.Plotter("Channel events listener") {
+			teamspeakGraph.addPlotter(new Plotter("Channel events listener") {
 				
 				@Override
 				public int getValue() {
 					return BukkitSpeak.getStringManager().getUseChannel() ? 1 : 0;
 				}
 			});
-			teamspeakGraph.addPlotter(new Metrics.Plotter("Channel text messages listener") {
+			teamspeakGraph.addPlotter(new Plotter("Channel text messages listener") {
 				
 				@Override
 				public int getValue() {
 					return BukkitSpeak.getStringManager().getUseTextChannel() ? 1 : 0;
 				}
 			});
-			teamspeakGraph.addPlotter(new Metrics.Plotter("Private messages listener") {
+			teamspeakGraph.addPlotter(new Plotter("Private messages listener") {
 				
 				@Override
 				public int getValue() {
@@ -60,10 +61,10 @@ public class MetricsUtil {
 			});
 			
 			/* Text message sender */
-			Metrics.Graph minecraftGraph = metrics.createGraph("Chat listener target");
+			Graph minecraftGraph = metrics.createGraph("Chat listener target");
 			switch (BukkitSpeak.getStringManager().getTeamspeakTarget()) {
 			case SERVER:
-				minecraftGraph.addPlotter(new Metrics.Plotter("Server") {
+				minecraftGraph.addPlotter(new Plotter("Server") {
 					
 					@Override
 					public int getValue() {
@@ -72,7 +73,7 @@ public class MetricsUtil {
 				});
 				break;
 			case CHANNEL:
-				minecraftGraph.addPlotter(new Metrics.Plotter("Channel") {
+				minecraftGraph.addPlotter(new Plotter("Channel") {
 					
 					@Override
 					public int getValue() {
@@ -82,7 +83,7 @@ public class MetricsUtil {
 				break;
 			case NONE:
 			default:
-				minecraftGraph.addPlotter(new Metrics.Plotter("None") {
+				minecraftGraph.addPlotter(new Plotter("None") {
 					
 					@Override
 					public int getValue() {
@@ -93,7 +94,8 @@ public class MetricsUtil {
 			}
 			
 			/* Clients on the TS3 */
-			metrics.addCustomData(new Metrics.Plotter("Clients on TeamSpeak3 servers") {
+			Graph clientsGraph = metrics.createGraph("Clients on TeamSpeak3 servers");
+			clientsGraph.addPlotter(new Plotter("Clients") {
 				
 				@Override
 				public int getValue() {
@@ -106,8 +108,8 @@ public class MetricsUtil {
 			});
 			
 			/* Dependency stuff */
-			Metrics.Graph dependencyGraph = metrics.createGraph("Dependencies");
-			dependencyGraph.addPlotter(new Metrics.Plotter("Factions") {
+			Graph dependencyGraph = metrics.createGraph("Dependencies");
+			dependencyGraph.addPlotter(new Plotter("Factions") {
 				
 				@Override
 				public int getValue() {

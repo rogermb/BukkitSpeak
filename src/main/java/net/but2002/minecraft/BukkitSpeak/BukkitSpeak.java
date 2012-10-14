@@ -169,6 +169,10 @@ public class BukkitSpeak extends JavaPlugin {
 		return ts;
 	}
 	
+	public ChatListener getChatListener() {
+		return chatListener;
+	}
+	
 	public Date getStartedTime() {
 		return started;
 	}

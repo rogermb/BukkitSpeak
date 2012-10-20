@@ -106,28 +106,28 @@ permissions:
       bukkitspeak.messages.chat: true
       bukkitspeak.messages.pm: true
   bukkitspeak.messages.join:
-    description: Displays you a message when somebody joined TeamSpeak.
+    description: Displays a message when somebody joined TeamSpeak.
   bukkitspeak.messages.leave:
-    description: Displays you a message when somebody left TeamSpeak.
+    description: Displays a message when somebody left TeamSpeak.
   bukkitspeak.messages.channelenter:
-    description: Displays you a message when somebody entered the channel BukkitSpeak is listening to.
+    description: Displays a message when somebody entered the channel BukkitSpeak is listening to.
   bukkitspeak.messages.channelleave:
-    description: Displays you a message when somebody left the channel BukkitSpeak is listening to.
+    description: Displays a message when somebody left the channel BukkitSpeak is listening to.
   bukkitspeak.messages.broadcast:
-    description: Shows you a broadcasts on TeamSpeak.
+    description: Shows you messages which were broadcasted on TeamSpeak.
   bukkitspeak.messages.chat:
     description: Shows you chat messages in the channel BukkitSpeak is listening to.
   bukkitspeak.messages.pm:
-    description: Shows you a message, if somebody replies to your private message.
+    description: Shows you a message if somebody replies to your private message.
   bukkitspeak.sendteamspeak.*:
-    description: All Teamspeak messages will be sent.
+    description: All messages will be sent to TeamSpeak.
     default: true
     children:
       bukkitspeak.sendteamspeak.chat: true
       bukkitspeak.sendteamspeak.join: true
       bukkitspeak.sendteamspeak.quit: true
   bukkitspeak.sendteamspeak.chat:
-    description: Sends chat messages to Teamspeak, if SendChatToTeamspeak is set in the config.
+    description: Sends messages of this user to TeamSpeak if SendChatToTeamspeak is set in the config.
   bukkitspeak.sendteamspeak.join:
     desctiption: Sends a Teamspeak message when the user joins the Minecraft server.
   bukkitspeak.sendteamspeak.quit:

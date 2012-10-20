@@ -62,37 +62,39 @@ permissions:
       bukkitspeak.commands.ban: true
       bukkitspeak.commands.kick: true
       bukkitspeak.commands.channelkick: true
-      bukkitspeak.commands.reload: true
       bukkitspeak.commands.set: true
       bukkitspeak.commands.status: true
+      bukkitspeak.commands.reload: true
   bukkitspeak.commands.list:
-    description: Allows you to use /ts list
+    description: Allows you to use /ts list.
   bukkitspeak.commands.mute:
-    description: Allows you to use /ts mute
+    description: Allows you to use /ts mute.
   bukkitspeak.commands.broadcast:
-    description: Allows you to use /ts broadcast message
+    description: Allows you to use /ts broadcast <message>.
   bukkitspeak.commands.chat:
-    description: Allows you to use /ts chat message
+    description: Allows you to use /ts chat <message>.
   bukkitspeak.commands.pm:
-    description: Allows you to use /ts pm target message
+    description: Allows you to use /ts pm target <message>.
   bukkitspeak.commands.reply:
-    description: Allows you to use /ts r(eply) message
+    description: Allows you to use /ts r(eply) <message>.
   bukkitspeak.commands.poke:
-    description: Allows you to use /ts reply message
+    description: Allows you to use /ts reply <message>.
   bukkitspeak.commands.poke:
-    description: Allows you to use /ts poke target message
+    description: Allows you to use /ts poke <target> <message>.
   bukkitspeak.commands.info:
-    description: Allows you to use /ts info
-  bukkitspeak.commands.status:
-    description: Allows you to use /ts status  
-  bukkitspeak.commands.kick:
-    description: Allows you to use /ts kick
+    description: Allows you to use /ts info.
   bukkitspeak.commands.ban:
-    description: Allows the user to ban players from teamspeak
+    description: Allows you to use /tsa ban <target> (reason).
+  bukkitspeak.commands.kick:
+    description: Allows you to use /tsa kick <target> (reason).
   bukkitspeak.commands.channelkick:
-    description: Allows you to use /ts reload
+    description: Allows you to use /tsa channelkick <target> (reason).
+  bukkitspeak.commands.set:
+    description: Allows you to use /tsa set (property) (value).
+  bukkitspeak.commands.status:
+    description: Allows you to use /tsa status.
   bukkitspeak.commands.reload:
-    description: Allows you to use /ts reload
+    description: Allows you to use /tsa reload.
   bukkitspeak.messages.*:
     description: Allows you to see all messages.
     children:

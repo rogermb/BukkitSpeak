@@ -21,12 +21,12 @@ public class CommandHelp extends BukkitSpeakCommand {
 			send(sender, Level.INFO, "&e/ts chat &a- Displays a message in the TS channel.");
 		if (checkCommandPermission(sender, "pm") && BukkitSpeak.getStringManager().getUsePrivateMessages())
 			send(sender, Level.INFO, "&e/ts pm &a- Sends a message to a certain client.");
+		if (checkCommandPermission(sender, "reply"))
+			send(sender, Level.INFO, "&e/ts r(eply) &a- Replies to a PM.");
 		if (checkCommandPermission(sender, "poke"))
 			send(sender, Level.INFO, "&e/ts poke &a- Pokes a client on Teamspeak.");
 		if (checkCommandPermission(sender, "info"))
 			send(sender, Level.INFO, "&e/ts info &a- Information about the TS server.");
-		if (checkCommandPermission(sender, "reply"))
-			send(sender, Level.INFO, "&e/ts r(eply) &a- Replies to a PM.");
 		if (checkCommandPermission(sender, "admin"))
 			send(sender, Level.INFO, "&e/ts admin &2or &e/tsa &2- BukkitSpeak admin commands.");
 	}

@@ -9,10 +9,10 @@ public class CommandAdminHelp extends BukkitSpeakCommand {
 	@Override
 	public void execute(CommandSender sender, String[] args) {
 		send(sender, Level.INFO, "&2Admin Commands Help");
-		if (checkCommandPermission(sender, "kick"))
-			send(sender, Level.INFO, "&e/tsa kick target (reason) &2- Kicks from the TS.");
 		if (checkCommandPermission(sender, "ban"))
 			send(sender, Level.INFO, "&e/tsa ban target (reason) &2- Bans a client.");
+		if (checkCommandPermission(sender, "kick"))
+			send(sender, Level.INFO, "&e/tsa kick target (reason) &2- Kicks from the TS.");
 		if (checkCommandPermission(sender, "channelkick"))
 			send(sender, Level.INFO, "&e/tsa channelkick target (reason) &2- "
 					+ "Kicks from the channel and moves the client to the default channel.");

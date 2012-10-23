@@ -11,7 +11,7 @@ import org.bukkit.command.CommandSender;
 
 public class CommandStatus extends BukkitSpeakCommand {
 	
-	private static final String[] NAMES = {"status"};
+	private static final String[] NAMES = {"status", "version"};
 	
 	@Override
 	public String getName() {

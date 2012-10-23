@@ -1,19 +1,29 @@
 package net.but2002.minecraft.BukkitSpeak.Commands;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.logging.Level;
 
 import net.but2002.minecraft.BukkitSpeak.BukkitSpeak;
 import net.but2002.minecraft.BukkitSpeak.AsyncQueryUtils.QueryBan;
 
 import org.bukkit.Bukkit;
+import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 public class CommandBan extends BukkitSpeakCommand {
 	
-	public CommandBan() {
-		super();
+	private static final String[] NAMES = {"ban"};
+	
+	@Override
+	public String getName() {
+		return NAMES[0];
+	}
+	
+	@Override
+	public String[] getNames() {
+		return NAMES;
 	}
 	
 	@Override
@@ -74,5 +84,10 @@ public class CommandBan extends BukkitSpeakCommand {
 		QueryBan qb = new QueryBan(i, tsMsg);
 		Bukkit.getScheduler().scheduleAsyncDelayedTask(BukkitSpeak.getInstance(), qb);
 		broadcastMessage(mcMsg, sender);
+	}
+	
+	@Override
+	public List<String> onTabComplete(CommandSender sender, Command cmd, String alias, String[] args) {
+		return null;
 	}
 }

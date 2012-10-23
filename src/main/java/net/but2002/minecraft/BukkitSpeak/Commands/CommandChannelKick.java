@@ -1,16 +1,30 @@
 package net.but2002.minecraft.BukkitSpeak.Commands;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.logging.Level;
 
 import net.but2002.minecraft.BukkitSpeak.BukkitSpeak;
 import net.but2002.minecraft.BukkitSpeak.AsyncQueryUtils.QueryKick;
 
 import org.bukkit.Bukkit;
+import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 public class CommandChannelKick extends BukkitSpeakCommand {
+	
+	private static final String[] NAMES = {"channelkick"};
+	
+	@Override
+	public String getName() {
+		return NAMES[0];
+	}
+	
+	@Override
+	public String[] getNames() {
+		return NAMES;
+	}
 	
 	@Override
 	public void execute(CommandSender sender, String[] args) {
@@ -73,5 +87,10 @@ public class CommandChannelKick extends BukkitSpeakCommand {
 		QueryKick qk = new QueryKick(i, true, tsMsg);
 		Bukkit.getScheduler().scheduleAsyncDelayedTask(BukkitSpeak.getInstance(), qk);
 		broadcastMessage(mcMsg, sender);
+	}
+	
+	@Override
+	public List<String> onTabComplete(CommandSender sender, Command cmd, String alias, String[] args) {
+		return null;
 	}
 }

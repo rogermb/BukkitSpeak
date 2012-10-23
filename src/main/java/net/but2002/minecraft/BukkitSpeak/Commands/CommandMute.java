@@ -1,14 +1,28 @@
 package net.but2002.minecraft.BukkitSpeak.Commands;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.logging.Level;
 
 import net.but2002.minecraft.BukkitSpeak.BukkitSpeak;
 
+import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 public class CommandMute extends BukkitSpeakCommand {
+	
+	private static final String[] NAMES = {"mute"};
+	
+	@Override
+	public String getName() {
+		return NAMES[0];
+	}
+	
+	@Override
+	public String[] getNames() {
+		return NAMES;
+	}
 	
 	@Override
 	public void execute(CommandSender sender, String[] args) {
@@ -49,5 +63,10 @@ public class CommandMute extends BukkitSpeakCommand {
 		} else {
 			send(sender, Level.INFO, "Can only mute BukkitSpeak for players!");
 		}
+	}
+	
+	@Override
+	public List<String> onTabComplete(CommandSender sender, Command cmd, String alias, String[] args) {
+		return null;
 	}
 }

@@ -1,36 +1,42 @@
 package net.but2002.minecraft.BukkitSpeak;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.logging.Level;
+import java.util.List;
 
 import net.but2002.minecraft.BukkitSpeak.Commands.*;
 
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 
-public class BukkitSpeakCommandExecutor implements CommandExecutor {
+public class BukkitSpeakCommandExecutor implements CommandExecutor, TabCompleter {
 	
-	private BukkitSpeakCommand Help, Info, List, Mute, Broadcast, Chat, Pm, Poke, Reply;
-	private BukkitSpeakCommand AdminHelp, Ban, ChannelKick, Kick, Set, Status;
+	private List<BukkitSpeakCommand> userCommands;
+	private List<BukkitSpeakCommand> adminCommands;
 	
 	public BukkitSpeakCommandExecutor() {
-		AdminHelp = new CommandAdminHelp();
-		Ban = new CommandBan();
-		ChannelKick = new CommandChannelKick();
-		Help = new CommandHelp();
-		Info = new CommandInfo();
-		Kick = new CommandKick();
-		List = new CommandList();
-		Mute = new CommandMute();
-		Broadcast = new CommandBroadcast();
-		Chat = new CommandChat();
-		Pm = new CommandPm();
-		Poke = new CommandPoke();
-		Reply = new CommandReply();
-		Set = new CommandSet();
-		Status = new CommandStatus();
+		userCommands = new ArrayList<BukkitSpeakCommand>();
+		userCommands.add(new CommandHelp());
+		userCommands.add(new CommandInfo());
+		userCommands.add(new CommandList());
+		userCommands.add(new CommandMute());
+		userCommands.add(new CommandBroadcast());
+		userCommands.add(new CommandChat());
+		userCommands.add(new CommandPm());
+		userCommands.add(new CommandPoke());
+		userCommands.add(new CommandReply());
+		
+		adminCommands = new ArrayList<BukkitSpeakCommand>();
+		adminCommands.add(new CommandAdminHelp());
+		adminCommands.add(new CommandBan());
+		adminCommands.add(new CommandChannelKick());
+		adminCommands.add(new CommandKick());
+		adminCommands.add(new CommandSet());
+		adminCommands.add(new CommandStatus());
 	}
 	
 	@Override
@@ -68,85 +74,70 @@ public class BukkitSpeakCommandExecutor implements CommandExecutor {
 		}
 	}
 	
-	public boolean onTeamspeakCommand(CommandSender sender, Command cmd, String label, String[] args) {
+	public boolean onTeamspeakCommand(CommandSender sender, Command cmd, String alias, String[] args) {
 		
-		if (args.length == 0) {
-			Help.execute(sender, args);
-			return true;
+		String s = "help";
+		if (args.length > 0) {
+			s = args[0];
 		}
 		
-		if (args[0].equalsIgnoreCase("list")) {
-			if (!checkPermissions(sender, "list")) return false;
-			List.execute(sender, args);
-		} else if (args[0].equalsIgnoreCase("mute")) {
-			if (!checkPermissions(sender, "mute")) return false;
-			Mute.execute(sender, args);
-		} else if (args[0].equalsIgnoreCase("broadcast")) {
-			if (!checkPermissions(sender, "broadcast")) return false;
-			if (!BukkitSpeak.getStringManager().getUseTextServer()) {
-				send(sender, Level.INFO, "&4You need to enable ListenToServerBroadcasts in the config to use this command.");
-				return true;
+		for (BukkitSpeakCommand bsc : userCommands) {
+			for (String name : bsc.getNames()) {
+				if (name.equalsIgnoreCase(s)) {
+					if (!checkPermissions(sender, bsc.getName())) return false;
+					bsc.execute(sender, args);
+					return true;
+				}
 			}
-			Broadcast.execute(sender, args);
-		} else if (args[0].equalsIgnoreCase("chat")) {
-			if (!checkPermissions(sender, "chat")) return false;
-			if (!BukkitSpeak.getStringManager().getUseTextChannel()) {
-				send(sender, Level.INFO, "&4You need to enable ListenToChannelChat in the config to use this command.");
-				return true;
-			}
-			Chat.execute(sender, args);
-		} else if (args[0].equalsIgnoreCase("pm")) {
-			if (!checkPermissions(sender, "pm")) return false;
-			if (!BukkitSpeak.getStringManager().getUsePrivateMessages()) {
-				send(sender, Level.INFO, "&4You need to enable ListenToPrivateMessages in the config to use this command.");
-				return true;
-			}
-			Pm.execute(sender, args);
-		} else if (args[0].equalsIgnoreCase("poke")) {
-			if (!checkPermissions(sender, "poke")) return false;
-			Poke.execute(sender, args);
-		} else if (args[0].equalsIgnoreCase("info")) {
-			if (!checkPermissions(sender, "info")) return false;
-			Info.execute(sender, args);
-		} else if (args[0].equalsIgnoreCase("reply") || args[0].equalsIgnoreCase("r")) {
-			if (!checkPermissions(sender, "reply")) return false;
-			Reply.execute(sender, args);
-		} else {
-			return false;
 		}
 		
-		return true;
+		return false;
 	}
 	
 	public boolean onTeamspeakAdminCommand(CommandSender sender, Command cmd, String label, String[] args) {
 		
-		if (args.length == 0) {
-			AdminHelp.execute(sender, args);
-			return true;
+		String s = "adminhelp";
+		if (args.length > 0) {
+			s = args[0];
 		}
 		
-		if (args[0].equalsIgnoreCase("ban")) {
-			if (!checkPermissions(sender, "ban")) return false;
-			Ban.execute(sender, args);
-		} else if (args[0].equalsIgnoreCase("channelkick")) {
-			if (!checkPermissions(sender, "channelkick")) return false;
-			ChannelKick.execute(sender, args);
-		} else if (args[0].equalsIgnoreCase("kick")) {
-			if (!checkPermissions(sender, "kick")) return false;
-			Kick.execute(sender, args);
-		} else if (args[0].equalsIgnoreCase("set")) {
-			if (!checkPermissions(sender, "set")) return false;
-			Set.execute(sender, args);
-		} else if (args[0].equalsIgnoreCase("status")) {
-			if (!checkPermissions(sender, "status")) return false;
-			Status.execute(sender, args);
-		} else if (args[0].equalsIgnoreCase("reload")) {
-			if (!checkPermissions(sender, "reload")) return false;
-			BukkitSpeak.getInstance().reload(sender);
-		} else {
-			return false;
+		for (BukkitSpeakCommand bsc : adminCommands) {
+			for (String name : bsc.getNames()) {
+				if (name.equalsIgnoreCase(s)) {
+					if (!checkPermissions(sender, bsc.getName())) return false;
+					bsc.execute(sender, args);
+					return true;
+				}
+			}
 		}
 		
-		return true;
+		return false;
+	}
+	
+	@Override
+	public List<String> onTabComplete(CommandSender sender, Command cmd, String alias, String[] args) {
+		
+		switch (args.length) {
+		case 0:
+			if (cmd.getName().equals("ts")) {
+				List<String> al = new ArrayList<String>();
+				for (BukkitSpeakCommand uc : userCommands) {
+					al.add(uc.getName());
+				}
+				return al;
+			} else if (cmd.getName().equals("tsa")) {
+				List<String> al = new ArrayList<String>();
+				for (BukkitSpeakCommand uc : adminCommands) {
+					al.add(uc.getName());
+				}
+				return al;
+			} else {
+				return null;
+			}
+		case 1:
+			return null;
+		default:
+			return null;
+		}
 	}
 }

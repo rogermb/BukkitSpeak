@@ -1,11 +1,13 @@
 package net.but2002.minecraft.BukkitSpeak.Commands;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.logging.Level;
 
 import net.but2002.minecraft.BukkitSpeak.BukkitSpeak;
 import net.but2002.minecraft.BukkitSpeak.StringManager;
 
+import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
@@ -57,8 +59,20 @@ public class CommandSet extends BukkitSpeakCommand {
 		{StringManager.TEAMSPEAK_DEBUG,
 				"true or false",
 				"True sets the plugin to debug mode."}};
+	private static final String[] NAMES = {"set"};
+	
 	private String props;
 	private ConfigurationSection tsSection;
+	
+	@Override
+	public String getName() {
+		return NAMES[0];
+	}
+	
+	@Override
+	public String[] getNames() {
+		return NAMES;
+	}
 	
 	public CommandSet() {
 		super();
@@ -395,5 +409,10 @@ public class CommandSet extends BukkitSpeakCommand {
 		
 		if (m.isEmpty()) return;
 		broadcastMessage(m, sender);
+	}
+	
+	@Override
+	public List<String> onTabComplete(CommandSender sender, Command cmd, String alias, String[] args) {
+		return null;
 	}
 }

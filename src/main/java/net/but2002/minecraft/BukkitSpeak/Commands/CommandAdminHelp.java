@@ -1,10 +1,24 @@
 package net.but2002.minecraft.BukkitSpeak.Commands;
 
+import java.util.List;
 import java.util.logging.Level;
 
+import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 
 public class CommandAdminHelp extends BukkitSpeakCommand {
+	
+	private static final String[] NAMES = {"adminhelp"};
+	
+	@Override
+	public String getName() {
+		return NAMES[0];
+	}
+	
+	@Override
+	public String[] getNames() {
+		return NAMES;
+	}
 	
 	@Override
 	public void execute(CommandSender sender, String[] args) {
@@ -22,5 +36,10 @@ public class CommandAdminHelp extends BukkitSpeakCommand {
 			send(sender, Level.INFO, "&e/tsa status &2- Shows some info about BukkitSpeak.");
 		if (checkCommandPermission(sender, "reload"))
 			send(sender, Level.INFO, "&e/tsa reload &2- Reloads the config and the query.");
+	}
+	
+	@Override
+	public List<String> onTabComplete(CommandSender sender, Command cmd, String alias, String[] args) {
+		return null;
 	}
 }

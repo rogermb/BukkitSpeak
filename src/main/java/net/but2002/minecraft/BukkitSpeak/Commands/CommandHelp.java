@@ -1,12 +1,26 @@
 package net.but2002.minecraft.BukkitSpeak.Commands;
 
+import java.util.List;
 import java.util.logging.Level;
 
 import net.but2002.minecraft.BukkitSpeak.BukkitSpeak;
 
+import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 
 public class CommandHelp extends BukkitSpeakCommand {
+	
+	private static final String[] NAMES = {"help"};
+	
+	@Override
+	public String getName() {
+		return NAMES[0];
+	}
+	
+	@Override
+	public String[] getNames() {
+		return NAMES;
+	}
 	
 	@Override
 	public void execute(CommandSender sender, String[] args) {
@@ -29,5 +43,10 @@ public class CommandHelp extends BukkitSpeakCommand {
 			send(sender, Level.INFO, "&e/ts info &a- Information about the TS server.");
 		if (checkCommandPermission(sender, "admin"))
 			send(sender, Level.INFO, "&e/ts admin &2or &e/tsa &2- BukkitSpeak admin commands.");
+	}
+	
+	@Override
+	public List<String> onTabComplete(CommandSender sender, Command cmd, String alias, String[] args) {
+		return null;
 	}
 }

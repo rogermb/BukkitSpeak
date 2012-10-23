@@ -1,13 +1,27 @@
 package net.but2002.minecraft.BukkitSpeak.Commands;
 
+import java.util.List;
 import java.util.logging.Level;
 
 import net.but2002.minecraft.BukkitSpeak.BukkitSpeak;
 import net.but2002.minecraft.BukkitSpeak.util.DateManager;
 
+import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 
 public class CommandStatus extends BukkitSpeakCommand {
+	
+	private static final String[] NAMES = {"status"};
+	
+	@Override
+	public String getName() {
+		return NAMES[0];
+	}
+	
+	@Override
+	public String[] getNames() {
+		return NAMES;
+	}
 	
 	@Override
 	public void execute(CommandSender sender, String[] args) {
@@ -53,5 +67,10 @@ public class CommandStatus extends BukkitSpeakCommand {
 					+ DateManager.dateToString(BukkitSpeak.getInstance().getLastStoppedTime()));
 			send(sender, Level.WARNING, "&eUse &a/tsa reload &eto restart the listener!");
 		}
+	}
+	
+	@Override
+	public List<String> onTabComplete(CommandSender sender, Command cmd, String alias, String[] args) {
+		return null;
 	}
 }

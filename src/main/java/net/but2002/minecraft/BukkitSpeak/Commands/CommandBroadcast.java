@@ -2,18 +2,32 @@ package net.but2002.minecraft.BukkitSpeak.Commands;
 
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.logging.Level;
 
 import net.but2002.minecraft.BukkitSpeak.BukkitSpeak;
 import net.but2002.minecraft.BukkitSpeak.AsyncQueryUtils.QuerySender;
 
 import org.bukkit.Bukkit;
+import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import de.stefan1200.jts3serverquery.JTS3ServerQuery;
 
 public class CommandBroadcast extends BukkitSpeakCommand {
+	
+	private static final String[] NAMES = {"broadcast"};
+	
+	@Override
+	public String getName() {
+		return NAMES[0];
+	}
+	
+	@Override
+	public String[] getNames() {
+		return NAMES;
+	}
 	
 	@Override
 	public void execute(CommandSender sender, String[] args) {
@@ -57,5 +71,10 @@ public class CommandBroadcast extends BukkitSpeakCommand {
 				JTS3ServerQuery.TEXTMESSAGE_TARGET_VIRTUALSERVER, tsMsg);
 		Bukkit.getScheduler().scheduleAsyncDelayedTask(BukkitSpeak.getInstance(), qs);
 		broadcastMessage(mcMsg, sender);
+	}
+	
+	@Override
+	public List<String> onTabComplete(CommandSender sender, Command cmd, String alias, String[] args) {
+		return null;
 	}
 }

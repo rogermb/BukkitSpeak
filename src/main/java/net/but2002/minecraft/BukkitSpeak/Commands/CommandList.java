@@ -1,8 +1,10 @@
 package net.but2002.minecraft.BukkitSpeak.Commands;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.logging.Level;
 
+import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -10,6 +12,18 @@ import net.but2002.minecraft.BukkitSpeak.BukkitSpeak;
 import net.but2002.minecraft.BukkitSpeak.ClientList;
 
 public class CommandList extends BukkitSpeakCommand {
+	
+	private static final String[] NAMES = {"list"};
+	
+	@Override
+	public String getName() {
+		return NAMES[0];
+	}
+	
+	@Override
+	public String[] getNames() {
+		return NAMES;
+	}
 	
 	@Override
 	public void execute(CommandSender sender, String[] args) {
@@ -93,5 +107,10 @@ public class CommandList extends BukkitSpeakCommand {
 			send(sender, Level.INFO, "&4Usage:");
 			send(sender, Level.INFO, "&4/ts list (server / channel)");
 		}
+	}
+	
+	@Override
+	public List<String> onTabComplete(CommandSender sender, Command cmd, String alias, String[] args) {
+		return null;
 	}
 }

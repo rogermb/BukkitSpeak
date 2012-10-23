@@ -1,6 +1,7 @@
 package net.but2002.minecraft.BukkitSpeak.Commands;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -8,6 +9,7 @@ import java.util.regex.Pattern;
 import net.but2002.minecraft.BukkitSpeak.BukkitSpeak;
 
 import org.bukkit.Bukkit;
+import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -202,6 +204,12 @@ public abstract class BukkitSpeakCommand {
 		return builder.toString();
 	}
 	
+	public abstract String getName();
+	
+	public abstract String[] getNames();
+	
 	public abstract void execute(CommandSender sender, String[] args);
+	
+	public abstract List<String> onTabComplete(CommandSender sender, Command cmd, String alias, String[] args);
 	
 }

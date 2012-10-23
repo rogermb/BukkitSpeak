@@ -5,7 +5,6 @@ import java.util.logging.Level;
 
 import net.but2002.minecraft.BukkitSpeak.BukkitSpeak;
 
-import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 
 public class CommandHelp extends BukkitSpeakCommand {
@@ -46,7 +45,7 @@ public class CommandHelp extends BukkitSpeakCommand {
 	}
 	
 	@Override
-	public List<String> onTabComplete(CommandSender sender, Command cmd, String alias, String[] args) {
+	public List<String> onTabComplete(CommandSender sender, String[] args) {
 		return null;
 	}
 }

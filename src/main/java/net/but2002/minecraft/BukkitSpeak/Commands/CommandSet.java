@@ -7,7 +7,6 @@ import java.util.logging.Level;
 import net.but2002.minecraft.BukkitSpeak.BukkitSpeak;
 import net.but2002.minecraft.BukkitSpeak.StringManager;
 
-import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
@@ -290,7 +289,7 @@ public class CommandSet extends BukkitSpeakCommand {
 	}
 	
 	@Override
-	public List<String> onTabComplete(CommandSender sender, Command cmd, String alias, String[] args) {
+	public List<String> onTabComplete(CommandSender sender, String[] args) {
 		return null;
 	}
 	

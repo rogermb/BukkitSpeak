@@ -9,7 +9,6 @@ import java.util.regex.Pattern;
 import net.but2002.minecraft.BukkitSpeak.BukkitSpeak;
 
 import org.bukkit.Bukkit;
-import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -210,6 +209,6 @@ public abstract class BukkitSpeakCommand {
 	
 	public abstract void execute(CommandSender sender, String[] args);
 	
-	public abstract List<String> onTabComplete(CommandSender sender, Command cmd, String alias, String[] args);
+	public abstract List<String> onTabComplete(CommandSender sender, String[] args);
 	
 }

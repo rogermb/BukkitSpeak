@@ -4,7 +4,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.logging.Level;
 
-import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -110,7 +109,7 @@ public class CommandList extends BukkitSpeakCommand {
 	}
 	
 	@Override
-	public List<String> onTabComplete(CommandSender sender, Command cmd, String alias, String[] args) {
+	public List<String> onTabComplete(CommandSender sender, String[] args) {
 		return null;
 	}
 }

@@ -3,7 +3,6 @@ package net.but2002.minecraft.BukkitSpeak.Commands;
 import java.util.List;
 import java.util.logging.Level;
 
-import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 
 public class CommandAdminHelp extends BukkitSpeakCommand {
@@ -39,7 +38,7 @@ public class CommandAdminHelp extends BukkitSpeakCommand {
 	}
 	
 	@Override
-	public List<String> onTabComplete(CommandSender sender, Command cmd, String alias, String[] args) {
+	public List<String> onTabComplete(CommandSender sender, String[] args) {
 		return null;
 	}
 }

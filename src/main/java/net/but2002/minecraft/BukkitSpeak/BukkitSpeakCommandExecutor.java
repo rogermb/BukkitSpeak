@@ -118,24 +118,48 @@ public class BukkitSpeakCommandExecutor implements CommandExecutor, TabCompleter
 	public List<String> onTabComplete(CommandSender sender, Command cmd, String alias, String[] args) {
 		
 		switch (args.length) {
-		case 0:
+		case 1:
 			if (cmd.getName().equals("ts")) {
 				List<String> al = new ArrayList<String>();
 				for (BukkitSpeakCommand uc : userCommands) {
-					al.add(uc.getName());
+					if (uc.getName().startsWith(args[0])) {
+						al.add(uc.getName());
+					}
 				}
 				return al;
 			} else if (cmd.getName().equals("tsa")) {
 				List<String> al = new ArrayList<String>();
-				for (BukkitSpeakCommand uc : adminCommands) {
-					al.add(uc.getName());
+				for (BukkitSpeakCommand ac : adminCommands) {
+					if (ac.getName().startsWith(args[0])) {
+						al.add(ac.getName());
+					}
 				}
 				return al;
 			} else {
 				return null;
 			}
-		case 1:
-			return null;
+		case 2:
+			if (cmd.getName().equals("ts")) {
+				for (BukkitSpeakCommand bsc : userCommands) {
+					for (String name : bsc.getNames()) {
+						if (name.equalsIgnoreCase(args[0])) {
+							if (!checkPermissions(sender, bsc.getName())) return null;
+							return bsc.onTabComplete(sender, args);
+						}
+					}
+				}
+			} else if (cmd.getName().equals("tsa")) {
+				for (BukkitSpeakCommand bsc : adminCommands) {
+					for (String name : bsc.getNames()) {
+						if (name.equalsIgnoreCase(args[0])) {
+							if (!checkPermissions(sender, bsc.getName())) return null;
+							return bsc.onTabComplete(sender, args);
+						}
+					}
+				}
+			} else {
+				return null;
+			}
 		default:
 			return null;
 		}

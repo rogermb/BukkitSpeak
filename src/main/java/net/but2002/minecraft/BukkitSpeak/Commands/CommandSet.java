@@ -289,6 +289,11 @@ public class CommandSet extends BukkitSpeakCommand {
 		}
 	}
 	
+	@Override
+	public List<String> onTabComplete(CommandSender sender, Command cmd, String alias, String[] args) {
+		return null;
+	}
+	
 	private int getPropsIndex(String name) {
 		for (int i = 0; i < PROPERTIES.length; i++) {
 			if (PROPERTIES[i][0].equalsIgnoreCase(name)) {
@@ -409,10 +414,5 @@ public class CommandSet extends BukkitSpeakCommand {
 		
 		if (m.isEmpty()) return;
 		broadcastMessage(m, sender);
-	}
-	
-	@Override
-	public List<String> onTabComplete(CommandSender sender, Command cmd, String alias, String[] args) {
-		return null;
 	}
 }

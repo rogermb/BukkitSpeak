@@ -31,6 +31,11 @@ public class CommandPm extends BukkitSpeakCommand {
 	
 	@Override
 	public void execute(CommandSender sender, String[] args) {
+		if (!BukkitSpeak.getStringManager().getUsePrivateMessages()) {
+			send(sender, Level.WARNING, "&4You need to enable ListenToPrivateMessages in the config to use this command.");
+			return;
+		}
+		
 		if (args.length < 3) {
 			send(sender, Level.WARNING, "&aToo few arguments!");
 			send(sender, Level.WARNING, "&aUsage: /ts pm target message");

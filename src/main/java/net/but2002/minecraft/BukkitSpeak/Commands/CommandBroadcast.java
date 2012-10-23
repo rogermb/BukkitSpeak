@@ -30,6 +30,11 @@ public class CommandBroadcast extends BukkitSpeakCommand {
 	
 	@Override
 	public void execute(CommandSender sender, String[] args) {
+		if (!BukkitSpeak.getStringManager().getUseTextServer()) {
+			send(sender, Level.WARNING, "&4You need to enable ListenToServerBroadcasts in the config to use this command.");
+			return;
+		}
+		
 		if (args.length < 2) {
 			send(sender, Level.WARNING, "&aToo few arguments!");
 			send(sender, Level.WARNING, "&aUsage: /ts broadcast message");

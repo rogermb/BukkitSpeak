@@ -30,6 +30,11 @@ public class CommandChat extends BukkitSpeakCommand {
 	
 	@Override
 	public void execute(CommandSender sender, String[] args) {
+		if (!BukkitSpeak.getStringManager().getUseTextChannel()) {
+			send(sender, Level.WARNING, "&4You need to enable ListenToChannelChat in the config to use this command.");
+			return;
+		}
+		
 		if (args.length < 2) {
 			send(sender, Level.WARNING, "&aToo few arguments!");
 			send(sender, Level.WARNING, "&aUsage: /ts chat message");

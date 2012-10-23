@@ -101,7 +101,6 @@ public class ClientList {
 			if (clients.get(key).get("client_nickname").equals(name)) return clients.get(key);
 		}
 		return null;
-		
 	}
 	
 	public HashMap<String, String> getByPartialName(String name) {
@@ -109,7 +108,8 @@ public class ClientList {
 		ArrayList<HashMap<String, String>> results = new ArrayList<HashMap<String, String>>();
 		
 		for (Integer key : clients.keySet()) {
-			if (clients.get(key).get("client_nickname").toLowerCase().startsWith(name.toLowerCase())) {
+			String n = clients.get(key).get("client_nickname").toLowerCase().replaceAll("\\s", "");
+			if (n.startsWith(name.toLowerCase())) {
 				results.add(clients.get(key));
 			}
 		}

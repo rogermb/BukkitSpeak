@@ -1,5 +1,6 @@
 package net.but2002.minecraft.BukkitSpeak.Commands;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.logging.Level;
@@ -290,7 +291,12 @@ public class CommandSet extends BukkitSpeakCommand {
 	
 	@Override
 	public List<String> onTabComplete(CommandSender sender, String[] args) {
-		return null;
+		if (args.length != 2) return null;
+		List<String> al = new ArrayList<String>();
+		for (String[] n : PROPERTIES) {
+			al.add(n[0]);
+		}
+		return al;
 	}
 	
 	private int getPropsIndex(String name) {

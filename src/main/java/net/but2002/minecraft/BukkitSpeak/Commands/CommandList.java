@@ -1,5 +1,6 @@
 package net.but2002.minecraft.BukkitSpeak.Commands;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.logging.Level;
@@ -13,6 +14,7 @@ import net.but2002.minecraft.BukkitSpeak.ClientList;
 public class CommandList extends BukkitSpeakCommand {
 	
 	private static final String[] NAMES = {"list"};
+	private static final String[] VALUES = {"server", "channel"};
 	
 	@Override
 	public String getName() {
@@ -110,6 +112,11 @@ public class CommandList extends BukkitSpeakCommand {
 	
 	@Override
 	public List<String> onTabComplete(CommandSender sender, String[] args) {
-		return null;
+		if (args.length != 2) return null;
+		List<String> al = new ArrayList<String>();
+		for (String n : VALUES) {
+			if (n.startsWith(args[1])) al.add(n);
+		}
+		return al;
 	}
 }

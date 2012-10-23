@@ -1,5 +1,6 @@
 package net.but2002.minecraft.BukkitSpeak.Commands;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -94,6 +95,14 @@ public class CommandPm extends BukkitSpeakCommand {
 	
 	@Override
 	public List<String> onTabComplete(CommandSender sender, String[] args) {
-		return null;
+		if (args.length != 2) return null;
+		List<String> al = new ArrayList<String>();
+		for (HashMap<String, String> client : BukkitSpeak.getClients().values()) {
+			String n = client.get("client_nickname").replaceAll("\\s", "");
+			if (n.startsWith(args[1])) {
+				al.add(n);
+			}
+		}
+		return al;
 	}
 }

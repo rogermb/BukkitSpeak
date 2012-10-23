@@ -118,6 +118,8 @@ public class BukkitSpeakCommandExecutor implements CommandExecutor, TabCompleter
 	public List<String> onTabComplete(CommandSender sender, Command cmd, String alias, String[] args) {
 		
 		switch (args.length) {
+		case 0:
+			return null;
 		case 1:
 			if (cmd.getName().equals("ts")) {
 				List<String> al = new ArrayList<String>();
@@ -138,7 +140,7 @@ public class BukkitSpeakCommandExecutor implements CommandExecutor, TabCompleter
 			} else {
 				return null;
 			}
-		case 2:
+		default:
 			if (cmd.getName().equals("ts")) {
 				for (BukkitSpeakCommand bsc : userCommands) {
 					for (String name : bsc.getNames()) {
@@ -148,6 +150,7 @@ public class BukkitSpeakCommandExecutor implements CommandExecutor, TabCompleter
 						}
 					}
 				}
+				return null;
 			} else if (cmd.getName().equals("tsa")) {
 				for (BukkitSpeakCommand bsc : adminCommands) {
 					for (String name : bsc.getNames()) {
@@ -157,11 +160,10 @@ public class BukkitSpeakCommandExecutor implements CommandExecutor, TabCompleter
 						}
 					}
 				}
+				return null;
 			} else {
 				return null;
 			}
-		default:
-			return null;
 		}
 	}
 }

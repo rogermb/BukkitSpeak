@@ -64,16 +64,6 @@ public class CommandSet extends BukkitSpeakCommand {
 	private String props;
 	private ConfigurationSection tsSection;
 	
-	@Override
-	public String getName() {
-		return NAMES[0];
-	}
-	
-	@Override
-	public String[] getNames() {
-		return NAMES;
-	}
-	
 	public CommandSet() {
 		super();
 		StringBuilder sb = new StringBuilder();
@@ -83,6 +73,16 @@ public class CommandSet extends BukkitSpeakCommand {
 			sb.append(PROPERTIES[j][0]);
 		}
 		props = sb.toString();
+	}
+	
+	@Override
+	public String getName() {
+		return NAMES[0];
+	}
+	
+	@Override
+	public String[] getNames() {
+		return NAMES;
 	}
 	
 	@Override

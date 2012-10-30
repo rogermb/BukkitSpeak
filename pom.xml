@@ -86,6 +86,14 @@
       <artifactId>Factions</artifactId>
       <version>1.7.7_beta</version>
     </dependency>
+    
+    <dependency>
+      <groupId>com.dthielke</groupId>
+      <artifactId>herochat</artifactId>
+      <version>5.6.1</version>
+      <scope>system</scope>
+      <systemPath>${basedir}/src/main/resources/Herochat.jar</systemPath>
+    </dependency>
   </dependencies>
 
   <distributionManagement>

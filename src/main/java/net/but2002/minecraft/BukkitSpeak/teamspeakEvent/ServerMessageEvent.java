@@ -4,6 +4,8 @@ import java.util.HashMap;
 
 import org.bukkit.entity.Player;
 
+import com.dthielke.herochat.Herochat;
+
 import net.but2002.minecraft.BukkitSpeak.BukkitSpeak;
 
 public class ServerMessageEvent extends TeamspeakEvent {
@@ -40,11 +42,17 @@ public class ServerMessageEvent extends TeamspeakEvent {
 			} else if (info.get("targetmode").equals("2")) {
 				String m = BukkitSpeak.getStringManager().getMessage("ChannelMsg");
 				if (m.isEmpty()) return;
-				for (Player pl : getOnlinePlayers()) {
-					if (!isMuted(pl) && checkPermissions(pl, "chat")) {
-						pl.sendMessage(replaceValues(m, true));
+				if(BukkitSpeak.useHerochat()) {//We are using Herochat
+					//Sadly using Herochat doesn't provide a way to do things like if they have permission to see or if they have it muted.
+					Herochat.getChannelManager().getChannel(BukkitSpeak.getHerochatChannel()).announce(replaceValues(m, true));
+				}else {//We're not using Herochat
+					for (Player pl : getOnlinePlayers()) {
+						if (!isMuted(pl) && checkPermissions(pl, "chat")) {
+							pl.sendMessage(replaceValues(m, true));
+						}
 					}
 				}
+				
 				if (BukkitSpeak.getStringManager().getLogInConsole()) BukkitSpeak.log().info(replaceValues(m, false));
 			} else if (info.get("targetmode").equals("1")) {
 				String m = BukkitSpeak.getStringManager().getMessage("PrivateMsg");

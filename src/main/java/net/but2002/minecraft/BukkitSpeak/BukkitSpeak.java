@@ -14,6 +14,8 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import com.dthielke.herochat.Herochat;
+
 import com.modcrafting.bukkitspeak.DTS3ServerQuery;
 
 import de.stefan1200.jts3serverquery.*;
@@ -32,7 +34,8 @@ public class BukkitSpeak extends JavaPlugin {
 	private static HashMap<Integer, String> pmRecipients;
 	private static HashMap<String, Integer> pmSenders;
 	
-	private static boolean factions;
+	private static boolean factions, herochat;
+	private static String herochatChannel;
 	
 	private QueryConnector qc;
 	private TeamspeakActionListener ts;
@@ -76,6 +79,24 @@ public class BukkitSpeak extends JavaPlugin {
 		factions = Bukkit.getPluginManager().isPluginEnabled("Factions");
 		if (factions) logger.info("Hooked into Factions!");
 		
+		if(getConfig().getBoolean("plugin-interaction.Herochat.enabled", false)) {
+			herochat = true;
+			
+			if(Bukkit.getPluginManager().isPluginEnabled("Herochat")) {
+				String channel = getConfig().getString("plugin-interaction.Herochat.channel", "Global");
+				if(Herochat.getChannelManager().getChannel(channel) == null) {
+					herochat = false;
+					logger.warning("Could not get the channel (" + channel +  ") specified in the config for Herochat, please make sure it is correct.");
+				}else {
+					herochatChannel = channel;
+					this.getServer().getPluginManager().registerEvents(new HerochatListener(), this);
+					logger.info("Using Herochat for the chat and using the channel " + herochatChannel + ".");
+				}
+			}else {
+				logger.warning("Your config has Herochat enabled but we couldn't find it enabled.");
+			}
+		}
+		
 		/* Metrics stuff after everything else */
 		MetricsUtil.setupMetrics();
 		
@@ -87,6 +108,9 @@ public class BukkitSpeak extends JavaPlugin {
 		query.closeTS3Connection();
 		
 		this.getServer().getScheduler().cancelTasks(this);
+		
+		//In the case of someone using /reload
+		herochat = false;
 		
 		logger.info("disabled.");
 	}
@@ -214,6 +238,16 @@ public class BukkitSpeak extends JavaPlugin {
 	
 	public static boolean hasFactions() {
 		return factions;
+	}
+	
+	/** Returns if Herochat support is enabled. */
+	public static boolean useHerochat() {
+		return herochat;
+	}
+	
+	/** Returns the name of the Herochat channel to use. */
+	public static String getHerochatChannel() {
+		return herochatChannel;
 	}
 	
 	public void reload(CommandSender sender) {

@@ -23,6 +23,7 @@ public class ChatListener implements Listener {
 	
 	@EventHandler(priority = EventPriority.LOWEST)
 	public void onPlayerChat(AsyncPlayerChatEvent e) {
+		if (BukkitSpeak.useHerochat()) return; //Use Herochat's ChannelChatEvent instead, if using herochat.
 		if (BukkitSpeak.getStringManager().getTeamspeakTarget() == TsTargetEnum.NONE) return;
 		if (e.getPlayer() == null || e.getMessage().isEmpty()) return;
 		

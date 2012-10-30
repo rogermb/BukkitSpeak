@@ -9,6 +9,7 @@ website: 'http://forums.bukkit.org/threads/misc-bukkitspeak-v0-55-connect-minecr
 database: false
 softdepend:
   - Factions
+  - Herochat
 commands:
   ts:
     description: BukkitSpeak commands

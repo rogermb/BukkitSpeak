@@ -32,7 +32,14 @@ teamspeak:
   # Debug Mode
   # Use if the plugin doesn't work at all
   # Or for posting error logs in the forum
-  Debug: false
+  Debug: false  
+
+plugin-interaction:
+  Herochat:
+    # Do we want to enable support for Herochat?
+    enabled: false
+    # Which channel do we want us to use?
+    channel: Global
   
 messages:
   TeamspeakEvents:

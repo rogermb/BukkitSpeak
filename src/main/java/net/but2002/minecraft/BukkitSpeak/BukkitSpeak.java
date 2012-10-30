@@ -82,17 +82,18 @@ public class BukkitSpeak extends JavaPlugin {
 		if(getConfig().getBoolean("plugin-interaction.Herochat.enabled", false)) {
 			herochat = true;
 			
-			if(Bukkit.getPluginManager().isPluginEnabled("Herochat")) {
+			if (Bukkit.getPluginManager().isPluginEnabled("Herochat")) {
 				String channel = getConfig().getString("plugin-interaction.Herochat.channel", "Global");
-				if(Herochat.getChannelManager().getChannel(channel) == null) {
+				if (Herochat.getChannelManager().getChannel(channel) == null) {
 					herochat = false;
 					logger.warning("Could not get the channel (" + channel +  ") specified in the config for Herochat, please make sure it is correct.");
-				}else {
+				} else {
 					herochatChannel = channel;
 					this.getServer().getPluginManager().registerEvents(new HerochatListener(), this);
 					logger.info("Using Herochat for the chat and using the channel " + herochatChannel + ".");
 				}
-			}else {
+			} else {
+				herochat = false;
 				logger.warning("Your config has Herochat enabled but we couldn't find it enabled.");
 			}
 		}
@@ -108,9 +109,6 @@ public class BukkitSpeak extends JavaPlugin {
 		query.closeTS3Connection();
 		
 		this.getServer().getScheduler().cancelTasks(this);
-		
-		//In the case of someone using /reload
-		herochat = false;
 		
 		logger.info("disabled.");
 	}

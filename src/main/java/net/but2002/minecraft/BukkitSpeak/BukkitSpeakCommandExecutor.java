@@ -125,7 +125,7 @@ public class BukkitSpeakCommandExecutor implements CommandExecutor, TabCompleter
 				List<String> al = new ArrayList<String>();
 				for (BukkitSpeakCommand uc : userCommands) {
 					if (uc.getName().startsWith(args[0])) {
-						al.add(uc.getName());
+						if (checkPermissions(sender, uc.getName())) al.add(uc.getName());
 					}
 				}
 				return al;
@@ -133,7 +133,7 @@ public class BukkitSpeakCommandExecutor implements CommandExecutor, TabCompleter
 				List<String> al = new ArrayList<String>();
 				for (BukkitSpeakCommand ac : adminCommands) {
 					if (ac.getName().startsWith(args[0])) {
-						al.add(ac.getName());
+						if (checkPermissions(sender, ac.getName())) al.add(ac.getName());
 					}
 				}
 				return al;

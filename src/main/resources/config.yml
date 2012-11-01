@@ -32,9 +32,12 @@ teamspeak:
   # Debug Mode
   # Use if the plugin doesn't work at all
   # Or for posting error logs in the forum
-  Debug: false  
-
+  Debug: false
+  
 plugin-interaction:
+  Factions:
+    # If Factions is enabled, only public chat will be sent to TeamSpeak.
+    public-only: true
   Herochat:
     # Do we want to enable support for Herochat?
     enabled: false

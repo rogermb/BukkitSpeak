@@ -294,7 +294,9 @@ public class CommandSet extends BukkitSpeakCommand {
 		if (args.length != 2) return null;
 		List<String> al = new ArrayList<String>();
 		for (String[] n : PROPERTIES) {
-			al.add(n[0]);
+			if (n[0].startsWith(args[1])) {
+				al.add(n[0]);
+			}
 		}
 		return al;
 	}

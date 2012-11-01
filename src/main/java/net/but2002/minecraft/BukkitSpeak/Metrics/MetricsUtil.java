@@ -113,7 +113,14 @@ public class MetricsUtil {
 				
 				@Override
 				public int getValue() {
-					return BukkitSpeak.hasFactions() ? 1 : 0;
+					return (BukkitSpeak.hasFactions() && BukkitSpeak.getStringManager().getFactionsPublicOnly()) ? 1 : 0;
+				}
+			});
+			dependencyGraph.addPlotter(new Plotter("Herochat") {
+				
+				@Override
+				public int getValue() {
+					return BukkitSpeak.useHerochat() ? 1 : 0;
 				}
 			});
 			

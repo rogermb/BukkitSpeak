@@ -83,8 +83,8 @@ public class BukkitSpeak extends JavaPlugin {
 			if (Bukkit.getPluginManager().isPluginEnabled("Herochat")) {
 				String channel = stringManager.getHerochatChannel();
 				if (Herochat.getChannelManager().getChannel(channel) == null) {
-					logger.warning("Could not get the channel (" + channel +  ") specified in the config for Herochat, " +
-							"please make sure it is correct.");
+					logger.warning("Could not get the channel (" + channel +  ") specified in the config for Herochat, "
+							+ "please make sure it is correct.");
 				} else {
 					herochat = true;
 					this.getServer().getPluginManager().registerEvents(new HerochatListener(), this);

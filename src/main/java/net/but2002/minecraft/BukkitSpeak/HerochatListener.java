@@ -18,15 +18,15 @@ import de.stefan1200.jts3serverquery.JTS3ServerQuery;
 
 public class HerochatListener implements Listener {
 	
-	@EventHandler(priority=EventPriority.MONITOR)
+	@EventHandler(priority = EventPriority.MONITOR)
 	public void onHeroChatMessage(ChannelChatEvent event) {
 		if (!BukkitSpeak.useHerochat()) return; //We're not using Herochat, so don't do this
-		if (BukkitSpeak.getHerochatChannel() == null) return; //This shouldn't happen, but just in case.
+		if (BukkitSpeak.getStringManager().getHerochatChannel() == null) return; //This shouldn't happen, but just in case.
 		if (!hasPermission(event.getSender().getPlayer(), "chat")) return;
 		
 		String channelName = event.getChannel().getName();
 		
-		if(event.getResult() == Result.ALLOWED && BukkitSpeak.getHerochatChannel().equalsIgnoreCase(channelName)) {
+		if (event.getResult() == Result.ALLOWED && BukkitSpeak.getStringManager().getHerochatChannel().equalsIgnoreCase(channelName)) {
 			String tsMsg = BukkitSpeak.getStringManager().getMessage("ChatMessage");
 			HashMap<String, String> repl = new HashMap<String, String>();
 			repl.put("%player_name%", event.getSender().getName());

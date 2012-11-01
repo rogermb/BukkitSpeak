@@ -10,7 +10,6 @@ import net.but2002.minecraft.BukkitSpeak.Metrics.MetricsUtil;
 import net.but2002.minecraft.BukkitSpeak.teamspeakEvent.TeamspeakListener;
 
 import org.bukkit.Bukkit;
-import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 

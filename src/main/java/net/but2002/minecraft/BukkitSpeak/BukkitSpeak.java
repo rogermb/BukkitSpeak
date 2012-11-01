@@ -35,7 +35,6 @@ public class BukkitSpeak extends JavaPlugin {
 	private static HashMap<String, Integer> pmSenders;
 	
 	private static boolean factions, herochat;
-	private static String herochatChannel;
 	
 	private QueryConnector qc;
 	private TeamspeakActionListener ts;
@@ -79,22 +78,20 @@ public class BukkitSpeak extends JavaPlugin {
 		factions = Bukkit.getPluginManager().isPluginEnabled("Factions");
 		if (factions) logger.info("Hooked into Factions!");
 		
-		if(getConfig().getBoolean("plugin-interaction.Herochat.enabled", false)) {
-			herochat = true;
-			
+		herochat = false;
+		if (stringManager.getHerochatEnabled()) {
 			if (Bukkit.getPluginManager().isPluginEnabled("Herochat")) {
-				String channel = getConfig().getString("plugin-interaction.Herochat.channel", "Global");
+				String channel = stringManager.getHerochatChannel();
 				if (Herochat.getChannelManager().getChannel(channel) == null) {
-					herochat = false;
-					logger.warning("Could not get the channel (" + channel +  ") specified in the config for Herochat, please make sure it is correct.");
+					logger.warning("Could not get the channel (" + channel +  ") specified in the config for Herochat, " +
+							"please make sure it is correct.");
 				} else {
-					herochatChannel = channel;
+					herochat = true;
 					this.getServer().getPluginManager().registerEvents(new HerochatListener(), this);
-					logger.info("Using Herochat for the chat and using the channel " + herochatChannel + ".");
+					logger.info("Using Herochat for the chat and using the channel " + channel + ".");
 				}
 			} else {
-				herochat = false;
-				logger.warning("Your config has Herochat enabled but we couldn't find it enabled.");
+				logger.warning("Your config has Herochat set to true but it's not enabled on the server.");
 			}
 		}
 		
@@ -238,14 +235,9 @@ public class BukkitSpeak extends JavaPlugin {
 		return factions;
 	}
 	
-	/** Returns if Herochat support is enabled. */
+	/* Returns if herochat is enabled on the server */
 	public static boolean useHerochat() {
 		return herochat;
-	}
-	
-	/** Returns the name of the Herochat channel to use. */
-	public static String getHerochatChannel() {
-		return herochatChannel;
 	}
 	
 	public void reload(CommandSender sender) {

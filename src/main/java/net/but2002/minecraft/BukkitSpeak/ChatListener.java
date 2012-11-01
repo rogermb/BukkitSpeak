@@ -29,7 +29,7 @@ public class ChatListener implements Listener {
 		if (e.getPlayer() == null || e.getMessage().isEmpty()) return;
 		
 		/* Factions check */
-		if (BukkitSpeak.hasFactions()) {
+		if (BukkitSpeak.hasFactions() && BukkitSpeak.getStringManager().getFactionsPublicOnly()) {
 			if (FPlayers.i.get(e.getPlayer()).getChatMode() != ChatMode.PUBLIC) {
 				return;
 			}

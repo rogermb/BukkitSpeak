@@ -42,10 +42,11 @@ public class ServerMessageEvent extends TeamspeakEvent {
 			} else if (info.get("targetmode").equals("2")) {
 				String m = BukkitSpeak.getStringManager().getMessage("ChannelMsg");
 				if (m.isEmpty()) return;
-				if(BukkitSpeak.useHerochat()) {//We are using Herochat
+				if (BukkitSpeak.useHerochat()) { //We are using Herochat
 					//Sadly using Herochat doesn't provide a way to do things like if they have permission to see or if they have it muted.
-					Herochat.getChannelManager().getChannel(BukkitSpeak.getHerochatChannel()).announce(replaceValues(m, true));
-				}else {//We're not using Herochat
+					String c = BukkitSpeak.getStringManager().getHerochatChannel();
+					Herochat.getChannelManager().getChannel(c).announce(replaceValues(m, true));
+				} else { //We're not using Herochat
 					for (Player pl : getOnlinePlayers()) {
 						if (!isMuted(pl) && checkPermissions(pl, "chat")) {
 							pl.sendMessage(replaceValues(m, true));

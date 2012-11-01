@@ -35,6 +35,13 @@ public class StringManager {
 		{"channel", "chat"},
 		{"server", "broadcast"}};
 	
+	public static final String[] FACTIONS_SECTION = {"plugin-interaction", "Factions"};
+	public static final String FACTIONS_PUBLIC_ONLY = "public-only";
+	
+	public static final String[] HEROCHAT_SECTION = {"plugin-interaction", "Herochat"};
+	public static final String HEROCHAT_ENABLED = "enabled";
+	public static final String HEROCHAT_CHANNEL = "channel";
+	
 	public static final String[] TEAMSPEAKEVENTMESSAGES_SECTION = {"messages", "TeamspeakEvents"};
 	public static final String[] TEAMSPEAKMESSAGES_SECTION = {"messages", "TeamspeakMessages"};
 	public static final String[] MINECRAFTEVENTMESSAGES_SECTION = {"messages", "MinecraftEvents"};
@@ -84,9 +91,12 @@ public class StringManager {
 		{"Ban", "&e%player_displayname% &abanned &e%target% &afor &e%msg%&a."}};
 	
 	private HashMap<String, String> strings = new HashMap<String, String>();
-	private String ip, serverAdmin, serverPass, tsName, tsConsoleName, tsChannelPass, tsDefaultReason;
+	private boolean tsServer, tsTextServer, tsChannel, tsTextChannel, tsPrivateMessages, tsAllowLinks, tsConsole, tsDebug;
 	private int queryPort, serverPort, tsChannelID, tsTarget;
-	private Boolean tsServer, tsTextServer, tsChannel, tsTextChannel, tsPrivateMessages, tsAllowLinks, tsConsole, tsDebug;
+	private String ip, serverAdmin, serverPass, tsName, tsConsoleName, tsChannelPass, tsDefaultReason;
+	
+	private boolean factionsPublicOnly, herochatEnabled;
+	private String herochatChannel;
 	
 	public StringManager() {
 		
@@ -120,7 +130,9 @@ public class StringManager {
 		tsDefaultReason = reader.getString(TEAMSPEAK_SECTION, TEAMSPEAK_DEFAULTREASON, "-");
 		tsDebug = reader.getBoolean(TEAMSPEAK_SECTION, TEAMSPEAK_DEBUG, false);
 		
-		
+		factionsPublicOnly = reader.getBoolean(FACTIONS_SECTION, FACTIONS_PUBLIC_ONLY, true);
+		herochatEnabled = reader.getBoolean(HEROCHAT_SECTION, HEROCHAT_ENABLED, false);
+		herochatChannel = reader.getString(HEROCHAT_SECTION, HEROCHAT_CHANNEL, "Global");
 		
 		for (String[] keyPair : TEAMSPEAKEVENTMESSAGES) {
 			String currentValue = reader.getString(TEAMSPEAKEVENTMESSAGES_SECTION, keyPair[0], keyPair[1]);
@@ -182,27 +194,27 @@ public class StringManager {
 		return tsChannelPass;
 	}
 	
-	public Boolean getUseServer() {
+	public boolean getUseServer() {
 		return tsServer;
 	}
 	
-	public Boolean getUseTextServer() {
+	public boolean getUseTextServer() {
 		return tsTextServer;
 	}
 	
-	public Boolean getUseChannel() {
+	public boolean getUseChannel() {
 		return tsChannel;
 	}
 	
-	public Boolean getUseTextChannel() {
+	public boolean getUseTextChannel() {
 		return tsTextChannel;
 	}
 	
-	public Boolean getUsePrivateMessages() {
+	public boolean getUsePrivateMessages() {
 		return tsPrivateMessages;
 	}
 	
-	public Boolean getAllowLinks() {
+	public boolean getAllowLinks() {
 		return tsAllowLinks;
 	}
 	
@@ -218,7 +230,19 @@ public class StringManager {
 		return tsDefaultReason;
 	}
 	
-	public Boolean getDebugMode() {
+	public boolean getDebugMode() {
 		return tsDebug;
+	}
+	
+	public boolean getFactionsPublicOnly() {
+		return factionsPublicOnly;
+	}
+	
+	public boolean getHerochatEnabled() {
+		return herochatEnabled;
+	}
+	
+	public String getHerochatChannel() {
+		return herochatChannel;
 	}
 }

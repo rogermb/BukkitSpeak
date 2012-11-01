@@ -9,7 +9,14 @@ import net.but2002.minecraft.BukkitSpeak.BukkitSpeak;
 public class EnterEvent extends TeamspeakEvent {
 	
 	public EnterEvent(HashMap<String, String> infoMap) {
-		super(Integer.valueOf(infoMap.get("clid")));
+		int clid = Integer.valueOf(infoMap.get("clid"));
+		
+		if (!BukkitSpeak.getClients().containsKey(clid)) {
+			BukkitSpeak.getClients().addClient(clid);
+		} else {
+			return;
+		}
+		setUser(clid);
 		sendMessage();
 	}
 	

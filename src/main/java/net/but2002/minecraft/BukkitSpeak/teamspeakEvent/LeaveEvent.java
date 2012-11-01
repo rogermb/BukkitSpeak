@@ -11,7 +11,9 @@ public class LeaveEvent extends TeamspeakEvent {
 	private HashMap<String, String> info;
 	
 	public LeaveEvent(HashMap<String, String> infoMap) {
-		super(Integer.parseInt(infoMap.get("clid")));
+		int clid = Integer.parseInt(infoMap.get("clid"));
+		
+		setUser(clid);
 		BukkitSpeak.getClients().removeClient(Integer.parseInt(infoMap.get("clid")));
 		info = infoMap;
 		sendMessage();
@@ -19,17 +21,16 @@ public class LeaveEvent extends TeamspeakEvent {
 	
 	@Override
 	protected void sendMessage() {
-		if (getUser() != null && !getClientName().startsWith("Unknown from") && getClientType() == 0) {
-			if (!info.get("reasonid").equals("5")) {
-				String m = BukkitSpeak.getStringManager().getMessage("Quit");
-				if (m.isEmpty()) return;
-				for (Player pl : getOnlinePlayers()) {
-					if (!isMuted(pl) && checkPermissions(pl, "leave")) {
-						pl.sendMessage(replaceValues(m, true));
-					}
+		if (getUser() == null || getClientName().startsWith("Unknown from") || getClientType() != 0) return;
+		if (!info.get("reasonid").equals("5")) {
+			String m = BukkitSpeak.getStringManager().getMessage("Quit");
+			if (m.isEmpty()) return;
+			for (Player pl : getOnlinePlayers()) {
+				if (!isMuted(pl) && checkPermissions(pl, "leave")) {
+					pl.sendMessage(replaceValues(m, true));
 				}
-				if (BukkitSpeak.getStringManager().getLogInConsole()) BukkitSpeak.log().info(replaceValues(m, false));
 			}
+			if (BukkitSpeak.getStringManager().getLogInConsole()) BukkitSpeak.log().info(replaceValues(m, false));
 		}
 	}
 }

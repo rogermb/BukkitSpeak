@@ -12,11 +12,6 @@ public abstract class TeamspeakEvent {
 	
 	private HashMap<String, String> user;
 	
-	public TeamspeakEvent(Integer clid) {
-		if (!BukkitSpeak.getClients().containsKey(clid)) BukkitSpeak.getClients().addClient(clid);
-		setUser(clid);
-	}
-	
 	public HashMap<String, String> getUser() {
 		return user;
 	}

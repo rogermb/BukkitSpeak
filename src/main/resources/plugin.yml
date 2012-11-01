@@ -130,9 +130,15 @@ permissions:
       bukkitspeak.sendteamspeak.chat: true
       bukkitspeak.sendteamspeak.join: true
       bukkitspeak.sendteamspeak.quit: true
+      bukkitspeak.sendteamspeak.kick: true
+      bukkitspeak.sendteamspeak.ban: true
   bukkitspeak.sendteamspeak.chat:
     description: Sends messages of this user to TeamSpeak if SendChatToTeamspeak is set in the config.
   bukkitspeak.sendteamspeak.join:
     desctiption: Sends a Teamspeak message when the user joins the Minecraft server.
   bukkitspeak.sendteamspeak.quit:
     description: Sends a Teamspeak message when the user leaves the Minecraft server.
+  bukkitspeak.sendteamspeak.kick:
+    description: Sends a Teamspeak message when the user gets kicked from the Minecraft server.
+  bukkitspeak.sendteamspeak.ban:
+    description: Sends a Teamspeak message when the user gets banned from the Minecraft server.

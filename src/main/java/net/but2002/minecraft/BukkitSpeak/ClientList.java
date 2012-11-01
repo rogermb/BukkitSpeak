@@ -25,9 +25,9 @@ public class ClientList {
 		asyncUpdateAll();
 	}
 	
-	public void addClient(Integer clid) {
-		if (clid <= 0) return;
-		if (!query.isConnected()) return;
+	public boolean addClient(Integer clid) {
+		if (clid <= 0) return false;
+		if (!query.isConnected()) return false;
 		
 		HashMap<String, String> user;
 		try {
@@ -36,13 +36,17 @@ public class ClientList {
 				if (user.get("client_type").equals("0") && !clients.containsKey(clid)) {
 					user.put("clid", clid.toString());
 					clients.put(clid, user);
+					return true;
 				}
+				return false;
 			} else {
 				logger.warning("Received no information for user id " + clid + ". (Adding)");
+				return false;
 			}
 		} catch (Exception e) {
 			logger.severe("Error while receiving client information.");
 			e.printStackTrace();
+			return false;
 		}
 	}
 	

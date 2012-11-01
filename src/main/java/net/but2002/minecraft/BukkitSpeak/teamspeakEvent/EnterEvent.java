@@ -12,7 +12,7 @@ public class EnterEvent extends TeamspeakEvent {
 		int clid = Integer.valueOf(infoMap.get("clid"));
 		
 		if (!BukkitSpeak.getClients().containsKey(clid)) {
-			BukkitSpeak.getClients().addClient(clid);
+			if (!BukkitSpeak.getClients().addClient(clid)) return;
 		} else {
 			return;
 		}

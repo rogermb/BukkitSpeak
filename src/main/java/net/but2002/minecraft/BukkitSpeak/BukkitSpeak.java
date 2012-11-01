@@ -240,7 +240,7 @@ public class BukkitSpeak extends JavaPlugin {
 		return herochat;
 	}
 	
-	public void reload(CommandSender sender) {
+	public boolean reload() {
 		try {
 			query.closeTS3Connection();
 			
@@ -256,14 +256,12 @@ public class BukkitSpeak extends JavaPlugin {
 			pmRecipients = new HashMap<Integer, String>();
 			pmSenders = new HashMap<String, Integer>();
 			
-			if (sender instanceof Player) sender.sendMessage(this + "\u00A7areloaded.");
 			this.getLogger().info("reloaded.");
+			return true;
 		} catch (Exception e) {
-			if (sender instanceof Player) {
-				sender.sendMessage(this + "\u00A74was unable to reload, an error happened.");
-			}
 			this.getLogger().info("was unable to reload, an error happened.");
 			e.printStackTrace();
+			return false;
 		}
 	}
 	

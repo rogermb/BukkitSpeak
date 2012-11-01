@@ -35,6 +35,7 @@ public class BukkitSpeakCommandExecutor implements CommandExecutor, TabCompleter
 		adminCommands.add(new CommandBan());
 		adminCommands.add(new CommandChannelKick());
 		adminCommands.add(new CommandKick());
+		adminCommands.add(new CommandReload());
 		adminCommands.add(new CommandSet());
 		adminCommands.add(new CommandStatus());
 	}

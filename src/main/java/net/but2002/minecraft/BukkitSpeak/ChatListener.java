@@ -12,6 +12,7 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerKickEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 
 import com.massivecraft.factions.FPlayers;
@@ -58,7 +59,7 @@ public class ChatListener implements Listener {
 		}
 	}
 	
-	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+	@EventHandler(priority = EventPriority.MONITOR)
 	public void onPlayerJoin(PlayerJoinEvent e) {
 		if (BukkitSpeak.getStringManager().getTeamspeakTarget() == TsTargetEnum.NONE) return;
 		if (e.getPlayer() == null || e.getJoinMessage() == null) return;
@@ -87,7 +88,7 @@ public class ChatListener implements Listener {
 		}
 	}
 	
-	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+	@EventHandler(priority = EventPriority.MONITOR)
 	public void onPlayerQuit(PlayerQuitEvent e) {
 		if (BukkitSpeak.getStringManager().getTeamspeakTarget() == TsTargetEnum.NONE) return;
 		if (e.getPlayer() == null || e.getQuitMessage() == null) return;
@@ -99,6 +100,43 @@ public class ChatListener implements Listener {
 		repl.put("%player_name%", e.getPlayer().getName());
 		repl.put("%player_displayname%", e.getPlayer().getDisplayName());
 		repl.put("%msg%", e.getQuitMessage());
+		
+		tsMsg = replaceKeys(tsMsg, repl);
+		tsMsg = convert(tsMsg, true, BukkitSpeak.getStringManager().getAllowLinks());
+		
+		if (tsMsg.isEmpty()) return;
+		
+		if (BukkitSpeak.getStringManager().getTeamspeakTarget() == TsTargetEnum.CHANNEL) {
+			QuerySender qs = new QuerySender(BukkitSpeak.getQuery().getCurrentQueryClientChannelID(),
+					JTS3ServerQuery.TEXTMESSAGE_TARGET_CHANNEL, tsMsg);
+			Bukkit.getScheduler().scheduleAsyncDelayedTask(BukkitSpeak.getInstance(), qs);
+		} else if (BukkitSpeak.getStringManager().getTeamspeakTarget() == TsTargetEnum.SERVER) {
+			QuerySender qs = new QuerySender(BukkitSpeak.getQuery().getCurrentQueryClientServerID(),
+					JTS3ServerQuery.TEXTMESSAGE_TARGET_VIRTUALSERVER, tsMsg);
+			Bukkit.getScheduler().scheduleAsyncDelayedTask(BukkitSpeak.getInstance(), qs);
+		}
+	}
+	
+	@EventHandler(priority = EventPriority.MONITOR)
+	public void onPlayerKick(PlayerKickEvent e) {
+		if (BukkitSpeak.getStringManager().getTeamspeakTarget() == TsTargetEnum.NONE) return;
+		if (e.getPlayer() == null || e.getLeaveMessage() == null) return;
+		
+		String tsMsg;
+		if (e.getPlayer().isBanned()) {
+			// Was banned
+			if (!hasPermission(e.getPlayer(), "ban")) return;
+			tsMsg = BukkitSpeak.getStringManager().getMessage("BannedMessage");
+		} else {
+			// Or just kicked
+			if (!hasPermission(e.getPlayer(), "kick")) return;
+			tsMsg = BukkitSpeak.getStringManager().getMessage("KickedMessage");
+		}
+		
+		HashMap<String, String> repl = new HashMap<String, String>();
+		repl.put("%player_name%", e.getPlayer().getName());
+		repl.put("%player_displayname%", e.getPlayer().getDisplayName());
+		repl.put("%msg%", e.getLeaveMessage());
 		
 		tsMsg = replaceKeys(tsMsg, repl);
 		tsMsg = convert(tsMsg, true, BukkitSpeak.getStringManager().getAllowLinks());

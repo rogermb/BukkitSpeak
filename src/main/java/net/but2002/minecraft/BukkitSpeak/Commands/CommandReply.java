@@ -82,8 +82,12 @@ public class CommandReply extends BukkitSpeakCommand {
 		if (tsMsg == null || tsMsg.isEmpty()) return;
 		QuerySender qs = new QuerySender(clid, JTS3ServerQuery.TEXTMESSAGE_TARGET_CLIENT, tsMsg);
 		Bukkit.getScheduler().scheduleAsyncDelayedTask(BukkitSpeak.getInstance(), qs);
-		BukkitSpeak.registerRecipient(name, clid);
-		broadcastMessage(mcMsg, sender);
+		if (mcMsg == null || mcMsg.isEmpty()) return;
+		if (sender instanceof Player) {
+			sender.sendMessage(convertToMinecraft(mcMsg, true, BukkitSpeak.getStringManager().getAllowLinks()));
+		} else {
+			BukkitSpeak.log().info(convertToMinecraft(mcMsg, false, BukkitSpeak.getStringManager().getAllowLinks()));
+		}
 	}
 	
 	@Override

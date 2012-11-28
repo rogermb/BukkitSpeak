@@ -33,7 +33,7 @@ public class BukkitSpeak extends JavaPlugin {
 	private static HashMap<Integer, String> pmRecipients;
 	private static HashMap<String, Integer> pmSenders;
 	
-	private static boolean factions, herochat;
+	private static boolean factions, herochat, mcMMO;
 	
 	private QueryConnector qc;
 	private TeamspeakActionListener ts;
@@ -76,6 +76,9 @@ public class BukkitSpeak extends JavaPlugin {
 		/* PlugIn hooks after the initialization */
 		factions = Bukkit.getPluginManager().isPluginEnabled("Factions");
 		if (factions) logger.info("Hooked into Factions!");
+		
+		mcMMO = Bukkit.getPluginManager().isPluginEnabled("mcMMO");
+		if (mcMMO) logger.info("Hooked into mcMMO!");
 		
 		herochat = false;
 		if (stringManager.getHerochatEnabled()) {
@@ -230,13 +233,19 @@ public class BukkitSpeak extends JavaPlugin {
 		}
 	}
 	
+	/* Returns true if factions is enabled on the server */
 	public static boolean hasFactions() {
 		return factions;
 	}
 	
-	/* Returns if herochat is enabled on the server */
+	/* Returns true if herochat is enabled on the server and set to true in the config */
 	public static boolean useHerochat() {
 		return herochat;
+	}
+	
+	/* Returns true if mcMMO is enabled on the server */
+	public static boolean hasMcMMO() {
+		return mcMMO;
 	}
 	
 	public boolean reload() {

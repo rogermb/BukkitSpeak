@@ -42,6 +42,10 @@ public class StringManager {
 	public static final String HEROCHAT_ENABLED = "enabled";
 	public static final String HEROCHAT_CHANNEL = "channel";
 	
+	public static final String[] MCMMO_SECTION = {"plugin-interaction", "mcMMO"};
+	public static final String MCMMO_PARTY_CHAT = "FilterPartyChat";
+	public static final String MCMMO_ADMIN_CHAT = "FilterAdminChat";
+	
 	public static final String[] TEAMSPEAKEVENTMESSAGES_SECTION = {"messages", "TeamspeakEvents"};
 	public static final String[] TEAMSPEAKMESSAGES_SECTION = {"messages", "TeamspeakMessages"};
 	public static final String[] MINECRAFTEVENTMESSAGES_SECTION = {"messages", "MinecraftEvents"};
@@ -95,7 +99,7 @@ public class StringManager {
 	private int queryPort, serverPort, tsChannelID, tsTarget;
 	private String ip, serverAdmin, serverPass, tsName, tsConsoleName, tsChannelPass, tsDefaultReason;
 	
-	private boolean factionsPublicOnly, herochatEnabled;
+	private boolean factionsPublicOnly, herochatEnabled, mcMMOParty, mcMMOAdmin;
 	private String herochatChannel;
 	
 	public StringManager() {
@@ -133,6 +137,8 @@ public class StringManager {
 		factionsPublicOnly = reader.getBoolean(FACTIONS_SECTION, FACTIONS_PUBLIC_ONLY, true);
 		herochatEnabled = reader.getBoolean(HEROCHAT_SECTION, HEROCHAT_ENABLED, false);
 		herochatChannel = reader.getString(HEROCHAT_SECTION, HEROCHAT_CHANNEL, "Global");
+		mcMMOParty = reader.getBoolean(MCMMO_SECTION, MCMMO_PARTY_CHAT, true);
+		mcMMOAdmin = reader.getBoolean(MCMMO_SECTION, MCMMO_ADMIN_CHAT, true);
 		
 		for (String[] keyPair : TEAMSPEAKEVENTMESSAGES) {
 			String currentValue = reader.getString(TEAMSPEAKEVENTMESSAGES_SECTION, keyPair[0], keyPair[1]);
@@ -165,7 +171,7 @@ public class StringManager {
 	public int getServerPort() {
 		return serverPort;
 	}
-
+	
 	public int getQueryPort() {
 		return queryPort;
 	}
@@ -244,5 +250,13 @@ public class StringManager {
 	
 	public String getHerochatChannel() {
 		return herochatChannel;
+	}
+	
+	public boolean getMcMMOFilterPartyChat() {
+		return mcMMOParty;
+	}
+	
+	public boolean getMcMMOFilterAdminChat() {
+		return mcMMOAdmin;
 	}
 }

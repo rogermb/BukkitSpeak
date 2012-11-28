@@ -33,17 +33,23 @@ teamspeak:
   # Use if the plugin doesn't work at all
   # Or for posting error logs in the forum
   Debug: false
-  
+
 plugin-interaction:
   Factions:
-    # If Factions is enabled, only public chat will be sent to TeamSpeak.
+    # If Factions is enabled, should only public chat be sent to TeamSpeak?
     public-only: true
   Herochat:
     # Do we want to enable support for Herochat?
     enabled: false
     # Which channel do we want us to use?
     channel: Global
-  
+  mcMMO:
+    # Only applies if mcMMO is enabled on the server.
+    # Should party chat be filtered out?
+    FilterPartyChat: true
+    # Should admin chat be filtered out?
+    FilterAdminChat: true
+
 messages:
   TeamspeakEvents:
     Join: '&e%client_nickname% &ahas joined TeamSpeak'

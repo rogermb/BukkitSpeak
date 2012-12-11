@@ -82,7 +82,7 @@ messages:
     Broadcast: '&e%player_displayname% &a-> &f[&cTS&f]&f: %msg%'
     Chat: '&e%player_displayname% &a-> &eTS&f: %msg%'
     Pm: '&eMe &a-> &e%target%&f: %msg%'
-    Poke: '&e%player_displayname% &apoked &e%target%&f: %msg%'
+    Poke: '&eYou &apoked &e%target%&f: %msg%'
     Kick: '&e%player_displayname% &akicked &e%target% &afrom the server for &e%msg%&a.'
     ChannelKick: '&e%player_displayname% &akicked &e%target% &afrom the channel for &e%msg%&a.'
     Ban: '&e%player_displayname% &abanned &e%target% &afor &e%msg%&a.'

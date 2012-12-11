@@ -87,7 +87,12 @@ public class CommandPoke extends BukkitSpeakCommand {
 		Integer i = Integer.valueOf(client.get("clid"));
 		QueryPoke qp = new QueryPoke(i, tsMsg);
 		Bukkit.getScheduler().scheduleAsyncDelayedTask(BukkitSpeak.getInstance(), qp);
-		broadcastMessage(mcMsg, sender);
+		if (mcMsg == null || mcMsg.isEmpty()) return;
+		if (sender instanceof Player) {
+			sender.sendMessage(convertToMinecraft(mcMsg, true, BukkitSpeak.getStringManager().getAllowLinks()));
+		} else {
+			BukkitSpeak.log().info(convertToMinecraft(mcMsg, false, BukkitSpeak.getStringManager().getAllowLinks()));
+		}
 	}
 	
 	@Override

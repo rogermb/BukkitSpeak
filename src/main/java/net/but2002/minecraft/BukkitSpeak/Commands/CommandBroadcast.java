@@ -73,7 +73,7 @@ public class CommandBroadcast extends BukkitSpeakCommand {
 		if (tsMsg == null || tsMsg.isEmpty()) return;
 		QuerySender qs = new QuerySender(BukkitSpeak.getQuery().getCurrentQueryClientServerID(),
 				JTS3ServerQuery.TEXTMESSAGE_TARGET_VIRTUALSERVER, tsMsg);
-		Bukkit.getScheduler().scheduleAsyncDelayedTask(BukkitSpeak.getInstance(), qs);
+		Bukkit.getScheduler().runTaskAsynchronously(BukkitSpeak.getInstance(), qs);
 		broadcastMessage(mcMsg, sender);
 	}
 	

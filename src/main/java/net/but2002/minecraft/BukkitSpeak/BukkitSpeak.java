@@ -59,9 +59,9 @@ public class BukkitSpeak extends JavaPlugin {
 		dquery = new DTS3ServerQuery();
 		ts = new TeamspeakListener();
 		qc = new QueryConnector();
-		this.getServer().getScheduler().scheduleAsyncDelayedTask(this, qc);
+		Bukkit.getScheduler().runTaskAsynchronously(this, qc);
 		tsKeepAlive = new TeamspeakKeepAlive(this);
-		this.getServer().getScheduler().scheduleAsyncRepeatingTask(this, tsKeepAlive, KEEP_ALIVE_DELAY / 2, KEEP_ALIVE_DELAY);
+		Bukkit.getScheduler().runTaskTimerAsynchronously(this, tsKeepAlive, KEEP_ALIVE_DELAY / 2, KEEP_ALIVE_DELAY);
 		
 		tsCommand = new BukkitSpeakCommandExecutor();
 		chatListener = new ChatListener();
@@ -258,7 +258,7 @@ public class BukkitSpeak extends JavaPlugin {
 			reloadStringManager();
 			
 			qc = new QueryConnector();
-			this.getServer().getScheduler().scheduleAsyncDelayedTask(this, qc);
+			Bukkit.getScheduler().runTaskAsynchronously(this, qc);
 			
 			muted = new ArrayList<String>();
 			pmRecipients = new HashMap<Integer, String>();

@@ -82,7 +82,7 @@ public class CommandKick extends BukkitSpeakCommand {
 		
 		Integer i = Integer.valueOf(client.get("clid"));
 		QueryKick qk = new QueryKick(i, false, tsMsg);
-		Bukkit.getScheduler().scheduleAsyncDelayedTask(BukkitSpeak.getInstance(), qk);
+		Bukkit.getScheduler().runTaskAsynchronously(BukkitSpeak.getInstance(), qk);
 		broadcastMessage(mcMsg, sender);
 	}
 	

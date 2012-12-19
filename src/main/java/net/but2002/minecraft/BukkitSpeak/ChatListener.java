@@ -65,11 +65,11 @@ public class ChatListener implements Listener {
 		if (BukkitSpeak.getStringManager().getTeamspeakTarget() == TsTargetEnum.CHANNEL) {
 			QuerySender qs = new QuerySender(BukkitSpeak.getQuery().getCurrentQueryClientChannelID(),
 					JTS3ServerQuery.TEXTMESSAGE_TARGET_CHANNEL, tsMsg);
-			Bukkit.getScheduler().scheduleAsyncDelayedTask(BukkitSpeak.getInstance(), qs);
+			Bukkit.getScheduler().runTaskAsynchronously(BukkitSpeak.getInstance(), qs);
 		} else if (BukkitSpeak.getStringManager().getTeamspeakTarget() == TsTargetEnum.SERVER) {
 			QuerySender qs = new QuerySender(BukkitSpeak.getQuery().getCurrentQueryClientServerID(),
 					JTS3ServerQuery.TEXTMESSAGE_TARGET_VIRTUALSERVER, tsMsg);
-			Bukkit.getScheduler().scheduleAsyncDelayedTask(BukkitSpeak.getInstance(), qs);
+			Bukkit.getScheduler().runTaskAsynchronously(BukkitSpeak.getInstance(), qs);
 		}
 	}
 	
@@ -94,11 +94,11 @@ public class ChatListener implements Listener {
 		if (BukkitSpeak.getStringManager().getTeamspeakTarget() == TsTargetEnum.CHANNEL) {
 			QuerySender qs = new QuerySender(BukkitSpeak.getQuery().getCurrentQueryClientChannelID(),
 					JTS3ServerQuery.TEXTMESSAGE_TARGET_CHANNEL, tsMsg);
-			Bukkit.getScheduler().scheduleAsyncDelayedTask(BukkitSpeak.getInstance(), qs);
+			Bukkit.getScheduler().runTaskAsynchronously(BukkitSpeak.getInstance(), qs);
 		} else if (BukkitSpeak.getStringManager().getTeamspeakTarget() == TsTargetEnum.SERVER) {
 			QuerySender qs = new QuerySender(BukkitSpeak.getQuery().getCurrentQueryClientServerID(),
 					JTS3ServerQuery.TEXTMESSAGE_TARGET_VIRTUALSERVER, tsMsg);
-			Bukkit.getScheduler().scheduleAsyncDelayedTask(BukkitSpeak.getInstance(), qs);
+			Bukkit.getScheduler().runTaskAsynchronously(BukkitSpeak.getInstance(), qs);
 		}
 	}
 	
@@ -123,11 +123,11 @@ public class ChatListener implements Listener {
 		if (BukkitSpeak.getStringManager().getTeamspeakTarget() == TsTargetEnum.CHANNEL) {
 			QuerySender qs = new QuerySender(BukkitSpeak.getQuery().getCurrentQueryClientChannelID(),
 					JTS3ServerQuery.TEXTMESSAGE_TARGET_CHANNEL, tsMsg);
-			Bukkit.getScheduler().scheduleAsyncDelayedTask(BukkitSpeak.getInstance(), qs);
+			Bukkit.getScheduler().runTaskAsynchronously(BukkitSpeak.getInstance(), qs);
 		} else if (BukkitSpeak.getStringManager().getTeamspeakTarget() == TsTargetEnum.SERVER) {
 			QuerySender qs = new QuerySender(BukkitSpeak.getQuery().getCurrentQueryClientServerID(),
 					JTS3ServerQuery.TEXTMESSAGE_TARGET_VIRTUALSERVER, tsMsg);
-			Bukkit.getScheduler().scheduleAsyncDelayedTask(BukkitSpeak.getInstance(), qs);
+			Bukkit.getScheduler().runTaskAsynchronously(BukkitSpeak.getInstance(), qs);
 		}
 	}
 	
@@ -160,11 +160,11 @@ public class ChatListener implements Listener {
 		if (BukkitSpeak.getStringManager().getTeamspeakTarget() == TsTargetEnum.CHANNEL) {
 			QuerySender qs = new QuerySender(BukkitSpeak.getQuery().getCurrentQueryClientChannelID(),
 					JTS3ServerQuery.TEXTMESSAGE_TARGET_CHANNEL, tsMsg);
-			Bukkit.getScheduler().scheduleAsyncDelayedTask(BukkitSpeak.getInstance(), qs);
+			Bukkit.getScheduler().runTaskAsynchronously(BukkitSpeak.getInstance(), qs);
 		} else if (BukkitSpeak.getStringManager().getTeamspeakTarget() == TsTargetEnum.SERVER) {
 			QuerySender qs = new QuerySender(BukkitSpeak.getQuery().getCurrentQueryClientServerID(),
 					JTS3ServerQuery.TEXTMESSAGE_TARGET_VIRTUALSERVER, tsMsg);
-			Bukkit.getScheduler().scheduleAsyncDelayedTask(BukkitSpeak.getInstance(), qs);
+			Bukkit.getScheduler().runTaskAsynchronously(BukkitSpeak.getInstance(), qs);
 		}
 	}
 	

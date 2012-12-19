@@ -88,7 +88,7 @@ public class CommandPm extends BukkitSpeakCommand {
 		if (tsMsg == null || tsMsg.isEmpty()) return;
 		Integer i = Integer.valueOf(client.get("clid"));
 		QuerySender qs = new QuerySender(i, JTS3ServerQuery.TEXTMESSAGE_TARGET_CLIENT, tsMsg);
-		Bukkit.getScheduler().scheduleAsyncDelayedTask(BukkitSpeak.getInstance(), qs);
+		Bukkit.getScheduler().runTaskAsynchronously(BukkitSpeak.getInstance(), qs);
 		BukkitSpeak.registerRecipient(name, i);
 		if (mcMsg == null || mcMsg.isEmpty()) return;
 		if (sender instanceof Player) {

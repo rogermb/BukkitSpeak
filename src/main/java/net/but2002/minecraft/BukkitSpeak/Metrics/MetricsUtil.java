@@ -123,6 +123,13 @@ public class MetricsUtil {
 					return BukkitSpeak.useHerochat() ? 1 : 0;
 				}
 			});
+			dependencyGraph.addPlotter(new Plotter("McMMO") {
+				
+				@Override
+				public int getValue() {
+					return BukkitSpeak.hasMcMMO() ? 1 : 0;
+				}
+			});
 			
 			metrics.start();
 			logger.info("Connected to mcstats.org.");

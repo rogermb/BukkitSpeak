@@ -1,8 +1,13 @@
 package net.but2002.minecraft.BukkitSpeak;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.HashMap;
+import java.util.logging.Level;
 
 import org.bukkit.configuration.MemoryConfiguration;
+import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.configuration.file.YamlConfiguration;
 
 import net.but2002.minecraft.BukkitSpeak.util.ConfigReader;
 
@@ -102,62 +107,82 @@ public class StringManager {
 	private boolean factionsPublicOnly, herochatEnabled, mcMMOParty, mcMMOAdmin;
 	private String herochatChannel;
 	
+	private File localeFile;
+	private FileConfiguration localeConfig;
+	
 	public StringManager() {
 		
-		ConfigReader reader = new ConfigReader(BukkitSpeak.getInstance());
+		BukkitSpeak.getInstance().reloadConfig();
+		reloadLocale();
 		
-		if (BukkitSpeak.getInstance().getConfig().getKeys(true).size() == 0) {
+		ConfigReader configReader = new ConfigReader(BukkitSpeak.getInstance());
+		ConfigReader localeReader = new ConfigReader(BukkitSpeak.getInstance(), localeConfig);
+		
+		if (configReader.isEmpty()) {
 			BukkitSpeak.getInstance().saveResource("config.yml", false);
-			BukkitSpeak.log().info("Default config created!");
+			BukkitSpeak.log().info("Default config file created!");
 			BukkitSpeak.getInstance().reloadConfig();
+		}
+		if (localeReader.isEmpty()) {
+			if (configReader.contains("messages")) {
+				localeConfig.set("messages", configReader.getConfigSection("messages", null));
+				configReader.getConfig().set("messages", null);
+				BukkitSpeak.log().info("Moved the messages section from the config into the locale file!");
+				saveLocale();
+			} else {
+				BukkitSpeak.getInstance().saveResource("locale.yml", false);
+				BukkitSpeak.log().info("Default locale file created!");
+			}
+			reloadLocale();
 		}
 		BukkitSpeak.getInstance().getConfig().setDefaults(new MemoryConfiguration());
 		
-		ip = reader.getString(CONFIG_SECTION, CONFIG_IP, "1.2.3.4");
-		serverPort = reader.getInteger(CONFIG_SECTION, CONFIG_SERVERPORT, 9987);
-		queryPort = reader.getInteger(CONFIG_SECTION, CONFIG_QUERYPORT, 10011);
-		serverAdmin = reader.getString(CONFIG_SECTION, CONFIG_SERVERADMIN, "admin");
-		serverPass = reader.getString(CONFIG_SECTION, CONFIG_SERVERPASS, "123456");
+		ip = configReader.getString(CONFIG_SECTION, CONFIG_IP, "1.2.3.4");
+		serverPort = configReader.getInteger(CONFIG_SECTION, CONFIG_SERVERPORT, 9987);
+		queryPort = configReader.getInteger(CONFIG_SECTION, CONFIG_QUERYPORT, 10011);
+		serverAdmin = configReader.getString(CONFIG_SECTION, CONFIG_SERVERADMIN, "admin");
+		serverPass = configReader.getString(CONFIG_SECTION, CONFIG_SERVERPASS, "123456");
 		
-		tsName = reader.getString(TEAMSPEAK_SECTION, TEAMSPEAK_NAME, "Minecraft");
-		tsConsoleName = reader.getString(TEAMSPEAK_SECTION, TEAMSPEAK_CONSOLENAME, "&eServer");
-		tsChannelID = reader.getInteger(TEAMSPEAK_SECTION, TEAMSPEAK_CHANNELID, 0);
-		tsChannelPass = reader.getString(TEAMSPEAK_SECTION, TEAMSPEAK_CHANNELPW, "");
-		tsServer = reader.getBoolean(TEAMSPEAK_SECTION, TEAMSPEAK_SERVER, true);
-		tsTextServer = reader.getBoolean(TEAMSPEAK_SECTION, TEAMSPEAK_TEXTSERVER, true);
-		tsChannel = reader.getBoolean(TEAMSPEAK_SECTION, TEAMSPEAK_CHANNEL, true);
-		tsTextChannel = reader.getBoolean(TEAMSPEAK_SECTION, TEAMSPEAK_TEXTCHANNEL, true);
-		tsPrivateMessages = reader.getBoolean(TEAMSPEAK_SECTION, TEAMSPEAK_PRIVATEMESSAGES, true);
-		tsAllowLinks = reader.getBoolean(TEAMSPEAK_SECTION, TEAMSPEAK_ALLOWLINKS, true);
-		tsTarget = reader.getChoice(TEAMSPEAK_SECTION, TEAMSPEAK_TARGET, 0, TEAMSPEAK_TARGETS);
-		tsConsole = reader.getBoolean(TEAMSPEAK_SECTION, TEAMSPEAK_CONSOLE, true);
-		tsDefaultReason = reader.getString(TEAMSPEAK_SECTION, TEAMSPEAK_DEFAULTREASON, "-");
-		tsDebug = reader.getBoolean(TEAMSPEAK_SECTION, TEAMSPEAK_DEBUG, false);
+		tsName = configReader.getString(TEAMSPEAK_SECTION, TEAMSPEAK_NAME, "Minecraft");
+		tsConsoleName = configReader.getString(TEAMSPEAK_SECTION, TEAMSPEAK_CONSOLENAME, "&eServer");
+		tsChannelID = configReader.getInteger(TEAMSPEAK_SECTION, TEAMSPEAK_CHANNELID, 0);
+		tsChannelPass = configReader.getString(TEAMSPEAK_SECTION, TEAMSPEAK_CHANNELPW, "");
+		tsServer = configReader.getBoolean(TEAMSPEAK_SECTION, TEAMSPEAK_SERVER, true);
+		tsTextServer = configReader.getBoolean(TEAMSPEAK_SECTION, TEAMSPEAK_TEXTSERVER, true);
+		tsChannel = configReader.getBoolean(TEAMSPEAK_SECTION, TEAMSPEAK_CHANNEL, true);
+		tsTextChannel = configReader.getBoolean(TEAMSPEAK_SECTION, TEAMSPEAK_TEXTCHANNEL, true);
+		tsPrivateMessages = configReader.getBoolean(TEAMSPEAK_SECTION, TEAMSPEAK_PRIVATEMESSAGES, true);
+		tsAllowLinks = configReader.getBoolean(TEAMSPEAK_SECTION, TEAMSPEAK_ALLOWLINKS, true);
+		tsTarget = configReader.getChoice(TEAMSPEAK_SECTION, TEAMSPEAK_TARGET, 0, TEAMSPEAK_TARGETS);
+		tsConsole = configReader.getBoolean(TEAMSPEAK_SECTION, TEAMSPEAK_CONSOLE, true);
+		tsDefaultReason = configReader.getString(TEAMSPEAK_SECTION, TEAMSPEAK_DEFAULTREASON, "-");
+		tsDebug = configReader.getBoolean(TEAMSPEAK_SECTION, TEAMSPEAK_DEBUG, false);
 		
-		factionsPublicOnly = reader.getBoolean(FACTIONS_SECTION, FACTIONS_PUBLIC_ONLY, true);
-		herochatEnabled = reader.getBoolean(HEROCHAT_SECTION, HEROCHAT_ENABLED, false);
-		herochatChannel = reader.getString(HEROCHAT_SECTION, HEROCHAT_CHANNEL, "Global");
-		mcMMOParty = reader.getBoolean(MCMMO_SECTION, MCMMO_PARTY_CHAT, true);
-		mcMMOAdmin = reader.getBoolean(MCMMO_SECTION, MCMMO_ADMIN_CHAT, true);
+		factionsPublicOnly = configReader.getBoolean(FACTIONS_SECTION, FACTIONS_PUBLIC_ONLY, true);
+		herochatEnabled = configReader.getBoolean(HEROCHAT_SECTION, HEROCHAT_ENABLED, false);
+		herochatChannel = configReader.getString(HEROCHAT_SECTION, HEROCHAT_CHANNEL, "Global");
+		mcMMOParty = configReader.getBoolean(MCMMO_SECTION, MCMMO_PARTY_CHAT, true);
+		mcMMOAdmin = configReader.getBoolean(MCMMO_SECTION, MCMMO_ADMIN_CHAT, true);
 		
 		for (String[] keyPair : TEAMSPEAKEVENTMESSAGES) {
-			String currentValue = reader.getString(TEAMSPEAKEVENTMESSAGES_SECTION, keyPair[0], keyPair[1]);
+			String currentValue = localeReader.getString(TEAMSPEAKEVENTMESSAGES_SECTION, keyPair[0], keyPair[1]);
 			strings.put(keyPair[0], currentValue);
 		}
 		for (String[] keyPair : TEAMSPEAKMESSAGES) {
-			String currentValue = reader.getString(TEAMSPEAKMESSAGES_SECTION, keyPair[0], keyPair[1]);
+			String currentValue = localeReader.getString(TEAMSPEAKMESSAGES_SECTION, keyPair[0], keyPair[1]);
 			strings.put(keyPair[0], currentValue);
 		}
 		for (String[] keyPair : MINECRAFTEVENTMESSAGES) {
-			String currentValue = reader.getString(MINECRAFTEVENTMESSAGES_SECTION, keyPair[0], keyPair[1]);
+			String currentValue = localeReader.getString(MINECRAFTEVENTMESSAGES_SECTION, keyPair[0], keyPair[1]);
 			strings.put(keyPair[0], currentValue);
 		}
 		for (String[] keyPair : COMMANDMESSAGES) {
-			String currentValue = reader.getString(COMMANDMESSAGES_SECTION, keyPair[0], keyPair[1]);
+			String currentValue = localeReader.getString(COMMANDMESSAGES_SECTION, keyPair[0], keyPair[1]);
 			strings.put(keyPair[0], currentValue);
 		}
 		
-		if (reader.gotErrors()) BukkitSpeak.getInstance().saveConfig();
+		if (configReader.gotErrors()) BukkitSpeak.getInstance().saveConfig();
+		if (localeReader.gotErrors()) saveLocale();
 	}
 	
 	public String getMessage(String key) {
@@ -258,5 +283,21 @@ public class StringManager {
 	
 	public boolean getMcMMOFilterAdminChat() {
 		return mcMMOAdmin;
+	}
+	
+	public void reloadLocale() {
+		if (localeFile == null) {
+			localeFile = new File(BukkitSpeak.getInstance().getDataFolder(), "locale.yml");
+		}
+		localeConfig = YamlConfiguration.loadConfiguration(localeFile);
+	}
+	
+	public void saveLocale() {
+		if ((localeFile == null) || (localeConfig == null)) return;
+		try {
+			localeConfig.save(localeFile);
+		} catch (IOException e) {
+			BukkitSpeak.log().log(Level.SEVERE, "Could not save the locale file to " + localeFile, e);
+		}
 	}
 }

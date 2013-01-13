@@ -255,8 +255,6 @@ public class BukkitSpeak extends JavaPlugin {
 			setStoppedTime(null);
 			setStartedTime(null);
 			
-			reloadStringManager();
-			
 			qc = new QueryConnector();
 			Bukkit.getScheduler().runTaskAsynchronously(this, qc);
 			
@@ -274,7 +272,6 @@ public class BukkitSpeak extends JavaPlugin {
 	}
 	
 	public void reloadStringManager() {
-		this.reloadConfig();
 		stringManager = new StringManager();
 		query.DEBUG = stringManager.getDebugMode();
 	}

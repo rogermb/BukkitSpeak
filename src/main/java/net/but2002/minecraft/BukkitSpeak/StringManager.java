@@ -127,13 +127,15 @@ public class StringManager {
 			if (configReader.contains("messages")) {
 				localeConfig.set("messages", configReader.getConfigSection("messages", null));
 				configReader.getConfig().set("messages", null);
-				BukkitSpeak.log().info("Moved the messages section from the config into the locale file!");
+				BukkitSpeak.log().info("Moved the messages section from the config into the locale file.");
 				saveLocale();
+				BukkitSpeak.getInstance().saveConfig();
 			} else {
 				BukkitSpeak.getInstance().saveResource("locale.yml", false);
 				BukkitSpeak.log().info("Default locale file created!");
 			}
 			reloadLocale();
+			localeReader = new ConfigReader(BukkitSpeak.getInstance(), localeConfig);
 		}
 		BukkitSpeak.getInstance().getConfig().setDefaults(new MemoryConfiguration());
 		

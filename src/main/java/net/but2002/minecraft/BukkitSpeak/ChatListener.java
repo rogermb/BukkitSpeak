@@ -24,8 +24,10 @@ import de.stefan1200.jts3serverquery.JTS3ServerQuery;
 
 public class ChatListener implements Listener {
 	
-	@EventHandler(priority = EventPriority.LOWEST)
+	@EventHandler(priority = EventPriority.MONITOR)
 	public void onPlayerChat(AsyncPlayerChatEvent e) {
+		if (e.isCancelled()) return;
+		
 		if (BukkitSpeak.useHerochat()) return; //Use Herochat's ChannelChatEvent instead, if using herochat.
 		if (BukkitSpeak.getStringManager().getTeamspeakTarget() == TsTargetEnum.NONE) return;
 		if (e.getPlayer() == null || e.getMessage().isEmpty()) return;
@@ -48,7 +50,7 @@ public class ChatListener implements Listener {
 				return;
 			}
 		}
-			
+		
 		if (!hasPermission(e.getPlayer(), "chat")) return;
 		
 		String tsMsg = BukkitSpeak.getStringManager().getMessage("ChatMessage");
@@ -133,6 +135,8 @@ public class ChatListener implements Listener {
 	
 	@EventHandler(priority = EventPriority.MONITOR)
 	public void onPlayerKick(PlayerKickEvent e) {
+		if (e.isCancelled()) return;
+		
 		if (BukkitSpeak.getStringManager().getTeamspeakTarget() == TsTargetEnum.NONE) return;
 		if (e.getPlayer() == null || e.getLeaveMessage() == null) return;
 		

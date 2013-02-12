@@ -23,6 +23,7 @@ public class TeamspeakKeepAlive extends Thread {
 			try {
 				BukkitSpeak.getQuery().doCommand("clientupdate");
 				BukkitSpeak.getClientList().asyncUpdateAll();
+				BukkitSpeak.getChannelList().asyncUpdateAll();
 			} catch (NullPointerException e) {
 				plugin.setStoppedTime(new Date());
 				wait = 0;

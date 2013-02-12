@@ -28,6 +28,7 @@ public class BukkitSpeak extends JavaPlugin {
 	private static BukkitSpeak instance;
 	private static StringManager stringManager;
 	private static ClientList clients;
+	private static ChannelList channels;
 	private static JTS3ServerQuery query;
 	private static DTS3ServerQuery dquery;
 	
@@ -158,8 +159,13 @@ public class BukkitSpeak extends JavaPlugin {
 		return clients;
 	}
 	
-	public void resetClientList() {
+	public static ChannelList getChannelList() {
+		return channels;
+	}
+	
+	public void resetLists() {
 		clients = new ClientList();
+		channels = new ChannelList();
 	}
 	
 	public static void registerRecipient(String player, Integer clid) {

@@ -90,7 +90,7 @@ public class QueryConnector implements Runnable {
 			query.addEventNotify(JTS3ServerQuery.EVENT_MODE_TEXTPRIVATE, 0);
 		}
 		
-		BukkitSpeak.getInstance().resetClientList();
+		BukkitSpeak.getInstance().resetLists();
 		plugin.setStoppedTime(null);
 		plugin.setStartedTime(null);
 		plugin.setStartedTime(new Date());

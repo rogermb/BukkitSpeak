@@ -29,16 +29,16 @@ public class CommandList extends BukkitSpeakCommand {
 	@Override
 	public void execute(CommandSender sender, String[] args) {
 		
-		if (!BukkitSpeak.getQuery().isConnected() || BukkitSpeak.getClients() == null) {
+		if (!BukkitSpeak.getQuery().isConnected() || BukkitSpeak.getClientList() == null) {
 			send(sender, Level.WARNING, "&4Can't communicate with the TeamSpeak server.");
 			return;
 		}
 		
 		if (args.length < 2 || args[1].equalsIgnoreCase("server")) {
-			ClientList clients = BukkitSpeak.getClients();
+			ClientList clientList = BukkitSpeak.getClientList();
 			StringBuilder online = new StringBuilder();
 			
-			for (HashMap<String, String> user : clients.values()) {
+			for (HashMap<String, String> user : clientList.getClients().values()) {
 				if (user.get("client_type").equals("0")) {
 					if (online.length() != 0) online.append(", ");
 					online.append(user.get("client_nickname"));
@@ -70,11 +70,11 @@ public class CommandList extends BukkitSpeakCommand {
 			send(sender, Level.INFO, message);
 			
 		} else if (args.length == 2 && BukkitSpeak.getStringManager().getUseChannel() && args[1].equalsIgnoreCase("channel")) {
-			ClientList clients = BukkitSpeak.getClients();
+			ClientList clientList = BukkitSpeak.getClientList();
 			StringBuilder online = new StringBuilder();
 			String id = String.valueOf(BukkitSpeak.getStringManager().getChannelID());
 			
-			for (HashMap<String, String> user : clients.values()) {
+			for (HashMap<String, String> user : clientList.getClients().values()) {
 				if (user.get("client_type").equals("0") && user.get("cid").equals(id)) {
 					if (online.length() != 0) online.append(", ");
 					online.append(user.get("client_nickname"));

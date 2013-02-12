@@ -17,7 +17,7 @@ public abstract class TeamspeakEvent {
 	}
 	
 	protected void setUser(Integer clid) {
-		user = BukkitSpeak.getClients().get(clid);
+		user = BukkitSpeak.getClientList().get(clid);
 	}
 	
 	protected Player[] getOnlinePlayers() {

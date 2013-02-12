@@ -154,12 +154,12 @@ public class BukkitSpeak extends JavaPlugin {
 		}
 	}
 	
-	public static ClientList getClients() {
+	public static ClientList getClientList() {
 		return clients;
 	}
 	
 	public void resetClientList() {
-		clients = new ClientList(this);
+		clients = new ClientList();
 	}
 	
 	public static void registerRecipient(String player, Integer clid) {

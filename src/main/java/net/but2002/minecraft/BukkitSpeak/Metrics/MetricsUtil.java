@@ -99,8 +99,8 @@ public class MetricsUtil {
 				
 				@Override
 				public int getValue() {
-					if (BukkitSpeak.getClients() != null) {
-						return BukkitSpeak.getClients().size();
+					if (BukkitSpeak.getClientList() != null) {
+						return BukkitSpeak.getClientList().size();
 					} else {
 						return 0;
 					}

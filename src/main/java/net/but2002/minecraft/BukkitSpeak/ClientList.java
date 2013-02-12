@@ -1,11 +1,8 @@
 package net.but2002.minecraft.BukkitSpeak;
 
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Enumeration;
 import java.util.HashMap;
-import java.util.Map.Entry;
-import java.util.Set;
+import java.util.Vector;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Logger;
 
@@ -17,15 +14,15 @@ public class ClientList {
 	private JTS3ServerQuery query;
 	private Logger logger;
 	
-	public ClientList(BukkitSpeak plugin) {
+	public ClientList() {
 		query = BukkitSpeak.getQuery();
-		logger = plugin.getLogger();
+		logger = BukkitSpeak.getInstance().getLogger();
 		clients = new ConcurrentHashMap<Integer, HashMap<String, String>>();
 		
 		asyncUpdateAll();
 	}
 	
-	public boolean addClient(Integer clid) {
+	public boolean addClient(int clid) {
 		if (clid <= 0) return false;
 		if (!query.isConnected()) return false;
 		
@@ -34,7 +31,7 @@ public class ClientList {
 			user = query.getInfo(JTS3ServerQuery.INFOMODE_CLIENTINFO, clid);
 			if (user != null && user.size() != 0) {
 				if (user.get("client_type").equals("0") && !clients.containsKey(clid)) {
-					user.put("clid", clid.toString());
+					user.put("clid", String.valueOf(clid));
 					clients.put(clid, user);
 					return true;
 				}
@@ -51,56 +48,27 @@ public class ClientList {
 	}
 	
 	public void asyncUpdateAll() {
-		
-		ArrayList<Integer> clids = new ArrayList<Integer>();
-		for (HashMap<String, String> c : query.getList(JTS3ServerQuery.LISTMODE_CLIENTLIST)) {
-			clids.add(Integer.valueOf(c.get("clid")));
-		}
-		
-		for (Integer clid : clids) {
-			(new Thread(new ClientUpdater(clients, query, logger, clid))).start();
-		}
+		(new Thread(new ClientUpdater(this))).start();
 	}
 	
-	public void asyncUpdateClient(Integer clid) {
+	public void asyncUpdateClient(int clid) {
 		if (!clients.containsKey(clid)) return;
-		(new Thread(new ClientUpdater(clients, query, logger, clid))).start();
+		(new Thread(new ClientUpdater(this, clid))).start();
 	}
 	
 	public void clear() {
 		clients.clear();
 	}
 	
-	public boolean contains(HashMap<String, String> client) {
-		return clients.contains(client);
-	}
-	
-	public boolean containsKey(Integer clid) {
+	public boolean containsID(int clid) {
 		return clients.containsKey(clid);
 	}
 	
-	public boolean containsValue(HashMap<String, String> client) {
-		return clients.containsValue(client);
-	}
-	
-	public Enumeration<HashMap<String, String>> elements() {
-		return clients.elements();
-	}
-	
-	public Set<Entry<Integer, HashMap<String, String>>> entrySet() {
-		return clients.entrySet();
-	}
-	
-	public HashMap<String, String> get(Integer clid) {
-		if (clients.containsKey(clid)) {
-			return clients.get(clid);
-		} else {
-			return null;
-		}
+	public HashMap<String, String> get(int clid) {
+		return clients.get(clid);
 	}
 	
 	public HashMap<String, String> getByName(String name) {
-		
 		for (Integer key : clients.keySet()) {
 			if (clients.get(key).get("client_nickname").equals(name)) return clients.get(key);
 		}
@@ -112,7 +80,7 @@ public class ClientList {
 		ArrayList<HashMap<String, String>> results = new ArrayList<HashMap<String, String>>();
 		
 		for (Integer key : clients.keySet()) {
-			String n = clients.get(key).get("client_nickname").toLowerCase().replaceAll("\\s", "");
+			String n = clients.get(key).get("client_nickname").toLowerCase();
 			if (n.startsWith(name.toLowerCase())) {
 				results.add(clients.get(key));
 			}
@@ -127,19 +95,15 @@ public class ClientList {
 		}
 	}
 	
+	public ConcurrentHashMap<Integer, HashMap<String, String>> getClients() {
+		return clients;
+	}
+	
 	public boolean isEmpty() {
 		return clients.isEmpty();
 	}
 	
-	public Enumeration<Integer> keys() {
-		return clients.keys();
-	}
-	
-	public Set<Integer> keySet() {
-		return clients.keySet();
-	}
-	
-	public void removeClient(Integer clid) {
+	public void removeClient(int clid) {
 		if (clients.containsKey(clid)) clients.remove(clid);
 	}
 	
@@ -147,7 +111,7 @@ public class ClientList {
 		return clients.size();
 	}
 	
-	public HashMap<String, String> updateClient(Integer clid) {
+	public HashMap<String, String> updateClient(int clid) {
 		
 		if (!clients.containsKey(clid) || !query.isConnected()) return null;
 		
@@ -156,7 +120,7 @@ public class ClientList {
 			user = query.getInfo(JTS3ServerQuery.INFOMODE_CLIENTINFO, clid);
 			if (user != null && user.size() != 0) {
 				if (user.get("client_type").equals("0")) {
-					user.put("clid", clid.toString());
+					user.put("clid", String.valueOf(clid));
 					clients.put(clid, user);
 					return user;
 				}
@@ -172,44 +136,60 @@ public class ClientList {
 		}
 	}
 	
-	public Collection<HashMap<String, String>> values() {
-		return clients.values();
+	void setClientData(HashMap<String, String> user, int clid) {
+		
+		if (user != null && user.size() != 0) {
+			if (user.get("client_type").equals("0")) {
+				user.put("clid", String.valueOf(clid));
+				clients.put(clid, user);
+			}
+		} else {
+			logger.warning("Received no information for user id " + clid + ". (AsyncClientUpdate)");
+		}
 	}
 }
 
 class ClientUpdater implements Runnable {
 	
-	private ConcurrentHashMap<Integer, HashMap<String, String>> clients;
-	private JTS3ServerQuery query;
-	private Logger log;
-	private Integer clid;
+	private ClientList cl;
+	private int clid;
+	private boolean updateAll;
 	
-	public ClientUpdater(ConcurrentHashMap<Integer, HashMap<String, String>> clientsMap,
-			JTS3ServerQuery teamspeakQuery, Logger logger, Integer clientID) {
-		clients = clientsMap;
-		query = teamspeakQuery;
-		log = logger;
+	public ClientUpdater(ClientList clientList, int clientID) {
+		cl = clientList;
 		clid = clientID;
+		updateAll = false;
+	}
+	
+	public ClientUpdater(ClientList clientList) {
+		cl = clientList;
+		updateAll = true;
 	}
 	
 	@Override
 	public void run() {
-		if (!query.isConnected()) return;
+		if (!BukkitSpeak.getQuery().isConnected()) return;
 		
-		HashMap<String, String> user;
-		try {
-			user = query.getInfo(JTS3ServerQuery.INFOMODE_CLIENTINFO, clid);
-			if (user != null && user.size() != 0) {
-				if (user.get("client_type").equals("0")) {
-					user.put("clid", clid.toString());
-					clients.put(clid, user);
+		if (updateAll) {
+			Vector<HashMap<String, String>> users;
+			try {
+				users = BukkitSpeak.getQuery().getList(JTS3ServerQuery.LISTMODE_CLIENTLIST, "-info -country");
+				for (HashMap<String, String> user : users) {
+					cl.setClientData(user, Integer.valueOf(user.get("clid")));
 				}
-			} else {
-				log.warning("Received no information for user id " + clid + ". (AsyncClientUpdate)");
+			} catch (Exception e) {
+				BukkitSpeak.log().severe("Error while receiving client information.");
+				e.printStackTrace();
 			}
-		} catch (Exception e) {
-			log.severe("Error while receiving client information.");
-			e.printStackTrace();
+		} else {
+			HashMap<String, String> user;
+			try {
+				user = BukkitSpeak.getQuery().getInfo(JTS3ServerQuery.INFOMODE_CLIENTINFO, clid);
+				cl.setClientData(user, clid);
+			} catch (Exception e) {
+				BukkitSpeak.log().severe("Error while receiving client information.");
+				e.printStackTrace();
+			}
 		}
 	}
 }

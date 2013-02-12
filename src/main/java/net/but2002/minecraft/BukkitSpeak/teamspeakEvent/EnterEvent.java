@@ -11,8 +11,8 @@ public class EnterEvent extends TeamspeakEvent {
 	public EnterEvent(HashMap<String, String> infoMap) {
 		int clid = Integer.valueOf(infoMap.get("clid"));
 		
-		if (!BukkitSpeak.getClients().containsKey(clid)) {
-			if (!BukkitSpeak.getClients().addClient(clid)) return;
+		if (!BukkitSpeak.getClientList().containsID(clid)) {
+			if (!BukkitSpeak.getClientList().addClient(clid)) return;
 		} else {
 			return;
 		}

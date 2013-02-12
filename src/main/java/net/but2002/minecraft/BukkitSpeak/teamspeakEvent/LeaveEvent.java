@@ -14,7 +14,7 @@ public class LeaveEvent extends TeamspeakEvent {
 		int clid = Integer.parseInt(infoMap.get("clid"));
 		
 		setUser(clid);
-		BukkitSpeak.getClients().removeClient(Integer.parseInt(infoMap.get("clid")));
+		BukkitSpeak.getClientList().removeClient(Integer.parseInt(infoMap.get("clid")));
 		info = infoMap;
 		sendMessage();
 	}

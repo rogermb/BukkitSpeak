@@ -40,7 +40,7 @@ public class CommandPoke extends BukkitSpeakCommand {
 		
 		HashMap<String, String> client;
 		try {
-			client = BukkitSpeak.getClients().getByPartialName(args[1]);
+			client = BukkitSpeak.getClientList().getByPartialName(args[1]);
 		} catch (IllegalArgumentException e) {
 			send(sender, Level.WARNING, "&4There are more than one clients matching &e" + args[1] + "&4.");
 			return;
@@ -99,7 +99,7 @@ public class CommandPoke extends BukkitSpeakCommand {
 	public List<String> onTabComplete(CommandSender sender, String[] args) {
 		if (args.length != 2) return null;
 		List<String> al = new ArrayList<String>();
-		for (HashMap<String, String> client : BukkitSpeak.getClients().values()) {
+		for (HashMap<String, String> client : BukkitSpeak.getClientList().getClients().values()) {
 			String n = client.get("client_nickname").replaceAll("\\s", "");
 			if (n.startsWith(args[1])) {
 				al.add(n);

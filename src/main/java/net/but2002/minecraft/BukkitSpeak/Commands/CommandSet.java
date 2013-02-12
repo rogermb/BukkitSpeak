@@ -90,7 +90,7 @@ public class CommandSet extends BukkitSpeakCommand {
 		
 		tsSection = BukkitSpeak.getInstance().getConfig().getConfigurationSection(StringManager.TEAMSPEAK_SECTION);
 		
-		if (!BukkitSpeak.getQuery().isConnected() || BukkitSpeak.getClients() == null) {
+		if (!BukkitSpeak.getQuery().isConnected() || BukkitSpeak.getClientList() == null) {
 			send(sender, Level.WARNING, "&4Can't communicate with the TeamSpeak server.");
 			return;
 		}

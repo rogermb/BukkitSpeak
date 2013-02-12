@@ -13,7 +13,7 @@ public class ClientMovedEvent extends TeamspeakEvent {
 	public ClientMovedEvent(HashMap<String, String> infoMap) {
 		setUser(Integer.parseInt(infoMap.get("clid")));
 		info = infoMap;
-		BukkitSpeak.getClients().asyncUpdateClient(Integer.parseInt(infoMap.get("clid")));
+		BukkitSpeak.getClientList().asyncUpdateClient(Integer.parseInt(infoMap.get("clid")));
 		
 		if (getUser() == null) return;
 		getUser().put("cid", infoMap.get("ctid"));

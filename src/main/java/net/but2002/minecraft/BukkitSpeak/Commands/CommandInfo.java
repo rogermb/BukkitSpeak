@@ -24,7 +24,7 @@ public class CommandInfo extends BukkitSpeakCommand {
 	@Override
 	public void execute(CommandSender sender, String[] args) {
 		
-		if (!BukkitSpeak.getQuery().isConnected() || BukkitSpeak.getClients() == null) {
+		if (!BukkitSpeak.getQuery().isConnected() || BukkitSpeak.getClientList() == null) {
 			send(sender, Level.WARNING, "&4Can't communicate with the TeamSpeak server.");
 			return;
 		}
@@ -45,7 +45,7 @@ public class CommandInfo extends BukkitSpeakCommand {
 			
 			send(sender, Level.INFO, sb.toString());
 		}
-		send(sender, Level.INFO, "&aClients online: &e" + BukkitSpeak.getClients().size());
+		send(sender, Level.INFO, "&aClients online: &e" + BukkitSpeak.getClientList().size());
 	}
 	
 	@Override

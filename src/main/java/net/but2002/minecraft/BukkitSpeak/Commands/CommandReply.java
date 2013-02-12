@@ -47,7 +47,7 @@ public class CommandReply extends BukkitSpeakCommand {
 			clid = BukkitSpeak.getInstance().getSender(n); 
 		}
 		
-		if (clid == null || !BukkitSpeak.getClients().containsKey(clid)) {
+		if (clid == null || !BukkitSpeak.getClientList().containsID(clid)) {
 			send(sender, Level.WARNING, "&4Nobody has sent you a PM yet.");
 			return;
 		}
@@ -73,7 +73,7 @@ public class CommandReply extends BukkitSpeakCommand {
 		HashMap<String, String> repl = new HashMap<String, String>();
 		repl.put("%player_name%", name);
 		repl.put("%player_displayname%", displayName);
-		repl.put("%target%", BukkitSpeak.getClients().get(clid).get("client_nickname"));
+		repl.put("%target%", BukkitSpeak.getClientList().get(clid).get("client_nickname"));
 		repl.put("%msg%", sb.toString());
 		
 		tsMsg = convertToTeamspeak(replaceKeys(tsMsg, repl), true, BukkitSpeak.getStringManager().getAllowLinks());

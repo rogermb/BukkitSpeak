@@ -1,7 +1,9 @@
-package net.but2002.minecraft.BukkitSpeak;
+package net.but2002.minecraft.BukkitSpeak.Listeners;
 
 import java.util.HashMap;
 
+import net.but2002.minecraft.BukkitSpeak.BukkitSpeak;
+import net.but2002.minecraft.BukkitSpeak.TsTargetEnum;
 import net.but2002.minecraft.BukkitSpeak.AsyncQueryUtils.QuerySender;
 import net.but2002.minecraft.BukkitSpeak.Commands.BukkitSpeakCommand;
 

@@ -6,6 +6,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.logging.Logger;
 
+import net.but2002.minecraft.BukkitSpeak.Listeners.ChatListener;
+import net.but2002.minecraft.BukkitSpeak.Listeners.HerochatListener;
 import net.but2002.minecraft.BukkitSpeak.Metrics.MetricsUtil;
 import net.but2002.minecraft.BukkitSpeak.teamspeakEvent.TeamspeakListener;
 

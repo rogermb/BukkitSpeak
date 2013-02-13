@@ -6,7 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.logging.Logger;
 
-import net.but2002.minecraft.BukkitSpeak.Listeners.ChatListener;
+import net.but2002.minecraft.BukkitSpeak.Listeners.PlayerListener;
 import net.but2002.minecraft.BukkitSpeak.Listeners.HerochatListener;
 import net.but2002.minecraft.BukkitSpeak.Metrics.MetricsUtil;
 import net.but2002.minecraft.BukkitSpeak.teamspeakEvent.TeamspeakListener;
@@ -42,7 +42,7 @@ public class BukkitSpeak extends JavaPlugin {
 	private TeamspeakActionListener ts;
 	private TeamspeakKeepAlive tsKeepAlive;
 	private BukkitSpeakCommandExecutor tsCommand;
-	private ChatListener chatListener;
+	private PlayerListener chatListener;
 	private Logger logger;
 	
 	private Date started, stopped, laststarted, laststopped;
@@ -67,7 +67,7 @@ public class BukkitSpeak extends JavaPlugin {
 		Bukkit.getScheduler().runTaskTimerAsynchronously(this, tsKeepAlive, KEEP_ALIVE_DELAY / 2, KEEP_ALIVE_DELAY);
 		
 		tsCommand = new BukkitSpeakCommandExecutor();
-		chatListener = new ChatListener();
+		chatListener = new PlayerListener();
 		muted = new ArrayList<String>();
 		pmRecipients = new HashMap<Integer, String>();
 		pmSenders = new HashMap<String, Integer>();
@@ -198,7 +198,7 @@ public class BukkitSpeak extends JavaPlugin {
 		return ts;
 	}
 	
-	public ChatListener getChatListener() {
+	public PlayerListener getChatListener() {
 		return chatListener;
 	}
 	

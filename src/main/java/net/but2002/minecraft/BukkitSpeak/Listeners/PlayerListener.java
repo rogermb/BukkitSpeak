@@ -24,7 +24,7 @@ import com.massivecraft.factions.struct.ChatMode;
 
 import de.stefan1200.jts3serverquery.JTS3ServerQuery;
 
-public class ChatListener implements Listener {
+public class PlayerListener implements Listener {
 	
 	@EventHandler(priority = EventPriority.MONITOR)
 	public void onPlayerChat(AsyncPlayerChatEvent e) {

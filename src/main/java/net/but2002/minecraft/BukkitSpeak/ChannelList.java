@@ -2,6 +2,7 @@ package net.but2002.minecraft.BukkitSpeak;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Vector;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Logger;
@@ -44,30 +45,36 @@ public class ChannelList {
 	}
 	
 	public HashMap<String, String> getByName(String name) {
-		for (Integer key : channels.keySet()) {
-			if (channels.get(key).get("channel_name").equals(name)) return channels.get(key);
+		for (HashMap<String, String> channel : channels.values()) {
+			if (channel.get("channel_name").equals(name)) return channel;
 		}
 		return null;
 	}
 	
-	public HashMap<String, String> getByPartialName(String name) {
+	public HashMap<String, String> getByPartialName(String name) throws IllegalArgumentException {
 		
-		ArrayList<HashMap<String, String>> results = new ArrayList<HashMap<String, String>>();
+		HashMap<String, String> ret = null;
 		
-		for (Integer key : channels.keySet()) {
-			String n = channels.get(key).get("channel_name").toLowerCase();
+		for (HashMap<String, String> channel : channels.values()) {
+			String n = channel.get("channel_name").toLowerCase();
 			if (n.startsWith(name.toLowerCase())) {
-				results.add(channels.get(key));
+				if (ret == null) {
+					ret = channel;
+				} else {
+					throw new IllegalArgumentException("There is more than one client matching " + name);
+				}
 			}
 		}
 		
-		if (results.size() == 0) {
-			return null;
-		} else if (results.size() == 1) {
-			return results.get(0);
-		} else {
-			throw new IllegalArgumentException("There is more than one channel matching " + name);
+		return ret;
+	}
+	
+	public List<String> getChannelNames() {
+		List<String> ret = new ArrayList<String>();
+		for (HashMap<String, String> channel : channels.values()) {
+			ret.add(channel.get("channel_name"));
 		}
+		return ret;
 	}
 	
 	public ConcurrentHashMap<Integer, HashMap<String, String>> getChannels() {

@@ -2,6 +2,7 @@ package net.but2002.minecraft.BukkitSpeak;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Vector;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Logger;
@@ -69,30 +70,36 @@ public class ClientList {
 	}
 	
 	public HashMap<String, String> getByName(String name) {
-		for (Integer key : clients.keySet()) {
-			if (clients.get(key).get("client_nickname").equals(name)) return clients.get(key);
+		for (HashMap<String, String> client : clients.values()) {
+			if (client.get("client_nickname").equals(name)) return client;
 		}
 		return null;
 	}
 	
-	public HashMap<String, String> getByPartialName(String name) {
+	public HashMap<String, String> getByPartialName(String name) throws IllegalArgumentException {
 		
-		ArrayList<HashMap<String, String>> results = new ArrayList<HashMap<String, String>>();
+		HashMap<String, String> ret = null;
 		
-		for (Integer key : clients.keySet()) {
-			String n = clients.get(key).get("client_nickname").toLowerCase();
+		for (HashMap<String, String> client : clients.values()) {
+			String n = client.get("client_nickname").toLowerCase();
 			if (n.startsWith(name.toLowerCase())) {
-				results.add(clients.get(key));
+				if (ret == null) {
+					ret = client;
+				} else {
+					throw new IllegalArgumentException("There is more than one client matching " + name);
+				}
 			}
 		}
 		
-		if (results.size() == 0) {
-			return null;
-		} else if (results.size() == 1) {
-			return results.get(0);
-		} else {
-			throw new IllegalArgumentException("There is more than one client matching " + name);
+		return ret;
+	}
+	
+	public List<String> getClientNames() {
+		List<String> ret = new ArrayList<String>();
+		for (HashMap<String, String> client : clients.values()) {
+			ret.add(client.get("client_nickname"));
 		}
+		return ret;
 	}
 	
 	public ConcurrentHashMap<Integer, HashMap<String, String>> getClients() {

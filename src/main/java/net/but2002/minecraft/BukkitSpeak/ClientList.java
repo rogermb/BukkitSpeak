@@ -76,7 +76,7 @@ public class ClientList {
 		return null;
 	}
 	
-	public HashMap<String, String> getByPartialName(String name) throws IllegalArgumentException {
+	public HashMap<String, String> getByPartialName(String name) {
 		
 		HashMap<String, String> ret = null;
 		

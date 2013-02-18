@@ -125,7 +125,7 @@ public class BukkitSpeakCommandExecutor implements CommandExecutor, TabCompleter
 			if (cmd.getName().equals("ts")) {
 				List<String> al = new ArrayList<String>();
 				for (BukkitSpeakCommand uc : userCommands) {
-					if (uc.getName().startsWith(args[0])) {
+					if (uc.getName().startsWith(args[0].toLowerCase())) {
 						if (checkPermissions(sender, uc.getName())) al.add(uc.getName());
 					}
 				}
@@ -133,7 +133,7 @@ public class BukkitSpeakCommandExecutor implements CommandExecutor, TabCompleter
 			} else if (cmd.getName().equals("tsa")) {
 				List<String> al = new ArrayList<String>();
 				for (BukkitSpeakCommand ac : adminCommands) {
-					if (ac.getName().startsWith(args[0])) {
+					if (ac.getName().startsWith(args[0].toLowerCase())) {
 						if (checkPermissions(sender, ac.getName())) al.add(ac.getName());
 					}
 				}

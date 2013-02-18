@@ -6,7 +6,6 @@ import java.util.logging.Level;
 import net.but2002.minecraft.BukkitSpeak.BukkitSpeak;
 import net.but2002.minecraft.BukkitSpeak.StringManager;
 
-import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 
 public class SetChannelPassword extends SetProperty {
@@ -45,7 +44,7 @@ public class SetChannelPassword extends SetProperty {
 	}
 	
 	@Override
-	public List<String> onTabComplete(CommandSender sender, Command cmd, String lbl, String[] args) {
+	public List<String> onTabComplete(CommandSender sender, String[] args) {
 		return null;
 	}
 }

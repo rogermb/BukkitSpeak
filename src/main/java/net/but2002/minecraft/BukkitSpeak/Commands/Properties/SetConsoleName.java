@@ -4,7 +4,6 @@ import java.util.List;
 
 import net.but2002.minecraft.BukkitSpeak.StringManager;
 
-import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 
 public class SetConsoleName extends SetProperty {
@@ -35,7 +34,7 @@ public class SetConsoleName extends SetProperty {
 	}
 	
 	@Override
-	public List<String> onTabComplete(CommandSender sender, Command cmd, String lbl, String[] args) {
+	public List<String> onTabComplete(CommandSender sender, String[] args) {
 		return null;
 	}
 }

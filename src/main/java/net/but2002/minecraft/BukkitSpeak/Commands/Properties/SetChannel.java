@@ -8,7 +8,6 @@ import java.util.logging.Level;
 import net.but2002.minecraft.BukkitSpeak.BukkitSpeak;
 import net.but2002.minecraft.BukkitSpeak.StringManager;
 
-import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 
 public class SetChannel extends SetProperty {
@@ -83,11 +82,11 @@ public class SetChannel extends SetProperty {
 	}
 	
 	@Override
-	public List<String> onTabComplete(CommandSender sender, Command cmd, String lbl, String[] args) {
+	public List<String> onTabComplete(CommandSender sender, String[] args) {
 		if (args.length != 3) return null;
 		List<String> al = new ArrayList<String>();
 		for (String s : BukkitSpeak.getChannelList().getChannelNames()) {
-			if (s.startsWith(args[2])) {
+			if (s.toLowerCase().startsWith(args[2].toLowerCase())) {
 				al.add(s);
 			}
 		}

@@ -113,7 +113,7 @@ public class CommandSet extends BukkitSpeakCommand {
 			if (prop == null) {
 				return null;
 			} else {
-				return prop.onTabComplete(sender, null, this.getName(), args);
+				return prop.onTabComplete(sender, args);
 			}
 		default:
 			return null;

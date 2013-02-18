@@ -1,6 +1,7 @@
 package net.but2002.minecraft.BukkitSpeak.Commands.Properties;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.logging.Level;
 
 import net.but2002.minecraft.BukkitSpeak.BukkitSpeak;
@@ -9,13 +10,12 @@ import net.but2002.minecraft.BukkitSpeak.Commands.BukkitSpeakCommand;
 
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
-import org.bukkit.command.TabCompleter;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 
 import de.stefan1200.jts3serverquery.JTS3ServerQuery;
 
-public abstract class SetProperty implements TabCompleter {
+public abstract class SetProperty {
 	
 	protected void send(CommandSender sender, Level level, String msg) {
 		String m = msg;
@@ -107,5 +107,5 @@ public abstract class SetProperty implements TabCompleter {
 	public abstract String getAllowedInput();
 	public abstract String getDescription();
 	public abstract boolean execute(CommandSender sender, String arg);
-	
+	public abstract List<String> onTabComplete(CommandSender sender, String[] args);
 }

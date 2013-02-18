@@ -6,7 +6,6 @@ import java.util.logging.Level;
 
 import net.but2002.minecraft.BukkitSpeak.StringManager;
 
-import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 
 public class SetConsoleLog extends SetProperty {
@@ -48,11 +47,11 @@ public class SetConsoleLog extends SetProperty {
 	}
 	
 	@Override
-	public List<String> onTabComplete(CommandSender sender, Command cmd, String lbl, String[] args) {
+	public List<String> onTabComplete(CommandSender sender, String[] args) {
 		if (args.length != 3) return null;
 		List<String> al = new ArrayList<String>();
 		for (String s : TAB_SUGGESTIONS) {
-			if (s.startsWith(args[2])) {
+			if (s.startsWith(args[2].toLowerCase())) {
 				al.add(s);
 			}
 		}

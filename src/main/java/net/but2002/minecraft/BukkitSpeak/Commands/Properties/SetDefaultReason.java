@@ -11,8 +11,8 @@ public class SetDefaultReason extends SetProperty {
 	
 	private static final String PROPERTY = StringManager.TEAMSPEAK_DEFAULTREASON;
 	private static final String ALLOWED_INPUT = "Any string";
-	private static final String DESCRIPTION = "This will be the default if you don't add a reason to " +
-			"/tsa kick, channelkick or ban.";
+	private static final String DESCRIPTION = "This will be the default if you don't add a reason to "
+			+ "/tsa kick, channelkick or ban.";
 	
 	@Override
 	public String getProperty() {

@@ -13,8 +13,8 @@ public class SetTarget extends SetProperty {
 	
 	private static final String PROPERTY = StringManager.TEAMSPEAK_TARGET;
 	private static final String ALLOWED_INPUT = "none, channel or server";
-	private static final String DESCRIPTION = "If set to channel, Minecraft chat will be sent to the channel, " +
-			"if set to server the messages will be broadcasted.";
+	private static final String DESCRIPTION = "If set to channel, Minecraft chat will be sent to the channel, "
+			+ "if set to server the messages will be broadcasted.";
 	private static final String[] TAB_SUGGESTIONS = {"none", "channel", "server"};
 	
 	@Override

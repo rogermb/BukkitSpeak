@@ -14,8 +14,8 @@ public class SetServerListener extends SetProperty {
 	
 	private static final String PROPERTY = StringManager.TEAMSPEAK_SERVER;
 	private static final String ALLOWED_INPUT = "true or false";
-	private static final String DESCRIPTION = "If this is set to true, BukkitSpeak will notice when somebody " +
-			"joins or leaves the TS3 server.";
+	private static final String DESCRIPTION = "If this is set to true, BukkitSpeak will notice when somebody "
+			+ "joins or leaves the TS3 server.";
 	private static final String[] TAB_SUGGESTIONS = {"true", "false"};
 	
 	@Override

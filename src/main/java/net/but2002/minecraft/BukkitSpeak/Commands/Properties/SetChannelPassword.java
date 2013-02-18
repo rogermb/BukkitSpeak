@@ -13,8 +13,8 @@ public class SetChannelPassword extends SetProperty {
 	
 	private static final String PROPERTY = StringManager.TEAMSPEAK_CHANNELPW;
 	private static final String ALLOWED_INPUT = "Any string";
-	private static final String DESCRIPTION = "BukkitSpeak will use this password to enter the selected channel. " +
-			"'' means no password.";
+	private static final String DESCRIPTION = "BukkitSpeak will use this password to enter the selected channel. "
+			+ "'' means no password.";
 	
 	@Override
 	public String getProperty() {

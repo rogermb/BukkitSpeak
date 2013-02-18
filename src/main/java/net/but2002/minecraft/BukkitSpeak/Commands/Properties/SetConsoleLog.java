@@ -13,8 +13,8 @@ public class SetConsoleLog extends SetProperty {
 	
 	private static final String PROPERTY = StringManager.TEAMSPEAK_CONSOLE;
 	private static final String ALLOWED_INPUT = "true or false";
-	private static final String DESCRIPTION = "If set to false, none of the actions will be logged in the console. " +
-			"Exceptions will still be logged as usual.";
+	private static final String DESCRIPTION = "If set to false, none of the actions will be logged in the console. "
+			+ "Exceptions will still be logged as usual.";
 	private static final String[] TAB_SUGGESTIONS = {"true", "false"};
 	
 	@Override

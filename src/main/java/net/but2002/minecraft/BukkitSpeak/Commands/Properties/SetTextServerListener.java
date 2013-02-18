@@ -14,8 +14,8 @@ public class SetTextServerListener extends SetProperty {
 	
 	private static final String PROPERTY = StringManager.TEAMSPEAK_TEXTSERVER;
 	private static final String ALLOWED_INPUT = "true or false";
-	private static final String DESCRIPTION = "If this is set to true, BukkitSpeak will notice if " +
-			"somebody writes a global message on TeamSpeak.";
+	private static final String DESCRIPTION = "If this is set to true, BukkitSpeak will notice if "
+			+ "somebody writes a global message on TeamSpeak.";
 	private static final String[] TAB_SUGGESTIONS = {"true", "false"};
 	
 	@Override

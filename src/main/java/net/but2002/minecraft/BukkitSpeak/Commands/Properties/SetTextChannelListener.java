@@ -14,8 +14,8 @@ public class SetTextChannelListener extends SetProperty {
 	
 	private static final String PROPERTY = StringManager.TEAMSPEAK_TEXTCHANNEL;
 	private static final String ALLOWED_INPUT = "true or false";
-	private static final String DESCRIPTION = "If this is set to true, chat in the TeamSpeak channel " +
-			"will be sent to the Minecraft server.";
+	private static final String DESCRIPTION = "If this is set to true, chat in the TeamSpeak channel "
+			+ "will be sent to the Minecraft server.";
 	private static final String[] TAB_SUGGESTIONS = {"true", "false"};
 	
 	@Override

@@ -14,8 +14,8 @@ public class SetChannelListener extends SetProperty {
 	
 	private static final String PROPERTY = StringManager.TEAMSPEAK_CHANNEL;
 	private static final String ALLOWED_INPUT = "true or false";
-	private static final String DESCRIPTION = "If this is set to true, the Minecraft server will be notified when " +
-			"somebody joins or leaves the TS channel.";
+	private static final String DESCRIPTION = "If this is set to true, the Minecraft server will be notified when "
+			+ "somebody joins or leaves the TS channel.";
 	private static final String[] TAB_SUGGESTIONS = {"true", "false"};
 	
 	@Override

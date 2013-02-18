@@ -14,8 +14,8 @@ public class SetPrivateMessagesListener extends SetProperty {
 	
 	private static final String PROPERTY = StringManager.TEAMSPEAK_PRIVATEMESSAGES;
 	private static final String ALLOWED_INPUT = "true or false";
-	private static final String DESCRIPTION = "If this is set to true, people can send private messages to people on the server " +
-			"and they can text them back.";
+	private static final String DESCRIPTION = "If this is set to true, people can send private messages to people on the server "
+			+ "and they can text them back.";
 	private static final String[] TAB_SUGGESTIONS = {"true", "false"};
 	
 	@Override

@@ -82,8 +82,8 @@ public class ClientList {
 		HashMap<String, String> ret = null;
 		
 		for (HashMap<String, String> client : clients.values()) {
-			String n = client.get("client_nickname").toLowerCase();
-			if (n.startsWith(name.toLowerCase().replaceAll(" ", ""))) {
+			String n = client.get("client_nickname").toLowerCase().replaceAll(" ", "");
+			if (n.startsWith(name.toLowerCase())) {
 				if (ret == null) {
 					ret = client;
 				} else {

@@ -103,8 +103,8 @@ public class CommandPm extends BukkitSpeakCommand {
 		if (args.length != 2) return null;
 		List<String> al = new ArrayList<String>();
 		for (HashMap<String, String> client : BukkitSpeak.getClientList().getClients().values()) {
-			String n = client.get("client_nickname").toLowerCase().replaceAll(" ", "");
-			if (n.startsWith(args[1].toLowerCase())) {
+			String n = client.get("client_nickname").replaceAll(" ", "");
+			if (n.toLowerCase().startsWith(args[1].toLowerCase())) {
 				al.add(n);
 			}
 		}

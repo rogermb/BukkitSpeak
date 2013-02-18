@@ -56,8 +56,8 @@ public class ChannelList {
 		HashMap<String, String> ret = null;
 		
 		for (HashMap<String, String> channel : channels.values()) {
-			String n = channel.get("channel_name").toLowerCase();
-			if (n.startsWith(name.toLowerCase().replaceAll(" ", ""))) {
+			String n = channel.get("channel_name").toLowerCase().replaceAll(" ", "");
+			if (n.startsWith(name.toLowerCase())) {
 				if (ret == null) {
 					ret = channel;
 				} else {

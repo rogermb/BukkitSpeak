@@ -15,7 +15,8 @@ public class CommandSet extends BukkitSpeakCommand {
 	private static final SetProperty[] PROPERTIES = {
 		new SetDisplayName(), new SetConsoleName(), new SetChannel(), new SetChannelPassword(),
 		new SetServerListener(), new SetTextServerListener(), new SetChannelListener(), new SetTextChannelListener(),
-		new SetPrivateMessagesListener(), new SetAllowLinks(), new SetTarget(), new SetConsoleLog(), new SetDefaultReason(), new SetDebug()};
+		new SetPrivateMessagesListener(), new SetAllowLinks(), new SetTarget(), new SetConsoleLog(), 
+		new SetDefaultReason(), new SetDebug()};
 	
 	private static final String[] NAMES = {"set"};
 	

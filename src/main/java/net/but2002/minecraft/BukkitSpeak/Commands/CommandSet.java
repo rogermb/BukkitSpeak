@@ -80,7 +80,7 @@ public class CommandSet extends BukkitSpeakCommand {
 			}
 			
 			if (!prop.execute(sender, arg)) return;
-			send(sender, Level.INFO, "&aThe " + prop.getProperty() + " was successfully set to " + arg);
+			send(sender, Level.INFO, "&a" + prop.getProperty() + " was successfully set to " + arg);
 			BukkitSpeak.getInstance().saveConfig();
 			BukkitSpeak.getInstance().reloadStringManager();
 		}

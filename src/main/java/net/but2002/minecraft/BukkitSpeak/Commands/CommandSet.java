@@ -98,13 +98,25 @@ public class CommandSet extends BukkitSpeakCommand {
 	
 	@Override
 	public List<String> onTabComplete(CommandSender sender, String[] args) {
-		if (args.length != 2) return null;
-		List<String> al = new ArrayList<String>();
-		for (SetProperty prop : PROPERTIES) {
-			if (prop.getProperty().startsWith(args[1])) {
-				al.add(prop.getProperty());
+		switch (args.length) {
+		case 2:
+			List<String> al = new ArrayList<String>();
+			for (SetProperty prop : PROPERTIES) {
+				if (prop.getProperty().startsWith(args[1])) {
+					al.add(prop.getProperty());
+				}
 			}
+			return al;
+		case 3:
+			SetProperty prop = getMatchingProperty(args[1]);
+			
+			if (prop == null) {
+				return null;
+			} else {
+				return prop.onTabComplete(sender, null, this.getName(), args);
+			}
+		default:
+			return null;
 		}
-		return al;
 	}
 }

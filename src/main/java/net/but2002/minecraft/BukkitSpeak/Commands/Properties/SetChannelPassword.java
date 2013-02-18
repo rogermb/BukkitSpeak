@@ -1,10 +1,12 @@
 package net.but2002.minecraft.BukkitSpeak.Commands.Properties;
 
+import java.util.List;
 import java.util.logging.Level;
 
 import net.but2002.minecraft.BukkitSpeak.BukkitSpeak;
 import net.but2002.minecraft.BukkitSpeak.StringManager;
 
+import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 
 public class SetChannelPassword extends SetProperty {
@@ -38,5 +40,10 @@ public class SetChannelPassword extends SetProperty {
 		if (arg.equals("\'\'")) arg = "";
 		tsSection.set(StringManager.TEAMSPEAK_CHANNELPW, arg);
 		return true;
+	}
+	
+	@Override
+	public List<String> onTabComplete(CommandSender sender, Command cmd, String lbl, String[] args) {
+		return null;
 	}
 }

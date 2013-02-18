@@ -1,10 +1,13 @@
 package net.but2002.minecraft.BukkitSpeak.Commands.Properties;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 
 import net.but2002.minecraft.BukkitSpeak.BukkitSpeak;
 import net.but2002.minecraft.BukkitSpeak.StringManager;
 
+import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 
 public class SetChannelListener extends SetProperty {
@@ -12,6 +15,7 @@ public class SetChannelListener extends SetProperty {
 	private static final String PROPERTY = StringManager.TEAMSPEAK_CHANNEL;
 	private static final String ALLOWED_INPUT = "true or false";
 	private static final String DESCRIPTION = "If this is set to true, the Minecraft server will be notified when somebody joins or leaves the TS channel.";
+	private static final String[] TAB_SUGGESTIONS = {"true", "false"};
 	
 	@Override
 	public String getProperty() {
@@ -49,5 +53,17 @@ public class SetChannelListener extends SetProperty {
 		reloadListener();
 		if (!o1 && n1) connectChannel(sender);
 		return false;
+	}
+	
+	@Override
+	public List<String> onTabComplete(CommandSender sender, Command cmd, String lbl, String[] args) {
+		if (args.length != 3) return null;
+		List<String> al = new ArrayList<String>();
+		for (String s : TAB_SUGGESTIONS) {
+			if (s.startsWith(args[3])) {
+				al.add(s);
+			}
+		}
+		return al;
 	}
 }

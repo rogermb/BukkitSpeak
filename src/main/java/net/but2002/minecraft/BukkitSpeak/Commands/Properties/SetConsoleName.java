@@ -1,7 +1,10 @@
 package net.but2002.minecraft.BukkitSpeak.Commands.Properties;
 
+import java.util.List;
+
 import net.but2002.minecraft.BukkitSpeak.StringManager;
 
+import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 
 public class SetConsoleName extends SetProperty {
@@ -29,5 +32,10 @@ public class SetConsoleName extends SetProperty {
 	public boolean execute(CommandSender sender, String arg) {
 		tsSection.set(StringManager.TEAMSPEAK_CONSOLENAME, arg);
 		return true;
+	}
+	
+	@Override
+	public List<String> onTabComplete(CommandSender sender, Command cmd, String lbl, String[] args) {
+		return null;
 	}
 }

@@ -1,11 +1,14 @@
 package net.but2002.minecraft.BukkitSpeak.Commands.Properties;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.logging.Level;
 
 import net.but2002.minecraft.BukkitSpeak.BukkitSpeak;
 import net.but2002.minecraft.BukkitSpeak.StringManager;
 
+import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 
 public class SetChannel extends SetProperty {
@@ -76,6 +79,18 @@ public class SetChannel extends SetProperty {
 			send(sender, Level.WARNING, "&4" + BukkitSpeak.getQuery().getLastError());
 		}
 		return false;
+	}
+	
+	@Override
+	public List<String> onTabComplete(CommandSender sender, Command cmd, String lbl, String[] args) {
+		if (args.length != 3) return null;
+		List<String> al = new ArrayList<String>();
+		for (String s : BukkitSpeak.getChannelList().getChannelNames()) {
+			if (s.startsWith(args[3])) {
+				al.add(s);
+			}
+		}
+		return al;
 	}
 	
 	private int getIntFromString(String s) {

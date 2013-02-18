@@ -51,7 +51,7 @@ public class SetDebug extends SetProperty {
 		if (args.length != 3) return null;
 		List<String> al = new ArrayList<String>();
 		for (String s : TAB_SUGGESTIONS) {
-			if (s.startsWith(args[3])) {
+			if (s.startsWith(args[2])) {
 				al.add(s);
 			}
 		}

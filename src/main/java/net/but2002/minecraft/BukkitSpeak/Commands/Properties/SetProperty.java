@@ -17,8 +17,6 @@ import de.stefan1200.jts3serverquery.JTS3ServerQuery;
 
 public abstract class SetProperty implements TabCompleter {
 	
-	protected final ConfigurationSection tsSection = BukkitSpeak.getInstance().getConfig().getConfigurationSection(StringManager.TEAMSPEAK_SECTION);
-	
 	protected void send(CommandSender sender, Level level, String msg) {
 		String m = msg;
 		if (sender instanceof Player) {
@@ -30,6 +28,10 @@ public abstract class SetProperty implements TabCompleter {
 		}
 	}
 	
+	protected ConfigurationSection getTsSection() {
+		return BukkitSpeak.getInstance().getConfig().getConfigurationSection(StringManager.TEAMSPEAK_SECTION);
+	}
+
 	protected void reloadListener() {
 		BukkitSpeak.getQuery().removeAllEvents();
 		

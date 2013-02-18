@@ -13,7 +13,8 @@ public class SetDisplayName extends SetProperty {
 	
 	private static final String PROPERTY = StringManager.TEAMSPEAK_NAME;
 	private static final String ALLOWED_INPUT = "Any string";
-	private static final String DESCRIPTION = "This name will prefix every message in TeamSpeak. It's the nickname of the ServerQuery client.";
+	private static final String DESCRIPTION = "This name will prefix every message in TeamSpeak. " +
+			"It's the nickname of the server query.";
 	
 	@Override
 	public String getProperty() {
@@ -37,7 +38,7 @@ public class SetDisplayName extends SetProperty {
 			return false;
 		}
 		if (BukkitSpeak.getQuery().setDisplayName(arg)) {
-			tsSection.set(StringManager.TEAMSPEAK_NAME, arg);
+			getTsSection().set(StringManager.TEAMSPEAK_NAME, arg);
 			return true;
 		} else {
 			send(sender, Level.WARNING, "&4The display name could not be set.");

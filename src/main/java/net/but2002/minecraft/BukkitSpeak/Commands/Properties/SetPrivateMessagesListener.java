@@ -14,7 +14,8 @@ public class SetPrivateMessagesListener extends SetProperty {
 	
 	private static final String PROPERTY = StringManager.TEAMSPEAK_PRIVATEMESSAGES;
 	private static final String ALLOWED_INPUT = "true or false";
-	private static final String DESCRIPTION = "If this is set to true, people can send private messages to people on the TS3 and they can text back.";
+	private static final String DESCRIPTION = "If this is set to true, people can send private messages to people on the server " +
+			"and they can text them back.";
 	private static final String[] TAB_SUGGESTIONS = {"true", "false"};
 	
 	@Override
@@ -35,10 +36,10 @@ public class SetPrivateMessagesListener extends SetProperty {
 	@Override
 	public boolean execute(CommandSender sender, String arg) {
 		if (arg.equalsIgnoreCase("true")) {
-			tsSection.set(StringManager.TEAMSPEAK_PRIVATEMESSAGES, true);
+			getTsSection().set(StringManager.TEAMSPEAK_PRIVATEMESSAGES, true);
 			send(sender, Level.INFO, "&aPrivate messages can now be sent and received.");
 		} else if (arg.equalsIgnoreCase("false")) {
-			tsSection.set(StringManager.TEAMSPEAK_PRIVATEMESSAGES, false);
+			getTsSection().set(StringManager.TEAMSPEAK_PRIVATEMESSAGES, false);
 			send(sender, Level.INFO, "&aPrivate messages can't be sent or received anymore.");
 		} else {
 			send(sender, Level.WARNING, "Only 'true' or 'false' are accepted.");

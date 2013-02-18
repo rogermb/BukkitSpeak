@@ -15,7 +15,8 @@ public class SetChannel extends SetProperty {
 	
 	private static final String PROPERTY = StringManager.TEAMSPEAK_CHANNELID;
 	private static final String ALLOWED_INPUT = "Channel name or ID";
-	private static final String DESCRIPTION = "BukkitSpeak will try to move itself into the channel with the stated ID. Set ChannelPassword &lfirst&r&6!";
+	private static final String DESCRIPTION = "BukkitSpeak will try to move itself into the channel with the stated ID. " +
+			"Set ChannelPassword &lfirst&r&6!";
 	
 	@Override
 	public String getProperty() {
@@ -67,7 +68,7 @@ public class SetChannel extends SetProperty {
 		String pw = BukkitSpeak.getStringManager().getChannelPass();
 		
 		if (BukkitSpeak.getQuery().moveClient(clid, cid, pw)) {
-			tsSection.set(StringManager.TEAMSPEAK_CHANNELID, cid);
+			getTsSection().set(StringManager.TEAMSPEAK_CHANNELID, cid);
 			BukkitSpeak.getInstance().saveConfig();
 			BukkitSpeak.getInstance().reloadStringManager();
 			reloadListener();

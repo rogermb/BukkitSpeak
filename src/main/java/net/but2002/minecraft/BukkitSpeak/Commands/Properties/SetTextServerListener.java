@@ -14,7 +14,8 @@ public class SetTextServerListener extends SetProperty {
 	
 	private static final String PROPERTY = StringManager.TEAMSPEAK_TEXTSERVER;
 	private static final String ALLOWED_INPUT = "true or false";
-	private static final String DESCRIPTION = "If this is set to true, BukkitSpeak will notice if somebody writes a global message on TeamSpeak.";
+	private static final String DESCRIPTION = "If this is set to true, BukkitSpeak will notice if " +
+			"somebody writes a global message on TeamSpeak.";
 	private static final String[] TAB_SUGGESTIONS = {"true", "false"};
 	
 	@Override
@@ -35,10 +36,10 @@ public class SetTextServerListener extends SetProperty {
 	@Override
 	public boolean execute(CommandSender sender, String arg) {
 		if (arg.equalsIgnoreCase("true")) {
-			tsSection.set(StringManager.TEAMSPEAK_TEXTSERVER, true);
+			getTsSection().set(StringManager.TEAMSPEAK_TEXTSERVER, true);
 			send(sender, Level.INFO, "&aTeamSpeak broadcasts will now be sent to Minecraft.");
 		} else if (arg.equalsIgnoreCase("false")) {
-			tsSection.set(StringManager.TEAMSPEAK_TEXTSERVER, false);
+			getTsSection().set(StringManager.TEAMSPEAK_TEXTSERVER, false);
 			send(sender, Level.INFO, "&aTeamSpeak broadcasts won't be sent to Minecraft anymore.");
 		} else {
 			send(sender, Level.WARNING, "Only 'true' or 'false' are accepted.");

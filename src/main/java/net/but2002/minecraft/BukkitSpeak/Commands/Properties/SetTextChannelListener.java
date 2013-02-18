@@ -14,7 +14,8 @@ public class SetTextChannelListener extends SetProperty {
 	
 	private static final String PROPERTY = StringManager.TEAMSPEAK_TEXTCHANNEL;
 	private static final String ALLOWED_INPUT = "true or false";
-	private static final String DESCRIPTION = "If this is set to true, chat in the TeamSpeak channel will be sent to the Minecraft server.";
+	private static final String DESCRIPTION = "If this is set to true, chat in the TeamSpeak channel " +
+			"will be sent to the Minecraft server.";
 	private static final String[] TAB_SUGGESTIONS = {"true", "false"};
 	
 	@Override
@@ -38,11 +39,11 @@ public class SetTextChannelListener extends SetProperty {
 				|| (BukkitSpeak.getStringManager().getUseTextChannel());
 		boolean n2 = false;
 		if (arg.equalsIgnoreCase("true")) {
-			tsSection.set(StringManager.TEAMSPEAK_TEXTCHANNEL, true);
+			getTsSection().set(StringManager.TEAMSPEAK_TEXTCHANNEL, true);
 			n2 = true;
 			send(sender, Level.INFO, "&aChat messages from the channel will now be broadcasted in Minecraft.");
 		} else if (arg.equalsIgnoreCase("false")) {
-			tsSection.set(StringManager.TEAMSPEAK_TEXTCHANNEL, false);
+			getTsSection().set(StringManager.TEAMSPEAK_TEXTCHANNEL, false);
 			send(sender, Level.INFO, "&aChat messages from the channel won't be broadcasted in Minecraft anymore.");
 		} else {
 			send(sender, Level.WARNING, "Only 'true' or 'false' are accepted.");

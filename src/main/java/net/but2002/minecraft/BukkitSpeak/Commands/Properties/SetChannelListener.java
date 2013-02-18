@@ -14,7 +14,8 @@ public class SetChannelListener extends SetProperty {
 	
 	private static final String PROPERTY = StringManager.TEAMSPEAK_CHANNEL;
 	private static final String ALLOWED_INPUT = "true or false";
-	private static final String DESCRIPTION = "If this is set to true, the Minecraft server will be notified when somebody joins or leaves the TS channel.";
+	private static final String DESCRIPTION = "If this is set to true, the Minecraft server will be notified when " +
+			"somebody joins or leaves the TS channel.";
 	private static final String[] TAB_SUGGESTIONS = {"true", "false"};
 	
 	@Override
@@ -38,11 +39,11 @@ public class SetChannelListener extends SetProperty {
 				|| (BukkitSpeak.getStringManager().getUseTextChannel());
 		boolean n1 = false;
 		if (arg.equalsIgnoreCase("true")) {
-			tsSection.set(StringManager.TEAMSPEAK_CHANNEL, true);
+			getTsSection().set(StringManager.TEAMSPEAK_CHANNEL, true);
 			n1 = true;
 			send(sender, Level.INFO, "&aChannel joins and quits will now be broadcasted in Minecraft.");
 		} else if (arg.equalsIgnoreCase("false")) {
-			tsSection.set(StringManager.TEAMSPEAK_CHANNEL, false);
+			getTsSection().set(StringManager.TEAMSPEAK_CHANNEL, false);
 			send(sender, Level.INFO, "&aChannel joins and quits won't be broadcasted in Minecraft anymore.");
 		} else {
 			send(sender, Level.WARNING, "Only 'true' or 'false' are accepted.");

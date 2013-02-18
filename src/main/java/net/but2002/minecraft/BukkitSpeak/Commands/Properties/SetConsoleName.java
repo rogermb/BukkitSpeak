@@ -30,7 +30,7 @@ public class SetConsoleName extends SetProperty {
 	
 	@Override
 	public boolean execute(CommandSender sender, String arg) {
-		tsSection.set(StringManager.TEAMSPEAK_CONSOLENAME, arg);
+		getTsSection().set(StringManager.TEAMSPEAK_CONSOLENAME, arg);
 		return true;
 	}
 	

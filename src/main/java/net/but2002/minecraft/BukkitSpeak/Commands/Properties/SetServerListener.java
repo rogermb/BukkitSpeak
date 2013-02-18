@@ -14,7 +14,8 @@ public class SetServerListener extends SetProperty {
 	
 	private static final String PROPERTY = StringManager.TEAMSPEAK_SERVER;
 	private static final String ALLOWED_INPUT = "true or false";
-	private static final String DESCRIPTION = "If this is set to true, BukkitSpeak will notice if somebody joins or leaves the TS3 server.";
+	private static final String DESCRIPTION = "If this is set to true, BukkitSpeak will notice when somebody " +
+			"joins or leaves the TS3 server.";
 	private static final String[] TAB_SUGGESTIONS = {"true", "false"};
 	
 	@Override
@@ -35,10 +36,10 @@ public class SetServerListener extends SetProperty {
 	@Override
 	public boolean execute(CommandSender sender, String arg) {
 		if (arg.equalsIgnoreCase("true")) {
-			tsSection.set(StringManager.TEAMSPEAK_SERVER, true);
+			getTsSection().set(StringManager.TEAMSPEAK_SERVER, true);
 			send(sender, Level.INFO, "&aServer joins and quits will now be broadcasted in Minecraft.");
 		} else if (arg.equalsIgnoreCase("false")) {
-			tsSection.set(StringManager.TEAMSPEAK_SERVER, false);
+			getTsSection().set(StringManager.TEAMSPEAK_SERVER, false);
 			send(sender, Level.INFO, "&aServer joins and quits won't be broadcasted in Minecraft anymore.");
 		} else {
 			send(sender, Level.WARNING, "Only 'true' or 'false' are accepted.");

@@ -30,20 +30,21 @@ public class ClientList {
 		HashMap<String, String> user;
 		try {
 			user = query.getInfo(JTS3ServerQuery.INFOMODE_CLIENTINFO, clid);
-			if (user != null && user.size() != 0) {
-				if (user.get("client_type").equals("0") && !clients.containsKey(clid)) {
-					user.put("clid", String.valueOf(clid));
-					clients.put(clid, user);
-					return true;
-				}
-				return false;
-			} else {
-				logger.warning("Received no information for user id " + clid + ". (Adding)");
-				return false;
-			}
 		} catch (Exception e) {
 			logger.severe("Error while receiving client information.");
 			e.printStackTrace();
+			return false;
+		}
+		
+		if (user != null && user.size() != 0) {
+			if (user.get("client_type").equals("0") && !clients.containsKey(clid)) {
+				user.put("clid", String.valueOf(clid));
+				clients.put(clid, user);
+				return true;
+			}
+			return false;
+		} else {
+			logger.warning("Received no information for user id " + clid + ". (Adding)");
 			return false;
 		}
 	}
@@ -125,20 +126,21 @@ public class ClientList {
 		HashMap<String, String> user;
 		try {
 			user = query.getInfo(JTS3ServerQuery.INFOMODE_CLIENTINFO, clid);
-			if (user != null && user.size() != 0) {
-				if (user.get("client_type").equals("0")) {
-					user.put("clid", String.valueOf(clid));
-					clients.put(clid, user);
-					return user;
-				}
-				return null;
-			} else {
-				logger.warning("Received no information for user id " + clid + ". (ClientUpdate)");
-				return null;
-			}
 		} catch (Exception e) {
 			logger.severe("Error while receiving client information.");
 			e.printStackTrace();
+			return null;
+		}
+		
+		if (user != null && user.size() != 0) {
+			if (user.get("client_type").equals("0")) {
+				user.put("clid", String.valueOf(clid));
+				clients.put(clid, user);
+				return user;
+			}
+			return null;
+		} else {
+			logger.warning("Received no information for user id " + clid + ". (ClientUpdate)");
 			return null;
 		}
 	}

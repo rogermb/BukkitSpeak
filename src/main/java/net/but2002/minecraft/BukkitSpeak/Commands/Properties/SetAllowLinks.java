@@ -34,10 +34,10 @@ public class SetAllowLinks extends SetProperty {
 	@Override
 	public boolean execute(CommandSender sender, String arg) {
 		if (arg.equalsIgnoreCase("true")) {
-			tsSection.set(StringManager.TEAMSPEAK_ALLOWLINKS, true);
+			getTsSection().set(StringManager.TEAMSPEAK_ALLOWLINKS, true);
 			send(sender, Level.INFO, "&aLinks in messages are now allowed.");
 		} else if (arg.equalsIgnoreCase("false")) {
-			tsSection.set(StringManager.TEAMSPEAK_ALLOWLINKS, false);
+			getTsSection().set(StringManager.TEAMSPEAK_ALLOWLINKS, false);
 			send(sender, Level.INFO, "&aLinks in messages are now forbidden.");
 		} else {
 			send(sender, Level.WARNING, "Only 'true' or 'false' are accepted.");

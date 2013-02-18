@@ -34,10 +34,10 @@ public class SetDebug extends SetProperty {
 	@Override
 	public boolean execute(CommandSender sender, String arg) {
 		if (arg.equalsIgnoreCase("true")) {
-			tsSection.set(StringManager.TEAMSPEAK_DEBUG, true);
+			getTsSection().set(StringManager.TEAMSPEAK_DEBUG, true);
 			send(sender, Level.INFO, "&aDebug mode was successfully enabled.");
 		} else if (arg.equalsIgnoreCase("false")) {
-			tsSection.set(StringManager.TEAMSPEAK_DEBUG, false);
+			getTsSection().set(StringManager.TEAMSPEAK_DEBUG, false);
 			send(sender, Level.INFO, "&aDebug mode was successfully disabled.");
 		} else {
 			send(sender, Level.WARNING, "Only 'true' or 'false' are accepted.");

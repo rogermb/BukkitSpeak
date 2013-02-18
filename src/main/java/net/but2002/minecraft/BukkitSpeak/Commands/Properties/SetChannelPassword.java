@@ -13,7 +13,8 @@ public class SetChannelPassword extends SetProperty {
 	
 	private static final String PROPERTY = StringManager.TEAMSPEAK_CHANNELPW;
 	private static final String ALLOWED_INPUT = "Any string";
-	private static final String DESCRIPTION = "BukkitSpeak will use this password to enter the selected channel. '' means no password.";
+	private static final String DESCRIPTION = "BukkitSpeak will use this password to enter the selected channel. " +
+			"'' means no password.";
 	
 	@Override
 	public String getProperty() {
@@ -37,8 +38,9 @@ public class SetChannelPassword extends SetProperty {
 					+ " or " + StringManager.TEAMSPEAK_TEXTCHANNEL + " to true to use this feature.");
 			return false;
 		}
-		if (arg.equals("\'\'")) arg = "";
-		tsSection.set(StringManager.TEAMSPEAK_CHANNELPW, arg);
+		String s = arg;
+		if (arg.equals("\'\'")) s = "";
+		getTsSection().set(StringManager.TEAMSPEAK_CHANNELPW, s);
 		return true;
 	}
 	

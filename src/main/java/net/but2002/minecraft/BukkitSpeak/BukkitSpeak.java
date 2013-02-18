@@ -168,26 +168,17 @@ public class BukkitSpeak extends JavaPlugin {
 		channels = new ChannelList();
 	}
 	
-	public static void registerRecipient(String player, Integer clid) {
-		if (pmRecipients.containsKey(clid)) pmRecipients.remove(clid);
-		if (pmSenders.containsKey(player)) pmSenders.remove(player);
-		
+	public static void registerRecipient(String player, int clid) {
 		pmRecipients.put(clid, player);
 		pmSenders.put(player, clid);
 	}
 	
-	public String getRecipient(Integer clid) {
-		if (pmRecipients.containsKey(clid)) {
-			return pmRecipients.get(clid);
-		}
-		return null;
+	public String getRecipient(int clid) {
+		return pmRecipients.get(clid);
 	}
 	
 	public Integer getSender(String player) {
-		if (pmSenders.containsKey(player)) {
-			return pmSenders.get(player);
-		}
-		return null;
+		return pmSenders.get(player);
 	}
 	
 	public QueryConnector getQueryConnector() {

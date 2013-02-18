@@ -58,11 +58,13 @@ public abstract class SetProperty implements TabCompleter {
 		if (mcMsg == null || mcMsg.isEmpty()) return;
 		for (Player pl : Bukkit.getServer().getOnlinePlayers()) {
 			if (!BukkitSpeak.getMuted(pl)) {
-				pl.sendMessage(BukkitSpeakCommand.convertToMinecraft(mcMsg, true, BukkitSpeak.getStringManager().getAllowLinks()));
+				pl.sendMessage(BukkitSpeakCommand.convertToMinecraft(mcMsg, true,
+						BukkitSpeak.getStringManager().getAllowLinks()));
 			}
 		}
 		if (!(sender instanceof Player) || (BukkitSpeak.getStringManager().getLogInConsole())) {
-			BukkitSpeak.log().info(BukkitSpeakCommand.convertToMinecraft(mcMsg, false, BukkitSpeak.getStringManager().getAllowLinks()));
+			BukkitSpeak.log().info(BukkitSpeakCommand.convertToMinecraft(mcMsg, false,
+					BukkitSpeak.getStringManager().getAllowLinks()));
 		}
 	}
 	

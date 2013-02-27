@@ -8,7 +8,6 @@ import net.but2002.minecraft.BukkitSpeak.AsyncQueryUtils.QuerySender;
 import net.but2002.minecraft.BukkitSpeak.Commands.BukkitSpeakCommand;
 
 import org.bukkit.Bukkit;
-import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -18,7 +17,7 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerKickEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 
-import com.gmail.nossr50.mcMMO;
+import com.gmail.nossr50.api.ChatAPI;
 import com.massivecraft.factions.FPlayers;
 import com.massivecraft.factions.struct.ChatMode;
 
@@ -43,11 +42,11 @@ public class PlayerListener implements Listener {
 		
 		/* mcMMO check */
 		if (BukkitSpeak.hasMcMMO()) {
-			if (mcMMO.p.getPlayerProfile((OfflinePlayer) e.getPlayer()).getPartyChatMode()
+			if (ChatAPI.isUsingPartyChat(e.getPlayer())
 					&& BukkitSpeak.getStringManager().getMcMMOFilterPartyChat()) {
 				return;
 			}
-			if (mcMMO.p.getPlayerProfile((OfflinePlayer) e.getPlayer()).getAdminChatMode()
+			if (ChatAPI.isUsingAdminChat(e.getPlayer())
 					&& BukkitSpeak.getStringManager().getMcMMOFilterAdminChat()) {
 				return;
 			}

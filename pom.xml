@@ -33,7 +33,7 @@
     </repository>
     <repository>
       <id>stutz-repo</id>
-      <url>http://stutz.dontexist.com:8081/nexus/content/groups/public</url>
+      <url>http://repo.stutzfam.ch/content/groups/public</url>
       <releases>
         <updatePolicy>always</updatePolicy>
       </releases>

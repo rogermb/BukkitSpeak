@@ -44,8 +44,8 @@ public class TeamspeakCommandSender implements CommandSender {
 	}
 	
 	@Override
-	public boolean isPermissionSet(String name) {
-		return permissions.isPermissionSet(name);
+	public boolean isPermissionSet(String perm) {
+		return permissions.isPermissionSet(perm);
 	}
 	
 	@Override
@@ -54,8 +54,8 @@ public class TeamspeakCommandSender implements CommandSender {
 	}
 	
 	@Override
-	public boolean hasPermission(String name) {
-		return permissions.hasPermission(name);
+	public boolean hasPermission(String perm) {
+		return permissions.hasPermission(perm);
 	}
 	
 	@Override
@@ -64,8 +64,8 @@ public class TeamspeakCommandSender implements CommandSender {
 	}
 	
 	@Override
-	public PermissionAttachment addAttachment(Plugin plugin, String name, boolean value) {
-		return permissions.addAttachment(plugin, name, value);
+	public PermissionAttachment addAttachment(Plugin plugin, String perm, boolean value) {
+		return permissions.addAttachment(plugin, perm, value);
 	}
 	
 	@Override
@@ -74,8 +74,8 @@ public class TeamspeakCommandSender implements CommandSender {
 	}
 	
 	@Override
-	public PermissionAttachment addAttachment(Plugin plugin, String name, boolean value, int ticks) {
-		return permissions.addAttachment(plugin, name, value, ticks);
+	public PermissionAttachment addAttachment(Plugin plugin, String perm, boolean value, int ticks) {
+		return permissions.addAttachment(plugin, perm, value, ticks);
 	}
 	
 	@Override
@@ -154,6 +154,8 @@ public class TeamspeakCommandSender implements CommandSender {
 
 class BufferSender implements Runnable {
 	
+	private static final int MSG_MAXLENGTH = 1024;
+	
 	private final List<String> buffer;
 	private final int clid;
 	
@@ -168,7 +170,7 @@ class BufferSender implements Runnable {
 		StringBuilder sb = new StringBuilder();
 		
 		for (String message = buffer.remove(0); buffer.size() > 0; message = "\n" + buffer.remove(0)) {
-			if (sb.length() + message.length() < 1024) {
+			if (sb.length() + message.length() < MSG_MAXLENGTH) {
 				sb.append(message);
 			} else {
 				sendToTeamspeak(sb.toString());

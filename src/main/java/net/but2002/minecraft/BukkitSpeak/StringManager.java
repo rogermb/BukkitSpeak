@@ -306,7 +306,7 @@ public class StringManager {
 	}
 	
 	public int getTeamspeakCommandTarget() {
-		return (tsCommandTarget + 1);
+		return tsCommandTarget + 1;
 	}
 	
 	public int getTeamspeakCommandSenderBuffer() {

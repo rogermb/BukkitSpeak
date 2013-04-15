@@ -44,7 +44,7 @@ public class CommandReply extends BukkitSpeakCommand {
 			clid = BukkitSpeak.getInstance().getSender(((Player) sender).getName());
 		} else {
 			String n = convertToMinecraft(BukkitSpeak.getStringManager().getConsoleName(), false, false);
-			clid = BukkitSpeak.getInstance().getSender(n); 
+			clid = BukkitSpeak.getInstance().getSender(n);
 		}
 		
 		if (clid == null || !BukkitSpeak.getClientList().containsID(clid)) {

@@ -18,8 +18,6 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import com.dthielke.herochat.Herochat;
 
-import com.modcrafting.bukkitspeak.DTS3ServerQuery;
-
 import de.stefan1200.jts3serverquery.*;
 
 public class BukkitSpeak extends JavaPlugin {
@@ -32,7 +30,6 @@ public class BukkitSpeak extends JavaPlugin {
 	private static ClientList clients;
 	private static ChannelList channels;
 	private static JTS3ServerQuery query;
-	private static DTS3ServerQuery dquery;
 	
 	private static List<String> muted;
 	private static HashMap<Integer, String> pmRecipients;
@@ -62,7 +59,6 @@ public class BukkitSpeak extends JavaPlugin {
 		query = new JTS3ServerQuery();
 		query.DEBUG = stringManager.getDebugMode();
 		
-		dquery = new DTS3ServerQuery();
 		ts = new TeamspeakListener();
 		qc = new QueryConnector();
 		Bukkit.getScheduler().runTaskAsynchronously(this, qc);
@@ -132,10 +128,6 @@ public class BukkitSpeak extends JavaPlugin {
 	
 	public static JTS3ServerQuery getQuery() {
 		return query;
-	}
-	
-	public static DTS3ServerQuery getDQuery() {
-		return dquery;
 	}
 	
 	public static StringManager getStringManager() {

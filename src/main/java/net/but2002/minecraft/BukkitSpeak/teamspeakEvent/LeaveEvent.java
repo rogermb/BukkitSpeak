@@ -4,6 +4,8 @@ import java.util.HashMap;
 
 import org.bukkit.entity.Player;
 
+import com.dthielke.herochat.Herochat;
+
 import net.but2002.minecraft.BukkitSpeak.BukkitSpeak;
 
 public class LeaveEvent extends TeamspeakEvent {
@@ -25,9 +27,15 @@ public class LeaveEvent extends TeamspeakEvent {
 		if (!info.get("reasonid").equals("5")) {
 			String m = BukkitSpeak.getStringManager().getMessage("Quit");
 			if (m.isEmpty()) return;
-			for (Player pl : getOnlinePlayers()) {
-				if (!isMuted(pl) && checkPermissions(pl, "leave")) {
-					pl.sendMessage(replaceValues(m, true));
+			if (BukkitSpeak.useHerochat() && BukkitSpeak.getStringManager().getHerochatUsesEvents()) {
+				// Send to Herochat channel
+				String c = BukkitSpeak.getStringManager().getHerochatChannel();
+				Herochat.getChannelManager().getChannel(c).announce(replaceValues(m, true));
+			} else {
+				for (Player pl : getOnlinePlayers()) {
+					if (!isMuted(pl) && checkPermissions(pl, "leave")) {
+						pl.sendMessage(replaceValues(m, true));
+					}
 				}
 			}
 			if (BukkitSpeak.getStringManager().getLogInConsole()) BukkitSpeak.log().info(replaceValues(m, false));

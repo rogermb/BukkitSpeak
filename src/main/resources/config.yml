@@ -43,6 +43,9 @@ plugin-interaction:
     enabled: false
     # Which channel do we want us to use?
     channel: Global
+    # Should events on TeamSpeak (Enter, Leave, Channel changed)
+    # also be sent to this channel?
+    SendTeamspeakEventsToChannel: false
   mcMMO:
     # Only applies if mcMMO is enabled on the server.
     # Should party chat be filtered out?

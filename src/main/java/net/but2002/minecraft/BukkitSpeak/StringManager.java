@@ -49,6 +49,7 @@ public class StringManager {
 	public static final String[] HEROCHAT_SECTION = {"plugin-interaction", "Herochat"};
 	public static final String HEROCHAT_ENABLED = "enabled";
 	public static final String HEROCHAT_CHANNEL = "channel";
+	public static final String HEROCHAT_EVENTS = "SendTeamspeakEventsToChannel";
 	
 	public static final String[] MCMMO_SECTION = {"plugin-interaction", "mcMMO"};
 	public static final String MCMMO_PARTY_CHAT = "FilterPartyChat";
@@ -117,7 +118,7 @@ public class StringManager {
 	private int queryPort, serverPort, tsChannelID, tsTarget;
 	private String ip, serverAdmin, serverPass, tsName, tsConsoleName, tsChannelPass, tsDefaultReason;
 	
-	private boolean factionsPublicOnly, herochatEnabled, mcMMOParty, mcMMOAdmin;
+	private boolean factionsPublicOnly, herochatEnabled, herochatEvents, mcMMOParty, mcMMOAdmin;
 	private String herochatChannel;
 	
 	private boolean tsCommands;
@@ -189,6 +190,7 @@ public class StringManager {
 		factionsPublicOnly = configReader.getBoolean(FACTIONS_SECTION, FACTIONS_PUBLIC_ONLY, true);
 		herochatEnabled = configReader.getBoolean(HEROCHAT_SECTION, HEROCHAT_ENABLED, false);
 		herochatChannel = configReader.getString(HEROCHAT_SECTION, HEROCHAT_CHANNEL, "Global");
+		herochatEvents = configReader.getBoolean(HEROCHAT_SECTION, HEROCHAT_EVENTS, false);
 		mcMMOParty = configReader.getBoolean(MCMMO_SECTION, MCMMO_PARTY_CHAT, true);
 		mcMMOAdmin = configReader.getBoolean(MCMMO_SECTION, MCMMO_ADMIN_CHAT, true);
 		
@@ -323,6 +325,10 @@ public class StringManager {
 	
 	public String getHerochatChannel() {
 		return herochatChannel;
+	}
+	
+	public boolean getHerochatUsesEvents() {
+		return herochatEvents;
 	}
 	
 	public boolean getMcMMOFilterPartyChat() {

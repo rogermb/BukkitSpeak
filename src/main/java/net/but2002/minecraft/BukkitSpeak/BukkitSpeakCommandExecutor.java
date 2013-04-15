@@ -68,11 +68,7 @@ public class BukkitSpeakCommandExecutor implements CommandExecutor, TabCompleter
 	}
 	
 	public Boolean checkPermissions(CommandSender sender, String perm) {
-		if (sender instanceof Player) {
-			return sender.hasPermission("bukkitspeak.commands." + perm); 
-		} else {
-			return true;
-		}
+		return sender.hasPermission("bukkitspeak.commands." + perm);
 	}
 	
 	public boolean onTeamspeakCommand(CommandSender sender, Command cmd, String alias, String[] args) {

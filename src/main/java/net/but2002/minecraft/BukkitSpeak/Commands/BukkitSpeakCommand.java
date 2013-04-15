@@ -183,12 +183,8 @@ public abstract class BukkitSpeakCommand {
 		return null;
 	}
 	
-	public Boolean checkCommandPermission(CommandSender sender, String perm) {
-		if (sender instanceof Player) {
-			return sender.hasPermission("bukkitspeak.commands." + perm);
-		} else {
-			return true;
-		}
+	public boolean checkCommandPermission(CommandSender sender, String perm) {
+		return sender.hasPermission("bukkitspeak.commands." + perm);
 	}
 	
 	public String combineSplit(int startIndex, String[] string, String seperator) {

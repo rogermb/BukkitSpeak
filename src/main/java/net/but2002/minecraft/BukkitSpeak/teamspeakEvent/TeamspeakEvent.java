@@ -40,7 +40,7 @@ public abstract class TeamspeakEvent {
 		return Integer.valueOf(user.get("client_type"));
 	}
 	
-	protected abstract void sendMessage();
+	protected abstract void performAction();
 	
 	public String replaceValues(String input, boolean color) {
 		String output = input;

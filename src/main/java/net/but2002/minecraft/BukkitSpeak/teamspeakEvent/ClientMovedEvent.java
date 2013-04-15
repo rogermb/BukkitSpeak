@@ -17,11 +17,11 @@ public class ClientMovedEvent extends TeamspeakEvent {
 		
 		if (getUser() == null) return;
 		getUser().put("cid", infoMap.get("ctid"));
-		sendMessage();
+		performAction();
 	}
 	
 	@Override
-	protected void sendMessage() {
+	protected void performAction() {
 		if (getClientName().startsWith("Unknown from") || getClientType() != 0) return;
 		if (!info.get("reasonid").equals("4")) {
 			if (Integer.parseInt(info.get("ctid")) == BukkitSpeak.getStringManager().getChannelID()) {

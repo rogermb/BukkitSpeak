@@ -16,11 +16,11 @@ public class LeaveEvent extends TeamspeakEvent {
 		setUser(clid);
 		BukkitSpeak.getClientList().removeClient(Integer.parseInt(infoMap.get("clid")));
 		info = infoMap;
-		sendMessage();
+		performAction();
 	}
 	
 	@Override
-	protected void sendMessage() {
+	protected void performAction() {
 		if (getUser() == null || getClientName().startsWith("Unknown from") || getClientType() != 0) return;
 		if (!info.get("reasonid").equals("5")) {
 			String m = BukkitSpeak.getStringManager().getMessage("Quit");

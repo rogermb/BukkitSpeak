@@ -17,10 +17,10 @@ public class EnterEvent extends TeamspeakEvent {
 			return;
 		}
 		setUser(clid);
-		sendMessage();
+		performAction();
 	}
 	
-	protected void sendMessage() {
+	protected void performAction() {
 		String m = BukkitSpeak.getStringManager().getMessage("Join");
 		if (m.isEmpty()) return;
 		for (Player pl : getOnlinePlayers()) {

@@ -18,11 +18,11 @@ public class ServerMessageEvent extends TeamspeakEvent {
 		
 		if (getUser() == null) return;
 		getUser().put("targetmode", infoMap.get("targetmode"));
-		sendMessage();
+		performAction();
 	}
 	
 	@Override
-	protected void sendMessage() {
+	protected void performAction() {
 		
 		if (info == null || getClientType() != 0) return;
 		

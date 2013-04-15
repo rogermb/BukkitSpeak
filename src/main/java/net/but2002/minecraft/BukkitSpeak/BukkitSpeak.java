@@ -9,6 +9,7 @@ import java.util.logging.Logger;
 import net.but2002.minecraft.BukkitSpeak.Listeners.PlayerListener;
 import net.but2002.minecraft.BukkitSpeak.Listeners.HerochatListener;
 import net.but2002.minecraft.BukkitSpeak.Metrics.MetricsUtil;
+import net.but2002.minecraft.BukkitSpeak.TeamspeakCommands.PermissionsHelper;
 import net.but2002.minecraft.BukkitSpeak.teamspeakEvent.TeamspeakListener;
 
 import org.bukkit.Bukkit;
@@ -27,6 +28,7 @@ public class BukkitSpeak extends JavaPlugin {
 	
 	private static BukkitSpeak instance;
 	private static StringManager stringManager;
+	private static PermissionsHelper permissionsHelper;
 	private static ClientList clients;
 	private static ChannelList channels;
 	private static JTS3ServerQuery query;
@@ -56,6 +58,7 @@ public class BukkitSpeak extends JavaPlugin {
 		instance = this;
 		logger = this.getLogger();
 		stringManager = new StringManager();
+		permissionsHelper = new PermissionsHelper();
 		query = new JTS3ServerQuery();
 		query.DEBUG = stringManager.getDebugMode();
 		
@@ -139,6 +142,10 @@ public class BukkitSpeak extends JavaPlugin {
 		return stringManager;
 	}
 	
+	public static PermissionsHelper getPermissionsHelper() {
+		return permissionsHelper;
+	}
+	
 	public static List<String> getMutedList() {
 		return muted;
 	}
@@ -166,6 +173,9 @@ public class BukkitSpeak extends JavaPlugin {
 	public void resetLists() {
 		clients = new ClientList();
 		channels = new ChannelList();
+		if (stringManager.getTeamspeakCommandsEnabled()) {
+			permissionsHelper.setUp();
+		}
 	}
 	
 	public static void registerRecipient(String player, int clid) {

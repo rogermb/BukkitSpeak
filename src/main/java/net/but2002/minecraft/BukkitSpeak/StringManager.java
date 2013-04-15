@@ -35,10 +35,13 @@ public class StringManager {
 	public static final String TEAMSPEAK_CONSOLE = "LogChatInConsole";
 	public static final String TEAMSPEAK_DEFAULTREASON = "DefaultReason";
 	public static final String TEAMSPEAK_DEBUG = "Debug";
-	public static final String[][] TEAMSPEAK_TARGETS = {
-		{"none", "nobody", "null", "noting"},
-		{"channel", "chat"},
-		{"server", "broadcast"}};
+	
+	public static final String TS_COMMANDS_SECTION = "teamspeak-commands";
+	public static final String TS_COMMANDS_ENABLED = "Enabled";
+	public static final String TS_COMMANDS_COMMANDPREFIX = "CommandPrefix";
+	public static final String TS_COMMANDS_NAMEPREFIX = "NamePrefix";
+	public static final String TS_COMMANDS_TARGET = "ResponseTarget";
+	public static final String TS_COMMANDS_BUFFER = "MessageBufferDelay";
 	
 	public static final String[] FACTIONS_SECTION = {"plugin-interaction", "Factions"};
 	public static final String FACTIONS_PUBLIC_ONLY = "public-only";
@@ -55,6 +58,16 @@ public class StringManager {
 	public static final String[] TEAMSPEAKMESSAGES_SECTION = {"messages", "TeamspeakMessages"};
 	public static final String[] MINECRAFTEVENTMESSAGES_SECTION = {"messages", "MinecraftEvents"};
 	public static final String[] COMMANDMESSAGES_SECTION = {"messages", "MinecraftCommandMessages"};
+	
+	public static final String[][] TEAMSPEAK_TARGETS = {
+		{"none", "nobody", "null", "noting"},
+		{"channel", "chat"},
+		{"server", "broadcast"}};
+	
+	public static final String[][] TS_COMMAND_TARGETS = {
+		{"server", "broadcast"},
+		{"channel", "chat"},
+		{"pm", "private", "privatemessage", "client"}};
 	
 	// Used in BukkitSpeak.teamspeakEvent.*
 	public static final String[][] TEAMSPEAKEVENTMESSAGES = {
@@ -106,6 +119,10 @@ public class StringManager {
 	
 	private boolean factionsPublicOnly, herochatEnabled, mcMMOParty, mcMMOAdmin;
 	private String herochatChannel;
+	
+	private boolean tsCommands;
+	private String tsCommandPrefix, tsCommandNamePrefix;
+	private int tsCommandTarget, tsCommandSenderBuffer;
 	
 	private File localeFile;
 	private FileConfiguration localeConfig;
@@ -159,6 +176,15 @@ public class StringManager {
 		tsConsole = configReader.getBoolean(TEAMSPEAK_SECTION, TEAMSPEAK_CONSOLE, true);
 		tsDefaultReason = configReader.getString(TEAMSPEAK_SECTION, TEAMSPEAK_DEFAULTREASON, "-");
 		tsDebug = configReader.getBoolean(TEAMSPEAK_SECTION, TEAMSPEAK_DEBUG, false);
+		
+		tsCommands = configReader.getBoolean(TS_COMMANDS_SECTION, TS_COMMANDS_ENABLED, false);
+		tsCommandPrefix = configReader.getString(TS_COMMANDS_SECTION, TS_COMMANDS_COMMANDPREFIX, "!");
+		tsCommandNamePrefix = configReader.getString(TS_COMMANDS_SECTION, TS_COMMANDS_NAMEPREFIX, "TS: ");
+		tsCommandTarget = configReader.getChoice(TS_COMMANDS_SECTION, TS_COMMANDS_TARGET, 2, TS_COMMAND_TARGETS);
+		tsCommandSenderBuffer = configReader.getInteger(TS_COMMANDS_SECTION, TS_COMMANDS_TARGET, 50);
+		if (tsCommandSenderBuffer < 1) {
+			tsCommandSenderBuffer = 50;
+		}
 		
 		factionsPublicOnly = configReader.getBoolean(FACTIONS_SECTION, FACTIONS_PUBLIC_ONLY, true);
 		herochatEnabled = configReader.getBoolean(HEROCHAT_SECTION, HEROCHAT_ENABLED, false);
@@ -265,6 +291,26 @@ public class StringManager {
 	
 	public boolean getDebugMode() {
 		return tsDebug;
+	}
+	
+	public boolean getTeamspeakCommandsEnabled() {
+		return tsCommands;
+	}
+	
+	public String getTeamspeakCommandPrefix() {
+		return tsCommandPrefix;
+	}
+	
+	public String getTeamspeakNamePrefix() {
+		return tsCommandNamePrefix;
+	}
+	
+	public int getTeamspeakCommandTarget() {
+		return (tsCommandTarget + 1);
+	}
+	
+	public int getTeamspeakCommandSenderBuffer() {
+		return tsCommandSenderBuffer;
 	}
 	
 	public boolean getFactionsPublicOnly() {

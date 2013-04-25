@@ -182,7 +182,7 @@ class ClientUpdater implements Runnable {
 		if (updateAll) {
 			Vector<HashMap<String, String>> users;
 			try {
-				users = BukkitSpeak.getQuery().getList(JTS3ServerQuery.LISTMODE_CLIENTLIST, "-info -country -groups");
+				users = BukkitSpeak.getQuery().getList(JTS3ServerQuery.LISTMODE_CLIENTLIST, "-info,-groups,-country");
 				for (HashMap<String, String> user : users) {
 					cl.setClientData(user, Integer.valueOf(user.get("clid")));
 				}

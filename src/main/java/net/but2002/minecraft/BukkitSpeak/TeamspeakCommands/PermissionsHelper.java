@@ -100,7 +100,7 @@ public final class PermissionsHelper implements Runnable {
 		
 		// Get the initial resolved groups
 		for (String id : serverGroups.keySet()) {
-			List<?> i = inherits.get(id);
+			List<String> i = inherits.get(id);
 			if ((i == null) || (i.size() == 0)) {
 				resolved.add(id);
 				inherits.remove(id);
@@ -113,7 +113,7 @@ public final class PermissionsHelper implements Runnable {
 			BukkitSpeak.log().severe("Teamspeak permissions: Circular inheritance (No groups with no 'inherits').");
 		}
 		
-		while (unresolved.size() > 0) {
+		do {
 			// Add the permissions of resolved groups thus resolving the permissions of other groups.
 			
 			while (resolved.size() > 0) {
@@ -168,7 +168,7 @@ public final class PermissionsHelper implements Runnable {
 					}
 				}
 			}
-		}
+		} while (unresolved.size() > 0);
 		
 		// Done
 		serverGroupMap = serverGroups;
@@ -177,8 +177,16 @@ public final class PermissionsHelper implements Runnable {
 	private HashMap<String, Boolean> parseConfigSection(ConfigurationSection cs) {
 		HashMap<String, Boolean> map = new HashMap<String, Boolean>();
 		for (Map.Entry<String, Object> entry : cs.getValues(true).entrySet()) {
+			String[] path = entry.getKey().split("/");
+			StringBuilder key = new StringBuilder(path[0]);
+			for (int i = 1; i < path.length; i++) {
+				key.append(".").append(path[i]);
+			}
 			if (entry.getValue() instanceof Boolean) {
-				map.put(entry.getKey(), (Boolean) entry.getValue());
+				map.put(key.toString(), (Boolean) entry.getValue());
+			} else if (!(entry.getValue() instanceof ConfigurationSection)) {
+				BukkitSpeak.log().warning("Key " + key.toString() + " in the permissions for server group " 
+						+ cs.getCurrentPath().split("/")[0] + " did not have a boolean value assigned.");
 			}
 		}
 		return map;
@@ -193,6 +201,7 @@ public final class PermissionsHelper implements Runnable {
 			permissionsFile = new File(BukkitSpeak.getInstance().getDataFolder(), "permissions.yml");
 		}
 		permissionsConfig = YamlConfiguration.loadConfiguration(permissionsFile);
+		permissionsConfig.options().pathSeparator('/');
 	}
 	
 	public void save() {

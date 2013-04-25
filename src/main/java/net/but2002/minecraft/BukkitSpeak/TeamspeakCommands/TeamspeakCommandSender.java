@@ -5,6 +5,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 import net.but2002.minecraft.BukkitSpeak.BukkitSpeak;
 import net.but2002.minecraft.BukkitSpeak.AsyncQueryUtils.QuerySender;
@@ -139,15 +141,15 @@ public class TeamspeakCommandSender implements CommandSender {
 	}
 	
 	private String format(String s) {
-		//TODO: Format message?
+		// TODO: Format message?
 		return BukkitSpeakCommand.convertToTeamspeak(s, false, true);
 	}
 	
 	private void startBuffer() {
 		if (outSender == null || outSender.isDone()) {
 			outSender = new BufferSender(outBuffer, client);
-			Bukkit.getScheduler().runTaskLater(BukkitSpeak.getInstance(), outSender, 
-					BukkitSpeak.getStringManager().getTeamspeakCommandSenderBuffer());
+			Executors.newSingleThreadScheduledExecutor().schedule(outSender,
+					BukkitSpeak.getStringManager().getTeamspeakCommandSenderBuffer(), TimeUnit.MILLISECONDS);
 		}
 	}
 }

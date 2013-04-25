@@ -16,23 +16,19 @@ public class QueryBan implements Runnable {
 	
 	@Override
 	public void run() {
-		banClient(id, reason);
-	}
-	
-	private void banClient(int clid, String reason) {
 		if (!BukkitSpeak.getQuery().isConnected()) {
 			BukkitSpeak.log().warning("banClient(): Not connected to TS3 server!");
 			return;
 		}
 		
-		if (clid <= 0) {
+		if (id <= 0) {
 			BukkitSpeak.log().warning("banClient(): Client ID must be greater than 0!");
 			return;
 		}
 		
 		HashMap<String, String> hmIn;
 		StringBuilder command = new StringBuilder().append("banclient");
-		command.append(" clid=").append(String.valueOf(clid));
+		command.append(" clid=").append(String.valueOf(id));
 		if (reason != null && !reason.isEmpty()) {
 			command.append(" banreason=").append(BukkitSpeak.getQuery().encodeTS3String(reason));
 		}

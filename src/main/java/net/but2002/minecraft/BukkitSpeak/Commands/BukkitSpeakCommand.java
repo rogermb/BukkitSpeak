@@ -10,6 +10,7 @@ import net.but2002.minecraft.BukkitSpeak.BukkitSpeak;
 
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 
 public abstract class BukkitSpeakCommand {
@@ -42,9 +43,12 @@ public abstract class BukkitSpeakCommand {
 		if (sender instanceof Player) {
 			m = m.replaceAll("((&|$)([a-fk-orA-FK-OR0-9]))", "\u00A7$3");
 			sender.sendMessage(BukkitSpeak.getFullName() + m);
-		} else {
+		} else if (sender instanceof ConsoleCommandSender) {
 			m = m.replaceAll("((&|$|\u00A7)([a-fk-orA-FK-OR0-9]))", "");
 			BukkitSpeak.log().log(level, m);
+		} else {
+			m = (BukkitSpeak.getFullName() + m).replaceAll("((&|$|\u00A7)([a-fk-orA-FK-OR0-9]))", "");
+			sender.sendMessage(m);
 		}
 	}
 	

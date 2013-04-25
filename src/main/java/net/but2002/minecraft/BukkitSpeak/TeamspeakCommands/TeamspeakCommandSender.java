@@ -169,14 +169,15 @@ class BufferSender implements Runnable {
 	}
 	
 	public void run() {
-		StringBuilder sb = new StringBuilder();
+		if (buffer.isEmpty()) return;
+		StringBuilder sb = new StringBuilder(buffer.remove(0));
 		
-		for (String message = buffer.remove(0); buffer.size() > 0; message = "\n" + buffer.remove(0)) {
-			if (sb.length() + message.length() < MSG_MAXLENGTH) {
-				sb.append(message);
+		for (String message : buffer) {
+			if (sb.length() + message.length() + 2 < MSG_MAXLENGTH) {
+				sb.append("\n").append(message);
 			} else {
 				sendToTeamspeak(sb.toString());
-				sb = new StringBuilder(message.substring(2));
+				sb = new StringBuilder(message);
 			}
 		}
 		sendToTeamspeak(sb.toString());

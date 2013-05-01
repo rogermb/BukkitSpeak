@@ -1,6 +1,7 @@
 package net.but2002.minecraft.BukkitSpeak.teamspeakEvent;
 
 import java.util.HashMap;
+import java.util.regex.Pattern;
 
 import net.but2002.minecraft.BukkitSpeak.BukkitSpeak;
 
@@ -19,7 +20,14 @@ public class TeamspeakListener implements TeamspeakActionListener {
 			if (!BukkitSpeak.getClientList().containsID(Integer.parseInt(eventInfo.get("clid")))) return;
 			new LeaveEvent(eventInfo);
 		} else if (eventType.equals("notifytextmessage")) {
-			new ServerMessageEvent(eventInfo);
+			String message = eventInfo.get("msg");
+			
+			String reg = Pattern.quote(BukkitSpeak.getStringManager().getTeamspeakCommandPrefix());
+			if (BukkitSpeak.getStringManager().getTeamspeakCommandsEnabled() && message.matches(reg + "\\S.*")) {
+				new TeamspeakCommandEvent(eventInfo);
+			} else {
+				new ServerMessageEvent(eventInfo);
+			}
 		} else if (eventType.equals("notifyclientmoved")) {
 			new ClientMovedEvent(eventInfo);
 		}

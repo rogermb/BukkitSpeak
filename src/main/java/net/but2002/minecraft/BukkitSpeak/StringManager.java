@@ -40,7 +40,7 @@ public class StringManager {
 	public static final String TS_COMMANDS_ENABLED = "Enabled";
 	public static final String TS_COMMANDS_COMMANDPREFIX = "CommandPrefix";
 	public static final String TS_COMMANDS_NAMEPREFIX = "NamePrefix";
-	public static final String TS_COMMANDS_TARGET = "ResponseTarget";
+	public static final String TS_COMMANDS_LOGGING = "LogTeamspeakCommands";
 	public static final String TS_COMMANDS_BUFFER = "MessageBufferDelay";
 	
 	public static final String[] FACTIONS_SECTION = {"plugin-interaction", "Factions"};
@@ -57,6 +57,7 @@ public class StringManager {
 	
 	public static final String[] TEAMSPEAKEVENTMESSAGES_SECTION = {"messages", "TeamspeakEvents"};
 	public static final String[] TEAMSPEAKMESSAGES_SECTION = {"messages", "TeamspeakMessages"};
+	public static final String[] TEAMSPEAKCOMMANDMESSAGES_SECTION = {"messages", "TeamspeakCommandMessages"};
 	public static final String[] MINECRAFTEVENTMESSAGES_SECTION = {"messages", "MinecraftEvents"};
 	public static final String[] COMMANDMESSAGES_SECTION = {"messages", "MinecraftCommandMessages"};
 	
@@ -90,6 +91,11 @@ public class StringManager {
 		{"ChannelKickMessage", "[%player_displayname%] kicked you from the server for %msg%."},
 		{"BanMessage", "[%player_displayname%] banned you from the server for %msg%."}};
 	
+	// Used in BukkitSpeak.TeamspeakCommands
+	public static final String[][] TEAMSPEAKCOMMANDMESSAGES = {
+		{"PluginNotWhitelisted", "Unknown command. Type \"help\" for help."},
+		{"CommandBlacklisted", "Unknown command. Type \"help\" for help."}};
+	
 	// Used in BukkitSpeak.ChatListener
 	public static final String[][] MINECRAFTEVENTMESSAGES = {
 		{"ChatMessage", "&l%player_displayname%&r: %msg%"},
@@ -121,9 +127,9 @@ public class StringManager {
 	private boolean factionsPublicOnly, herochatEnabled, herochatEvents, mcMMOParty, mcMMOAdmin;
 	private String herochatChannel;
 	
-	private boolean tsCommands;
+	private boolean tsCommands, tsCommandLogging;
 	private String tsCommandPrefix, tsCommandNamePrefix;
-	private int tsCommandTarget, tsCommandSenderBuffer;
+	private int tsCommandSenderBuffer;
 	
 	private File localeFile;
 	private FileConfiguration localeConfig;
@@ -181,8 +187,8 @@ public class StringManager {
 		tsCommands = configReader.getBoolean(TS_COMMANDS_SECTION, TS_COMMANDS_ENABLED, false);
 		tsCommandPrefix = configReader.getString(TS_COMMANDS_SECTION, TS_COMMANDS_COMMANDPREFIX, "!");
 		tsCommandNamePrefix = configReader.getString(TS_COMMANDS_SECTION, TS_COMMANDS_NAMEPREFIX, "TS: ");
-		tsCommandTarget = configReader.getChoice(TS_COMMANDS_SECTION, TS_COMMANDS_TARGET, 2, TS_COMMAND_TARGETS);
-		tsCommandSenderBuffer = configReader.getInteger(TS_COMMANDS_SECTION, TS_COMMANDS_TARGET, 50);
+		tsCommandLogging = configReader.getBoolean(TS_COMMANDS_SECTION, TS_COMMANDS_LOGGING, true);
+		tsCommandSenderBuffer = configReader.getInteger(TS_COMMANDS_SECTION, TS_COMMANDS_BUFFER, 50);
 		if (tsCommandSenderBuffer < 1) {
 			tsCommandSenderBuffer = 50;
 		}
@@ -200,6 +206,10 @@ public class StringManager {
 		}
 		for (String[] keyPair : TEAMSPEAKMESSAGES) {
 			String currentValue = localeReader.getString(TEAMSPEAKMESSAGES_SECTION, keyPair[0], keyPair[1]);
+			strings.put(keyPair[0], currentValue);
+		}
+		for (String[] keyPair : TEAMSPEAKCOMMANDMESSAGES) {
+			String currentValue = localeReader.getString(TEAMSPEAKCOMMANDMESSAGES_SECTION, keyPair[0], keyPair[1]);
 			strings.put(keyPair[0], currentValue);
 		}
 		for (String[] keyPair : MINECRAFTEVENTMESSAGES) {
@@ -307,8 +317,8 @@ public class StringManager {
 		return tsCommandNamePrefix;
 	}
 	
-	public int getTeamspeakCommandTarget() {
-		return tsCommandTarget + 1;
+	public boolean getTeamspeakCommandLoggingEnabled() {
+		return tsCommandLogging;
 	}
 	
 	public int getTeamspeakCommandSenderBuffer() {

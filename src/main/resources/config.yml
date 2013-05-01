@@ -34,6 +34,23 @@ teamspeak:
   # Or for posting error logs in the forum
   Debug: false
 
+teamspeak-commands:
+  # Please read the documentation before enabling TS commands!
+  Enabled: false
+  
+  # The prefix to be used for TS commands. / is used by TeamSpeak itself unfortunately.
+  CommandPrefix: '!'
+  
+  # The name prefix which TeamspeakCommandSenders should get assigned.
+  NamePrefix: 'TS: '
+  
+  # Controls whether teamspeak commands get 
+  LogTeamspeakCommands: true
+  
+  # How many milliseconds should be waited before sending messages to the client on Teamspeak
+  # The buffer lets individual messages stack up and is then sent as one TS message.
+  MessageBufferDelay: 50
+
 plugin-interaction:
   Factions:
     # If Factions is enabled, should only public chat be sent to TeamSpeak?

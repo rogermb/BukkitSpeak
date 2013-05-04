@@ -137,7 +137,10 @@ public final class PermissionsHelper implements Runnable {
 					List<String> i = inherits.get(u);
 					if ((i.size() > 0) && (i.contains(id))) {
 						i.remove(id);
-						serverGroups.get(u).getPermissions().putAll(sg.getPermissions());
+						ServerGroup target = serverGroups.get(u);
+						target.getPermissions().putAll(sg.getPermissions());
+						target.getPluginWhitelist().addAll(sg.getPluginWhitelist());
+						target.getCommandBlacklist().addAll(sg.getCommandBlacklist());
 						if (i.size() == 0) {
 							resolved.add(u);
 							unresolved.remove(u);

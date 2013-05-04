@@ -65,6 +65,10 @@ public class TeamspeakCommandEvent extends TeamspeakEvent {
 					BukkitSpeak.log().warning("Could not resolve server group " + group);
 					continue;
 				}
+				
+				// If one group is blocked, the resulting group should be blocked, too
+				if (sg.isBlocked()) return new ServerGroup(true);
+				
 				combined.setOp(combined.isOp() || sg.isOp());
 				combined.getPermissions().putAll(sg.getPermissions());
 				combined.getPluginWhitelist().addAll(sg.getPluginWhitelist());

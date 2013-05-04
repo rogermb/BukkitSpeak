@@ -45,6 +45,10 @@ public class ServerGroup {
 		return blocked;
 	}
 	
+	public void setBlocked(boolean block) {
+		blocked = block;
+	}
+	
 	public boolean isOp() {
 		return operator;
 	}

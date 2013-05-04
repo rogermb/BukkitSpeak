@@ -56,6 +56,9 @@ public final class PermissionsHelper implements Runnable {
 			if (permissionsConfig.isConfigurationSection(id)) {
 				ConfigurationSection section = permissionsConfig.getConfigurationSection(id);
 				section.set("name", group.get("name"));
+				if (!section.isBoolean("blocked")) {
+					section.set("blocked", false);
+				}
 				if (!section.isBoolean("op")) {
 					section.set("op", false);
 				}
@@ -69,24 +72,33 @@ public final class PermissionsHelper implements Runnable {
 					section.set("command-blacklist", (List<String>) Lists.newArrayList("SomeBlockedCommand"));
 				}
 				Boolean op = section.getBoolean("op");
+				Boolean blocked = section.getBoolean("blocked");
 				ConfigurationSection cs = section.getConfigurationSection("permissions");
 				List<String> pluginWhitelist = section.getStringList("plugin-whitelist");
 				List<String> commandBlacklist = section.getStringList("command-blacklist");
 				inherits.put(id, section.getStringList("inherits"));
 				
-				if ((op == null) || (cs == null) || (pluginWhitelist == null) || (commandBlacklist == null)
-						|| (inherits == null)) {
+				if (op == null || blocked == null || cs == null || pluginWhitelist == null || commandBlacklist == null
+						|| inherits == null) {
 					BukkitSpeak.log().severe("Error parsing TS3 server group " + id + ".");
 					continue;
 				}
 				
-				serverGroups.put(id, new ServerGroup(op.booleanValue(), pluginWhitelist, commandBlacklist));
-				perms.put(id, parseConfigSection(cs));
+				// Don't waste time if someone is blocked anyways
+				if (blocked.booleanValue()) {
+					serverGroups.put(id, new ServerGroup(false));
+					perms.put(id, new HashMap<String, Boolean>());
+				} else {
+					serverGroups.put(id, new ServerGroup(op.booleanValue(), pluginWhitelist, commandBlacklist));
+					perms.put(id, parseConfigSection(cs));
+				}
 			} else {
 				ConfigurationSection section = permissionsConfig.createSection(id);
 				section.set("name", group.get("name"));
+				section.set("blocked", false);
 				section.set("op", false);
-				section.createSection("permissions").set("somePermission", true);
+				section.createSection("permissions").set("somePlugin.permission", true);
+				section.getConfigurationSection("permissions").createSection("OR_plugin").set("permission", true);
 				section.set("plugin-whitelist", (List<String>) Lists.newArrayList("PluginNameFromPluginsCommand"));
 				section.set("command-blacklist", (List<String>) Lists.newArrayList("SomeBlockedCommand"));
 				section.set("inherits", (List<String>) new ArrayList<String>());
@@ -185,7 +197,7 @@ public final class PermissionsHelper implements Runnable {
 			if (entry.getValue() instanceof Boolean) {
 				map.put(key.toString(), (Boolean) entry.getValue());
 			} else if (!(entry.getValue() instanceof ConfigurationSection)) {
-				BukkitSpeak.log().warning("Key " + key.toString() + " in the permissions for server group " 
+				BukkitSpeak.log().warning("Key " + key.toString() + " in the permissions for server group "
 						+ cs.getCurrentPath().split("/")[0] + " did not have a boolean value assigned.");
 			}
 		}

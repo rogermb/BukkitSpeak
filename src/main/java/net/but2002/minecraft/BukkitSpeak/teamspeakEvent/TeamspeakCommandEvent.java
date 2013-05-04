@@ -34,6 +34,8 @@ public class TeamspeakCommandEvent extends TeamspeakEvent {
 			BukkitSpeak.log().warning("Server groups: " + String.valueOf(getUser().get("client_servergroups")));
 			return;
 		}
+		if (sg.isBlocked()) return;
+		
 		TeamspeakCommandSender tscs = new TeamspeakCommandSender(getUser(), sg.isOp(), sg.getPermissions());
 		PluginCommand pc = Bukkit.getPluginCommand(commandName);
 		

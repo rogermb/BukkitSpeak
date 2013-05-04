@@ -256,6 +256,8 @@ public class BukkitSpeak extends JavaPlugin {
 			setStoppedTime(null);
 			setStartedTime(null);
 			
+			reloadStringManager();
+			
 			qc = new QueryConnector();
 			Bukkit.getScheduler().runTaskAsynchronously(this, qc);
 			

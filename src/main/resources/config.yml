@@ -29,6 +29,12 @@ teamspeak:
   # Default reason for bans and (channel) kicks
   DefaultReason: '-'
   
+  # The priority of the chat listener.
+  # By default, BukkitSpeak ignores all cancelled events (MONITOR).
+  # You can change this value to allow some or all (LOWEST) cancelled events to still be checked.
+  # Read more about chat priorities here: http://wiki.bukkit.org/Event_API_Reference#Event_Priorities
+  ChatListenerPriority: MONITOR
+  
   # Debug Mode
   # Use if the plugin doesn't work at all
   # Or for posting error logs in the forum

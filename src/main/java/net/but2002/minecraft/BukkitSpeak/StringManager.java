@@ -8,6 +8,7 @@ import java.util.logging.Level;
 import org.bukkit.configuration.MemoryConfiguration;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.event.EventPriority;
 
 import net.but2002.minecraft.BukkitSpeak.util.ConfigReader;
 
@@ -34,6 +35,7 @@ public class StringManager {
 	public static final String TEAMSPEAK_TARGET = "SendChatToTeamspeak";
 	public static final String TEAMSPEAK_CONSOLE = "LogChatInConsole";
 	public static final String TEAMSPEAK_DEFAULTREASON = "DefaultReason";
+	public static final String TEAMSPEAK_CHATPRIORITY = "ChatListenerPriority";
 	public static final String TEAMSPEAK_DEBUG = "Debug";
 	
 	public static final String TS_COMMANDS_SECTION = "teamspeak-commands";
@@ -123,6 +125,7 @@ public class StringManager {
 	private boolean tsServer, tsTextServer, tsChannel, tsTextChannel, tsPrivateMessages, tsAllowLinks, tsConsole, tsDebug;
 	private int queryPort, serverPort, tsChannelID, tsTarget;
 	private String ip, serverAdmin, serverPass, tsName, tsConsoleName, tsChannelPass, tsDefaultReason;
+	private EventPriority tsChatListenerPriority;
 	
 	private boolean factionsPublicOnly, herochatEnabled, herochatEvents, mcMMOParty, mcMMOAdmin;
 	private String herochatChannel;
@@ -182,6 +185,7 @@ public class StringManager {
 		tsTarget = configReader.getChoice(TEAMSPEAK_SECTION, TEAMSPEAK_TARGET, 0, TEAMSPEAK_TARGETS);
 		tsConsole = configReader.getBoolean(TEAMSPEAK_SECTION, TEAMSPEAK_CONSOLE, true);
 		tsDefaultReason = configReader.getString(TEAMSPEAK_SECTION, TEAMSPEAK_DEFAULTREASON, "-");
+		tsChatListenerPriority = eventPriority(configReader.getString(TEAMSPEAK_SECTION, TEAMSPEAK_CHATPRIORITY, "MONITOR"));
 		tsDebug = configReader.getBoolean(TEAMSPEAK_SECTION, TEAMSPEAK_DEBUG, false);
 		
 		tsCommands = configReader.getBoolean(TS_COMMANDS_SECTION, TS_COMMANDS_ENABLED, false);
@@ -223,6 +227,15 @@ public class StringManager {
 		
 		if (configReader.gotErrors()) BukkitSpeak.getInstance().saveConfig();
 		if (localeReader.gotErrors()) saveLocale();
+	}
+	
+	private EventPriority eventPriority(String name) {
+		for (EventPriority val : EventPriority.values()) {
+			if (val.name().equalsIgnoreCase(name)) return val;
+		}
+		BukkitSpeak.log().severe("Error while parsing " + TEAMSPEAK_SECTION + "." + TEAMSPEAK_CHATPRIORITY);
+		BukkitSpeak.getInstance().getConfig().set(TEAMSPEAK_SECTION + "." + TEAMSPEAK_CHATPRIORITY, "MONITOR");
+		return EventPriority.MONITOR;
 	}
 	
 	public String getMessage(String key) {
@@ -299,6 +312,10 @@ public class StringManager {
 	
 	public String getDefaultReason() {
 		return tsDefaultReason;
+	}
+	
+	public EventPriority getChatListenerPriority() {
+		return tsChatListenerPriority;
 	}
 	
 	public boolean getDebugMode() {

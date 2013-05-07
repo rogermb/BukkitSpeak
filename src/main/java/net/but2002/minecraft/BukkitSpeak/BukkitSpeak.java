@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.logging.Logger;
 
+import net.but2002.minecraft.BukkitSpeak.Listeners.ChatListener;
 import net.but2002.minecraft.BukkitSpeak.Listeners.PlayerListener;
 import net.but2002.minecraft.BukkitSpeak.Listeners.HerochatListener;
 import net.but2002.minecraft.BukkitSpeak.Metrics.MetricsUtil;
@@ -14,6 +15,8 @@ import net.but2002.minecraft.BukkitSpeak.teamspeakEvent.TeamspeakListener;
 
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventPriority;
+import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import com.dthielke.herochat.Herochat;
@@ -41,7 +44,8 @@ public class BukkitSpeak extends JavaPlugin {
 	private TeamspeakActionListener ts;
 	private TeamspeakKeepAlive tsKeepAlive;
 	private BukkitSpeakCommandExecutor tsCommand;
-	private PlayerListener chatListener;
+	private PlayerListener playerListener;
+	private ChatListener chatListener;
 	private Logger logger;
 	
 	private Date started, stopped, laststarted, laststopped;
@@ -66,14 +70,18 @@ public class BukkitSpeak extends JavaPlugin {
 		Bukkit.getScheduler().runTaskTimerAsynchronously(this, tsKeepAlive, KEEP_ALIVE_DELAY / 2, KEEP_ALIVE_DELAY);
 		
 		tsCommand = new BukkitSpeakCommandExecutor();
-		chatListener = new PlayerListener();
+		playerListener = new PlayerListener();
+		chatListener = new ChatListener();
 		muted = new ArrayList<String>();
 		pmRecipients = new HashMap<Integer, String>();
 		pmSenders = new HashMap<String, Integer>();
 		
-		this.getServer().getPluginManager().registerEvents(chatListener, this);
-		this.getCommand("ts").setExecutor(tsCommand);
-		this.getCommand("tsa").setExecutor(tsCommand);
+		EventPriority p = BukkitSpeak.getStringManager().getChatListenerPriority();
+		boolean i = (p == EventPriority.LOWEST);
+		getServer().getPluginManager().registerEvent(AsyncPlayerChatEvent.class, chatListener, p, chatListener, this, i);
+		getServer().getPluginManager().registerEvents(playerListener, this);
+		getCommand("ts").setExecutor(tsCommand);
+		getCommand("tsa").setExecutor(tsCommand);
 		
 		/* PlugIn hooks after the initialization */
 		factions = Bukkit.getPluginManager().isPluginEnabled("Factions");
@@ -191,10 +199,6 @@ public class BukkitSpeak extends JavaPlugin {
 		return ts;
 	}
 	
-	public PlayerListener getChatListener() {
-		return chatListener;
-	}
-	
 	public Date getStartedTime() {
 		return started;
 	}
@@ -257,6 +261,11 @@ public class BukkitSpeak extends JavaPlugin {
 			setStartedTime(null);
 			
 			reloadStringManager();
+			
+			AsyncPlayerChatEvent.getHandlerList().unregister(chatListener);
+			EventPriority p = BukkitSpeak.getStringManager().getChatListenerPriority();
+			boolean i = (p == EventPriority.LOWEST);
+			getServer().getPluginManager().registerEvent(AsyncPlayerChatEvent.class, chatListener, p, chatListener, this, i);
 			
 			qc = new QueryConnector();
 			Bukkit.getScheduler().runTaskAsynchronously(this, qc);

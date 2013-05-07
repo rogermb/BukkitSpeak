@@ -12,69 +12,13 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
-import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerKickEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 
-import com.gmail.nossr50.api.ChatAPI;
-import com.massivecraft.factions.FPlayers;
-import com.massivecraft.factions.struct.ChatMode;
-
 import de.stefan1200.jts3serverquery.JTS3ServerQuery;
 
 public class PlayerListener implements Listener {
-	
-	@EventHandler(priority = EventPriority.MONITOR)
-	public void onPlayerChat(AsyncPlayerChatEvent e) {
-		if (e.isCancelled()) return;
-		
-		if (BukkitSpeak.useHerochat()) return; //Use Herochat's ChannelChatEvent instead, if using herochat.
-		if (BukkitSpeak.getStringManager().getTeamspeakTarget() == TsTargetEnum.NONE) return;
-		if (e.getPlayer() == null || e.getMessage().isEmpty()) return;
-		
-		/* Factions check */
-		if (BukkitSpeak.hasFactions() && BukkitSpeak.getStringManager().getFactionsPublicOnly()) {
-			if (FPlayers.i.get(e.getPlayer()).getChatMode() != ChatMode.PUBLIC) {
-				return;
-			}
-		}
-		
-		/* mcMMO check */
-		if (BukkitSpeak.hasMcMMO()) {
-			if (ChatAPI.isUsingPartyChat(e.getPlayer())
-					&& BukkitSpeak.getStringManager().getMcMMOFilterPartyChat()) {
-				return;
-			}
-			if (ChatAPI.isUsingAdminChat(e.getPlayer())
-					&& BukkitSpeak.getStringManager().getMcMMOFilterAdminChat()) {
-				return;
-			}
-		}
-		
-		if (!hasPermission(e.getPlayer(), "chat")) return;
-		
-		String tsMsg = BukkitSpeak.getStringManager().getMessage("ChatMessage");
-		HashMap<String, String> repl = new HashMap<String, String>();
-		repl.put("%player_name%", e.getPlayer().getName());
-		repl.put("%player_displayname%", e.getPlayer().getDisplayName());
-		repl.put("%msg%", e.getMessage());
-		
-		tsMsg = replaceKeys(tsMsg, repl);
-		tsMsg = convert(tsMsg, true, BukkitSpeak.getStringManager().getAllowLinks());
-		
-		if (tsMsg.isEmpty()) return;
-		
-		if (BukkitSpeak.getStringManager().getTeamspeakTarget() == TsTargetEnum.CHANNEL) {
-			QuerySender qs = new QuerySender(BukkitSpeak.getQuery().getCurrentQueryClientChannelID(),
-					JTS3ServerQuery.TEXTMESSAGE_TARGET_CHANNEL, tsMsg);
-			Bukkit.getScheduler().runTaskAsynchronously(BukkitSpeak.getInstance(), qs);
-		} else if (BukkitSpeak.getStringManager().getTeamspeakTarget() == TsTargetEnum.SERVER) {
-			QuerySender qs = new QuerySender(BukkitSpeak.getQuery().getCurrentQueryClientServerID(),
-					JTS3ServerQuery.TEXTMESSAGE_TARGET_VIRTUALSERVER, tsMsg);
-			Bukkit.getScheduler().runTaskAsynchronously(BukkitSpeak.getInstance(), qs);
-		}
-	}
 	
 	@EventHandler(priority = EventPriority.MONITOR)
 	public void onPlayerJoin(PlayerJoinEvent e) {

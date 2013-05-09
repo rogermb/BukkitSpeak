@@ -41,11 +41,21 @@ public class TeamspeakCommandEvent extends TeamspeakEvent {
 		
 		// Vanilla and Bukkit commands don't need to be on the whitelist
 		if (pc != null && !(sg.getPluginWhitelist().contains(pc.getPlugin().getName()))) {
-			tscs.sendMessage(BukkitSpeak.getStringManager().getMessage("PluginNotWhitelisted"));
+			String m = BukkitSpeak.getStringManager().getMessage("PluginNotWhitelisted");
+			if (m.isEmpty()) return;
+			getUser().put("command_name", pc.getName());
+			getUser().put("command_description", pc.getDescription());
+			getUser().put("command_plugin", pc.getPlugin().getName());
+			tscs.sendMessage(replaceValues(m, true));
 			return;
 		}
 		if (sg.getCommandBlacklist().contains(commandName)) {
-			tscs.sendMessage(BukkitSpeak.getStringManager().getMessage("CommandBlacklisted"));
+			String m = BukkitSpeak.getStringManager().getMessage("CommandBlacklisted");
+			if (m.isEmpty()) return;
+			getUser().put("command_name", pc.getName());
+			getUser().put("command_description", pc.getDescription());
+			getUser().put("command_plugin", pc.getPlugin().getName());
+			tscs.sendMessage(replaceValues(m, true));
 			return;
 		}
 		

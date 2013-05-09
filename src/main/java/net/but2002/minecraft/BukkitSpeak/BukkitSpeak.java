@@ -162,6 +162,14 @@ public class BukkitSpeak extends JavaPlugin {
 		}
 	}
 	
+	public ChatListener getChatListener() {
+		return chatListener;
+	}
+	
+	public PlayerListener getPlayerListener() {
+		return playerListener;
+	}
+	
 	public static ClientList getClientList() {
 		return clients;
 	}

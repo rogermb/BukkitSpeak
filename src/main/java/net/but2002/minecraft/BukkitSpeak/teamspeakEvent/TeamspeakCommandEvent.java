@@ -23,9 +23,9 @@ public class TeamspeakCommandEvent extends TeamspeakEvent {
 	
 	@Override
 	protected void performAction() {
-		String command = info.get("msg");
-		command = command.substring(BukkitSpeak.getStringManager().getTeamspeakCommandPrefix().length());
-		String commandName = command.split(" ")[0].toLowerCase();
+		String cmd = info.get("msg");
+		cmd = cmd.substring(BukkitSpeak.getStringManager().getTeamspeakCommandPrefix().length());
+		String commandName = cmd.split(" ")[0].toLowerCase();
 		
 		ServerGroup sg = getServerGroup(getUser().get("client_servergroups"));
 		if (sg == null) {
@@ -47,6 +47,10 @@ public class TeamspeakCommandEvent extends TeamspeakEvent {
 			getUser().put("command_description", pc.getDescription());
 			getUser().put("command_plugin", pc.getPlugin().getName());
 			tscs.sendMessage(replaceValues(m, true));
+			if (BukkitSpeak.getStringManager().getTeamspeakCommandLoggingEnabled()) {
+				BukkitSpeak.log().info("TS client \"" + getClientName() + "\" tried executing command \"" + cmd + "\",");
+				BukkitSpeak.log().info("but the plugin \"" + pc.getPlugin().getName() + "\" was not whitelisted.");
+			}
 			return;
 		}
 		if (sg.getCommandBlacklist().contains(commandName)) {
@@ -56,13 +60,17 @@ public class TeamspeakCommandEvent extends TeamspeakEvent {
 			getUser().put("command_description", pc.getDescription());
 			getUser().put("command_plugin", pc.getPlugin().getName());
 			tscs.sendMessage(replaceValues(m, true));
+			if (BukkitSpeak.getStringManager().getTeamspeakCommandLoggingEnabled()) {
+				BukkitSpeak.log().info("TS client \"" + getClientName() + "\" tried executing command \"" + cmd + "\",");
+				BukkitSpeak.log().info("but the command was blacklisted.");
+			}
 			return;
 		}
 		
 		if (BukkitSpeak.getStringManager().getTeamspeakCommandLoggingEnabled()) {
-			BukkitSpeak.log().info("Teamspeak client \"" + getClientName() + "\" executed command \"" + command + "\".");
+			BukkitSpeak.log().info("TS client \"" + getClientName() + "\" executed command \"" + cmd + "\".");
 		}
-		Bukkit.dispatchCommand(tscs, command);
+		Bukkit.dispatchCommand(tscs, cmd);
 	}
 	
 	private ServerGroup getServerGroup(String entry) {

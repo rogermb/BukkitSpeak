@@ -17,6 +17,9 @@ teamspeak:
   ListenToServerBroadcasts: true
   ListenToChannel: true
   ListenToChannelChat: true
+  
+  # This will NOT publish your private TS messages!
+  # It allows Minecraft users to send messages to specific TS clients.
   ListenToPrivateMessages: true
   AllowLinksInMessages: true
   

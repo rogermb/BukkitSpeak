@@ -81,10 +81,10 @@ public class QueryConnector implements Runnable {
 		}
 		
 		if (stringManager.getUseChannel()) {
-			query.addEventNotify(JTS3ServerQuery.EVENT_MODE_CHANNEL, stringManager.getChannelID());
+			query.addEventNotify(JTS3ServerQuery.EVENT_MODE_CHANNEL, query.getCurrentQueryClientChannelID());
 		}
 		if (stringManager.getUseTextChannel()) {
-			query.addEventNotify(JTS3ServerQuery.EVENT_MODE_TEXTCHANNEL, stringManager.getChannelID());
+			query.addEventNotify(JTS3ServerQuery.EVENT_MODE_TEXTCHANNEL, query.getCurrentQueryClientChannelID());
 		}
 		if (stringManager.getUsePrivateMessages()) {
 			query.addEventNotify(JTS3ServerQuery.EVENT_MODE_TEXTPRIVATE, 0);

@@ -4,10 +4,12 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Queue;
+import java.util.Set;
 import java.util.Vector;
 import java.util.logging.Level;
 
@@ -43,8 +45,15 @@ public final class PermissionsHelper implements Runnable {
 		HashMap<String, ServerGroup> serverGroups = new HashMap<String, ServerGroup>();
 		HashMap<String, HashMap<String, Boolean>> perms = new HashMap<String, HashMap<String, Boolean>>();
 		HashMap<String, List<String>> inherits = new HashMap<String, List<String>>();
+		Set<String> removedServerGroups = new HashSet<String>();
 		Queue<String> resolved = new LinkedList<String>();
 		Queue<String> unresolved = new LinkedList<String>();
+		
+		for (String key : permissionsConfig.getKeys(false)) {
+			if (permissionsConfig.isConfigurationSection(key)) {
+				removedServerGroups.add(key);
+			}
+		}
 		
 		// Set up a raw list of permissions
 		Vector<HashMap<String, String>> groups = BukkitSpeak.getQuery().getList(JTS3ServerQuery.LISTMODE_SERVERGROUPLIST);
@@ -92,6 +101,8 @@ public final class PermissionsHelper implements Runnable {
 					serverGroups.put(id, new ServerGroup(op.booleanValue(), pluginWhitelist, commandBlacklist));
 					perms.put(id, parseConfigSection(cs));
 				}
+				
+				removedServerGroups.remove(id);
 			} else {
 				ConfigurationSection section = permissionsConfig.createSection(id);
 				section.set("name", group.get("name"));
@@ -105,6 +116,11 @@ public final class PermissionsHelper implements Runnable {
 				
 				serverGroups.put(id, new ServerGroup());
 			}
+		}
+		
+		for (String id : removedServerGroups) {
+			permissionsConfig.getConfigurationSection(id).set("removed", "This server group has been removed on Teamspeak.");
+			BukkitSpeak.log().warning("Obsolete permissions.yml server group entry: ID " + id + ".");
 		}
 		
 		// Save the config

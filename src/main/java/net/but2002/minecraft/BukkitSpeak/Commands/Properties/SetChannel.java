@@ -86,8 +86,8 @@ public class SetChannel extends SetProperty {
 		if (args.length != 3) return null;
 		List<String> al = new ArrayList<String>();
 		for (String s : BukkitSpeak.getChannelList().getChannelNames()) {
-			if (s.toLowerCase().startsWith(args[2].toLowerCase())) {
-				al.add(s);
+			if (s.toLowerCase().replaceAll(" ", "").startsWith(args[2].toLowerCase())) {
+				al.add(s.replaceAll(" ", ""));
 			}
 		}
 		return al;

@@ -50,10 +50,7 @@ teamspeak-commands:
   # The prefix to be used for TS commands. / is used by TeamSpeak itself unfortunately.
   CommandPrefix: '!'
   
-  # The name prefix which TeamspeakCommandSenders should get assigned.
-  NamePrefix: 'TS: '
-  
-  # Controls whether teamspeak commands get 
+  # Controls whether teamspeak commands get logged or not
   LogTeamspeakCommands: true
   
   # How many milliseconds should be waited before sending messages to the client on Teamspeak

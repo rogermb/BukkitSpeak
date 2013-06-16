@@ -7,6 +7,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
+import java.util.regex.Matcher;
 
 import net.but2002.minecraft.BukkitSpeak.BukkitSpeak;
 import net.but2002.minecraft.BukkitSpeak.AsyncQueryUtils.QuerySender;
@@ -35,7 +36,7 @@ public class TeamspeakCommandSender implements CommandSender {
 	
 	public TeamspeakCommandSender(Map<String, String> clientInfo, boolean op, Map<String, Boolean> perms) {
 		client = clientInfo;
-		name = client.get("client_nickname");
+		name = replaceValues(BukkitSpeak.getStringManager().getMessage("TeamspeakCommandSenderName"), client, true);
 		outBuffer = Collections.synchronizedList(new LinkedList<String>());
 		operator = op;
 		
@@ -117,7 +118,7 @@ public class TeamspeakCommandSender implements CommandSender {
 	
 	@Override
 	public String getName() {
-		return BukkitSpeak.getStringManager().getTeamspeakNamePrefix() + name;
+		return name;
 	}
 	
 	@Override
@@ -151,6 +152,24 @@ public class TeamspeakCommandSender implements CommandSender {
 			Executors.newSingleThreadScheduledExecutor().schedule(outSender,
 					BukkitSpeak.getStringManager().getTeamspeakCommandSenderBuffer(), TimeUnit.MILLISECONDS);
 		}
+	}
+	
+	public static String replaceValues(String input, Map<String, String> repl, boolean color) {
+		String output = input;
+		output = Matcher.quoteReplacement(output);
+		if (color) {
+			output = output.replaceAll("((&|$)([a-fk-orA-FK-OR0-9]))", "\u00A7$3");
+		} else {
+			output = output.replaceAll("((&|$|\u00A7)([a-fk-orA-FK-OR0-9]))", "");
+		}
+		
+		for (String key : repl.keySet()) {
+			if ((key != null) && (repl.get(key) != null)) {
+				output = output.replace("%" + key + "%", repl.get(key));
+			}
+		}
+		
+		return output;
 	}
 }
 

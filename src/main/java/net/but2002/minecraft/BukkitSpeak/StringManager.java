@@ -41,7 +41,6 @@ public class StringManager {
 	public static final String TS_COMMANDS_SECTION = "teamspeak-commands";
 	public static final String TS_COMMANDS_ENABLED = "Enabled";
 	public static final String TS_COMMANDS_COMMANDPREFIX = "CommandPrefix";
-	public static final String TS_COMMANDS_NAMEPREFIX = "NamePrefix";
 	public static final String TS_COMMANDS_LOGGING = "LogTeamspeakCommands";
 	public static final String TS_COMMANDS_BUFFER = "MessageBufferDelay";
 	
@@ -96,7 +95,8 @@ public class StringManager {
 	// Used in BukkitSpeak.TeamspeakCommands
 	public static final String[][] TEAMSPEAKCOMMANDMESSAGES = {
 		{"PluginNotWhitelisted", "Unknown command. Type \"help\" for help."},
-		{"CommandBlacklisted", "Unknown command. Type \"help\" for help."}};
+		{"CommandBlacklisted", "Unknown command. Type \"help\" for help."},
+		{"TeamspeakCommandSenderName", "&a[&6TS&a] &e%client_nickname%&r"}};
 	
 	// Used in BukkitSpeak.ChatListener
 	public static final String[][] MINECRAFTEVENTMESSAGES = {
@@ -131,7 +131,7 @@ public class StringManager {
 	private String herochatChannel;
 	
 	private boolean tsCommands, tsCommandLogging;
-	private String tsCommandPrefix, tsCommandNamePrefix;
+	private String tsCommandPrefix;
 	private int tsCommandSenderBuffer;
 	
 	private File localeFile;
@@ -190,7 +190,6 @@ public class StringManager {
 		
 		tsCommands = configReader.getBoolean(TS_COMMANDS_SECTION, TS_COMMANDS_ENABLED, false);
 		tsCommandPrefix = configReader.getString(TS_COMMANDS_SECTION, TS_COMMANDS_COMMANDPREFIX, "!");
-		tsCommandNamePrefix = configReader.getString(TS_COMMANDS_SECTION, TS_COMMANDS_NAMEPREFIX, "TS: ");
 		tsCommandLogging = configReader.getBoolean(TS_COMMANDS_SECTION, TS_COMMANDS_LOGGING, true);
 		tsCommandSenderBuffer = configReader.getInteger(TS_COMMANDS_SECTION, TS_COMMANDS_BUFFER, 50);
 		if (tsCommandSenderBuffer < 1) {
@@ -328,10 +327,6 @@ public class StringManager {
 	
 	public String getTeamspeakCommandPrefix() {
 		return tsCommandPrefix;
-	}
-	
-	public String getTeamspeakNamePrefix() {
-		return tsCommandNamePrefix;
 	}
 	
 	public boolean getTeamspeakCommandLoggingEnabled() {

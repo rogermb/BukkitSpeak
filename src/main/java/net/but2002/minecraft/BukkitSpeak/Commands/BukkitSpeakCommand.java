@@ -1,7 +1,7 @@
 package net.but2002.minecraft.BukkitSpeak.Commands;
 
-import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -174,7 +174,7 @@ public abstract class BukkitSpeakCommand {
 		return null;
 	}
 	
-	public static String replaceKeys(String input, HashMap<String, String> repl) {
+	public static String replaceKeys(String input, Map<String, String> repl) {
 		if (!input.isEmpty() && repl != null && repl.size() > 0) {
 			String s = input;
 			for (String key : repl.keySet()) {

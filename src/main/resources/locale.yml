@@ -18,6 +18,7 @@ messages:
   TeamspeakCommandMessages:
     PluginNotWhitelisted: 'You''re not allowed to run commands of that plugin.'
     CommandBlacklisted: 'The command you''re trying to run is blacklisted.'
+    TeamspeakCommandSenderName: '&a[&6TS&a] &e%client_nickname%&r'
   MinecraftEvents:
     ChatMessage: '&l%player_displayname%&r: %msg%'
     LoginMessage: '&l%player_displayname%&r logged in.'

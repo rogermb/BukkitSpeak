@@ -515,7 +515,7 @@ public class ConfigReader {
 	}
 	
 	private void logConfigError(String message){
-		plugin.getLogger().severe("Error while parsing " + message);
+		plugin.getLogger().warning("Error while parsing " + message);
 		err = true;
 	}
 	

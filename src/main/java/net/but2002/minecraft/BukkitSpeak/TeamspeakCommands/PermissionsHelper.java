@@ -57,6 +57,11 @@ public final class PermissionsHelper implements Runnable {
 		
 		// Set up a raw list of permissions
 		Vector<HashMap<String, String>> groups = BukkitSpeak.getQuery().getList(JTS3ServerQuery.LISTMODE_SERVERGROUPLIST);
+		if (groups == null) {
+			BukkitSpeak.log().severe("Unable to retrieve Teamspeak ServerGroups.");
+			BukkitSpeak.log().severe("This could be caused by a permissions issue.");
+			return;
+		}
 		for (HashMap<String, String> group : groups) {
 			String id = group.get("sgid");
 			String type = group.get("type");

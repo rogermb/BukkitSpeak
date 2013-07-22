@@ -15,16 +15,8 @@ import org.bukkit.entity.Player;
 
 public class CommandPoke extends BukkitSpeakCommand {
 	
-	private static final String[] NAMES = {"poke"};
-	
-	@Override
-	public String getName() {
-		return NAMES[0];
-	}
-	
-	@Override
-	public String[] getNames() {
-		return NAMES;
+	public CommandPoke() {
+		super("poke");
 	}
 	
 	@Override

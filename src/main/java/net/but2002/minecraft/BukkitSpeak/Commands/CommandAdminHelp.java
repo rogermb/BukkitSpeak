@@ -7,16 +7,8 @@ import org.bukkit.command.CommandSender;
 
 public class CommandAdminHelp extends BukkitSpeakCommand {
 	
-	private static final String[] NAMES = {"help", "adminhelp"};
-	
-	@Override
-	public String getName() {
-		return NAMES[0];
-	}
-	
-	@Override
-	public String[] getNames() {
-		return NAMES;
+	public CommandAdminHelp() {
+		super("help", "adminhelp");
 	}
 	
 	@Override

@@ -10,16 +10,8 @@ import org.bukkit.entity.Player;
 
 public class CommandReload extends BukkitSpeakCommand {
 	
-	private static final String[] NAMES = {"reload"};
-	
-	@Override
-	public String getName() {
-		return NAMES[0];
-	}
-	
-	@Override
-	public String[] getNames() {
-		return NAMES;
+	public CommandReload() {
+		super("reload");
 	}
 	
 	@Override

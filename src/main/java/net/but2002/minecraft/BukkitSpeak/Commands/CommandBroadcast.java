@@ -16,16 +16,8 @@ import de.stefan1200.jts3serverquery.JTS3ServerQuery;
 
 public class CommandBroadcast extends BukkitSpeakCommand {
 	
-	private static final String[] NAMES = {"broadcast"};
-	
-	@Override
-	public String getName() {
-		return NAMES[0];
-	}
-	
-	@Override
-	public String[] getNames() {
-		return NAMES;
+	public CommandBroadcast() {
+		super("broadcast");
 	}
 	
 	@Override

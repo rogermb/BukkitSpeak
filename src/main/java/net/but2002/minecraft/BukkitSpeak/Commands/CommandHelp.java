@@ -9,16 +9,8 @@ import org.bukkit.command.CommandSender;
 
 public class CommandHelp extends BukkitSpeakCommand {
 	
-	private static final String[] NAMES = {"help"};
-	
-	@Override
-	public String getName() {
-		return NAMES[0];
-	}
-	
-	@Override
-	public String[] getNames() {
-		return NAMES;
+	public CommandHelp() {
+		super("help");
 	}
 	
 	@Override

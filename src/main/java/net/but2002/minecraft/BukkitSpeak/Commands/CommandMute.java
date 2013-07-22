@@ -11,16 +11,8 @@ import org.bukkit.entity.Player;
 
 public class CommandMute extends BukkitSpeakCommand {
 	
-	private static final String[] NAMES = {"mute"};
-	
-	@Override
-	public String getName() {
-		return NAMES[0];
-	}
-	
-	@Override
-	public String[] getNames() {
-		return NAMES;
+	public CommandMute() {
+		super("mute");
 	}
 	
 	@Override

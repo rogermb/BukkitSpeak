@@ -14,16 +14,8 @@ import org.bukkit.entity.Player;
 
 public class CommandBan extends BukkitSpeakCommand {
 	
-	private static final String[] NAMES = {"ban"};
-	
-	@Override
-	public String getName() {
-		return NAMES[0];
-	}
-	
-	@Override
-	public String[] getNames() {
-		return NAMES;
+	public CommandBan() {
+		super("ban");
 	}
 	
 	@Override

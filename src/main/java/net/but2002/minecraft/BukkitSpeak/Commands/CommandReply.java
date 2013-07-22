@@ -16,16 +16,8 @@ import de.stefan1200.jts3serverquery.JTS3ServerQuery;
 
 public class CommandReply extends BukkitSpeakCommand {
 	
-	private static final String[] NAMES = {"reply", "r"};
-	
-	@Override
-	public String getName() {
-		return NAMES[0];
-	}
-	
-	@Override
-	public String[] getNames() {
-		return NAMES;
+	public CommandReply() {
+		super("reply", "r");
 	}
 	
 	@Override

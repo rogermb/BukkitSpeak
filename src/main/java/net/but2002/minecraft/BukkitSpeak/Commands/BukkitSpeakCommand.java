@@ -37,6 +37,23 @@ public abstract class BukkitSpeakCommand {
 			"[i]"};				// 18
 	
 	protected static final int TS_MAXLENGHT = 100;
+	private final String[] NAMES;
+	
+	protected BukkitSpeakCommand(String firstName, String... otherNames) {
+		if (firstName == null || firstName.isEmpty()) {
+			throw new IllegalArgumentException("A Command did not have a name specified.");
+		}
+		
+		if (otherNames == null) {
+			NAMES = new String[] {firstName};
+		} else {
+			NAMES = new String[otherNames.length + 1];
+			NAMES[0] = firstName;
+			for (int i = 0; i < otherNames.length; i++) {
+				NAMES[i + 1] = otherNames[i];
+			}
+		}
+	}
 	
 	protected void send(CommandSender sender, Level level, String msg) {
 		String m = msg;
@@ -203,9 +220,13 @@ public abstract class BukkitSpeakCommand {
 		return builder.toString();
 	}
 	
-	public abstract String getName();
+	public final String getName() {
+		return NAMES[0];
+	}
 	
-	public abstract String[] getNames();
+	public final String[] getNames() {
+		return NAMES;
+	}
 	
 	public abstract void execute(CommandSender sender, String[] args);
 	

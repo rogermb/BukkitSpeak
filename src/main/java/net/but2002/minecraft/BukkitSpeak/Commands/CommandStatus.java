@@ -10,16 +10,8 @@ import org.bukkit.command.CommandSender;
 
 public class CommandStatus extends BukkitSpeakCommand {
 	
-	private static final String[] NAMES = {"status", "version"};
-	
-	@Override
-	public String getName() {
-		return NAMES[0];
-	}
-	
-	@Override
-	public String[] getNames() {
-		return NAMES;
+	public CommandStatus() {
+		super("status", "version");
 	}
 	
 	@Override

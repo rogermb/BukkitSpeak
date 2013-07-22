@@ -18,13 +18,11 @@ public class CommandSet extends BukkitSpeakCommand {
 		new SetPrivateMessagesListener(), new SetAllowLinks(), new SetTarget(), new SetConsoleLog(), 
 		new SetDefaultReason(), new SetChatListenerPriority(), new SetDebug()};
 	
-	private static final String[] NAMES = {"set"};
-	
 	private String props;
 	private ConfigurationSection tsSection;
 	
 	public CommandSet() {
-		super();
+		super("set");
 		StringBuilder sb = new StringBuilder();
 		for (SetProperty prop : PROPERTIES) {
 			if (sb.length() > 0) sb.append("&a, ");
@@ -32,16 +30,6 @@ public class CommandSet extends BukkitSpeakCommand {
 			sb.append(prop.getProperty());
 		}
 		props = sb.toString();
-	}
-	
-	@Override
-	public String getName() {
-		return NAMES[0];
-	}
-	
-	@Override
-	public String[] getNames() {
-		return NAMES;
 	}
 	
 	public void execute(CommandSender sender, String[] args) {

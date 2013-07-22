@@ -17,16 +17,8 @@ import de.stefan1200.jts3serverquery.JTS3ServerQuery;
 
 public class CommandPm extends BukkitSpeakCommand {
 	
-	private static final String[] NAMES = {"pm"};
-	
-	@Override
-	public String getName() {
-		return NAMES[0];
-	}
-	
-	@Override
-	public String[] getNames() {
-		return NAMES;
+	public CommandPm() {
+		super("pm");
 	}
 	
 	@Override

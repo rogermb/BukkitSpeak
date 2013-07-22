@@ -13,17 +13,10 @@ import net.but2002.minecraft.BukkitSpeak.ClientList;
 
 public class CommandList extends BukkitSpeakCommand {
 	
-	private static final String[] NAMES = {"list"};
 	private static final String[] VALUES = {"server", "channel"};
 	
-	@Override
-	public String getName() {
-		return NAMES[0];
-	}
-	
-	@Override
-	public String[] getNames() {
-		return NAMES;
+	public CommandList() {
+		super("list");
 	}
 	
 	@Override

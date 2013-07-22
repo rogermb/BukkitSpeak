@@ -16,16 +16,8 @@ import de.stefan1200.jts3serverquery.JTS3ServerQuery;
 
 public class CommandChat extends BukkitSpeakCommand {
 	
-	private static final String[] NAMES = {"chat"};
-	
-	@Override
-	public String getName() {
-		return NAMES[0];
-	}
-	
-	@Override
-	public String[] getNames() {
-		return NAMES;
+	public CommandChat() {
+		super("chat");
 	}
 	
 	@Override

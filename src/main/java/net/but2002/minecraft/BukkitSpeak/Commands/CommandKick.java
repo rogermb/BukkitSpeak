@@ -14,16 +14,8 @@ import org.bukkit.entity.Player;
 
 public class CommandKick extends BukkitSpeakCommand {
 	
-	private static final String[] NAMES = {"kick"};
-	
-	@Override
-	public String getName() {
-		return NAMES[0];
-	}
-	
-	@Override
-	public String[] getNames() {
-		return NAMES;
+	public CommandKick() {
+		super("kick");
 	}
 	
 	@Override

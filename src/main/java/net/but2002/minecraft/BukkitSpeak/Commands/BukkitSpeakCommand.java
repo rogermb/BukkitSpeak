@@ -14,7 +14,7 @@ import org.bukkit.entity.Player;
 public abstract class BukkitSpeakCommand {
 	
 	protected static final int TS_MAXLENGHT = 100;
-	private final String[] NAMES;
+	private final String[] names;
 	
 	protected BukkitSpeakCommand(String firstName, String... otherNames) {
 		if (firstName == null || firstName.isEmpty()) {
@@ -22,12 +22,12 @@ public abstract class BukkitSpeakCommand {
 		}
 		
 		if (otherNames == null) {
-			NAMES = new String[] {firstName};
+			names = new String[] {firstName};
 		} else {
-			NAMES = new String[otherNames.length + 1];
-			NAMES[0] = firstName;
+			names = new String[otherNames.length + 1];
+			names[0] = firstName;
 			for (int i = 0; i < otherNames.length; i++) {
-				NAMES[i + 1] = otherNames[i];
+				names[i + 1] = otherNames[i];
 			}
 		}
 	}
@@ -46,7 +46,7 @@ public abstract class BukkitSpeakCommand {
 		}
 	}
 	
-	public void broadcastMessage(String mcMsg, CommandSender sender) {
+	protected void broadcastMessage(String mcMsg, CommandSender sender) {
 		if (mcMsg == null || mcMsg.isEmpty()) return;
 		for (Player pl : Bukkit.getServer().getOnlinePlayers()) {
 			if (!BukkitSpeak.getMuted(pl)) {
@@ -75,11 +75,11 @@ public abstract class BukkitSpeakCommand {
 	}
 	
 	public final String getName() {
-		return NAMES[0];
+		return names[0];
 	}
 	
 	public final String[] getNames() {
-		return NAMES;
+		return names;
 	}
 	
 	public abstract void execute(CommandSender sender, String[] args);

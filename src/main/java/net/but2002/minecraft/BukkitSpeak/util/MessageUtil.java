@@ -38,7 +38,6 @@ public abstract class MessageUtil {
 			while (m.find()) {
 				int i = m.start();
 				int j = getIndex(s.charAt(i + 1));
-				;
 				
 				if (j <= 15) {
 					if (colored) {

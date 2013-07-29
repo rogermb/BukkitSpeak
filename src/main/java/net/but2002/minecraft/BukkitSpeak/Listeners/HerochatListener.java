@@ -1,11 +1,10 @@
 package net.but2002.minecraft.BukkitSpeak.Listeners;
 
-import java.util.HashMap;
-
 import net.but2002.minecraft.BukkitSpeak.BukkitSpeak;
 import net.but2002.minecraft.BukkitSpeak.TsTargetEnum;
 import net.but2002.minecraft.BukkitSpeak.AsyncQueryUtils.QuerySender;
-import net.but2002.minecraft.BukkitSpeak.Commands.BukkitSpeakCommand;
+import net.but2002.minecraft.BukkitSpeak.util.MessageUtil;
+import net.but2002.minecraft.BukkitSpeak.util.Replacer;
 
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -21,22 +20,17 @@ import de.stefan1200.jts3serverquery.JTS3ServerQuery;
 public class HerochatListener implements Listener {
 	
 	@EventHandler(priority = EventPriority.MONITOR)
-	public void onHeroChatMessage(ChannelChatEvent event) {
+	public void onHeroChatMessage(ChannelChatEvent e) {
 		if (!BukkitSpeak.useHerochat()) return; //We're not using Herochat, so don't do this
 		if (BukkitSpeak.getStringManager().getHerochatChannel() == null) return; //This shouldn't happen, but just in case.
-		if (!hasPermission(event.getSender().getPlayer(), "chat")) return;
+		if (!hasPermission(e.getSender().getPlayer(), "chat")) return;
 		
-		String channelName = event.getChannel().getName();
+		String channelName = e.getChannel().getName();
 		
-		if (event.getResult() == Result.ALLOWED && BukkitSpeak.getStringManager().getHerochatChannel().equalsIgnoreCase(channelName)) {
+		if (e.getResult() == Result.ALLOWED && BukkitSpeak.getStringManager().getHerochatChannel().equalsIgnoreCase(channelName)) {
 			String tsMsg = BukkitSpeak.getStringManager().getMessage("ChatMessage");
-			HashMap<String, String> repl = new HashMap<String, String>();
-			repl.put("%player_name%", event.getSender().getName());
-			repl.put("%player_displayname%", event.getSender().getPlayer().getDisplayName());
-			repl.put("%msg%", event.getMessage());
-			
-			tsMsg = replaceKeys(tsMsg, repl);
-			tsMsg = convert(tsMsg, true, BukkitSpeak.getStringManager().getAllowLinks());
+			tsMsg = new Replacer().addPlayer(e.getSender().getPlayer()).addMessage(e.getMessage()).replace(tsMsg);
+			tsMsg = MessageUtil.toTeamspeak(tsMsg, true, BukkitSpeak.getStringManager().getAllowLinks());
 			
 			if (tsMsg.isEmpty()) return; //Don't spam with empty messages.
 			
@@ -50,14 +44,6 @@ public class HerochatListener implements Listener {
 				Bukkit.getScheduler().runTaskAsynchronously(BukkitSpeak.getInstance(), qs);
 			}
 		}
-	}
-	
-	private String convert(String input, Boolean color, Boolean links) {
-		return BukkitSpeakCommand.convertToTeamspeak(input, color, links);
-	}
-	
-	private String replaceKeys(String input, HashMap<String, String> repl) {
-		return BukkitSpeakCommand.replaceKeys(input, repl);
 	}
 	
 	private boolean hasPermission(Player player, String perm) {

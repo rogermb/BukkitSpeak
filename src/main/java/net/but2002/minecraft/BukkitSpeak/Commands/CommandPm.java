@@ -8,6 +8,8 @@ import java.util.logging.Level;
 
 import net.but2002.minecraft.BukkitSpeak.BukkitSpeak;
 import net.but2002.minecraft.BukkitSpeak.AsyncQueryUtils.QuerySender;
+import net.but2002.minecraft.BukkitSpeak.util.MessageUtil;
+import net.but2002.minecraft.BukkitSpeak.util.Replacer;
 
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
@@ -59,23 +61,16 @@ public class CommandPm extends BukkitSpeakCommand {
 		
 		String tsMsg = BukkitSpeak.getStringManager().getMessage("PrivateMessage");
 		String mcMsg = BukkitSpeak.getStringManager().getMessage("Pm");
-		String name, displayName;
+		String name;
 		if (sender instanceof Player) {
 			name = ((Player) sender).getName();
-			displayName = ((Player) sender).getDisplayName();
 		} else {
-			name = convertToMinecraft(BukkitSpeak.getStringManager().getConsoleName(), false, false);
-			displayName = BukkitSpeak.getStringManager().getConsoleName();
+			name = MessageUtil.toMinecraft(BukkitSpeak.getStringManager().getConsoleName(), false, false);
 		}
 		
-		HashMap<String, String> repl = new HashMap<String, String>();
-		repl.put("%player_name%", name);
-		repl.put("%player_displayname%", displayName);
-		repl.put("%target%", client.get("client_nickname"));
-		repl.put("%msg%", sb.toString());
-		
-		tsMsg = convertToTeamspeak(replaceKeys(tsMsg, repl), true, BukkitSpeak.getStringManager().getAllowLinks());
-		mcMsg = replaceKeys(mcMsg, repl);
+		Replacer r = new Replacer().addSender(sender).addTargetClient(client).addMessage(sb.toString());
+		tsMsg = MessageUtil.toTeamspeak(r.replace(tsMsg), true, BukkitSpeak.getStringManager().getAllowLinks());
+		mcMsg = r.replace(mcMsg);
 		
 		if (tsMsg == null || tsMsg.isEmpty()) return;
 		Integer i = Integer.valueOf(client.get("clid"));
@@ -84,9 +79,9 @@ public class CommandPm extends BukkitSpeakCommand {
 		BukkitSpeak.registerRecipient(name, i);
 		if (mcMsg == null || mcMsg.isEmpty()) return;
 		if (sender instanceof Player) {
-			sender.sendMessage(convertToMinecraft(mcMsg, true, BukkitSpeak.getStringManager().getAllowLinks()));
+			sender.sendMessage(MessageUtil.toMinecraft(mcMsg, true, BukkitSpeak.getStringManager().getAllowLinks()));
 		} else {
-			BukkitSpeak.log().info(convertToMinecraft(mcMsg, false, BukkitSpeak.getStringManager().getAllowLinks()));
+			BukkitSpeak.log().info(MessageUtil.toMinecraft(mcMsg, false, BukkitSpeak.getStringManager().getAllowLinks()));
 		}
 	}
 	

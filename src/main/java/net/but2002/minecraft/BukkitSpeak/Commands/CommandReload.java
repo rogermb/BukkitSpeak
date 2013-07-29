@@ -17,12 +17,10 @@ public class CommandReload extends BukkitSpeakCommand {
 	@Override
 	public void execute(CommandSender sender, String[] args) {
 		String t = BukkitSpeak.getInstance().toString();
-		if (BukkitSpeak.getInstance().reload()) {
-			if (sender instanceof Player) {
+		if (sender instanceof Player) {
+			if (BukkitSpeak.getInstance().reload()) {
 				sender.sendMessage(t + ChatColor.GREEN + "reloaded.");
-			}
-		} else {
-			if (sender instanceof Player) {
+			} else {
 				sender.sendMessage(t + ChatColor.RED + "was unable to reload, an error happened.");
 			}
 		}

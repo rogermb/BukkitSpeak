@@ -1,11 +1,10 @@
 package net.but2002.minecraft.BukkitSpeak.Listeners;
 
-import java.util.HashMap;
-
 import net.but2002.minecraft.BukkitSpeak.BukkitSpeak;
 import net.but2002.minecraft.BukkitSpeak.TsTargetEnum;
 import net.but2002.minecraft.BukkitSpeak.AsyncQueryUtils.QuerySender;
-import net.but2002.minecraft.BukkitSpeak.Commands.BukkitSpeakCommand;
+import net.but2002.minecraft.BukkitSpeak.util.MessageUtil;
+import net.but2002.minecraft.BukkitSpeak.util.Replacer;
 
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -28,13 +27,8 @@ public class PlayerListener implements Listener {
 		if (!hasPermission(e.getPlayer(), "join")) return;
 		
 		String tsMsg = BukkitSpeak.getStringManager().getMessage("LoginMessage");
-		HashMap<String, String> repl = new HashMap<String, String>();
-		repl.put("%player_name%", e.getPlayer().getName());
-		repl.put("%player_displayname%", e.getPlayer().getDisplayName());
-		repl.put("%msg%", e.getJoinMessage());
-		
-		tsMsg = replaceKeys(tsMsg, repl);
-		tsMsg = convert(tsMsg, true, BukkitSpeak.getStringManager().getAllowLinks());
+		tsMsg = new Replacer().addPlayer(e.getPlayer()).addMessage(e.getJoinMessage()).replace(tsMsg);
+		tsMsg = MessageUtil.toTeamspeak(tsMsg, true, BukkitSpeak.getStringManager().getAllowLinks());
 		
 		if (tsMsg.isEmpty()) return;
 		
@@ -57,13 +51,8 @@ public class PlayerListener implements Listener {
 		if (!hasPermission(e.getPlayer(), "quit")) return;
 		
 		String tsMsg = BukkitSpeak.getStringManager().getMessage("LogoutMessage");
-		HashMap<String, String> repl = new HashMap<String, String>();
-		repl.put("%player_name%", e.getPlayer().getName());
-		repl.put("%player_displayname%", e.getPlayer().getDisplayName());
-		repl.put("%msg%", e.getQuitMessage());
-		
-		tsMsg = replaceKeys(tsMsg, repl);
-		tsMsg = convert(tsMsg, true, BukkitSpeak.getStringManager().getAllowLinks());
+		tsMsg = new Replacer().addPlayer(e.getPlayer()).addMessage(e.getQuitMessage()).replace(tsMsg);
+		tsMsg = MessageUtil.toTeamspeak(tsMsg, true, BukkitSpeak.getStringManager().getAllowLinks());
 		
 		if (tsMsg.isEmpty()) return;
 		
@@ -96,13 +85,8 @@ public class PlayerListener implements Listener {
 			tsMsg = BukkitSpeak.getStringManager().getMessage("KickedMessage");
 		}
 		
-		HashMap<String, String> repl = new HashMap<String, String>();
-		repl.put("%player_name%", e.getPlayer().getName());
-		repl.put("%player_displayname%", e.getPlayer().getDisplayName());
-		repl.put("%msg%", e.getLeaveMessage());
-		
-		tsMsg = replaceKeys(tsMsg, repl);
-		tsMsg = convert(tsMsg, true, BukkitSpeak.getStringManager().getAllowLinks());
+		tsMsg = new Replacer().addPlayer(e.getPlayer()).addMessage(e.getLeaveMessage()).replace(tsMsg);
+		tsMsg = MessageUtil.toTeamspeak(tsMsg, true, BukkitSpeak.getStringManager().getAllowLinks());
 		
 		if (tsMsg.isEmpty()) return;
 		
@@ -115,14 +99,6 @@ public class PlayerListener implements Listener {
 					JTS3ServerQuery.TEXTMESSAGE_TARGET_VIRTUALSERVER, tsMsg);
 			Bukkit.getScheduler().runTaskAsynchronously(BukkitSpeak.getInstance(), qs);
 		}
-	}
-	
-	private String convert(String input, Boolean color, Boolean links) {
-		return BukkitSpeakCommand.convertToTeamspeak(input, color, links);
-	}
-	
-	private String replaceKeys(String input, HashMap<String, String> repl) {
-		return BukkitSpeakCommand.replaceKeys(input, repl);
 	}
 	
 	private boolean hasPermission(Player player, String perm) {

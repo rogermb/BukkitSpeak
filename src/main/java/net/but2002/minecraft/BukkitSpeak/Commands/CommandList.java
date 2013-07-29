@@ -6,10 +6,10 @@ import java.util.List;
 import java.util.logging.Level;
 
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
 
 import net.but2002.minecraft.BukkitSpeak.BukkitSpeak;
 import net.but2002.minecraft.BukkitSpeak.ClientList;
+import net.but2002.minecraft.BukkitSpeak.util.Replacer;
 
 public class CommandList extends BukkitSpeakCommand {
 	
@@ -38,30 +38,16 @@ public class CommandList extends BukkitSpeakCommand {
 				}
 			}
 			
-			String message = BukkitSpeak.getStringManager().getMessage("OnlineList");
-			String name, displayName;
-			if (sender instanceof Player) {
-				name = ((Player) sender).getName();
-				displayName = ((Player) sender).getDisplayName();
-			} else {
-				name = convertToMinecraft(BukkitSpeak.getStringManager().getConsoleName(), false, false);
-				displayName = BukkitSpeak.getStringManager().getConsoleName();
+			String mcMsg = BukkitSpeak.getStringManager().getMessage("OnlineList");
+			String list = "-";
+			if (online.length() > 0) {
+				list = online.toString();
 			}
 			
-			HashMap<String, String> repl = new HashMap<String, String>();
-			repl.put("%player_name%", name);
-			repl.put("%player_displayname%", displayName);
-			if (online.length() == 0) {
-				repl.put("%list%", "-");
-			} else {
-				repl.put("%list%", online.toString());
-			}
+			mcMsg = new Replacer().addSender(sender).addList(list).replace(mcMsg);
 			
-			message = replaceKeys(message, repl);
-			
-			if (message == null || message.isEmpty()) return;
-			send(sender, Level.INFO, message);
-			
+			if (mcMsg == null || mcMsg.isEmpty()) return;
+			send(sender, Level.INFO, mcMsg);
 		} else if (args.length == 2 && BukkitSpeak.getStringManager().getUseChannel() && args[1].equalsIgnoreCase("channel")) {
 			ClientList clientList = BukkitSpeak.getClientList();
 			StringBuilder online = new StringBuilder();
@@ -74,29 +60,16 @@ public class CommandList extends BukkitSpeakCommand {
 				}
 			}
 			
-			String message = BukkitSpeak.getStringManager().getMessage("ChannelList");
-			String name, displayName;
-			if (sender instanceof Player) {
-				name = ((Player) sender).getName();
-				displayName = ((Player) sender).getDisplayName();
-			} else {
-				name = convertToMinecraft(BukkitSpeak.getStringManager().getConsoleName(), false, false);
-				displayName = BukkitSpeak.getStringManager().getConsoleName();
+			String mcMsg = BukkitSpeak.getStringManager().getMessage("ChannelList");
+			String list = "-";
+			if (online.length() > 0) {
+				list = online.toString();
 			}
 			
-			HashMap<String, String> repl = new HashMap<String, String>();
-			repl.put("%player_name%", name);
-			repl.put("%player_displayname%", displayName);
-			if (online.length() == 0) {
-				repl.put("%list%", "-");
-			} else {
-				repl.put("%list%", online.toString());
-			}
+			mcMsg = new Replacer().addSender(sender).addList(list).replace(mcMsg);
 			
-			message = replaceKeys(message, repl);
-			
-			if (message == null || message.isEmpty()) return;
-			send(sender, Level.INFO, message);
+			if (mcMsg == null || mcMsg.isEmpty()) return;
+			send(sender, Level.INFO, mcMsg);
 		} else {
 			send(sender, Level.INFO, "&4Usage:");
 			send(sender, Level.INFO, "&4/ts list (server / channel)");

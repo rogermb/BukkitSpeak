@@ -7,11 +7,11 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
-import java.util.regex.Matcher;
 
 import net.but2002.minecraft.BukkitSpeak.BukkitSpeak;
 import net.but2002.minecraft.BukkitSpeak.AsyncQueryUtils.QuerySender;
-import net.but2002.minecraft.BukkitSpeak.Commands.BukkitSpeakCommand;
+import net.but2002.minecraft.BukkitSpeak.util.MessageUtil;
+import net.but2002.minecraft.BukkitSpeak.util.Replacer;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Server;
@@ -36,7 +36,7 @@ public class TeamspeakCommandSender implements CommandSender {
 	
 	public TeamspeakCommandSender(Map<String, String> clientInfo, boolean op, Map<String, Boolean> perms) {
 		client = clientInfo;
-		name = replaceValues(BukkitSpeak.getStringManager().getMessage("TeamspeakCommandSenderName"), client, true);
+		name = replaceValues(BukkitSpeak.getStringManager().getMessage("TeamspeakCommandSenderName"));
 		outBuffer = Collections.synchronizedList(new LinkedList<String>());
 		operator = op;
 		
@@ -143,7 +143,7 @@ public class TeamspeakCommandSender implements CommandSender {
 	
 	private String format(String s) {
 		// TODO: Format message?
-		return BukkitSpeakCommand.convertToTeamspeak(s, false, true);
+		return MessageUtil.toTeamspeak(s, false, true);
 	}
 	
 	private void startBuffer() {
@@ -154,21 +154,9 @@ public class TeamspeakCommandSender implements CommandSender {
 		}
 	}
 	
-	public static String replaceValues(String input, Map<String, String> repl, boolean color) {
-		String output = input;
-		output = Matcher.quoteReplacement(output);
-		if (color) {
-			output = output.replaceAll("((&|$)([a-fk-orA-FK-OR0-9]))", "\u00A7$3");
-		} else {
-			output = output.replaceAll("((&|$|\u00A7)([a-fk-orA-FK-OR0-9]))", "");
-		}
-		
-		for (String key : repl.keySet()) {
-			if ((key != null) && (repl.get(key) != null)) {
-				output = output.replace("%" + key + "%", repl.get(key));
-			}
-		}
-		
+	private String replaceValues(String input) {
+		String output = MessageUtil.toMinecraft(input, true, false);
+		output = new Replacer().addClient(client).replace(output);
 		return output;
 	}
 }

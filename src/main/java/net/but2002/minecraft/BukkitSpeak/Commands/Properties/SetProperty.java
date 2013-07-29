@@ -6,7 +6,8 @@ import java.util.logging.Level;
 
 import net.but2002.minecraft.BukkitSpeak.BukkitSpeak;
 import net.but2002.minecraft.BukkitSpeak.StringManager;
-import net.but2002.minecraft.BukkitSpeak.Commands.BukkitSpeakCommand;
+import net.but2002.minecraft.BukkitSpeak.util.MessageUtil;
+import net.but2002.minecraft.BukkitSpeak.util.Replacer;
 
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
@@ -58,36 +59,21 @@ public abstract class SetProperty {
 		if (mcMsg == null || mcMsg.isEmpty()) return;
 		for (Player pl : Bukkit.getServer().getOnlinePlayers()) {
 			if (!BukkitSpeak.getMuted(pl)) {
-				pl.sendMessage(BukkitSpeakCommand.convertToMinecraft(mcMsg, true,
-						BukkitSpeak.getStringManager().getAllowLinks()));
+				pl.sendMessage(MessageUtil.toMinecraft(mcMsg, true, BukkitSpeak.getStringManager().getAllowLinks()));
 			}
 		}
 		if (!(sender instanceof Player) || (BukkitSpeak.getStringManager().getLogInConsole())) {
-			BukkitSpeak.log().info(BukkitSpeakCommand.convertToMinecraft(mcMsg, false,
-					BukkitSpeak.getStringManager().getAllowLinks()));
+			BukkitSpeak.log().info(MessageUtil.toMinecraft(mcMsg, false, BukkitSpeak.getStringManager().getAllowLinks()));
 		}
 	}
 	
 	protected void sendChannelChangeMessage(CommandSender sender) {
-		String m = BukkitSpeak.getStringManager().getMessage("ChannelChange");
-		String name, displayName;
-		if (sender instanceof Player) {
-			name = ((Player) sender).getName();
-			displayName = ((Player) sender).getDisplayName();
-		} else {
-			name = BukkitSpeakCommand.convertToMinecraft(BukkitSpeak.getStringManager().getConsoleName(), false, false);
-			displayName = BukkitSpeak.getStringManager().getConsoleName();
-		}
+		String mcMsg = BukkitSpeak.getStringManager().getMessage("ChannelChange");
 		HashMap<String, String> info = BukkitSpeak.getQuery().getInfo(JTS3ServerQuery.INFOMODE_CHANNELINFO,
 				BukkitSpeak.getQuery().getCurrentQueryClientChannelID());
-		m = m.replaceAll("%channel%", info.get("channel_name"));
-		m = m.replaceAll("%description%", info.get("channel_description"));
-		m = m.replaceAll("%topic%", info.get("channel_topic"));
-		m = m.replaceAll("%player_name%", name);
-		m = m.replaceAll("%player_displayname%", displayName);
 		
-		if (m.isEmpty()) return;
-		broadcastMessage(m, sender);
+		mcMsg = new Replacer().addSender(sender).addChannel(info).replace(mcMsg);
+		broadcastMessage(mcMsg, sender);
 	}
 	
 	protected void connectChannel(CommandSender sender) {

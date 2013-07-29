@@ -1,16 +1,16 @@
 package net.but2002.minecraft.BukkitSpeak.Commands;
 
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
 import java.util.logging.Level;
 
 import net.but2002.minecraft.BukkitSpeak.BukkitSpeak;
 import net.but2002.minecraft.BukkitSpeak.AsyncQueryUtils.QuerySender;
+import net.but2002.minecraft.BukkitSpeak.util.MessageUtil;
+import net.but2002.minecraft.BukkitSpeak.util.Replacer;
 
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
 
 import de.stefan1200.jts3serverquery.JTS3ServerQuery;
 
@@ -45,22 +45,10 @@ public class CommandBroadcast extends BukkitSpeakCommand {
 		
 		String tsMsg = BukkitSpeak.getStringManager().getMessage("ServerMessage");
 		String mcMsg = BukkitSpeak.getStringManager().getMessage("Broadcast");
-		String name, displayName;
-		if (sender instanceof Player) {
-			name = ((Player) sender).getName();
-			displayName = ((Player) sender).getDisplayName();
-		} else {
-			name = convertToMinecraft(BukkitSpeak.getStringManager().getConsoleName(), false, false);
-			displayName = BukkitSpeak.getStringManager().getConsoleName();
-		}
 		
-		HashMap<String, String> repl = new HashMap<String, String>();
-		repl.put("%player_name%", name);
-		repl.put("%player_displayname%", displayName);
-		repl.put("%msg%", sb.toString());
-		
-		tsMsg = convertToTeamspeak(replaceKeys(tsMsg, repl), true, BukkitSpeak.getStringManager().getAllowLinks());
-		mcMsg = replaceKeys(mcMsg, repl);
+		Replacer r = new Replacer().addSender(sender).addMessage(sb.toString());
+		tsMsg = MessageUtil.toTeamspeak(r.replace(tsMsg), true, BukkitSpeak.getStringManager().getAllowLinks());
+		mcMsg = r.replace(mcMsg);
 		
 		if (tsMsg == null || tsMsg.isEmpty()) return;
 		QuerySender qs = new QuerySender(BukkitSpeak.getQuery().getCurrentQueryClientServerID(),

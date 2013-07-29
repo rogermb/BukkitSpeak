@@ -7,10 +7,11 @@ import java.util.logging.Level;
 
 import net.but2002.minecraft.BukkitSpeak.BukkitSpeak;
 import net.but2002.minecraft.BukkitSpeak.AsyncQueryUtils.QueryKick;
+import net.but2002.minecraft.BukkitSpeak.util.MessageUtil;
+import net.but2002.minecraft.BukkitSpeak.util.Replacer;
 
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
 
 public class CommandChannelKick extends BukkitSpeakCommand {
 	
@@ -32,42 +33,28 @@ public class CommandChannelKick extends BukkitSpeakCommand {
 		HashMap<String, String> client;
 		try {
 			client = BukkitSpeak.getClientList().getByPartialName(args[1]);
+			if (client == null) {
+				send(sender, Level.WARNING, "&4Can't find the user you want to kick from the channel.");
+				return;
+			} else if (Integer.valueOf(client.get("cid")) != BukkitSpeak.getStringManager().getChannelID()) {
+				send(sender, Level.WARNING, "&4The client is not in the channel!");
+				return;
+			}
 		} catch (IllegalArgumentException e) {
 			send(sender, Level.WARNING, "&4There are more than one clients matching &e" + args[1] + "&4.");
 			return;
 		}
 		
-		if (client == null) {
-			send(sender, Level.WARNING, "&4Can't find the user you want to kick from the channel.");
-			return;
-		} else if (Integer.valueOf(client.get("cid")) != BukkitSpeak.getStringManager().getChannelID()) {
-			send(sender, Level.WARNING, "&4The client is not in the channel!");
-			return;
-		}
-		
 		String tsMsg = BukkitSpeak.getStringManager().getMessage("ChannelKickMessage");
 		String mcMsg = BukkitSpeak.getStringManager().getMessage("ChannelKick");
-		String name, displayName;
-		if (sender instanceof Player) {
-			name = ((Player) sender).getName();
-			displayName = ((Player) sender).getDisplayName();
-		} else {
-			name = convertToMinecraft(BukkitSpeak.getStringManager().getConsoleName(), false, false);
-			displayName = BukkitSpeak.getStringManager().getConsoleName();
-		}
-		
-		HashMap<String, String> repl = new HashMap<String, String>();
-		repl.put("%player_name%", name);
-		repl.put("%player_displayname%", displayName);
-		repl.put("%target%", client.get("client_nickname"));
+		String msg = BukkitSpeak.getStringManager().getDefaultReason();
 		if (args.length > 2) {
-			repl.put("%msg%", combineSplit(2, args, " "));
-		} else {
-			repl.put("%msg%", BukkitSpeak.getStringManager().getDefaultReason());
+			msg = combineSplit(2, args, " ");
 		}
 		
-		tsMsg = convertToTeamspeak(replaceKeys(tsMsg, repl), false, BukkitSpeak.getStringManager().getAllowLinks());
-		mcMsg = replaceKeys(mcMsg, repl);
+		Replacer r = new Replacer().addSender(sender).addTargetClient(client).addMessage(msg);
+		tsMsg = MessageUtil.toTeamspeak(r.replace(tsMsg), false, BukkitSpeak.getStringManager().getAllowLinks());
+		mcMsg = r.replace(mcMsg);
 		
 		if (tsMsg == null || tsMsg.isEmpty()) return;
 		if (tsMsg.length() > TS_MAXLENGHT) {

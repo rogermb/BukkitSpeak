@@ -34,55 +34,61 @@ public abstract class MessageUtil {
 		String s = input;
 		if (color) {
 			s = s.replaceAll("((&|$)([a-fk-orA-FK-OR0-9]))", "\u00A7$3");
-			Matcher m = Pattern.compile("(\u00A7([a-fk-orA-FK-OR0-9]))").matcher(s);
+			
+			StringBuilder sb = new StringBuilder(s);
+			Matcher m = Pattern.compile("(\u00A7([a-fk-orA-FK-OR0-9]))").matcher(sb);
 			while (m.find()) {
 				int i = m.start();
-				int j = getIndex(s.charAt(i + 1));
+				int j = getIndex(sb.charAt(i + 1));
 				
 				if (j <= 15) {
 					if (colored) {
-						s = s.substring(0, i) + "[/color]" + s.substring(i);
-						colored = false;
+						sb.insert(i, "[/color]");
+						i += 8;
 					}
-					s = s.replaceFirst("\u00A7([a-fA-F0-9])", COLORS[j]);
-					if (j != 0) colored = true;
+					sb.replace(i, i + 2, COLORS[j]);
+					colored = (j != 0);
 				} else if (j == 16) {
 					if (bold) {
-						s = s.substring(0, i) + "[/b]" + s.substring(i);
+						sb.insert(i, "[/b]");
+						i += 4;
 					}
-					s = s.replaceFirst("\u00A7[lL]", COLORS[j]);
+					sb.replace(i, i + 2, COLORS[j]);
 					bold = true;
 				} else if (j == 17) {
 					if (underlined) {
-						s = s.substring(0, i) + "[/u]" + s.substring(i);
+						sb.insert(i, "[/u]");
+						i += 4;
 					}
-					s = s.replaceFirst("\u00A7[nN]", COLORS[j]);
+					sb.replace(i, i + 2, COLORS[j]);
 					underlined = true;
 				} else if (j == 18) {
 					if (italics) {
-						s = s.substring(0, i) + "[/i]" + s.substring(i);
+						sb.insert(i, "[/i]");
+						i += 4;
 					}
-					s = s.replaceFirst("\u00A7[oO]", COLORS[j]);
+					sb.replace(i, i + 2, COLORS[j]);
 					italics = true;
 				} else if (j == 19 || j == 20) {
-					s = s.replaceFirst("\u00A7[mMkK]", "");
+					sb.replace(i, i + 2, "");
 				} else {
-					s = s.replaceFirst("\u00A7r", "");
-					if (colored) s = s.substring(0, i) + "[/color]" + s.substring(i);
-					if (bold) s = s.substring(0, i) + "[/b]" + s.substring(i);
-					if (italics) s = s.substring(0, i) + "[/i]" + s.substring(i);
-					if (underlined) s = s.substring(0, i) + "[/u]" + s.substring(i);
+					sb.replace(i, i + 2, "");
+					if (underlined) sb.insert(i, "[/u]");
+					if (italics) sb.insert(i, "[/i]");
+					if (bold) sb.insert(i, "[/b]");
+					if (colored) sb.insert(i, "[/color]");
 					colored = false;
 					bold = false;
 					italics = false;
 					underlined = false;
 				}
+				m.reset(sb);
 			}
-			
-			if (colored) s += "[/color]";
-			if (bold) s += "[/b]";
-			if (italics) s += "[/i]";
-			if (underlined) s += "[/u]";
+			if (colored) sb.append("[/color]");
+			if (bold) sb.append("[/b]");
+			if (italics) sb.append("[/i]");
+			if (underlined) sb.append("[/u]");
+			s = sb.toString();
 		} else {
 			s = s.replaceAll("((&|$|\u00A7)([a-fk-orA-FK-OR0-9]))", "");
 		}

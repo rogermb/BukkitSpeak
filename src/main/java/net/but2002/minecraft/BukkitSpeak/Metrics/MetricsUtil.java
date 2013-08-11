@@ -107,6 +107,31 @@ public class MetricsUtil {
 				}
 			});
 			
+			/* Teamspeak commands */
+			Graph tsCommandGraph = metrics.createGraph("TeamSpeak commands enabled");
+			tsCommandGraph.addPlotter(new Plotter("Yes") {
+				
+				@Override
+				public int getValue() {
+					if (BukkitSpeak.getStringManager().getTeamspeakCommandsEnabled()) {
+						return 1;
+					} else {
+						return 0;
+					}
+				}
+			});
+			tsCommandGraph.addPlotter(new Plotter("No") {
+				
+				@Override
+				public int getValue() {
+					if (BukkitSpeak.getStringManager().getTeamspeakCommandsEnabled()) {
+						return 0;
+					} else {
+						return 1;
+					}
+				}
+			});
+			
 			/* Dependency stuff */
 			Graph dependencyGraph = metrics.createGraph("Dependencies");
 			dependencyGraph.addPlotter(new Plotter("Factions") {

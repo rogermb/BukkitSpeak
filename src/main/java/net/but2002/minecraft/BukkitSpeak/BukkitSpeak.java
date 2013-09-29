@@ -77,7 +77,7 @@ public class BukkitSpeak extends JavaPlugin {
 		pmSenders = new HashMap<String, Integer>();
 		
 		EventPriority p = BukkitSpeak.getStringManager().getChatListenerPriority();
-		boolean i = (p == EventPriority.LOWEST);
+		boolean i = (p != EventPriority.LOWEST);
 		getServer().getPluginManager().registerEvent(AsyncPlayerChatEvent.class, chatListener, p, chatListener, this, i);
 		getServer().getPluginManager().registerEvents(playerListener, this);
 		getCommand("ts").setExecutor(tsCommand);
@@ -272,7 +272,7 @@ public class BukkitSpeak extends JavaPlugin {
 			
 			AsyncPlayerChatEvent.getHandlerList().unregister(chatListener);
 			EventPriority p = BukkitSpeak.getStringManager().getChatListenerPriority();
-			boolean i = (p == EventPriority.LOWEST);
+			boolean i = (p != EventPriority.LOWEST);
 			getServer().getPluginManager().registerEvent(AsyncPlayerChatEvent.class, chatListener, p, chatListener, this, i);
 			
 			qc = new QueryConnector();

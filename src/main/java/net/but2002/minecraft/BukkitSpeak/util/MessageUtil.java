@@ -1,6 +1,6 @@
 package net.but2002.minecraft.BukkitSpeak.util;
 
-import java.util.HashMap;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -119,7 +119,7 @@ public final class MessageUtil {
 		return null;
 	}
 	
-	public static String replaceValues(String input, HashMap<String, String> replace) {
+	public static String replaceValues(String input, Map<String, String> replace) {
 		String s = input;
 		for (String key : replace.keySet()) {
 			if ((key != null) && (replace.get(key) != null)) {

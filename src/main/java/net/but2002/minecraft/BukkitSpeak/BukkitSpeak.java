@@ -71,15 +71,14 @@ public class BukkitSpeak extends JavaPlugin {
 		
 		tsCommand = new BukkitSpeakCommandExecutor();
 		playerListener = new PlayerListener();
+		chatListener = new ChatListener();
 		muted = new ArrayList<String>();
 		pmRecipients = new HashMap<Integer, String>();
 		pmSenders = new HashMap<String, Integer>();
 		
 		EventPriority p = BukkitSpeak.getStringManager().getChatListenerPriority();
 		boolean i = (p == EventPriority.LOWEST);
-		chatListener = new ChatListener(i);
-		
-		getServer().getPluginManager().registerEvent(AsyncPlayerChatEvent.class, chatListener, p, chatListener, this, false);
+		getServer().getPluginManager().registerEvent(AsyncPlayerChatEvent.class, chatListener, p, chatListener, this, i);
 		getServer().getPluginManager().registerEvents(playerListener, this);
 		getCommand("ts").setExecutor(tsCommand);
 		getCommand("tsa").setExecutor(tsCommand);
@@ -274,8 +273,7 @@ public class BukkitSpeak extends JavaPlugin {
 			AsyncPlayerChatEvent.getHandlerList().unregister(chatListener);
 			EventPriority p = BukkitSpeak.getStringManager().getChatListenerPriority();
 			boolean i = (p == EventPriority.LOWEST);
-			chatListener = new ChatListener(i);
-			getServer().getPluginManager().registerEvent(AsyncPlayerChatEvent.class, chatListener, p, chatListener, this, false);
+			getServer().getPluginManager().registerEvent(AsyncPlayerChatEvent.class, chatListener, p, chatListener, this, i);
 			
 			qc = new QueryConnector();
 			Bukkit.getScheduler().runTaskAsynchronously(this, qc);

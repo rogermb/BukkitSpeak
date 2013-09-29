@@ -1,9 +1,10 @@
 package net.but2002.minecraft.BukkitSpeak.util;
 
+import java.util.HashMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public abstract class MessageUtil {
+public final class MessageUtil {
 	
 	public static final String[] COLORS = {"", // 0
 			"[color=#0000AA]", // 1
@@ -104,7 +105,7 @@ public abstract class MessageUtil {
 	
 	public static String toMinecraft(String input, boolean color, boolean links) {
 		if (input != null) {
-			String s = input;
+			String s = Matcher.quoteReplacement(input);
 			if (color) {
 				s = s.replaceAll("((&|$)([a-fk-orA-FK-OR0-9]))", "\u00A7$3");
 			} else {
@@ -116,6 +117,16 @@ public abstract class MessageUtil {
 			return s;
 		}
 		return null;
+	}
+	
+	public static String replaceValues(String input, HashMap<String, String> replace) {
+		String s = input;
+		for (String key : replace.keySet()) {
+			if ((key != null) && (replace.get(key) != null)) {
+				s = s.replace("%" + key + "%", replace.get(key));
+			}
+		}
+		return s;
 	}
 	
 	private static Integer getIndex(char c) {

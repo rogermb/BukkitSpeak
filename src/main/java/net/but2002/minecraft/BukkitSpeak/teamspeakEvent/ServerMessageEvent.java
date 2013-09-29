@@ -4,9 +4,8 @@ import java.util.HashMap;
 
 import org.bukkit.entity.Player;
 
-import com.dthielke.herochat.Herochat;
-
 import net.but2002.minecraft.BukkitSpeak.BukkitSpeak;
+import net.but2002.minecraft.BukkitSpeak.util.MessageUtil;
 
 public class ServerMessageEvent extends TeamspeakEvent {
 	
@@ -27,49 +26,41 @@ public class ServerMessageEvent extends TeamspeakEvent {
 		if (info == null || getClientType() != 0) return;
 		
 		String msg = info.get("msg");
-		msg = filterLinks(msg, BukkitSpeak.getStringManager().getAllowLinks());
+		msg = MessageUtil.toMinecraft(msg, true, BukkitSpeak.getStringManager().getAllowLinks());
 		getUser().put("msg", msg);
 		
 		if (info.get("targetmode").equals("3")) {
 			String m = BukkitSpeak.getStringManager().getMessage("ServerMsg");
 			if (m.isEmpty()) return;
-			for (Player pl : getOnlinePlayers()) {
-				if (!isMuted(pl) && checkPermissions(pl, "broadcast")) {
-					pl.sendMessage(replaceValues(m, true));
+			m = MessageUtil.toMinecraft(MessageUtil.replaceValues(m, getUser()), true, true);
+			
+			for (Player pl : BukkitSpeak.getInstance().getServer().getOnlinePlayers()) {
+				if (!BukkitSpeak.getMuted(pl) && checkPermissions(pl, "broadcast")) {
+					pl.sendMessage(m);
 				}
 			}
-			if (BukkitSpeak.getStringManager().getLogInConsole()) BukkitSpeak.log().info(replaceValues(m, false));
+			if (BukkitSpeak.getStringManager().getLogInConsole()) BukkitSpeak.log().info(m);
+			
 		} else if (info.get("targetmode").equals("2")) {
-			String m = BukkitSpeak.getStringManager().getMessage("ChannelMsg");
+			sendMessage("ChannelMsg", "chat");
+			
+		} else if (info.get("targetmode").equals("1")) {
+			String m = BukkitSpeak.getStringManager().getMessage("PrivateMsg");
 			if (m.isEmpty()) return;
-			if (BukkitSpeak.useHerochat()) { //We are using Herochat
-				/* Sadly using Herochat doesn't provide a way to
-				send a message to a part of the group */
-				String c = BukkitSpeak.getStringManager().getHerochatChannel();
-				Herochat.getChannelManager().getChannel(c).announce(replaceValues(m, true));
-			} else { //We're not using Herochat
-				for (Player pl : getOnlinePlayers()) {
-					if (!isMuted(pl) && checkPermissions(pl, "chat")) {
-						pl.sendMessage(replaceValues(m, true));
-					}
+			
+			String p = BukkitSpeak.getInstance().getRecipient(getClientId());
+			if (p == null || p.isEmpty()) return;
+			
+			if (MessageUtil.toMinecraft(BukkitSpeak.getStringManager().getConsoleName(), false, false).equals(p)) {
+				BukkitSpeak.log().info(MessageUtil.toMinecraft(MessageUtil.replaceValues(m, getUser()), false, true));
+			} else {
+				Player pl = BukkitSpeak.getInstance().getServer().getPlayerExact(p);
+				if (pl == null) return;
+				if (!BukkitSpeak.getMuted(pl) && checkPermissions(pl, "pm")) {
+					pl.sendMessage(MessageUtil.toMinecraft(MessageUtil.replaceValues(m, getUser()), true, true));
 				}
 			}
 			
-			if (BukkitSpeak.getStringManager().getLogInConsole()) BukkitSpeak.log().info(replaceValues(m, false));
-		} else if (info.get("targetmode").equals("1")) {
-			String m = BukkitSpeak.getStringManager().getMessage("PrivateMsg");
-			String p = BukkitSpeak.getInstance().getRecipient(getClientId());
-			if (!m.isEmpty() && p != null && !p.isEmpty()) {
-				if (replaceValues(BukkitSpeak.getStringManager().getConsoleName(), false).equals(p)) {
-					BukkitSpeak.log().info(replaceValues(m, false));
-				} else {
-					Player pl = BukkitSpeak.getInstance().getServer().getPlayerExact(p);
-					if (pl == null) return;
-					if (!isMuted(pl) && checkPermissions(pl, "pm")) {
-						pl.sendMessage(replaceValues(m, true));
-					}
-				}
-			}
 		}
 	}
 	

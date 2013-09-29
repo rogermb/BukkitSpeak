@@ -1,12 +1,13 @@
 package net.but2002.minecraft.BukkitSpeak.teamspeakEvent;
 
 import java.util.HashMap;
-import java.util.regex.Matcher;
 
-import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
+import com.dthielke.herochat.Herochat;
+
 import net.but2002.minecraft.BukkitSpeak.BukkitSpeak;
+import net.but2002.minecraft.BukkitSpeak.util.MessageUtil;
 
 public abstract class TeamspeakEvent {
 	
@@ -14,18 +15,6 @@ public abstract class TeamspeakEvent {
 	
 	public HashMap<String, String> getUser() {
 		return user;
-	}
-	
-	protected void setUser(Integer clid) {
-		user = BukkitSpeak.getClientList().get(clid);
-	}
-	
-	protected Player[] getOnlinePlayers() {
-		return Bukkit.getServer().getOnlinePlayers();
-	}
-	
-	protected boolean isMuted(Player p) {
-		return BukkitSpeak.getMuted(p);
 	}
 	
 	public String getClientName() {
@@ -40,27 +29,35 @@ public abstract class TeamspeakEvent {
 		return Integer.valueOf(user.get("client_type"));
 	}
 	
-	protected abstract void performAction();
+	protected void setUser(Integer clid) {
+		user = BukkitSpeak.getClientList().get(clid);
+	}
 	
-	public String replaceValues(String input, boolean color) {
-		String output = input;
-		output = Matcher.quoteReplacement(output);
-		if (color) {
-			output = output.replaceAll("((&|$)([a-fk-orA-FK-OR0-9]))", "\u00A7$3");
-		} else {
-			output = output.replaceAll("((&|$|\u00A7)([a-fk-orA-FK-OR0-9]))", "");
-		}
+	protected void sendMessage(String messageName, String permission) {
+		String m = BukkitSpeak.getStringManager().getMessage(messageName);
+		if (m.isEmpty()) return;
+		m = MessageUtil.toMinecraft(MessageUtil.replaceValues(m, getUser()), true, true);
 		
-		for (String key : user.keySet()) {
-			if ((key != null) && (user.get(key) != null)) {
-				output = output.replace("%" + key + "%", user.get(key));
+		if (BukkitSpeak.useHerochat() && BukkitSpeak.getStringManager().getHerochatUsesEvents()) {
+			// Send to Herochat channel
+			String c = BukkitSpeak.getStringManager().getHerochatChannel();
+			Herochat.getChannelManager().getChannel(c).announce(m);
+		} else {
+			// Directly send to players with permissions
+			for (Player pl : BukkitSpeak.getInstance().getServer().getOnlinePlayers()) {
+				if (!BukkitSpeak.getMuted(pl) && checkPermissions(pl, permission)) {
+					pl.sendMessage(m);
+				}
 			}
 		}
 		
-		return output;
+		// Finally log in console if enabled
+		if (BukkitSpeak.getStringManager().getLogInConsole()) BukkitSpeak.log().info(m);
 	}
 	
-	public boolean checkPermissions(Player player, String perm) {
+	protected boolean checkPermissions(Player player, String perm) {
 		return player.hasPermission("bukkitspeak.messages." + perm);
 	}
+	
+	protected abstract void performAction();
 }

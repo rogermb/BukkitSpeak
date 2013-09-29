@@ -21,10 +21,17 @@ import de.stefan1200.jts3serverquery.JTS3ServerQuery;
 
 public class ChatListener implements EventExecutor, Listener {
 	
+	private final boolean ignoreCancelled;
+	
+	public ChatListener(boolean ignoreCancelled) {
+		this.ignoreCancelled = ignoreCancelled;
+	}
+	
 	@Override
 	public void execute(Listener listener, Event event) {
 		if (!(event instanceof AsyncPlayerChatEvent)) return;
 		AsyncPlayerChatEvent e = (AsyncPlayerChatEvent) event;
+		if (e.isCancelled() && !ignoreCancelled) return;
 		
 		if (BukkitSpeak.useHerochat()) return; // Use Herochat's ChannelChatEvent instead, if using herochat.
 		if (BukkitSpeak.getStringManager().getTeamspeakTarget() == TsTargetEnum.NONE) return;

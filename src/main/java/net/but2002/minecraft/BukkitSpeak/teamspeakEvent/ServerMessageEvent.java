@@ -26,6 +26,7 @@ public class ServerMessageEvent extends TeamspeakEvent {
 		if (info == null || getClientType() != 0) return;
 		
 		String msg = info.get("msg");
+		msg = msg.replaceAll("\\n", "");
 		msg = MessageUtil.toMinecraft(msg, true, BukkitSpeak.getStringManager().getAllowLinks());
 		getUser().put("msg", msg);
 		

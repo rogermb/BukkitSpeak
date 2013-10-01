@@ -2,6 +2,7 @@ package net.but2002.minecraft.BukkitSpeak.util;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.regex.Matcher;
 
 import net.but2002.minecraft.BukkitSpeak.BukkitSpeak;
 
@@ -51,7 +52,7 @@ public class Replacer {
 	}
 	
 	public Replacer addMessage(String message) {
-		repl.put("msg", message);
+		repl.put("msg", Matcher.quoteReplacement(message));
 		return this;
 	}
 	

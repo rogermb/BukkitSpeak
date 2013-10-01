@@ -8,6 +8,7 @@ import com.dthielke.herochat.Herochat;
 
 import net.but2002.minecraft.BukkitSpeak.BukkitSpeak;
 import net.but2002.minecraft.BukkitSpeak.util.MessageUtil;
+import net.but2002.minecraft.BukkitSpeak.util.Replacer;
 
 public abstract class TeamspeakEvent {
 	
@@ -36,7 +37,8 @@ public abstract class TeamspeakEvent {
 	protected void sendMessage(String messageName, String permission) {
 		String m = BukkitSpeak.getStringManager().getMessage(messageName);
 		if (m.isEmpty()) return;
-		m = MessageUtil.toMinecraft(MessageUtil.replaceValues(m, getUser()), true, true);
+		m = new Replacer().addClient(getUser()).replace(m);
+		m = MessageUtil.toMinecraft(m, true, true);
 		
 		if (BukkitSpeak.useHerochat() && BukkitSpeak.getStringManager().getHerochatUsesEvents()) {
 			// Send to Herochat channel

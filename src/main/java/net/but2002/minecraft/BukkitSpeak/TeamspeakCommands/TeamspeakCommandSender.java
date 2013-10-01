@@ -121,6 +121,14 @@ public class TeamspeakCommandSender implements CommandSender {
 		return name;
 	}
 	
+	public Integer getClientID() {
+		return Integer.valueOf(client.get("clid"));
+	}
+	
+	public Map<String, String> getClientInfo() {
+		return client;
+	}
+	
 	@Override
 	public void sendMessage(String message) {
 		if (message == null) return;
@@ -143,7 +151,7 @@ public class TeamspeakCommandSender implements CommandSender {
 	
 	private String format(String s) {
 		// TODO: Format message?
-		return MessageUtil.toTeamspeak(s, false, true);
+		return MessageUtil.toTeamspeak(s, true, true);
 	}
 	
 	private void startBuffer() {

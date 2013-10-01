@@ -1,6 +1,5 @@
 package net.but2002.minecraft.BukkitSpeak.util;
 
-import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -95,9 +94,9 @@ public final class MessageUtil {
 		}
 		
 		if (links) {
-			s = s.replaceAll("(?i)((http://|ftp://).*\\.?.+\\..+(/.*)?)", "\\[URL]$1\\[/URL]");
+			s = s.replaceAll("(?i)((\\S*\\.)?[\\w\\-]+\\.[\\w\\-]+(/[^\\s\\[]*)?)", "\\[URL]$1\\[/URL]");
 		} else {
-			s = s.replaceAll("(?i)((http://|ftp://).*\\.?.+\\..+(/.*)?)", "");
+			s = s.replaceAll("(?i)((\\S*\\.)?[\\w\\-]+\\.[\\w\\-]+(/[^\\s\\[]*)?)", "");
 		}
 		
 		return s;
@@ -105,28 +104,20 @@ public final class MessageUtil {
 	
 	public static String toMinecraft(String input, boolean color, boolean links) {
 		if (input != null) {
-			String s = Matcher.quoteReplacement(input);
+			String s = input;
 			if (color) {
 				s = s.replaceAll("((&|$)([a-fk-orA-FK-OR0-9]))", "\u00A7$3");
 			} else {
 				s = s.replaceAll("((&|$|\u00A7)([a-fk-orA-FK-OR0-9]))", "");
 			}
-			if (!links) {
-				s = s.replaceAll("(?i)((http://|ftp://).*\\.?.+\\..+(/.*)?)", "");
+			if (links) {
+				s = s.replaceAll("(?i)(\\[URL])?((\\S*\\.)?[\\w\\-]+\\.[\\w\\-]+(/[^\\s\\[]*)?)(\\[/URL])?", "$2");
+			} else {
+				s = s.replaceAll("(?i)(\\[URL])?((\\S*\\.)?[\\w\\-]+\\.[\\w\\-]+(/[^\\s\\[]*)?)(\\[/URL])?", "");
 			}
 			return s;
 		}
 		return null;
-	}
-	
-	public static String replaceValues(String input, Map<String, String> replace) {
-		String s = input;
-		for (String key : replace.keySet()) {
-			if ((key != null) && (replace.get(key) != null)) {
-				s = s.replace("%" + key + "%", replace.get(key));
-			}
-		}
-		return s;
 	}
 	
 	private static Integer getIndex(char c) {

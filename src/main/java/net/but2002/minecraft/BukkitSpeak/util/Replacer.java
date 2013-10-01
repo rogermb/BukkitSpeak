@@ -52,7 +52,7 @@ public class Replacer {
 	}
 	
 	public Replacer addMessage(String message) {
-		repl.put("msg", Matcher.quoteReplacement(message));
+		repl.put("msg", message);
 		return this;
 	}
 	
@@ -68,7 +68,7 @@ public class Replacer {
 		for (String key : repl.keySet()) {
 			String v = repl.get(key);
 			if (v == null || v.length() == 0) continue;
-			s = s.replaceAll("%" + key + "%", v);
+			s = s.replaceAll("%" + key + "%", Matcher.quoteReplacement(v));
 		}
 		return s;
 	}

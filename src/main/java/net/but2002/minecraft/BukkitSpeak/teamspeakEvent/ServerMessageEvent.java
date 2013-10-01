@@ -6,6 +6,7 @@ import org.bukkit.entity.Player;
 
 import net.but2002.minecraft.BukkitSpeak.BukkitSpeak;
 import net.but2002.minecraft.BukkitSpeak.util.MessageUtil;
+import net.but2002.minecraft.BukkitSpeak.util.Replacer;
 
 public class ServerMessageEvent extends TeamspeakEvent {
 	
@@ -22,18 +23,19 @@ public class ServerMessageEvent extends TeamspeakEvent {
 	
 	@Override
 	protected void performAction() {
-		
 		if (info == null || getClientType() != 0) return;
 		
 		String msg = info.get("msg");
 		msg = msg.replaceAll("\\n", "");
 		msg = MessageUtil.toMinecraft(msg, true, BukkitSpeak.getStringManager().getAllowLinks());
+		if (msg.isEmpty()) return;
 		getUser().put("msg", msg);
 		
 		if (info.get("targetmode").equals("3")) {
 			String m = BukkitSpeak.getStringManager().getMessage("ServerMsg");
 			if (m.isEmpty()) return;
-			m = MessageUtil.toMinecraft(MessageUtil.replaceValues(m, getUser()), true, true);
+			m = new Replacer().addClient(getUser()).replace(m);
+			m = MessageUtil.toMinecraft(m, true, true);
 			
 			for (Player pl : BukkitSpeak.getInstance().getServer().getOnlinePlayers()) {
 				if (!BukkitSpeak.getMuted(pl) && checkPermissions(pl, "broadcast")) {
@@ -48,17 +50,19 @@ public class ServerMessageEvent extends TeamspeakEvent {
 		} else if (info.get("targetmode").equals("1")) {
 			String m = BukkitSpeak.getStringManager().getMessage("PrivateMsg");
 			if (m.isEmpty()) return;
+			m = new Replacer().addClient(getUser()).replace(m);
+			m = MessageUtil.toMinecraft(m, true, true);
 			
 			String p = BukkitSpeak.getInstance().getRecipient(getClientId());
 			if (p == null || p.isEmpty()) return;
 			
 			if (MessageUtil.toMinecraft(BukkitSpeak.getStringManager().getConsoleName(), false, false).equals(p)) {
-				BukkitSpeak.log().info(MessageUtil.toMinecraft(MessageUtil.replaceValues(m, getUser()), false, true));
+				BukkitSpeak.log().info(m);
 			} else {
 				Player pl = BukkitSpeak.getInstance().getServer().getPlayerExact(p);
 				if (pl == null) return;
 				if (!BukkitSpeak.getMuted(pl) && checkPermissions(pl, "pm")) {
-					pl.sendMessage(MessageUtil.toMinecraft(MessageUtil.replaceValues(m, getUser()), true, true));
+					pl.sendMessage(m);
 				}
 			}
 			

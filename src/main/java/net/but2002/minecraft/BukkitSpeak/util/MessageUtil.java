@@ -111,7 +111,7 @@ public final class MessageUtil {
 				s = s.replaceAll("((&|$|\u00A7)([a-fk-orA-FK-OR0-9]))", "");
 			}
 			if (links) {
-				s = s.replaceAll("(?i)\\[URL]((\\S*)?[\\w\\-]+\\.[\\w\\-]+(/[^\\s\\[]*)?)\\[/URL]", "$2");
+				s = s.replaceAll("(?i)\\[URL]((\\S*)?[\\w\\-]+\\.[\\w\\-]+(/[^\\s\\[]*)?)\\[/URL]", "$1");
 			} else {
 				s = s.replaceAll("(?i)(\\[URL])?((\\S*)?[\\w\\-]+\\.[\\w\\-]+(/[^\\s\\[]*)?)(\\[/URL])?", "");
 			}

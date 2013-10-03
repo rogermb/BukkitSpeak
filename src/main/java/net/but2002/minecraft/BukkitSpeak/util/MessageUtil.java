@@ -5,7 +5,7 @@ import java.util.regex.Pattern;
 
 public final class MessageUtil {
 	
-	public static final String[] COLORS = {"", // 0
+	private static final String[] COLORS = {"", // 0
 			"[color=#0000AA]", // 1
 			"[color=#00AA00]", // 2
 			"[color=#00AAAA]", // 3
@@ -24,6 +24,8 @@ public final class MessageUtil {
 			"[b]", // 16
 			"[u]", // 17
 			"[i]"}; // 18
+	
+	private static final String URL_REGEX = "(?i)(^|[^\\w\\-\\.])(([\\w\\-]+://)?([\\w\\-]+\\.){0,2}[\\w\\-]+\\.\\w{2,4}(/[^\\s\\[]*)?)(?!\\S)";
 	
 	private MessageUtil() {};
 	
@@ -94,9 +96,9 @@ public final class MessageUtil {
 		}
 		
 		if (links) {
-			s = s.replaceAll("(?i)((\\S*)?[\\w\\-]+\\.[\\w\\-]+(/[^\\s\\[]*)?)", "\\[URL]$1\\[/URL]");
+			s = s.replaceAll(URL_REGEX, "$1\\[URL]$2\\[/URL]");
 		} else {
-			s = s.replaceAll("(?i)((\\S*)?[\\w\\-]+\\.[\\w\\-]+(/[^\\s\\[]*)?)", "");
+			s = s.replaceAll(URL_REGEX, "$1");
 		}
 		
 		return s;
@@ -111,9 +113,10 @@ public final class MessageUtil {
 				s = s.replaceAll("((&|$|\u00A7)([a-fk-orA-FK-OR0-9]))", "");
 			}
 			if (links) {
-				s = s.replaceAll("(?i)\\[URL]((\\S*)?[\\w\\-]+\\.[\\w\\-]+(/[^\\s\\[]*)?)\\[/URL]", "$1");
+				s = s.replaceAll("(?i)\\[URL](\\S+)\\[/URL]", "$1$2");
 			} else {
-				s = s.replaceAll("(?i)(\\[URL])?((\\S*)?[\\w\\-]+\\.[\\w\\-]+(/[^\\s\\[]*)?)(\\[/URL])?", "");
+				s = s.replaceAll("(?i)\\[URL](\\S+)\\[/URL]", "$1");
+				s = s.replaceAll(URL_REGEX, "");
 			}
 			return s;
 		}

@@ -113,10 +113,10 @@ public final class MessageUtil {
 				s = s.replaceAll("((&|$|\u00A7)([a-fk-orA-FK-OR0-9]))", "");
 			}
 			if (links) {
-				s = s.replaceAll("(?i)\\[URL](\\S+)\\[/URL]", "$1$2");
+				s = s.replaceAll("(?i)\\[URL]([\\S\\n]+)\\[/URL]", "$1");
 			} else {
-				s = s.replaceAll("(?i)\\[URL](\\S+)\\[/URL]", "$1");
-				s = s.replaceAll(URL_REGEX, "");
+				s = s.replaceAll("(?i)\\[URL](\\S+)\\[/URL]", "");
+				s = s.replaceAll(URL_REGEX, "$1");
 			}
 			return s;
 		}

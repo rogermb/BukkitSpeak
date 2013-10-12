@@ -11,6 +11,7 @@ import net.but2002.minecraft.BukkitSpeak.Listeners.PlayerListener;
 import net.but2002.minecraft.BukkitSpeak.Listeners.HerochatListener;
 import net.but2002.minecraft.BukkitSpeak.Metrics.MetricsUtil;
 import net.but2002.minecraft.BukkitSpeak.TeamspeakCommands.PermissionsHelper;
+import net.but2002.minecraft.BukkitSpeak.TeamspeakCommands.TeamspeakCommandExecutor;
 import net.but2002.minecraft.BukkitSpeak.teamspeakEvent.TeamspeakListener;
 
 import org.bukkit.Bukkit;
@@ -29,6 +30,7 @@ public class BukkitSpeak extends JavaPlugin {
 	
 	private static BukkitSpeak instance;
 	private static StringManager stringManager;
+	private static TeamspeakCommandExecutor tsCommand;
 	private static PermissionsHelper permissionsHelper;
 	private static ClientList clients;
 	private static ChannelList channels;
@@ -43,7 +45,7 @@ public class BukkitSpeak extends JavaPlugin {
 	private QueryConnector qc;
 	private TeamspeakActionListener ts;
 	private TeamspeakKeepAlive tsKeepAlive;
-	private BukkitSpeakCommandExecutor tsCommand;
+	private BukkitSpeakCommandExecutor mcCommand;
 	private PlayerListener playerListener;
 	private ChatListener chatListener;
 	private Logger logger;
@@ -69,7 +71,8 @@ public class BukkitSpeak extends JavaPlugin {
 		tsKeepAlive = new TeamspeakKeepAlive(this);
 		Bukkit.getScheduler().runTaskTimerAsynchronously(this, tsKeepAlive, KEEP_ALIVE_DELAY / 2, KEEP_ALIVE_DELAY);
 		
-		tsCommand = new BukkitSpeakCommandExecutor();
+		mcCommand = new BukkitSpeakCommandExecutor();
+		tsCommand = new TeamspeakCommandExecutor();
 		playerListener = new PlayerListener();
 		chatListener = new ChatListener();
 		muted = new ArrayList<String>();
@@ -80,8 +83,8 @@ public class BukkitSpeak extends JavaPlugin {
 		boolean i = (p != EventPriority.LOWEST);
 		getServer().getPluginManager().registerEvent(AsyncPlayerChatEvent.class, chatListener, p, chatListener, this, i);
 		getServer().getPluginManager().registerEvents(playerListener, this);
-		getCommand("ts").setExecutor(tsCommand);
-		getCommand("tsa").setExecutor(tsCommand);
+		getCommand("ts").setExecutor(mcCommand);
+		getCommand("tsa").setExecutor(mcCommand);
 		
 		/* PlugIn hooks after the initialization */
 		factions = Bukkit.getPluginManager().isPluginEnabled("Factions");
@@ -140,6 +143,10 @@ public class BukkitSpeak extends JavaPlugin {
 	
 	public static StringManager getStringManager() {
 		return stringManager;
+	}
+	
+	public static TeamspeakCommandExecutor getTeamspeakCommandExecutor() {
+		return tsCommand;
 	}
 	
 	public static PermissionsHelper getPermissionsHelper() {

@@ -1,5 +1,6 @@
 package net.but2002.minecraft.BukkitSpeak.teamspeakEvent;
 
+import java.util.Arrays;
 import java.util.HashMap;
 
 import net.but2002.minecraft.BukkitSpeak.BukkitSpeak;
@@ -26,7 +27,10 @@ public class TeamspeakCommandEvent extends TeamspeakEvent {
 	protected void performAction() {
 		String cmd = info.get("msg");
 		cmd = cmd.substring(BukkitSpeak.getStringManager().getTeamspeakCommandPrefix().length());
-		String commandName = cmd.split(" ")[0].toLowerCase();
+		String[] split = cmd.split(" ");
+		
+		String commandName = split[0].toLowerCase();
+		String[] args = Arrays.copyOfRange(split, 1, split.length);
 		
 		ServerGroup sg = getServerGroup(getUser().get("client_servergroups"));
 		if (sg == null) {
@@ -38,6 +42,13 @@ public class TeamspeakCommandEvent extends TeamspeakEvent {
 		if (sg.isBlocked()) return;
 		
 		TeamspeakCommandSender tscs = new TeamspeakCommandSender(getUser(), sg.isOp(), sg.getPermissions());
+		// Check for internal commands.
+		if (BukkitSpeak.getTeamspeakCommandExecutor().execute(tscs, commandName, args)) {
+			// Command successfully executed --> Return
+			return;
+		}
+		
+		// Not an internal command, execute as a Bukkit command.
 		PluginCommand pc = Bukkit.getPluginCommand(commandName);
 		
 		// Vanilla and Bukkit commands don't need to be on the whitelist

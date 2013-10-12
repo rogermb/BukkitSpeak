@@ -3,7 +3,7 @@ package net.but2002.minecraft.BukkitSpeak.Configuration;
 import java.util.List;
 
 import net.but2002.minecraft.BukkitSpeak.BukkitSpeak;
-import net.but2002.minecraft.BukkitSpeak.TsTargetEnum;
+import net.but2002.minecraft.BukkitSpeak.TsTarget;
 
 import org.bukkit.Color;
 import org.bukkit.OfflinePlayer;
@@ -150,12 +150,12 @@ public enum Configuration {
 		return EventPriority.MONITOR;
 	}
 	
-	public TsTargetEnum getTeamspeakTarget() {
-		TsTargetEnum tsTarget = TsTargetEnum.getFromString(getString());
+	public TsTarget getTeamspeakTarget() {
+		TsTarget tsTarget = TsTarget.getFromString(getString());
 		if (tsTarget == null) {
 			BukkitSpeak.log().warning("Config value \"" + path
 					+ "\" did not match a valid Teamspeak target. Not sending messages to TeamSpeak.");
-			return TsTargetEnum.NONE;
+			return TsTarget.NONE;
 		} else {
 			return tsTarget;
 		}

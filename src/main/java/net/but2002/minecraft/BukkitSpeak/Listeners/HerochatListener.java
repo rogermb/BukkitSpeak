@@ -1,7 +1,7 @@
 package net.but2002.minecraft.BukkitSpeak.Listeners;
 
 import net.but2002.minecraft.BukkitSpeak.BukkitSpeak;
-import net.but2002.minecraft.BukkitSpeak.TsTargetEnum;
+import net.but2002.minecraft.BukkitSpeak.TsTarget;
 import net.but2002.minecraft.BukkitSpeak.AsyncQueryUtils.QuerySender;
 import net.but2002.minecraft.BukkitSpeak.Configuration.Configuration;
 import net.but2002.minecraft.BukkitSpeak.Configuration.Messages;
@@ -24,7 +24,7 @@ public class HerochatListener implements Listener {
 	@EventHandler(priority = EventPriority.MONITOR)
 	public void onHeroChatMessage(ChannelChatEvent e) {
 		if (!BukkitSpeak.useHerochat()) return; // We're not using Herochat, so don't do this
-		if (Configuration.TS_MESSAGES_TARGET.getTeamspeakTarget() == TsTargetEnum.NONE) return;
+		if (Configuration.TS_MESSAGES_TARGET.getTeamspeakTarget() == TsTarget.NONE) return;
 		if (!hasPermission(e.getSender().getPlayer(), "chat")) return;
 		
 		String channelName = e.getChannel().getName();
@@ -36,11 +36,11 @@ public class HerochatListener implements Listener {
 			
 			if (tsMsg.isEmpty()) return;
 			
-			if (Configuration.TS_MESSAGES_TARGET.getTeamspeakTarget() == TsTargetEnum.CHANNEL) {
+			if (Configuration.TS_MESSAGES_TARGET.getTeamspeakTarget() == TsTarget.CHANNEL) {
 				QuerySender qs = new QuerySender(BukkitSpeak.getQuery().getCurrentQueryClientChannelID(),
 						JTS3ServerQuery.TEXTMESSAGE_TARGET_CHANNEL, tsMsg);
 				Bukkit.getScheduler().runTaskAsynchronously(BukkitSpeak.getInstance(), qs);
-			} else if (Configuration.TS_MESSAGES_TARGET.getTeamspeakTarget() == TsTargetEnum.SERVER) {
+			} else if (Configuration.TS_MESSAGES_TARGET.getTeamspeakTarget() == TsTarget.SERVER) {
 				QuerySender qs = new QuerySender(BukkitSpeak.getQuery().getCurrentQueryClientServerID(),
 						JTS3ServerQuery.TEXTMESSAGE_TARGET_VIRTUALSERVER, tsMsg);
 				Bukkit.getScheduler().runTaskAsynchronously(BukkitSpeak.getInstance(), qs);

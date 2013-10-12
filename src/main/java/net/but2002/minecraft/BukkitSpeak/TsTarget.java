@@ -1,13 +1,13 @@
 package net.but2002.minecraft.BukkitSpeak;
 
-public enum TsTargetEnum {
+public enum TsTarget {
 	NONE("nobody", "null", "nothing"),
 	CHANNEL("chat"),
 	SERVER("broadcast");
 	
 	private final String[] names;
 	
-	TsTargetEnum(String... aliases) {
+	TsTarget(String... aliases) {
 		if (aliases == null) {
 			names = new String[1];
 		} else {
@@ -19,9 +19,9 @@ public enum TsTargetEnum {
 		names[0] = name().toLowerCase();
 	}
 	
-	public static TsTargetEnum getFromString(String input) {
+	public static TsTarget getFromString(String input) {
 		if (input == null) return null;
-		for (TsTargetEnum value : TsTargetEnum.values()) {
+		for (TsTarget value : TsTarget.values()) {
 			for (String name : value.names) {
 				if (name.equalsIgnoreCase(input)) return value;
 			}

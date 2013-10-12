@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 
-import net.but2002.minecraft.BukkitSpeak.TsTargetEnum;
+import net.but2002.minecraft.BukkitSpeak.TsTarget;
 import net.but2002.minecraft.BukkitSpeak.Configuration.Configuration;
 
 import org.bukkit.command.CommandSender;
@@ -34,7 +34,7 @@ public class SetTarget extends SetProperty {
 	
 	@Override
 	public boolean execute(CommandSender sender, String arg) {
-		TsTargetEnum tsTarget = TsTargetEnum.getFromString(arg);
+		TsTarget tsTarget = TsTarget.getFromString(arg);
 		if (tsTarget == null) {
 			send(sender, Level.WARNING, "Only 'none', 'channel' or 'server' are accepted.");
 			return false;

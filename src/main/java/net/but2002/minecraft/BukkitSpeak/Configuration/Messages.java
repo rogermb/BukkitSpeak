@@ -60,7 +60,7 @@ public enum Messages {
 	TS_COMMAND_SENDER_NAME("messages.TeamspeakCommandMessages.TeamspeakCommandSenderName",
 			"&a[&6TS&a] &e%client_nickname%&r");
 	
-	private static final File configFile = new File(BukkitSpeak.getInstance().getDataFolder(), "locale.yml");
+	private static final File CONFIG_FILE = new File(BukkitSpeak.getInstance().getDataFolder(), "locale.yml");
 	private static YamlConfiguration config;
 	
 	private final String path;
@@ -73,7 +73,7 @@ public enum Messages {
 	
 	public static void reload() {
 		boolean changed = false;
-		config = YamlConfiguration.loadConfiguration(configFile);
+		config = YamlConfiguration.loadConfiguration(CONFIG_FILE);
 		
 		for (Messages value : Messages.values()) {
 			if (value.defValue == null) continue;
@@ -99,9 +99,9 @@ public enum Messages {
 	public static void save() {
 		if (config == null) return;
 		try {
-			config.save(configFile);
+			config.save(CONFIG_FILE);
 		} catch (IOException e) {
-			BukkitSpeak.log().log(Level.SEVERE, "Could not save the locale file to " + configFile, e);
+			BukkitSpeak.log().log(Level.SEVERE, "Could not save the locale file to " + CONFIG_FILE, e);
 		}
 	}
 	

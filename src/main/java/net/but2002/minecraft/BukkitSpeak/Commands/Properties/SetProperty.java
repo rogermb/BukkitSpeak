@@ -63,7 +63,8 @@ public abstract class SetProperty {
 	
 	protected void sendChannelChangeMessage(CommandSender sender) {
 		String mcMsg = Messages.MC_COMMAND_CHANNEL_CHANGE.get();
-		HashMap<String, String> info = BukkitSpeak.getQuery().getInfo(JTS3ServerQuery.INFOMODE_CHANNELINFO, BukkitSpeak.getQuery().getCurrentQueryClientChannelID());
+		HashMap<String, String> info = BukkitSpeak.getQuery().getInfo(JTS3ServerQuery.INFOMODE_CHANNELINFO,
+				BukkitSpeak.getQuery().getCurrentQueryClientChannelID());
 		
 		mcMsg = new Replacer().addSender(sender).addChannel(info).replace(mcMsg);
 		broadcastMessage(mcMsg, sender);

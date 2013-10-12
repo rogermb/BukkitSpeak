@@ -7,6 +7,8 @@ import java.util.logging.Level;
 
 import net.but2002.minecraft.BukkitSpeak.BukkitSpeak;
 import net.but2002.minecraft.BukkitSpeak.AsyncQueryUtils.QueryBan;
+import net.but2002.minecraft.BukkitSpeak.Configuration.Configuration;
+import net.but2002.minecraft.BukkitSpeak.Configuration.Messages;
 import net.but2002.minecraft.BukkitSpeak.util.MessageUtil;
 import net.but2002.minecraft.BukkitSpeak.util.Replacer;
 
@@ -42,15 +44,15 @@ public class CommandBan extends BukkitSpeakCommand {
 			return;
 		}
 		
-		String tsMsg = BukkitSpeak.getStringManager().getMessage("BanMessage");
-		String mcMsg = BukkitSpeak.getStringManager().getMessage("Ban");
-		String msg = BukkitSpeak.getStringManager().getDefaultReason();
+		String tsMsg = Messages.MC_COMMAND_BAN_TS.get();
+		String mcMsg = Messages.MC_COMMAND_BAN_MC.get();
+		String msg = Configuration.TS_DEFAULT_REASON.getString();
 		if (args.length > 2) {
 			msg = combineSplit(2, args, " ");
 		}
 		
 		Replacer r = new Replacer().addSender(sender).addTargetClient(client).addMessage(msg);
-		tsMsg = MessageUtil.toTeamspeak(r.replace(tsMsg), false, BukkitSpeak.getStringManager().getAllowLinks());
+		tsMsg = MessageUtil.toTeamspeak(r.replace(tsMsg), false, Configuration.TS_ALLOW_LINKS.getBoolean());
 		mcMsg = r.replace(mcMsg);
 		
 		if (tsMsg == null || tsMsg.isEmpty()) return;

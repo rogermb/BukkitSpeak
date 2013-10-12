@@ -3,19 +3,18 @@ package net.but2002.minecraft.BukkitSpeak;
 import java.util.Date;
 import java.util.logging.Logger;
 
+import net.but2002.minecraft.BukkitSpeak.Configuration.Configuration;
 import de.stefan1200.jts3serverquery.JTS3ServerQuery;
 
 public class QueryConnector implements Runnable {
 	
 	private BukkitSpeak plugin;
 	private JTS3ServerQuery query;
-	private StringManager stringManager;
 	private Logger logger;
 	
 	public QueryConnector() {
 		this.plugin = BukkitSpeak.getInstance();
 		query = BukkitSpeak.getQuery();
-		stringManager = BukkitSpeak.getStringManager();
 		logger = plugin.getLogger();
 	}
 	
@@ -23,14 +22,14 @@ public class QueryConnector implements Runnable {
 		plugin.setStartedTime(new Date());
 		query.removeTeamspeakActionListener();
 		
-		if (!query.connectTS3Query(stringManager.getIp(), stringManager.getQueryPort())) {
+		if (!query.connectTS3Query(Configuration.MAIN_IP.getString(), Configuration.MAIN_QUERYPORT.getInt())) {
 			logger.severe("Could not connect to the TS3 server.");
 			logger.severe("Make sure that the IP and the QueryPort are correct!");
 			logger.severe("(" + query.getLastError() + ")");
 			plugin.setStoppedTime(new Date());
 			return;
 		}
-		if (!query.loginTS3(stringManager.getServerAdmin(), stringManager.getServerPass())) {
+		if (!query.loginTS3(Configuration.MAIN_USERNAME.getString(), Configuration.MAIN_PASSWORD.getString())) {
 			logger.severe("Could not login to the Server Query.");
 			logger.severe("Make sure that \"QueryUsername\" and \"QueryPassword\" are correct.");
 			logger.severe("(" + query.getLastError() + ")");
@@ -38,8 +37,8 @@ public class QueryConnector implements Runnable {
 			plugin.setStoppedTime(new Date());
 			return;
 		}
-		if (stringManager.getServerPort() > 0) {
-			if (!query.selectVirtualServer(stringManager.getServerPort(), true)) {
+		if (Configuration.MAIN_SERVERPORT.getInt() > 0) {
+			if (!query.selectVirtualServer(Configuration.MAIN_SERVERPORT.getInt(), true)) {
 				logger.severe("Could not select the virtual server.");
 				logger.severe("Make sure TeamSpeakPort is PortNumber OR -VirtualServerId");
 				logger.severe("(" + query.getLastError() + ")");
@@ -48,7 +47,7 @@ public class QueryConnector implements Runnable {
 				return;
 			}
 		} else {
-			if (!query.selectVirtualServer(-(stringManager.getServerPort()), false)) {
+			if (!query.selectVirtualServer(-(Configuration.MAIN_SERVERPORT.getInt()), false)) {
 				logger.severe("Could not select the virtual server.");
 				logger.severe("Make sure TeamSpeakPort is PortNumber OR -VirtualServerId");
 				logger.severe("(" + query.getLastError() + ")");
@@ -57,7 +56,7 @@ public class QueryConnector implements Runnable {
 				return;
 			}
 		}
-		if (!query.setDisplayName(stringManager.getTeamspeakNickname())) {
+		if (!query.setDisplayName(Configuration.TS_NICKNAME.getString())) {
 			logger.warning("Could not set the nickname on Teamspeak.");
 			logger.warning("Make sure that the name isn't occupied.");
 			logger.warning("(" + query.getLastError() + ")");
@@ -65,16 +64,18 @@ public class QueryConnector implements Runnable {
 		
 		query.setTeamspeakActionListener(plugin.getTSActionListener());
 		
-		if (stringManager.getUseServer()) {
+		if (Configuration.TS_ENABLE_SERVER_EVENTS.getBoolean()) {
 			query.addEventNotify(JTS3ServerQuery.EVENT_MODE_SERVER, 0);
 		}
-		if (stringManager.getUseTextServer()) {
+		if (Configuration.TS_ENABLE_SERVER_MESSAGES.getBoolean()) {
 			query.addEventNotify(JTS3ServerQuery.EVENT_MODE_TEXTSERVER, 0);
 		}
 		
-		if ((stringManager.getChannelID() != 0 && stringManager.getChannelID() != query.getCurrentQueryClientChannelID())
-				&& (stringManager.getUseChannel() || stringManager.getUseTextChannel())) {
-			if (!query.moveClient(query.getCurrentQueryClientID(), stringManager.getChannelID(), stringManager.getChannelPass())) {
+		final int cid = Configuration.TS_CHANNEL_ID.getInt();
+		final boolean channelEvents = Configuration.TS_ENABLE_CHANNEL_EVENTS.getBoolean();
+		final boolean channelMessages = Configuration.TS_ENABLE_CHANNEL_MESSAGES.getBoolean();
+		if ((cid != 0 && cid != query.getCurrentQueryClientChannelID()) && (channelEvents || channelMessages)) {
+			if (!query.moveClient(query.getCurrentQueryClientID(), cid, Configuration.TS_CHANNEL_PASSWORD.getString())) {
 				logger.severe("Could not move the QueryClient into the channel.");
 				logger.severe("Ensure that the ChannelID is correct and the password is set if required.");
 				logger.severe("(" + query.getLastError() + ")");
@@ -84,13 +85,13 @@ public class QueryConnector implements Runnable {
 			}
 		}
 		
-		if (stringManager.getUseChannel()) {
+		if (channelEvents) {
 			query.addEventNotify(JTS3ServerQuery.EVENT_MODE_CHANNEL, query.getCurrentQueryClientChannelID());
 		}
-		if (stringManager.getUseTextChannel()) {
+		if (channelMessages) {
 			query.addEventNotify(JTS3ServerQuery.EVENT_MODE_TEXTCHANNEL, query.getCurrentQueryClientChannelID());
 		}
-		if (stringManager.getUsePrivateMessages()) {
+		if (Configuration.TS_ENABLE_PRIVATE_MESSAGES.getBoolean()) {
 			query.addEventNotify(JTS3ServerQuery.EVENT_MODE_TEXTPRIVATE, 0);
 		}
 		

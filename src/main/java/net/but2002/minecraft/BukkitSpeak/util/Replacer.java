@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Matcher;
 
-import net.but2002.minecraft.BukkitSpeak.BukkitSpeak;
+import net.but2002.minecraft.BukkitSpeak.Configuration.Configuration;
 
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -77,7 +77,7 @@ public class Replacer {
 		if (sender instanceof Player) {
 			return ((Player) sender).getName();
 		} else {
-			return MessageUtil.toMinecraft(BukkitSpeak.getStringManager().getConsoleName(), false, false);
+			return MessageUtil.toMinecraft(Configuration.TS_CONSOLE_NAME.getString(), false, false);
 		}
 	}
 	
@@ -85,7 +85,7 @@ public class Replacer {
 		if (sender instanceof Player) {
 			return ((Player) sender).getDisplayName();
 		} else {
-			return BukkitSpeak.getStringManager().getConsoleName();
+			return Configuration.TS_CONSOLE_NAME.getString();
 		}
 	}
 }

@@ -6,19 +6,19 @@ import java.util.List;
 import java.util.logging.Level;
 
 import net.but2002.minecraft.BukkitSpeak.BukkitSpeak;
-import net.but2002.minecraft.BukkitSpeak.StringManager;
+import net.but2002.minecraft.BukkitSpeak.Configuration.Configuration;
 
 import org.bukkit.command.CommandSender;
 
 public class SetChannel extends SetProperty {
 	
-	private static final String PROPERTY = StringManager.TEAMSPEAK_CHANNELID;
+	private static final Configuration PROPERTY = Configuration.TS_CHANNEL_ID;
 	private static final String ALLOWED_INPUT = "Channel name or ID";
 	private static final String DESCRIPTION = "BukkitSpeak will try to move itself into the channel with the stated ID. "
 			+ "Set ChannelPassword &lfirst&r&6!";
 	
 	@Override
-	public String getProperty() {
+	public Configuration getProperty() {
 		return PROPERTY;
 	}
 	
@@ -34,9 +34,10 @@ public class SetChannel extends SetProperty {
 	
 	@Override
 	public boolean execute(CommandSender sender, String arg) {
-		if (!(BukkitSpeak.getStringManager().getUseChannel()) && !(BukkitSpeak.getStringManager().getUseTextChannel())) {
-			send(sender, Level.WARNING, "&4Set " + StringManager.TEAMSPEAK_CHANNEL 
-					+ " or " + StringManager.TEAMSPEAK_TEXTCHANNEL + " to true to use this feature.");
+		if (!(Configuration.TS_ENABLE_CHANNEL_EVENTS.getBoolean())
+				&& !(Configuration.TS_ENABLE_CHANNEL_MESSAGES.getBoolean())) {
+			send(sender, Level.WARNING, "&4Set " + Configuration.TS_ENABLE_CHANNEL_EVENTS.getConfigPath() + " or "
+					+ Configuration.TS_ENABLE_CHANNEL_MESSAGES.getConfigPath() + " to true to use this feature.");
 			return false;
 		}
 		if (arg.contains(" ")) {
@@ -64,12 +65,11 @@ public class SetChannel extends SetProperty {
 		}
 		
 		int clid = BukkitSpeak.getQuery().getCurrentQueryClientID();
-		String pw = BukkitSpeak.getStringManager().getChannelPass();
+		String pw = Configuration.TS_CHANNEL_PASSWORD.getString();
 		
 		if (BukkitSpeak.getQuery().moveClient(clid, cid, pw)) {
-			getTsSection().set(StringManager.TEAMSPEAK_CHANNELID, cid);
-			BukkitSpeak.getInstance().saveConfig();
-			BukkitSpeak.getInstance().reloadStringManager();
+			Configuration.TS_CHANNEL_ID.set(cid);
+			Configuration.save();
 			reloadListener();
 			send(sender, Level.INFO, "&aThe channel ID was successfully set to " + arg);
 			sendChannelChangeMessage(sender);

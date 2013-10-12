@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.logging.Level;
 
 import net.but2002.minecraft.BukkitSpeak.BukkitSpeak;
-import net.but2002.minecraft.BukkitSpeak.StringManager;
+import net.but2002.minecraft.BukkitSpeak.Configuration.Configuration;
 import net.but2002.minecraft.BukkitSpeak.Listeners.ChatListener;
 
 import org.bukkit.Bukkit;
@@ -15,12 +15,12 @@ import org.bukkit.event.player.AsyncPlayerChatEvent;
 
 public class SetChatListenerPriority extends SetProperty {
 	
-	private static final String PROPERTY = StringManager.TEAMSPEAK_CHATPRIORITY;
+	private static final Configuration PROPERTY = Configuration.TS_CHAT_LISTENER_PRIORITY;
 	private static final String ALLOWED_INPUT = "LOWEST, LOW, NORMAL, HIGH, HIGHEST or MONITOR";
 	private static final String DESCRIPTION = "The priority of the chat listener.";
 	
 	@Override
-	public String getProperty() {
+	public Configuration getProperty() {
 		return PROPERTY;
 	}
 	
@@ -48,10 +48,10 @@ public class SetChatListenerPriority extends SetProperty {
 			return false;
 		}
 		
-		getTsSection().set(StringManager.TEAMSPEAK_CHATPRIORITY, p.name());
+		PROPERTY.set(p.name());
 		ChatListener cl = BukkitSpeak.getInstance().getChatListener();
 		AsyncPlayerChatEvent.getHandlerList().unregister(cl);
-		boolean i = (p == EventPriority.LOWEST);
+		boolean i = (p != EventPriority.LOWEST);
 		Bukkit.getPluginManager().registerEvent(AsyncPlayerChatEvent.class, cl, p, cl, BukkitSpeak.getInstance(), i);
 		return true;
 	}

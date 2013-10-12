@@ -5,13 +5,13 @@ import java.util.List;
 import java.util.logging.Level;
 
 import net.but2002.minecraft.BukkitSpeak.BukkitSpeak;
-import net.but2002.minecraft.BukkitSpeak.StringManager;
+import net.but2002.minecraft.BukkitSpeak.Configuration.Configuration;
+import net.but2002.minecraft.BukkitSpeak.Configuration.Messages;
 import net.but2002.minecraft.BukkitSpeak.util.MessageUtil;
 import net.but2002.minecraft.BukkitSpeak.util.Replacer;
 
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
-import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 
 import de.stefan1200.jts3serverquery.JTS3ServerQuery;
@@ -29,28 +29,22 @@ public abstract class SetProperty {
 		}
 	}
 	
-	protected ConfigurationSection getTsSection() {
-		return BukkitSpeak.getInstance().getConfig().getConfigurationSection(StringManager.TEAMSPEAK_SECTION);
-	}
-
 	protected void reloadListener() {
 		BukkitSpeak.getQuery().removeAllEvents();
 		
-		if (BukkitSpeak.getStringManager().getUseServer()) {
+		if (Configuration.TS_ENABLE_SERVER_EVENTS.getBoolean()) {
 			BukkitSpeak.getQuery().addEventNotify(JTS3ServerQuery.EVENT_MODE_SERVER, 0);
 		}
-		if (BukkitSpeak.getStringManager().getUseTextServer()) {
+		if (Configuration.TS_ENABLE_SERVER_MESSAGES.getBoolean()) {
 			BukkitSpeak.getQuery().addEventNotify(JTS3ServerQuery.EVENT_MODE_TEXTSERVER, 0);
 		}
-		if (BukkitSpeak.getStringManager().getUseChannel()) {
-			BukkitSpeak.getQuery().addEventNotify(JTS3ServerQuery.EVENT_MODE_CHANNEL,
-					BukkitSpeak.getStringManager().getChannelID());
+		if (Configuration.TS_ENABLE_CHANNEL_EVENTS.getBoolean()) {
+			BukkitSpeak.getQuery().addEventNotify(JTS3ServerQuery.EVENT_MODE_CHANNEL, Configuration.TS_CHANNEL_ID.getInt());
 		}
-		if (BukkitSpeak.getStringManager().getUseTextChannel()) {
-			BukkitSpeak.getQuery().addEventNotify(JTS3ServerQuery.EVENT_MODE_TEXTCHANNEL,
-					BukkitSpeak.getStringManager().getChannelID());
+		if (Configuration.TS_ENABLE_CHANNEL_MESSAGES.getBoolean()) {
+			BukkitSpeak.getQuery().addEventNotify(JTS3ServerQuery.EVENT_MODE_TEXTCHANNEL, Configuration.TS_CHANNEL_ID.getInt());
 		}
-		if (BukkitSpeak.getStringManager().getUsePrivateMessages()) {
+		if (Configuration.TS_ENABLE_PRIVATE_MESSAGES.getBoolean()) {
 			BukkitSpeak.getQuery().addEventNotify(JTS3ServerQuery.EVENT_MODE_TEXTPRIVATE, 0);
 		}
 	}
@@ -59,18 +53,17 @@ public abstract class SetProperty {
 		if (mcMsg == null || mcMsg.isEmpty()) return;
 		for (Player pl : Bukkit.getServer().getOnlinePlayers()) {
 			if (!BukkitSpeak.getMuted(pl)) {
-				pl.sendMessage(MessageUtil.toMinecraft(mcMsg, true, BukkitSpeak.getStringManager().getAllowLinks()));
+				pl.sendMessage(MessageUtil.toMinecraft(mcMsg, true, Configuration.TS_ALLOW_LINKS.getBoolean()));
 			}
 		}
-		if (!(sender instanceof Player) || (BukkitSpeak.getStringManager().getLogInConsole())) {
-			BukkitSpeak.log().info(MessageUtil.toMinecraft(mcMsg, false, BukkitSpeak.getStringManager().getAllowLinks()));
+		if (!(sender instanceof Player) || (Configuration.TS_LOGGING.getBoolean())) {
+			BukkitSpeak.log().info(MessageUtil.toMinecraft(mcMsg, false, Configuration.TS_ALLOW_LINKS.getBoolean()));
 		}
 	}
 	
 	protected void sendChannelChangeMessage(CommandSender sender) {
-		String mcMsg = BukkitSpeak.getStringManager().getMessage("ChannelChange");
-		HashMap<String, String> info = BukkitSpeak.getQuery().getInfo(JTS3ServerQuery.INFOMODE_CHANNELINFO,
-				BukkitSpeak.getQuery().getCurrentQueryClientChannelID());
+		String mcMsg = Messages.MC_COMMAND_CHANNEL_CHANGE.get();
+		HashMap<String, String> info = BukkitSpeak.getQuery().getInfo(JTS3ServerQuery.INFOMODE_CHANNELINFO, BukkitSpeak.getQuery().getCurrentQueryClientChannelID());
 		
 		mcMsg = new Replacer().addSender(sender).addChannel(info).replace(mcMsg);
 		broadcastMessage(mcMsg, sender);
@@ -79,7 +72,7 @@ public abstract class SetProperty {
 	protected void connectChannel(CommandSender sender) {
 		int cid = BukkitSpeak.getQuery().getCurrentQueryClientChannelID();
 		int clid = BukkitSpeak.getQuery().getCurrentQueryClientID();
-		String pw = BukkitSpeak.getStringManager().getChannelPass();
+		String pw = Configuration.TS_CHANNEL_PASSWORD.getString();
 		if (!BukkitSpeak.getQuery().moveClient(clid, cid, pw)) {
 			send(sender, Level.WARNING, "&4The channel ID could not be set.");
 			send(sender, Level.WARNING, "&4Ensure that the ChannelID is really assigned to a valid channel.");
@@ -89,9 +82,18 @@ public abstract class SetProperty {
 		sendChannelChangeMessage(sender);
 	}
 	
-	public abstract String getProperty();
+	public String getName() {
+		String property = getProperty().getConfigPath();
+		return property.substring(property.lastIndexOf("."));
+	}
+	
+	public abstract Configuration getProperty();
+	
 	public abstract String getAllowedInput();
+	
 	public abstract String getDescription();
+	
 	public abstract boolean execute(CommandSender sender, String arg);
+	
 	public abstract List<String> onTabComplete(CommandSender sender, String[] args);
 }

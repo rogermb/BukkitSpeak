@@ -7,6 +7,8 @@ import java.util.logging.Level;
 
 import net.but2002.minecraft.BukkitSpeak.BukkitSpeak;
 import net.but2002.minecraft.BukkitSpeak.AsyncQueryUtils.QueryKick;
+import net.but2002.minecraft.BukkitSpeak.Configuration.Configuration;
+import net.but2002.minecraft.BukkitSpeak.Configuration.Messages;
 import net.but2002.minecraft.BukkitSpeak.util.MessageUtil;
 import net.but2002.minecraft.BukkitSpeak.util.Replacer;
 
@@ -36,7 +38,7 @@ public class CommandChannelKick extends BukkitSpeakCommand {
 			if (client == null) {
 				send(sender, Level.WARNING, "&4Can't find the user you want to kick from the channel.");
 				return;
-			} else if (Integer.valueOf(client.get("cid")) != BukkitSpeak.getStringManager().getChannelID()) {
+			} else if (Integer.valueOf(client.get("cid")) != Configuration.TS_CHANNEL_ID.getInt()) {
 				send(sender, Level.WARNING, "&4The client is not in the channel!");
 				return;
 			}
@@ -45,15 +47,15 @@ public class CommandChannelKick extends BukkitSpeakCommand {
 			return;
 		}
 		
-		String tsMsg = BukkitSpeak.getStringManager().getMessage("ChannelKickMessage");
-		String mcMsg = BukkitSpeak.getStringManager().getMessage("ChannelKick");
-		String msg = BukkitSpeak.getStringManager().getDefaultReason();
+		String tsMsg = Messages.MC_COMMAND_CHANNEL_KICK_TS.get();
+		String mcMsg = Messages.MC_COMMAND_CHANNEL_KICK_MC.get();
+		String msg = Configuration.TS_DEFAULT_REASON.getString();
 		if (args.length > 2) {
 			msg = combineSplit(2, args, " ");
 		}
 		
 		Replacer r = new Replacer().addSender(sender).addTargetClient(client).addMessage(msg);
-		tsMsg = MessageUtil.toTeamspeak(r.replace(tsMsg), false, BukkitSpeak.getStringManager().getAllowLinks());
+		tsMsg = MessageUtil.toTeamspeak(r.replace(tsMsg), false, Configuration.TS_ALLOW_LINKS.getBoolean());
 		mcMsg = r.replace(mcMsg);
 		
 		if (tsMsg == null || tsMsg.isEmpty()) return;

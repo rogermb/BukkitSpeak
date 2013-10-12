@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.regex.Pattern;
 
 import net.but2002.minecraft.BukkitSpeak.BukkitSpeak;
-
+import net.but2002.minecraft.BukkitSpeak.Configuration.Configuration;
 import de.stefan1200.jts3serverquery.TeamspeakActionListener;
 
 public class TeamspeakListener implements TeamspeakActionListener {
@@ -22,8 +22,8 @@ public class TeamspeakListener implements TeamspeakActionListener {
 		} else if (eventType.equals("notifytextmessage")) {
 			String message = eventInfo.get("msg");
 			
-			String reg = Pattern.quote(BukkitSpeak.getStringManager().getTeamspeakCommandPrefix());
-			if (BukkitSpeak.getStringManager().getTeamspeakCommandsEnabled() && message.matches(reg + "\\S.*")) {
+			String reg = Pattern.quote(Configuration.TS_COMMANDS_PREFIX.getString());
+			if (Configuration.TS_COMMANDS_ENABLED.getBoolean() && message.matches(reg + "\\S.*")) {
 				new TeamspeakCommandEvent(eventInfo);
 			} else {
 				new ServerMessageEvent(eventInfo);

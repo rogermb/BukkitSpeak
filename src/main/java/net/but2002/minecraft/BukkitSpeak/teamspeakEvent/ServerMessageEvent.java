@@ -5,6 +5,8 @@ import java.util.HashMap;
 import org.bukkit.entity.Player;
 
 import net.but2002.minecraft.BukkitSpeak.BukkitSpeak;
+import net.but2002.minecraft.BukkitSpeak.Configuration.Configuration;
+import net.but2002.minecraft.BukkitSpeak.Configuration.Messages;
 import net.but2002.minecraft.BukkitSpeak.util.MessageUtil;
 import net.but2002.minecraft.BukkitSpeak.util.Replacer;
 
@@ -27,12 +29,12 @@ public class ServerMessageEvent extends TeamspeakEvent {
 		
 		String msg = info.get("msg");
 		msg = msg.replaceAll("\\n", " ");
-		msg = MessageUtil.toMinecraft(msg, true, BukkitSpeak.getStringManager().getAllowLinks());
+		msg = MessageUtil.toMinecraft(msg, true, Configuration.TS_ALLOW_LINKS.getBoolean());
 		if (msg.isEmpty()) return;
 		getUser().put("msg", msg);
 		
 		if (info.get("targetmode").equals("3")) {
-			String m = BukkitSpeak.getStringManager().getMessage("ServerMsg");
+			String m = Messages.TS_EVENT_SERVER_MESSAGE.get();
 			if (m.isEmpty()) return;
 			m = new Replacer().addClient(getUser()).replace(m);
 			m = MessageUtil.toMinecraft(m, true, true);
@@ -42,13 +44,13 @@ public class ServerMessageEvent extends TeamspeakEvent {
 					pl.sendMessage(m);
 				}
 			}
-			if (BukkitSpeak.getStringManager().getLogInConsole()) BukkitSpeak.log().info(m);
+			if (Configuration.TS_LOGGING.getBoolean()) BukkitSpeak.log().info(m);
 			
 		} else if (info.get("targetmode").equals("2")) {
-			sendMessage("ChannelMsg", "chat");
+			sendMessage(Messages.TS_EVENT_CHANNEL_MESSAGE, "chat");
 			
 		} else if (info.get("targetmode").equals("1")) {
-			String m = BukkitSpeak.getStringManager().getMessage("PrivateMsg");
+			String m = Messages.TS_EVENT_PRIVATE_MESSAGE.get();
 			if (m.isEmpty()) return;
 			m = new Replacer().addClient(getUser()).replace(m);
 			m = MessageUtil.toMinecraft(m, true, true);
@@ -56,7 +58,7 @@ public class ServerMessageEvent extends TeamspeakEvent {
 			String p = BukkitSpeak.getInstance().getRecipient(getClientId());
 			if (p == null || p.isEmpty()) return;
 			
-			if (MessageUtil.toMinecraft(BukkitSpeak.getStringManager().getConsoleName(), false, false).equals(p)) {
+			if (MessageUtil.toMinecraft(Configuration.TS_CONSOLE_NAME.getString(), false, false).equals(p)) {
 				BukkitSpeak.log().info(m);
 			} else {
 				Player pl = BukkitSpeak.getInstance().getServer().getPlayerExact(p);

@@ -3,6 +3,7 @@ package net.but2002.minecraft.BukkitSpeak.teamspeakEvent;
 import java.util.HashMap;
 
 import net.but2002.minecraft.BukkitSpeak.BukkitSpeak;
+import net.but2002.minecraft.BukkitSpeak.Configuration.Messages;
 
 public class ClientMovedEvent extends TeamspeakEvent {
 	
@@ -26,10 +27,10 @@ public class ClientMovedEvent extends TeamspeakEvent {
 		
 		if (Integer.parseInt(info.get("ctid")) == BukkitSpeak.getQuery().getCurrentQueryClientChannelID()) {
 			// Client entered channel
-			sendMessage("ChannelEnter", "channelenter");
+			sendMessage(Messages.TS_EVENT_CHANNEL_ENTER, "channelenter");
 		} else {
 			// Client left channel
-			sendMessage("ChannelLeave", "channelleave");
+			sendMessage(Messages.TS_EVENT_CHANNEL_LEAVE, "channelleave");
 		}
 	}
 }

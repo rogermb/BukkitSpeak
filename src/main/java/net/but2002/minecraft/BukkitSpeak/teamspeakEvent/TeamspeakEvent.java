@@ -7,6 +7,8 @@ import org.bukkit.entity.Player;
 import com.dthielke.herochat.Herochat;
 
 import net.but2002.minecraft.BukkitSpeak.BukkitSpeak;
+import net.but2002.minecraft.BukkitSpeak.Configuration.Configuration;
+import net.but2002.minecraft.BukkitSpeak.Configuration.Messages;
 import net.but2002.minecraft.BukkitSpeak.util.MessageUtil;
 import net.but2002.minecraft.BukkitSpeak.util.Replacer;
 
@@ -34,15 +36,15 @@ public abstract class TeamspeakEvent {
 		user = BukkitSpeak.getClientList().get(clid);
 	}
 	
-	protected void sendMessage(String messageName, String permission) {
-		String m = BukkitSpeak.getStringManager().getMessage(messageName);
+	protected void sendMessage(Messages message, String permission) {
+		String m = message.get();
 		if (m.isEmpty()) return;
 		m = new Replacer().addClient(getUser()).replace(m);
 		m = MessageUtil.toMinecraft(m, true, true);
 		
-		if (BukkitSpeak.useHerochat() && BukkitSpeak.getStringManager().getHerochatUsesEvents()) {
+		if (BukkitSpeak.useHerochat() && Configuration.PLUGINS_HEROCHAT_RELAY_EVENTS.getBoolean()) {
 			// Send to Herochat channel
-			String c = BukkitSpeak.getStringManager().getHerochatChannel();
+			String c = Configuration.PLUGINS_HEROCHAT_CHANNEL.getString();
 			Herochat.getChannelManager().getChannel(c).announce(m);
 		} else {
 			// Directly send to players with permissions
@@ -54,7 +56,7 @@ public abstract class TeamspeakEvent {
 		}
 		
 		// Finally log in console if enabled
-		if (BukkitSpeak.getStringManager().getLogInConsole()) BukkitSpeak.log().info(m);
+		if (Configuration.TS_LOGGING.getBoolean()) BukkitSpeak.log().info(m);
 	}
 	
 	protected boolean checkPermissions(Player player, String perm) {

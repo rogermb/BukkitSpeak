@@ -2,19 +2,19 @@ package net.but2002.minecraft.BukkitSpeak.Commands.Properties;
 
 import java.util.List;
 
-import net.but2002.minecraft.BukkitSpeak.StringManager;
+import net.but2002.minecraft.BukkitSpeak.Configuration.Configuration;
 
 import org.bukkit.command.CommandSender;
 
 public class SetDefaultReason extends SetProperty {
 	
-	private static final String PROPERTY = StringManager.TEAMSPEAK_DEFAULTREASON;
+	private static final Configuration PROPERTY = Configuration.TS_DEFAULT_REASON;
 	private static final String ALLOWED_INPUT = "Any string";
 	private static final String DESCRIPTION = "This will be the default if you don't add a reason to "
 			+ "/tsa kick, channelkick or ban.";
 	
 	@Override
-	public String getProperty() {
+	public Configuration getProperty() {
 		return PROPERTY;
 	}
 	
@@ -30,7 +30,7 @@ public class SetDefaultReason extends SetProperty {
 	
 	@Override
 	public boolean execute(CommandSender sender, String arg) {
-		getTsSection().set(StringManager.TEAMSPEAK_DEFAULTREASON, arg);
+		PROPERTY.set(arg);
 		return true;
 	}
 	

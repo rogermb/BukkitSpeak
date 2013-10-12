@@ -9,6 +9,8 @@ import org.bukkit.command.CommandSender;
 
 import net.but2002.minecraft.BukkitSpeak.BukkitSpeak;
 import net.but2002.minecraft.BukkitSpeak.ClientList;
+import net.but2002.minecraft.BukkitSpeak.Configuration.Configuration;
+import net.but2002.minecraft.BukkitSpeak.Configuration.Messages;
 import net.but2002.minecraft.BukkitSpeak.util.Replacer;
 
 public class CommandList extends BukkitSpeakCommand {
@@ -38,7 +40,7 @@ public class CommandList extends BukkitSpeakCommand {
 				}
 			}
 			
-			String mcMsg = BukkitSpeak.getStringManager().getMessage("OnlineList");
+			String mcMsg = Messages.MC_COMMAND_LIST_SERVER.get();
 			String list = "-";
 			if (online.length() > 0) {
 				list = online.toString();
@@ -48,10 +50,11 @@ public class CommandList extends BukkitSpeakCommand {
 			
 			if (mcMsg == null || mcMsg.isEmpty()) return;
 			send(sender, Level.INFO, mcMsg);
-		} else if (args.length == 2 && BukkitSpeak.getStringManager().getUseChannel() && args[1].equalsIgnoreCase("channel")) {
+		} else if (args.length == 2 && Configuration.TS_ENABLE_CHANNEL_EVENTS.getBoolean()
+				&& args[1].equalsIgnoreCase("channel")) {
 			ClientList clientList = BukkitSpeak.getClientList();
 			StringBuilder online = new StringBuilder();
-			String id = String.valueOf(BukkitSpeak.getStringManager().getChannelID());
+			String id = String.valueOf(Configuration.TS_CHANNEL_ID.getInt());
 			
 			for (HashMap<String, String> user : clientList.getClients().values()) {
 				if (user.get("client_type").equals("0") && user.get("cid").equals(id)) {
@@ -60,7 +63,7 @@ public class CommandList extends BukkitSpeakCommand {
 				}
 			}
 			
-			String mcMsg = BukkitSpeak.getStringManager().getMessage("ChannelList");
+			String mcMsg = Messages.MC_COMMAND_LIST_CHANNEL.get();
 			String list = "-";
 			if (online.length() > 0) {
 				list = online.toString();

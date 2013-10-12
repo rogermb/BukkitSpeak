@@ -6,9 +6,9 @@ import java.util.logging.Level;
 
 import net.but2002.minecraft.BukkitSpeak.BukkitSpeak;
 import net.but2002.minecraft.BukkitSpeak.Commands.Properties.*;
+import net.but2002.minecraft.BukkitSpeak.Configuration.Configuration;
 
 import org.bukkit.command.CommandSender;
-import org.bukkit.configuration.ConfigurationSection;
 
 public class CommandSet extends BukkitSpeakCommand {
 	
@@ -19,7 +19,6 @@ public class CommandSet extends BukkitSpeakCommand {
 		new SetDefaultReason(), new SetChatListenerPriority(), new SetDebug()};
 	
 	private String props;
-	private ConfigurationSection tsSection;
 	
 	public CommandSet() {
 		super("set");
@@ -52,7 +51,7 @@ public class CommandSet extends BukkitSpeakCommand {
 			} else {
 				send(sender, Level.INFO, "&4You need to add a value to set.");
 				send(sender, Level.INFO, "&aPossible values: &6" + prop.getAllowedInput());
-				send(sender, Level.INFO, "&aCurrently set to: " + tsSection.getString(prop.getProperty()));
+				send(sender, Level.INFO, "&aCurrently set to: " + String.valueOf(prop.getProperty().get()));
 				send(sender, Level.INFO, "&aDescription:");
 				send(sender, Level.INFO, "&6" + prop.getDescription());
 			}
@@ -70,15 +69,14 @@ public class CommandSet extends BukkitSpeakCommand {
 			
 			if (!prop.execute(sender, arg)) return;
 			send(sender, Level.INFO, "&a" + prop.getProperty() + " was successfully set to " + arg);
-			BukkitSpeak.getInstance().saveConfig();
-			BukkitSpeak.getInstance().reloadStringManager();
+			Configuration.save();
 		}
 	}
 	
 	private SetProperty getMatchingProperty(String name) {
 		
 		for (SetProperty property : PROPERTIES) {
-			if (property.getProperty().toLowerCase().equals(name.toLowerCase())) {
+			if (property.getName().equalsIgnoreCase(name)) {
 				return property;
 			}
 		}
@@ -91,8 +89,8 @@ public class CommandSet extends BukkitSpeakCommand {
 		case 2:
 			List<String> al = new ArrayList<String>();
 			for (SetProperty prop : PROPERTIES) {
-				if (prop.getProperty().startsWith(args[1])) {
-					al.add(prop.getProperty());
+				if (prop.getName().startsWith(args[1])) {
+					al.add(prop.getName());
 				}
 			}
 			return al;

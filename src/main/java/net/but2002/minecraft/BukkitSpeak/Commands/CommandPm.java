@@ -8,6 +8,8 @@ import java.util.logging.Level;
 
 import net.but2002.minecraft.BukkitSpeak.BukkitSpeak;
 import net.but2002.minecraft.BukkitSpeak.AsyncQueryUtils.QuerySender;
+import net.but2002.minecraft.BukkitSpeak.Configuration.Configuration;
+import net.but2002.minecraft.BukkitSpeak.Configuration.Messages;
 import net.but2002.minecraft.BukkitSpeak.util.MessageUtil;
 import net.but2002.minecraft.BukkitSpeak.util.Replacer;
 
@@ -25,7 +27,7 @@ public class CommandPm extends BukkitSpeakCommand {
 	
 	@Override
 	public void execute(CommandSender sender, String[] args) {
-		if (!BukkitSpeak.getStringManager().getUsePrivateMessages()) {
+		if (!Configuration.TS_ENABLE_PRIVATE_MESSAGES.getBoolean()) {
 			send(sender, Level.WARNING, "&4You need to enable ListenToPrivateMessages in the config to use this command.");
 			return;
 		}
@@ -59,17 +61,17 @@ public class CommandPm extends BukkitSpeakCommand {
 		}
 		sb.deleteCharAt(sb.length() - 1);
 		
-		String tsMsg = BukkitSpeak.getStringManager().getMessage("PrivateMessage");
-		String mcMsg = BukkitSpeak.getStringManager().getMessage("Pm");
+		String tsMsg = Messages.MC_COMMAND_PM_TS.get();
+		String mcMsg = Messages.MC_COMMAND_PM_MC.get();
 		String name;
 		if (sender instanceof Player) {
 			name = ((Player) sender).getName();
 		} else {
-			name = MessageUtil.toMinecraft(BukkitSpeak.getStringManager().getConsoleName(), false, false);
+			name = MessageUtil.toMinecraft(Configuration.TS_CONSOLE_NAME.getString(), false, false);
 		}
 		
 		Replacer r = new Replacer().addSender(sender).addTargetClient(client).addMessage(sb.toString());
-		tsMsg = MessageUtil.toTeamspeak(r.replace(tsMsg), true, BukkitSpeak.getStringManager().getAllowLinks());
+		tsMsg = MessageUtil.toTeamspeak(r.replace(tsMsg), true, Configuration.TS_ALLOW_LINKS.getBoolean());
 		mcMsg = r.replace(mcMsg);
 		
 		if (tsMsg == null || tsMsg.isEmpty()) return;
@@ -79,9 +81,9 @@ public class CommandPm extends BukkitSpeakCommand {
 		BukkitSpeak.registerRecipient(name, i);
 		if (mcMsg == null || mcMsg.isEmpty()) return;
 		if (sender instanceof Player) {
-			sender.sendMessage(MessageUtil.toMinecraft(mcMsg, true, BukkitSpeak.getStringManager().getAllowLinks()));
+			sender.sendMessage(MessageUtil.toMinecraft(mcMsg, true, Configuration.TS_ALLOW_LINKS.getBoolean()));
 		} else {
-			BukkitSpeak.log().info(MessageUtil.toMinecraft(mcMsg, false, BukkitSpeak.getStringManager().getAllowLinks()));
+			BukkitSpeak.log().info(MessageUtil.toMinecraft(mcMsg, false, Configuration.TS_ALLOW_LINKS.getBoolean()));
 		}
 	}
 	

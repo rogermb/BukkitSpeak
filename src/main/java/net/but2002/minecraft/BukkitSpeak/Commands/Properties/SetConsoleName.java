@@ -2,18 +2,18 @@ package net.but2002.minecraft.BukkitSpeak.Commands.Properties;
 
 import java.util.List;
 
-import net.but2002.minecraft.BukkitSpeak.StringManager;
+import net.but2002.minecraft.BukkitSpeak.Configuration.Configuration;
 
 import org.bukkit.command.CommandSender;
 
 public class SetConsoleName extends SetProperty {
 	
-	private static final String PROPERTY = StringManager.TEAMSPEAK_CONSOLENAME;
+	private static final Configuration PROPERTY = Configuration.TS_CONSOLE_NAME;
 	private static final String ALLOWED_INPUT = "Any string";
 	private static final String DESCRIPTION = "This name will be used if a message is sent by the console.";
 	
 	@Override
-	public String getProperty() {
+	public Configuration getProperty() {
 		return PROPERTY;
 	}
 	
@@ -29,7 +29,7 @@ public class SetConsoleName extends SetProperty {
 	
 	@Override
 	public boolean execute(CommandSender sender, String arg) {
-		getTsSection().set(StringManager.TEAMSPEAK_CONSOLENAME, arg);
+		PROPERTY.set(arg);
 		return true;
 	}
 	

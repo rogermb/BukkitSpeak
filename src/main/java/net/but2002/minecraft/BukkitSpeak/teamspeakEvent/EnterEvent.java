@@ -3,6 +3,7 @@ package net.but2002.minecraft.BukkitSpeak.teamspeakEvent;
 import java.util.HashMap;
 
 import net.but2002.minecraft.BukkitSpeak.BukkitSpeak;
+import net.but2002.minecraft.BukkitSpeak.Configuration.Messages;
 
 public class EnterEvent extends TeamspeakEvent {
 	
@@ -19,6 +20,6 @@ public class EnterEvent extends TeamspeakEvent {
 	}
 	
 	protected void performAction() {
-		sendMessage("Join", "join");
+		sendMessage(Messages.TS_EVENT_SERVER_JOIN, "join");
 	}
 }

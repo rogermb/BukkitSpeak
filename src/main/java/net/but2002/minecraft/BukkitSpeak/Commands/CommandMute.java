@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.logging.Level;
 
 import net.but2002.minecraft.BukkitSpeak.BukkitSpeak;
+import net.but2002.minecraft.BukkitSpeak.Configuration.Messages;
 import net.but2002.minecraft.BukkitSpeak.util.Replacer;
 
 import org.bukkit.command.CommandSender;
@@ -21,7 +22,7 @@ public class CommandMute extends BukkitSpeakCommand {
 			if (BukkitSpeak.getMuted((Player) sender)) {
 				BukkitSpeak.setMuted((Player) sender, false);
 				
-				String mcMsg = BukkitSpeak.getStringManager().getMessage("Unmute");
+				String mcMsg = Messages.MC_COMMAND_UNMUTE.get();
 				mcMsg = new Replacer().addPlayer((Player) sender).replace(mcMsg);
 				
 				if (mcMsg == null || mcMsg.isEmpty()) return;
@@ -29,7 +30,7 @@ public class CommandMute extends BukkitSpeakCommand {
 			} else {
 				BukkitSpeak.setMuted((Player) sender, true);
 				
-				String mcMsg = BukkitSpeak.getStringManager().getMessage("Mute");
+				String mcMsg = Messages.MC_COMMAND_MUTE.get();
 				mcMsg = new Replacer().addPlayer((Player) sender).replace(mcMsg);
 				
 				if (mcMsg == null || mcMsg.isEmpty()) return;

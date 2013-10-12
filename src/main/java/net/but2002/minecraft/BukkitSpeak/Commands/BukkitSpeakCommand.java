@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.logging.Level;
 
 import net.but2002.minecraft.BukkitSpeak.BukkitSpeak;
+import net.but2002.minecraft.BukkitSpeak.Configuration.Configuration;
 import net.but2002.minecraft.BukkitSpeak.util.MessageUtil;
 
 import org.bukkit.Bukkit;
@@ -50,11 +51,11 @@ public abstract class BukkitSpeakCommand {
 		if (mcMsg == null || mcMsg.isEmpty()) return;
 		for (Player pl : Bukkit.getServer().getOnlinePlayers()) {
 			if (!BukkitSpeak.getMuted(pl)) {
-				pl.sendMessage(MessageUtil.toMinecraft(mcMsg, true, BukkitSpeak.getStringManager().getAllowLinks()));
+				pl.sendMessage(MessageUtil.toMinecraft(mcMsg, true, Configuration.TS_ALLOW_LINKS.getBoolean()));
 			}
 		}
-		if (!(sender instanceof Player) || (BukkitSpeak.getStringManager().getLogInConsole())) {
-			BukkitSpeak.log().info(MessageUtil.toMinecraft(mcMsg, false, BukkitSpeak.getStringManager().getAllowLinks()));
+		if (!(sender instanceof Player) || (Configuration.TS_LOGGING.getBoolean())) {
+			BukkitSpeak.log().info(MessageUtil.toMinecraft(mcMsg, false, Configuration.TS_ALLOW_LINKS.getBoolean()));
 		}
 	}
 	

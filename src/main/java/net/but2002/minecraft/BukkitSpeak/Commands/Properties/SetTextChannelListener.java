@@ -4,21 +4,20 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 
-import net.but2002.minecraft.BukkitSpeak.BukkitSpeak;
-import net.but2002.minecraft.BukkitSpeak.StringManager;
+import net.but2002.minecraft.BukkitSpeak.Configuration.Configuration;
 
 import org.bukkit.command.CommandSender;
 
 public class SetTextChannelListener extends SetProperty {
 	
-	private static final String PROPERTY = StringManager.TEAMSPEAK_TEXTCHANNEL;
+	private static final Configuration PROPERTY = Configuration.TS_ENABLE_CHANNEL_MESSAGES;
 	private static final String ALLOWED_INPUT = "true or false";
 	private static final String DESCRIPTION = "If this is set to true, chat in the TeamSpeak channel "
 			+ "will be sent to the Minecraft server.";
 	private static final String[] TAB_SUGGESTIONS = {"true", "false"};
 	
 	@Override
-	public String getProperty() {
+	public Configuration getProperty() {
 		return PROPERTY;
 	}
 	
@@ -34,24 +33,23 @@ public class SetTextChannelListener extends SetProperty {
 	
 	@Override
 	public boolean execute(CommandSender sender, String arg) {
-		boolean o2 = (BukkitSpeak.getStringManager().getUseChannel())
-				|| (BukkitSpeak.getStringManager().getUseTextChannel());
-		boolean n2 = false;
+		boolean o = (Configuration.TS_ENABLE_CHANNEL_EVENTS.getBoolean())
+				|| (Configuration.TS_ENABLE_CHANNEL_MESSAGES.getBoolean());
+		boolean n = false;
 		if (arg.equalsIgnoreCase("true")) {
-			getTsSection().set(StringManager.TEAMSPEAK_TEXTCHANNEL, true);
-			n2 = true;
+			PROPERTY.set(true);
+			n = true;
 			send(sender, Level.INFO, "&aChat messages from the channel will now be broadcasted in Minecraft.");
 		} else if (arg.equalsIgnoreCase("false")) {
-			getTsSection().set(StringManager.TEAMSPEAK_TEXTCHANNEL, false);
+			PROPERTY.set(false);
 			send(sender, Level.INFO, "&aChat messages from the channel won't be broadcasted in Minecraft anymore.");
 		} else {
 			send(sender, Level.WARNING, "Only 'true' or 'false' are accepted.");
 			return false;
 		}
-		BukkitSpeak.getInstance().saveConfig();
-		BukkitSpeak.getInstance().reloadStringManager();
+		Configuration.save();
 		reloadListener();
-		if (!o2 && n2) connectChannel(sender);
+		if (!o && n) connectChannel(sender);
 		return false;
 	}
 	

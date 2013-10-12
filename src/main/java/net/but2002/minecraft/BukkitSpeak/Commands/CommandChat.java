@@ -6,6 +6,8 @@ import java.util.logging.Level;
 
 import net.but2002.minecraft.BukkitSpeak.BukkitSpeak;
 import net.but2002.minecraft.BukkitSpeak.AsyncQueryUtils.QuerySender;
+import net.but2002.minecraft.BukkitSpeak.Configuration.Configuration;
+import net.but2002.minecraft.BukkitSpeak.Configuration.Messages;
 import net.but2002.minecraft.BukkitSpeak.util.MessageUtil;
 import net.but2002.minecraft.BukkitSpeak.util.Replacer;
 
@@ -22,7 +24,7 @@ public class CommandChat extends BukkitSpeakCommand {
 	
 	@Override
 	public void execute(CommandSender sender, String[] args) {
-		if (!BukkitSpeak.getStringManager().getUseTextChannel()) {
+		if (!Configuration.TS_ENABLE_CHANNEL_MESSAGES.getBoolean()) {
 			send(sender, Level.WARNING, "&4You need to enable ListenToChannelChat in the config to use this command.");
 			return;
 		}
@@ -43,15 +45,15 @@ public class CommandChat extends BukkitSpeakCommand {
 		}
 		sb.deleteCharAt(sb.length() - 1);
 		
-		String tsMsg = BukkitSpeak.getStringManager().getMessage("ChannelMessage");
-		String mcMsg = BukkitSpeak.getStringManager().getMessage("Chat");
+		String tsMsg = Messages.MC_COMMAND_CHAT_TS.get();
+		String mcMsg = Messages.MC_COMMAND_CHAT_MC.get();
 		
 		Replacer r = new Replacer().addSender(sender).addMessage(sb.toString());
-		tsMsg = MessageUtil.toTeamspeak(r.replace(tsMsg), true, BukkitSpeak.getStringManager().getAllowLinks());
+		tsMsg = MessageUtil.toTeamspeak(r.replace(tsMsg), true, Configuration.TS_ALLOW_LINKS.getBoolean());
 		mcMsg = r.replace(mcMsg);
 		
 		if (tsMsg == null || tsMsg.isEmpty()) return;
-		QuerySender qs = new QuerySender(BukkitSpeak.getStringManager().getChannelID(),
+		QuerySender qs = new QuerySender(Configuration.TS_CHANNEL_ID.getInt(),
 				JTS3ServerQuery.TEXTMESSAGE_TARGET_CHANNEL, tsMsg);
 		Bukkit.getScheduler().scheduleSyncDelayedTask(BukkitSpeak.getInstance(), qs);
 		broadcastMessage(mcMsg, sender);

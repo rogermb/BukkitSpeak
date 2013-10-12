@@ -3,20 +3,19 @@ package net.but2002.minecraft.BukkitSpeak.Commands.Properties;
 import java.util.List;
 import java.util.logging.Level;
 
-import net.but2002.minecraft.BukkitSpeak.BukkitSpeak;
-import net.but2002.minecraft.BukkitSpeak.StringManager;
+import net.but2002.minecraft.BukkitSpeak.Configuration.Configuration;
 
 import org.bukkit.command.CommandSender;
 
 public class SetChannelPassword extends SetProperty {
 	
-	private static final String PROPERTY = StringManager.TEAMSPEAK_CHANNELPW;
+	private static final Configuration PROPERTY = Configuration.TS_CHANNEL_PASSWORD;
 	private static final String ALLOWED_INPUT = "Any string";
 	private static final String DESCRIPTION = "BukkitSpeak will use this password to enter the selected channel. "
 			+ "'' means no password.";
 	
 	@Override
-	public String getProperty() {
+	public Configuration getProperty() {
 		return PROPERTY;
 	}
 	
@@ -32,14 +31,15 @@ public class SetChannelPassword extends SetProperty {
 	
 	@Override
 	public boolean execute(CommandSender sender, String arg) {
-		if (!(BukkitSpeak.getStringManager().getUseChannel()) && !(BukkitSpeak.getStringManager().getUseTextChannel())) {
-			send(sender, Level.WARNING, "&4Set " + StringManager.TEAMSPEAK_CHANNEL 
-					+ " or " + StringManager.TEAMSPEAK_TEXTCHANNEL + " to true to use this feature.");
+		if (!(Configuration.TS_ENABLE_CHANNEL_EVENTS.getBoolean())
+				&& !(Configuration.TS_ENABLE_CHANNEL_MESSAGES.getBoolean())) {
+			send(sender, Level.WARNING, "&4Set " + Configuration.TS_ENABLE_CHANNEL_EVENTS.getConfigPath() + " or "
+					+ Configuration.TS_ENABLE_CHANNEL_MESSAGES.getConfigPath() + " to true to use this feature.");
 			return false;
 		}
 		String s = arg;
 		if (arg.equals("\'\'")) s = "";
-		getTsSection().set(StringManager.TEAMSPEAK_CHANNELPW, s);
+		PROPERTY.set(s);
 		return true;
 	}
 	

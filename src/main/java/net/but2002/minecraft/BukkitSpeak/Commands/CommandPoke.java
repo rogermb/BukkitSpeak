@@ -8,6 +8,8 @@ import java.util.logging.Level;
 
 import net.but2002.minecraft.BukkitSpeak.BukkitSpeak;
 import net.but2002.minecraft.BukkitSpeak.AsyncQueryUtils.QueryPoke;
+import net.but2002.minecraft.BukkitSpeak.Configuration.Configuration;
+import net.but2002.minecraft.BukkitSpeak.Configuration.Messages;
 import net.but2002.minecraft.BukkitSpeak.util.MessageUtil;
 import net.but2002.minecraft.BukkitSpeak.util.Replacer;
 
@@ -51,11 +53,11 @@ public class CommandPoke extends BukkitSpeakCommand {
 		}
 		sb.deleteCharAt(sb.length() - 1);
 		
-		String tsMsg = BukkitSpeak.getStringManager().getMessage("PokeMessage");
-		String mcMsg = BukkitSpeak.getStringManager().getMessage("Poke");
+		String tsMsg = Messages.MC_COMMAND_POKE_TS.get();
+		String mcMsg = Messages.MC_COMMAND_POKE_MC.get();
 		
 		Replacer r = new Replacer().addSender(sender).addTargetClient(client).addMessage(sb.toString());
-		tsMsg = MessageUtil.toMinecraft(r.replace(tsMsg), true, BukkitSpeak.getStringManager().getAllowLinks());
+		tsMsg = MessageUtil.toMinecraft(r.replace(tsMsg), true, Configuration.TS_ALLOW_LINKS.getBoolean());
 		mcMsg = r.replace(mcMsg);
 		
 		if (tsMsg == null || tsMsg.isEmpty()) return;
@@ -69,9 +71,9 @@ public class CommandPoke extends BukkitSpeakCommand {
 		Bukkit.getScheduler().runTaskAsynchronously(BukkitSpeak.getInstance(), qp);
 		if (mcMsg == null || mcMsg.isEmpty()) return;
 		if (sender instanceof Player) {
-			sender.sendMessage(MessageUtil.toMinecraft(mcMsg, true, BukkitSpeak.getStringManager().getAllowLinks()));
+			sender.sendMessage(MessageUtil.toMinecraft(mcMsg, true, Configuration.TS_ALLOW_LINKS.getBoolean()));
 		} else {
-			BukkitSpeak.log().info(MessageUtil.toMinecraft(mcMsg, false, BukkitSpeak.getStringManager().getAllowLinks()));
+			BukkitSpeak.log().info(MessageUtil.toMinecraft(mcMsg, false, Configuration.TS_ALLOW_LINKS.getBoolean()));
 		}
 	}
 	

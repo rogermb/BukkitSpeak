@@ -3,6 +3,7 @@ package net.but2002.minecraft.BukkitSpeak.teamspeakEvent;
 import java.util.HashMap;
 
 import net.but2002.minecraft.BukkitSpeak.BukkitSpeak;
+import net.but2002.minecraft.BukkitSpeak.Configuration.Messages;
 
 public class LeaveEvent extends TeamspeakEvent {
 	
@@ -22,6 +23,6 @@ public class LeaveEvent extends TeamspeakEvent {
 		if (getUser() == null || getClientName().startsWith("Unknown from") || getClientType() != 0) return;
 		if (info.get("reasonid").equals("5")) return;
 		
-		sendMessage("Quit", "leave");
+		sendMessage(Messages.TS_EVENT_SERVER_QUIT, "leave");
 	}
 }

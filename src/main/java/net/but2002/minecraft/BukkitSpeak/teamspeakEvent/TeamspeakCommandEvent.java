@@ -4,6 +4,8 @@ import java.util.Arrays;
 import java.util.HashMap;
 
 import net.but2002.minecraft.BukkitSpeak.BukkitSpeak;
+import net.but2002.minecraft.BukkitSpeak.Configuration.Configuration;
+import net.but2002.minecraft.BukkitSpeak.Configuration.Messages;
 import net.but2002.minecraft.BukkitSpeak.TeamspeakCommands.ServerGroup;
 import net.but2002.minecraft.BukkitSpeak.TeamspeakCommands.TeamspeakCommandSender;
 import net.but2002.minecraft.BukkitSpeak.util.Replacer;
@@ -26,7 +28,7 @@ public class TeamspeakCommandEvent extends TeamspeakEvent {
 	@Override
 	protected void performAction() {
 		String cmd = info.get("msg");
-		cmd = cmd.substring(BukkitSpeak.getStringManager().getTeamspeakCommandPrefix().length());
+		cmd = cmd.substring(Configuration.TS_COMMANDS_PREFIX.getString().length());
 		String[] split = cmd.split(" ");
 		
 		String commandName = split[0].toLowerCase();
@@ -53,7 +55,7 @@ public class TeamspeakCommandEvent extends TeamspeakEvent {
 		
 		// Vanilla and Bukkit commands don't need to be on the whitelist
 		if (pc != null && !(sg.getPluginWhitelist().contains(pc.getPlugin().getName()))) {
-			String m = BukkitSpeak.getStringManager().getMessage("PluginNotWhitelisted");
+			String m = Messages.TS_COMMAND_NOT_WHITELISTED.get();
 			if (m.isEmpty()) return;
 			getUser().put("command_name", pc.getName());
 			getUser().put("command_description", pc.getDescription());
@@ -61,14 +63,14 @@ public class TeamspeakCommandEvent extends TeamspeakEvent {
 			
 			Replacer r = new Replacer().addClient(getUser());
 			tscs.sendMessage(r.replace(m));
-			if (BukkitSpeak.getStringManager().getTeamspeakCommandLoggingEnabled()) {
+			if (Configuration.TS_COMMANDS_LOGGING.getBoolean()) {
 				BukkitSpeak.log().info("TS client \"" + getClientName() + "\" tried executing command \"" + cmd + "\",");
 				BukkitSpeak.log().info("but the plugin \"" + pc.getPlugin().getName() + "\" was not whitelisted.");
 			}
 			return;
 		}
 		if (sg.getCommandBlacklist().contains(commandName)) {
-			String m = BukkitSpeak.getStringManager().getMessage("CommandBlacklisted");
+			String m = Messages.TS_COMMAND_BLACKLISTED.get();
 			if (m.isEmpty()) return;
 			getUser().put("command_name", pc.getName());
 			getUser().put("command_description", pc.getDescription());
@@ -76,14 +78,14 @@ public class TeamspeakCommandEvent extends TeamspeakEvent {
 			
 			Replacer r = new Replacer().addClient(getUser());
 			tscs.sendMessage(r.replace(m));
-			if (BukkitSpeak.getStringManager().getTeamspeakCommandLoggingEnabled()) {
+			if (Configuration.TS_COMMANDS_LOGGING.getBoolean()) {
 				BukkitSpeak.log().info("TS client \"" + getClientName() + "\" tried executing command \"" + cmd + "\",");
 				BukkitSpeak.log().info("but the command was blacklisted.");
 			}
 			return;
 		}
 		
-		if (BukkitSpeak.getStringManager().getTeamspeakCommandLoggingEnabled()) {
+		if (Configuration.TS_COMMANDS_LOGGING.getBoolean()) {
 			BukkitSpeak.log().info("TS client \"" + getClientName() + "\" executed command \"" + cmd + "\".");
 		}
 		Bukkit.dispatchCommand(tscs, cmd);

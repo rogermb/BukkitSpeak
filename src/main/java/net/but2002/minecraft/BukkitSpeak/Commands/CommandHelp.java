@@ -3,7 +3,7 @@ package net.but2002.minecraft.BukkitSpeak.Commands;
 import java.util.List;
 import java.util.logging.Level;
 
-import net.but2002.minecraft.BukkitSpeak.BukkitSpeak;
+import net.but2002.minecraft.BukkitSpeak.Configuration.Configuration;
 
 import org.bukkit.command.CommandSender;
 
@@ -20,13 +20,13 @@ public class CommandHelp extends BukkitSpeakCommand {
 			send(sender, Level.INFO, "&e/ts list &a- Displays who's currently on TeamSpeak.");
 		if (checkCommandPermission(sender, "mute"))
 			send(sender, Level.INFO, "&e/ts mute &a- Mutes / unmutes BukkitSpeak for you.");
-		if (checkCommandPermission(sender, "broadcast") && BukkitSpeak.getStringManager().getUseTextServer())
+		if (checkCommandPermission(sender, "broadcast") && Configuration.TS_ENABLE_SERVER_MESSAGES.getBoolean())
 			send(sender, Level.INFO, "&e/ts broadcast &a- Broadcast a global TS message.");
-		if (checkCommandPermission(sender, "chat") && BukkitSpeak.getStringManager().getUseTextChannel())
+		if (checkCommandPermission(sender, "chat") && Configuration.TS_ENABLE_CHANNEL_MESSAGES.getBoolean())
 			send(sender, Level.INFO, "&e/ts chat &a- Displays a message in the TS channel.");
-		if (checkCommandPermission(sender, "pm") && BukkitSpeak.getStringManager().getUsePrivateMessages())
+		if (checkCommandPermission(sender, "pm") && Configuration.TS_ENABLE_PRIVATE_MESSAGES.getBoolean())
 			send(sender, Level.INFO, "&e/ts pm &a- Sends a message to a certain client.");
-		if (checkCommandPermission(sender, "reply") && BukkitSpeak.getStringManager().getUsePrivateMessages())
+		if (checkCommandPermission(sender, "reply") && Configuration.TS_ENABLE_PRIVATE_MESSAGES.getBoolean())
 			send(sender, Level.INFO, "&e/ts r(eply) &a- Replies to a PM.");
 		if (checkCommandPermission(sender, "poke"))
 			send(sender, Level.INFO, "&e/ts poke &a- Pokes a client on Teamspeak.");

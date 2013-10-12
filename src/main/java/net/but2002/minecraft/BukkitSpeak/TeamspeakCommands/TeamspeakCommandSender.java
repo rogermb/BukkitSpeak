@@ -10,6 +10,8 @@ import java.util.concurrent.TimeUnit;
 
 import net.but2002.minecraft.BukkitSpeak.BukkitSpeak;
 import net.but2002.minecraft.BukkitSpeak.AsyncQueryUtils.QuerySender;
+import net.but2002.minecraft.BukkitSpeak.Configuration.Configuration;
+import net.but2002.minecraft.BukkitSpeak.Configuration.Messages;
 import net.but2002.minecraft.BukkitSpeak.util.MessageUtil;
 import net.but2002.minecraft.BukkitSpeak.util.Replacer;
 
@@ -36,7 +38,7 @@ public class TeamspeakCommandSender implements CommandSender {
 	
 	public TeamspeakCommandSender(Map<String, String> clientInfo, boolean op, Map<String, Boolean> perms) {
 		client = clientInfo;
-		name = replaceValues(BukkitSpeak.getStringManager().getMessage("TeamspeakCommandSenderName"));
+		name = replaceValues(Messages.TS_COMMAND_SENDER_NAME.get());
 		outBuffer = Collections.synchronizedList(new LinkedList<String>());
 		operator = op;
 		
@@ -157,8 +159,8 @@ public class TeamspeakCommandSender implements CommandSender {
 	private void startBuffer() {
 		if (outSender == null || outSender.isDone()) {
 			outSender = new BufferSender(outBuffer, client);
-			Executors.newSingleThreadScheduledExecutor().schedule(outSender,
-					BukkitSpeak.getStringManager().getTeamspeakCommandSenderBuffer(), TimeUnit.MILLISECONDS);
+			int buffer = Math.max(50, Configuration.TS_COMMANDS_MESSAGE_BUFFER.getInt());
+			Executors.newSingleThreadScheduledExecutor().schedule(outSender, buffer, TimeUnit.MILLISECONDS);
 		}
 	}
 	

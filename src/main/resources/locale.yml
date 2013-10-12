@@ -16,8 +16,8 @@ messages:
     ChannelKickMessage: '[%player_displayname%] kicked you from the channel for %msg%.'
     BanMessage: '[%player_displayname%] banned you from the server for %msg%.'
   TeamspeakCommandMessages:
-    PluginNotWhitelisted: 'You''re not allowed to run commands of that plugin.'
-    CommandBlacklisted: 'The command you''re trying to run is blacklisted.'
+    PluginNotWhitelisted: 'You are not allowed to run commands of that plugin.'
+    CommandBlacklisted: 'The command you are trying to run is blacklisted.'
     TeamspeakCommandSenderName: '&a[&6TS&a] &e%client_nickname%&r'
   MinecraftEvents:
     ChatMessage: '&l%player_displayname%&r: %msg%'

@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.logging.Logger;
 
 import net.but2002.minecraft.BukkitSpeak.BukkitSpeak;
+import net.but2002.minecraft.BukkitSpeak.Configuration.Configuration;
 import net.but2002.minecraft.BukkitSpeak.Metrics.Metrics.*;
 
 public class MetricsUtil {
@@ -28,41 +29,41 @@ public class MetricsUtil {
 				
 				@Override
 				public int getValue() {
-					return BukkitSpeak.getStringManager().getUseServer() ? 1 : 0;
+					return Configuration.TS_ENABLE_SERVER_EVENTS.getBoolean() ? 1 : 0;
 				}
 			});
 			teamspeakGraph.addPlotter(new Plotter("Server text messages listener") {
 				
 				@Override
 				public int getValue() {
-					return BukkitSpeak.getStringManager().getUseTextServer() ? 1 : 0;
+					return Configuration.TS_ENABLE_SERVER_MESSAGES.getBoolean() ? 1 : 0;
 				}
 			});
 			teamspeakGraph.addPlotter(new Plotter("Channel events listener") {
 				
 				@Override
 				public int getValue() {
-					return BukkitSpeak.getStringManager().getUseChannel() ? 1 : 0;
+					return Configuration.TS_ENABLE_CHANNEL_EVENTS.getBoolean() ? 1 : 0;
 				}
 			});
 			teamspeakGraph.addPlotter(new Plotter("Channel text messages listener") {
 				
 				@Override
 				public int getValue() {
-					return BukkitSpeak.getStringManager().getUseTextChannel() ? 1 : 0;
+					return Configuration.TS_ENABLE_CHANNEL_MESSAGES.getBoolean() ? 1 : 0;
 				}
 			});
 			teamspeakGraph.addPlotter(new Plotter("Private messages listener") {
 				
 				@Override
 				public int getValue() {
-					return BukkitSpeak.getStringManager().getUsePrivateMessages() ? 1 : 0;
+					return Configuration.TS_ENABLE_PRIVATE_MESSAGES.getBoolean() ? 1 : 0;
 				}
 			});
 			
 			/* Text message sender */
 			Graph minecraftGraph = metrics.createGraph("Chat listener target");
-			switch (BukkitSpeak.getStringManager().getTeamspeakTarget()) {
+			switch (Configuration.TS_MESSAGES_TARGET.getTeamspeakTarget()) {
 			case SERVER:
 				minecraftGraph.addPlotter(new Plotter("Server") {
 					
@@ -113,22 +114,14 @@ public class MetricsUtil {
 				
 				@Override
 				public int getValue() {
-					if (BukkitSpeak.getStringManager().getTeamspeakCommandsEnabled()) {
-						return 1;
-					} else {
-						return 0;
-					}
+					return Configuration.TS_COMMANDS_ENABLED.getBoolean() ? 1 : 0;
 				}
 			});
 			tsCommandGraph.addPlotter(new Plotter("No") {
 				
 				@Override
 				public int getValue() {
-					if (BukkitSpeak.getStringManager().getTeamspeakCommandsEnabled()) {
-						return 0;
-					} else {
-						return 1;
-					}
+					return Configuration.TS_COMMANDS_ENABLED.getBoolean() ? 0 : 1;
 				}
 			});
 			
@@ -138,7 +131,7 @@ public class MetricsUtil {
 				
 				@Override
 				public int getValue() {
-					return (BukkitSpeak.hasFactions() && BukkitSpeak.getStringManager().getFactionsPublicOnly()) ? 1 : 0;
+					return (BukkitSpeak.hasFactions() && Configuration.PLUGINS_FACTIONS_PUBLIC_ONLY.getBoolean()) ? 1 : 0;
 				}
 			});
 			dependencyGraph.addPlotter(new Plotter("Herochat") {

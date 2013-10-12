@@ -6,6 +6,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
 import net.but2002.minecraft.BukkitSpeak.BukkitSpeak;
+import net.but2002.minecraft.BukkitSpeak.Configuration.Messages;
 import net.but2002.minecraft.BukkitSpeak.TeamspeakCommands.TeamspeakCommandSender;
 import net.but2002.minecraft.BukkitSpeak.util.MessageUtil;
 import net.but2002.minecraft.BukkitSpeak.util.Replacer;
@@ -38,7 +39,7 @@ public class CommandPm extends TeamspeakCommand {
 			}
 			sb.deleteCharAt(sb.length() - 1);
 			
-			String m = BukkitSpeak.getStringManager().getMessage("PrivateMsg");
+			String m = Messages.TS_EVENT_PRIVATE_MESSAGE.get();
 			if (m.isEmpty()) return;
 			m = new Replacer().addClient(sender.getClientInfo()).replace(m);
 			m = MessageUtil.toMinecraft(m, true, true);

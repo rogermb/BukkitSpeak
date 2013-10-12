@@ -6,6 +6,8 @@ import java.util.logging.Level;
 
 import net.but2002.minecraft.BukkitSpeak.BukkitSpeak;
 import net.but2002.minecraft.BukkitSpeak.AsyncQueryUtils.QuerySender;
+import net.but2002.minecraft.BukkitSpeak.Configuration.Configuration;
+import net.but2002.minecraft.BukkitSpeak.Configuration.Messages;
 import net.but2002.minecraft.BukkitSpeak.util.MessageUtil;
 import net.but2002.minecraft.BukkitSpeak.util.Replacer;
 
@@ -22,7 +24,7 @@ public class CommandBroadcast extends BukkitSpeakCommand {
 	
 	@Override
 	public void execute(CommandSender sender, String[] args) {
-		if (!BukkitSpeak.getStringManager().getUseTextServer()) {
+		if (!Configuration.TS_ENABLE_SERVER_MESSAGES.getBoolean()) {
 			send(sender, Level.WARNING, "&4You need to enable ListenToServerBroadcasts in the config to use this command.");
 			return;
 		}
@@ -43,11 +45,11 @@ public class CommandBroadcast extends BukkitSpeakCommand {
 		}
 		sb.deleteCharAt(sb.length() - 1);
 		
-		String tsMsg = BukkitSpeak.getStringManager().getMessage("ServerMessage");
-		String mcMsg = BukkitSpeak.getStringManager().getMessage("Broadcast");
+		String tsMsg = Messages.MC_COMMAND_BROADCAST_TS.get();
+		String mcMsg = Messages.MC_COMMAND_BROADCAST_MC.get();
 		
 		Replacer r = new Replacer().addSender(sender).addMessage(sb.toString());
-		tsMsg = MessageUtil.toTeamspeak(r.replace(tsMsg), true, BukkitSpeak.getStringManager().getAllowLinks());
+		tsMsg = MessageUtil.toTeamspeak(r.replace(tsMsg), true, Configuration.TS_ALLOW_LINKS.getBoolean());
 		mcMsg = r.replace(mcMsg);
 		
 		if (tsMsg == null || tsMsg.isEmpty()) return;

@@ -6,6 +6,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.logging.Logger;
 
+import net.but2002.minecraft.BukkitSpeak.Configuration.Configuration;
+import net.but2002.minecraft.BukkitSpeak.Configuration.Messages;
 import net.but2002.minecraft.BukkitSpeak.Listeners.ChatListener;
 import net.but2002.minecraft.BukkitSpeak.Listeners.PlayerListener;
 import net.but2002.minecraft.BukkitSpeak.Listeners.HerochatListener;
@@ -29,7 +31,6 @@ public class BukkitSpeak extends JavaPlugin {
 	private static final int KEEP_ALIVE_DELAY = 1200;
 	
 	private static BukkitSpeak instance;
-	private static StringManager stringManager;
 	private static TeamspeakCommandExecutor tsCommand;
 	private static PermissionsHelper permissionsHelper;
 	private static ClientList clients;
@@ -57,13 +58,13 @@ public class BukkitSpeak extends JavaPlugin {
 	}
 	
 	public void onEnable() {
-		
 		instance = this;
 		logger = this.getLogger();
-		stringManager = new StringManager();
 		permissionsHelper = new PermissionsHelper();
+		Configuration.reload();
+		Messages.reload();
 		query = new JTS3ServerQuery();
-		query.DEBUG = stringManager.getDebugMode();
+		query.DEBUG = Configuration.TS_DEBUGGING.getBoolean();
 		
 		ts = new TeamspeakListener();
 		qc = new QueryConnector();
@@ -79,7 +80,7 @@ public class BukkitSpeak extends JavaPlugin {
 		pmRecipients = new HashMap<Integer, String>();
 		pmSenders = new HashMap<String, Integer>();
 		
-		EventPriority p = BukkitSpeak.getStringManager().getChatListenerPriority();
+		EventPriority p = Configuration.TS_CHAT_LISTENER_PRIORITY.getEventPriority();
 		boolean i = (p != EventPriority.LOWEST);
 		getServer().getPluginManager().registerEvent(AsyncPlayerChatEvent.class, chatListener, p, chatListener, this, i);
 		getServer().getPluginManager().registerEvents(playerListener, this);
@@ -94,9 +95,9 @@ public class BukkitSpeak extends JavaPlugin {
 		if (mcMMO) logger.info("Hooked into mcMMO!");
 		
 		herochat = false;
-		if (stringManager.getHerochatEnabled()) {
+		if (Configuration.PLUGINS_HEROCHAT_ENABLED.getBoolean()) {
 			if (Bukkit.getPluginManager().isPluginEnabled("Herochat")) {
-				String channel = stringManager.getHerochatChannel();
+				String channel = Configuration.PLUGINS_HEROCHAT_CHANNEL.getString();
 				if (Herochat.getChannelManager().getChannel(channel) == null) {
 					logger.warning("Could not get the channel (" + channel +  ") specified in the config for Herochat, "
 							+ "please make sure it is correct.");
@@ -139,10 +140,6 @@ public class BukkitSpeak extends JavaPlugin {
 	
 	public static JTS3ServerQuery getQuery() {
 		return query;
-	}
-	
-	public static StringManager getStringManager() {
-		return stringManager;
 	}
 	
 	public static TeamspeakCommandExecutor getTeamspeakCommandExecutor() {
@@ -188,7 +185,7 @@ public class BukkitSpeak extends JavaPlugin {
 	public void resetLists() {
 		clients = new ClientList();
 		channels = new ChannelList();
-		if (stringManager.getTeamspeakCommandsEnabled()) {
+		if (Configuration.TS_COMMANDS_ENABLED.getBoolean()) {
 			permissionsHelper.setUp();
 		}
 	}
@@ -275,10 +272,12 @@ public class BukkitSpeak extends JavaPlugin {
 			setStoppedTime(null);
 			setStartedTime(null);
 			
-			reloadStringManager();
+			Configuration.reload();
+			Messages.reload();
+			query.DEBUG = Configuration.TS_DEBUGGING.getBoolean();
 			
 			AsyncPlayerChatEvent.getHandlerList().unregister(chatListener);
-			EventPriority p = BukkitSpeak.getStringManager().getChatListenerPriority();
+			EventPriority p = Configuration.TS_CHAT_LISTENER_PRIORITY.getEventPriority();
 			boolean i = (p != EventPriority.LOWEST);
 			getServer().getPluginManager().registerEvent(AsyncPlayerChatEvent.class, chatListener, p, chatListener, this, i);
 			
@@ -296,10 +295,5 @@ public class BukkitSpeak extends JavaPlugin {
 			e.printStackTrace();
 			return false;
 		}
-	}
-	
-	public void reloadStringManager() {
-		stringManager = new StringManager();
-		query.DEBUG = stringManager.getDebugMode();
 	}
 }

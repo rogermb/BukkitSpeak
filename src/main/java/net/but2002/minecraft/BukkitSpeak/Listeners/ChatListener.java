@@ -3,6 +3,8 @@ package net.but2002.minecraft.BukkitSpeak.Listeners;
 import net.but2002.minecraft.BukkitSpeak.BukkitSpeak;
 import net.but2002.minecraft.BukkitSpeak.TsTargetEnum;
 import net.but2002.minecraft.BukkitSpeak.AsyncQueryUtils.QuerySender;
+import net.but2002.minecraft.BukkitSpeak.Configuration.Configuration;
+import net.but2002.minecraft.BukkitSpeak.Configuration.Messages;
 import net.but2002.minecraft.BukkitSpeak.util.MessageUtil;
 import net.but2002.minecraft.BukkitSpeak.util.Replacer;
 
@@ -27,11 +29,11 @@ public class ChatListener implements EventExecutor, Listener {
 		AsyncPlayerChatEvent e = (AsyncPlayerChatEvent) event;
 		
 		if (BukkitSpeak.useHerochat()) return; // Use Herochat's ChannelChatEvent instead, if using herochat.
-		if (BukkitSpeak.getStringManager().getTeamspeakTarget() == TsTargetEnum.NONE) return;
+		if (Configuration.TS_MESSAGES_TARGET.getTeamspeakTarget() == TsTargetEnum.NONE) return;
 		if (e.getPlayer() == null || e.getMessage().isEmpty()) return;
 		
 		/* Factions check */
-		if (BukkitSpeak.hasFactions() && BukkitSpeak.getStringManager().getFactionsPublicOnly()) {
+		if (BukkitSpeak.hasFactions() && Configuration.PLUGINS_FACTIONS_PUBLIC_ONLY.getBoolean()) {
 			if (FPlayers.i.get(e.getPlayer()).getChatMode() != ChatMode.PUBLIC) {
 				return;
 			}
@@ -39,27 +41,27 @@ public class ChatListener implements EventExecutor, Listener {
 		
 		/* mcMMO check */
 		if (BukkitSpeak.hasMcMMO()) {
-			if (ChatAPI.isUsingPartyChat(e.getPlayer()) && BukkitSpeak.getStringManager().getMcMMOFilterPartyChat()) {
+			if (ChatAPI.isUsingPartyChat(e.getPlayer()) && Configuration.PLUGINS_MCMMO_FILTER_PARTY_CHAT.getBoolean()) {
 				return;
 			}
-			if (ChatAPI.isUsingAdminChat(e.getPlayer()) && BukkitSpeak.getStringManager().getMcMMOFilterAdminChat()) {
+			if (ChatAPI.isUsingAdminChat(e.getPlayer()) && Configuration.PLUGINS_MCMMO_FILTER_ADMIN_CHAT.getBoolean()) {
 				return;
 			}
 		}
 		
 		if (!hasPermission(e.getPlayer(), "chat")) return;
 		
-		String tsMsg = BukkitSpeak.getStringManager().getMessage("ChatMessage");
+		String tsMsg = Messages.MC_EVENT_CHAT.get();
 		tsMsg = new Replacer().addPlayer(e.getPlayer()).addMessage(e.getMessage()).replace(tsMsg);
-		tsMsg = MessageUtil.toTeamspeak(tsMsg, true, BukkitSpeak.getStringManager().getAllowLinks());
+		tsMsg = MessageUtil.toTeamspeak(tsMsg, true, Configuration.TS_ALLOW_LINKS.getBoolean());
 		
 		if (tsMsg.isEmpty()) return;
 		
-		if (BukkitSpeak.getStringManager().getTeamspeakTarget() == TsTargetEnum.CHANNEL) {
+		if (Configuration.TS_MESSAGES_TARGET.getTeamspeakTarget() == TsTargetEnum.CHANNEL) {
 			QuerySender qs = new QuerySender(BukkitSpeak.getQuery().getCurrentQueryClientChannelID(),
 					JTS3ServerQuery.TEXTMESSAGE_TARGET_CHANNEL, tsMsg);
 			Bukkit.getScheduler().runTaskAsynchronously(BukkitSpeak.getInstance(), qs);
-		} else if (BukkitSpeak.getStringManager().getTeamspeakTarget() == TsTargetEnum.SERVER) {
+		} else if (Configuration.TS_MESSAGES_TARGET.getTeamspeakTarget() == TsTargetEnum.SERVER) {
 			QuerySender qs = new QuerySender(BukkitSpeak.getQuery().getCurrentQueryClientServerID(),
 					JTS3ServerQuery.TEXTMESSAGE_TARGET_VIRTUALSERVER, tsMsg);
 			Bukkit.getScheduler().runTaskAsynchronously(BukkitSpeak.getInstance(), qs);

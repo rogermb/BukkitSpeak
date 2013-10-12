@@ -44,7 +44,10 @@ public class ServerMessageEvent extends TeamspeakEvent {
 					pl.sendMessage(m);
 				}
 			}
-			if (Configuration.TS_LOGGING.getBoolean()) BukkitSpeak.log().info(m);
+			if (Configuration.TS_LOGGING.getBoolean()) {
+				m = MessageUtil.toMinecraft(m, false, Configuration.PLUGINS_HEROCHAT_RELAY_EVENTS.getBoolean());
+				BukkitSpeak.log().info(m);
+			}
 			
 		} else if (info.get("targetmode").equals("2")) {
 			sendMessage(Messages.TS_EVENT_CHANNEL_MESSAGE, "chat");
@@ -59,7 +62,7 @@ public class ServerMessageEvent extends TeamspeakEvent {
 			if (p == null || p.isEmpty()) return;
 			
 			if (MessageUtil.toMinecraft(Configuration.TS_CONSOLE_NAME.getString(), false, false).equals(p)) {
-				BukkitSpeak.log().info(m);
+				BukkitSpeak.log().info(MessageUtil.toMinecraft(m, false, Configuration.TS_ALLOW_LINKS.getBoolean()));
 			} else {
 				Player pl = BukkitSpeak.getInstance().getServer().getPlayerExact(p);
 				if (pl == null) return;

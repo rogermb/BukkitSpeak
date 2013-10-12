@@ -57,7 +57,7 @@ public class CommandPoke extends BukkitSpeakCommand {
 		String mcMsg = Messages.MC_COMMAND_POKE_MC.get();
 		
 		Replacer r = new Replacer().addSender(sender).addTargetClient(client).addMessage(sb.toString());
-		tsMsg = MessageUtil.toMinecraft(r.replace(tsMsg), true, Configuration.TS_ALLOW_LINKS.getBoolean());
+		tsMsg = MessageUtil.toTeamspeak(r.replace(tsMsg), true, Configuration.TS_ALLOW_LINKS.getBoolean());
 		mcMsg = r.replace(mcMsg);
 		
 		if (tsMsg == null || tsMsg.isEmpty()) return;

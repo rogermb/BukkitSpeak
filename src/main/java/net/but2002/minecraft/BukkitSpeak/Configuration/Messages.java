@@ -108,10 +108,10 @@ public enum Messages {
 						} else {
 							oldVal = config.get(oldPath);
 						}
-						if (oldVal != null && oldVal.getClass().isInstance(value.defValue.getClass())) {
+						if (oldVal != null && oldVal.getClass().isInstance(value.defValue)) {
 							config.set(value.path, oldVal);
 							config.set(oldPath, null);
-							BukkitSpeak.log().warning("Moved \"" + oldPath + "\" to \"" + value.path + "\".");
+							BukkitSpeak.log().info("Moved \"" + oldPath + "\" to \"" + value.path + "\".");
 							changed = true;
 							continue ValueIteration;
 						}
@@ -122,7 +122,7 @@ public enum Messages {
 				BukkitSpeak.log().warning("Config value \"" + value.path + "\" was not set, changed it to \""
 						+ String.valueOf(value.defValue) + "\".");
 				changed = true;
-			} else if (val.getClass().isInstance(value.defValue.getClass())) {
+			} else if (!val.getClass().isInstance(value.defValue)) {
 				value.setToDefault();
 				BukkitSpeak.log().warning("Config value \"" + value.path + "\" was not of type "
 						+ value.defValue.getClass().getSimpleName() + ", changed it to \""

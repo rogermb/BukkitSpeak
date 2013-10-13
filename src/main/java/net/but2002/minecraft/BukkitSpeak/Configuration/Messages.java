@@ -6,6 +6,7 @@ import java.util.logging.Level;
 
 import net.but2002.minecraft.BukkitSpeak.BukkitSpeak;
 
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 public enum Messages {
@@ -64,10 +65,16 @@ public enum Messages {
 	private static YamlConfiguration config;
 	
 	private final String path;
+	private final String[] oldPaths;
 	private final String defValue;
 	
 	Messages(String configPath, String defaultValue) {
+		this(configPath, defaultValue, null);
+	}
+	
+	Messages(String configPath, String defaultValue, String[] oldConfigPaths) {
 		path = configPath;
+		oldPaths = oldConfigPaths;
 		defValue = defaultValue;
 	}
 	
@@ -75,11 +82,42 @@ public enum Messages {
 		boolean changed = false;
 		config = YamlConfiguration.loadConfiguration(CONFIG_FILE);
 		
-		for (Messages value : Messages.values()) {
+		if (config.getKeys(false).isEmpty()) {
+			if (Configuration.getConfig().isConfigurationSection("messages")) {
+				config.set("messages", Configuration.getConfig().getConfigurationSection("messages"));
+				Configuration.getConfig().set("messages", null);
+				BukkitSpeak.log().info("Moved the messages section from the config into the locale file.");
+				changed = true;
+			} else {
+				BukkitSpeak.getInstance().saveResource("locale.yml", false);
+				BukkitSpeak.log().info("Default locale file created!");
+				config = YamlConfiguration.loadConfiguration(CONFIG_FILE);
+			}
+		}
+		
+		ValueIteration: for (Messages value : Messages.values()) {
 			if (value.defValue == null) continue;
 			Object val = config.get(value.path);
 			
 			if (val == null) {
+				if (value.oldPaths != null) {
+					for (String oldPath : value.oldPaths) {
+						Object oldVal;
+						if (oldPath.startsWith("C:")) {
+							oldVal = Configuration.getConfig().get(oldPath);
+						} else {
+							oldVal = config.get(oldPath);
+						}
+						if (oldVal != null && oldVal.getClass().isInstance(value.defValue.getClass())) {
+							config.set(value.path, oldVal);
+							config.set(oldPath, null);
+							BukkitSpeak.log().warning("Moved \"" + oldPath + "\" to \"" + value.path + "\".");
+							changed = true;
+							continue ValueIteration;
+						}
+					}
+				}
+				
 				value.setToDefault();
 				BukkitSpeak.log().warning("Config value \"" + value.path + "\" was not set, changed it to \""
 						+ String.valueOf(value.defValue) + "\".");
@@ -103,6 +141,10 @@ public enum Messages {
 		} catch (IOException e) {
 			BukkitSpeak.log().log(Level.SEVERE, "Could not save the locale file to " + CONFIG_FILE, e);
 		}
+	}
+	
+	public static FileConfiguration getConfig() {
+		return config;
 	}
 	
 	public String getConfigPath() {

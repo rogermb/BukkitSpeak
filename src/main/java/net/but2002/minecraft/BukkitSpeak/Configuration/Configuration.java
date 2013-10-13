@@ -51,10 +51,17 @@ public enum Configuration {
 	PLUGINS_MCMMO_FILTER_ADMIN_CHAT("plugin-interaction.mcMMO.FilterAdminChat", true);
 	
 	private final String path;
+	private final String[] oldPaths;
 	private final Object defValue;
 	
+	
 	Configuration(String configPath, Object defaultValue) {
+		this(configPath, defaultValue, null);
+	}
+	
+	Configuration(String configPath, Object defaultValue, String[] oldConfigPaths) {
 		path = configPath;
+		oldPaths = oldConfigPaths;
 		defValue = defaultValue;
 	}
 	
@@ -63,11 +70,30 @@ public enum Configuration {
 		BukkitSpeak.getInstance().reloadConfig();
 		FileConfiguration config = BukkitSpeak.getInstance().getConfig();
 		
-		for (Configuration value : Configuration.values()) {
+		if (config.getKeys(false).isEmpty()) {
+			BukkitSpeak.getInstance().saveResource("config.yml", false);
+			BukkitSpeak.log().info("Default config file created!");
+			BukkitSpeak.getInstance().reloadConfig();
+		}
+		
+		ValueIteration: for (Configuration value : Configuration.values()) {
 			if (value.defValue == null) continue;
 			Object val = config.get(value.path);
 			
 			if (val == null) {
+				if (value.oldPaths != null) {
+					for (String oldPath : value.oldPaths) {
+						Object oldVal = config.get(oldPath);
+						if (oldVal != null && oldVal.getClass().isInstance(value.defValue.getClass())) {
+							config.set(value.path, oldVal);
+							config.set(oldPath, null);
+							BukkitSpeak.log().warning("Moved \"" + oldPath + "\" to \"" + value.path + "\".");
+							changed = true;
+							continue ValueIteration;
+						}
+					}
+				}
+				
 				value.setToDefault();
 				BukkitSpeak.log().warning("Config value \"" + value.path + "\" was not set, changed it to \""
 						+ String.valueOf(value.defValue) + "\".");
@@ -86,6 +112,10 @@ public enum Configuration {
 	
 	public static void save() {
 		BukkitSpeak.getInstance().saveConfig();
+	}
+	
+	public static FileConfiguration getConfig() {
+		return BukkitSpeak.getInstance().getConfig();
 	}
 	
 	public String getConfigPath() {

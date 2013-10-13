@@ -60,9 +60,9 @@ public class BukkitSpeak extends JavaPlugin {
 	public void onEnable() {
 		instance = this;
 		logger = this.getLogger();
-		permissionsHelper = new PermissionsHelper();
 		Configuration.reload();
 		Messages.reload();
+		permissionsHelper = new PermissionsHelper();
 		query = new JTS3ServerQuery();
 		query.DEBUG = Configuration.TS_DEBUGGING.getBoolean();
 		

@@ -17,18 +17,19 @@ public class CommandStatus extends BukkitSpeakCommand {
 	@Override
 	public void execute(CommandSender sender, String[] args) {
 		
-		//XXX
-		
 		send(sender, Level.INFO, "&eBukkitSpeak Version: &av" + BukkitSpeak.getInstance().getDescription().getVersion());
 		if (BukkitSpeak.getQuery().isConnected()) {
 			send(sender, Level.INFO, "&eTeamspeak Listener: &arunning");
 			send(sender, Level.INFO, "&eRunning since: &a"
 					+ DateManager.dateToString(BukkitSpeak.getInstance().getStartedTime()));
+			send(sender, Level.INFO, "&eSID = &a" + BukkitSpeak.getQuery().getCurrentQueryClientServerID()
+					+ "&e, CID = &a" + BukkitSpeak.getQuery().getCurrentQueryClientChannelID()
+					+ "&e, CLID = &a" + BukkitSpeak.getQuery().getCurrentQueryClientID());
 		} else if (BukkitSpeak.getInstance().getStoppedTime() == null || BukkitSpeak.getInstance().getStartedTime() == null) {
 			send(sender, Level.WARNING, "&eTeamspeak Listener: &6connecting");
 			if (BukkitSpeak.getInstance().getStartedTime() != null) {
 				send(sender, Level.WARNING, "&eConnecting since: &6"
-					+ DateManager.dateToString(BukkitSpeak.getInstance().getStartedTime()));
+						+ DateManager.dateToString(BukkitSpeak.getInstance().getStartedTime()));
 			}
 		} else if (BukkitSpeak.getInstance().getLastStartedTime() == null) {
 			send(sender, Level.WARNING, "&eTeamspeak Listener: &4dead");

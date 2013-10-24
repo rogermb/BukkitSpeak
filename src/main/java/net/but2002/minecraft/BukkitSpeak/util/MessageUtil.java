@@ -38,6 +38,7 @@ public final class MessageUtil {
 		String s = input;
 		if (color) {
 			s = s.replaceAll("((&|$)([a-fk-orA-FK-OR0-9]))", "\u00A7$3");
+			s = s.replaceAll("\\[", "\\\\[");
 			
 			StringBuilder sb = new StringBuilder(s);
 			Matcher m = Pattern.compile("(\u00A7([a-fk-orA-FK-OR0-9]))").matcher(sb);

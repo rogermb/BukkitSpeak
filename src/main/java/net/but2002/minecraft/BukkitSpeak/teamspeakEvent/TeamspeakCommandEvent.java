@@ -64,8 +64,8 @@ public class TeamspeakCommandEvent extends TeamspeakEvent {
 			Replacer r = new Replacer().addClient(getUser());
 			tscs.sendMessage(r.replace(m));
 			if (Configuration.TS_COMMANDS_LOGGING.getBoolean()) {
-				BukkitSpeak.log().info("TS client \"" + getClientName() + "\" tried executing command \"" + cmd + "\",");
-				BukkitSpeak.log().info("but the plugin \"" + pc.getPlugin().getName() + "\" was not whitelisted.");
+				BukkitSpeak.log().info("TS client \"" + getClientName() + "\" tried executing command \"" + cmd + "\","
+						+ "but the plugin \"" + pc.getPlugin().getName() + "\" was not whitelisted.");
 			}
 			return;
 		}
@@ -79,8 +79,8 @@ public class TeamspeakCommandEvent extends TeamspeakEvent {
 			Replacer r = new Replacer().addClient(getUser());
 			tscs.sendMessage(r.replace(m));
 			if (Configuration.TS_COMMANDS_LOGGING.getBoolean()) {
-				BukkitSpeak.log().info("TS client \"" + getClientName() + "\" tried executing command \"" + cmd + "\",");
-				BukkitSpeak.log().info("but the command was blacklisted.");
+				BukkitSpeak.log().info("TS client \"" + getClientName() + "\" tried executing command \"" + cmd + "\","
+						+ "but the command was blacklisted.");
 			}
 			return;
 		}

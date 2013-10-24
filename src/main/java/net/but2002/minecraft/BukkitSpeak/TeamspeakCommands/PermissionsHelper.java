@@ -120,6 +120,7 @@ public final class PermissionsHelper implements Runnable {
 				section.set("inherits", (List<String>) new ArrayList<String>());
 				
 				serverGroups.put(id, new ServerGroup());
+				perms.put(id, parseConfigSection(section.getConfigurationSection("permissions")));
 			}
 		}
 		
@@ -213,15 +214,11 @@ public final class PermissionsHelper implements Runnable {
 	private HashMap<String, Boolean> parseConfigSection(ConfigurationSection cs) {
 		HashMap<String, Boolean> map = new HashMap<String, Boolean>();
 		for (Map.Entry<String, Object> entry : cs.getValues(true).entrySet()) {
-			String[] path = entry.getKey().split("/");
-			StringBuilder key = new StringBuilder(path[0]);
-			for (int i = 1; i < path.length; i++) {
-				key.append(".").append(path[i]);
-			}
+			String key = entry.getKey().replace('/', '.');
 			if (entry.getValue() instanceof Boolean) {
-				map.put(key.toString(), (Boolean) entry.getValue());
+				map.put(key, (Boolean) entry.getValue());
 			} else if (!(entry.getValue() instanceof ConfigurationSection)) {
-				BukkitSpeak.log().warning("Key " + key.toString() + " in the permissions for server group "
+				BukkitSpeak.log().warning("Key " + key + " in the permissions for server group "
 						+ cs.getCurrentPath().split("/")[0] + " did not have a boolean value assigned.");
 			}
 		}

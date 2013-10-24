@@ -16,7 +16,7 @@ public class CommandSet extends BukkitSpeakCommand {
 		new SetDisplayName(), new SetConsoleName(), new SetChannel(), new SetChannelPassword(),
 		new SetServerListener(), new SetTextServerListener(), new SetChannelListener(), new SetTextChannelListener(),
 		new SetPrivateMessagesListener(), new SetAllowLinks(), new SetTarget(), new SetConsoleLog(), 
-		new SetDefaultReason(), new SetChatListenerPriority(), new SetDebug()};
+		new SetChatListenerPriority(), new SetDebug()};
 	
 	private String props;
 	
@@ -26,7 +26,7 @@ public class CommandSet extends BukkitSpeakCommand {
 		for (SetProperty prop : PROPERTIES) {
 			if (sb.length() > 0) sb.append("&a, ");
 			sb.append("&6");
-			sb.append(prop.getProperty());
+			sb.append(prop.getName());
 		}
 		props = sb.toString();
 	}
@@ -51,7 +51,7 @@ public class CommandSet extends BukkitSpeakCommand {
 			} else {
 				send(sender, Level.INFO, "&4You need to add a value to set.");
 				send(sender, Level.INFO, "&aPossible values: &6" + prop.getAllowedInput());
-				send(sender, Level.INFO, "&aCurrently set to: " + String.valueOf(prop.getProperty().get()));
+				send(sender, Level.INFO, "&aCurrently set to: &6" + String.valueOf(prop.getProperty().get()));
 				send(sender, Level.INFO, "&aDescription:");
 				send(sender, Level.INFO, "&6" + prop.getDescription());
 			}
@@ -68,7 +68,7 @@ public class CommandSet extends BukkitSpeakCommand {
 			}
 			
 			if (!prop.execute(sender, arg)) return;
-			send(sender, Level.INFO, "&a" + prop.getProperty() + " was successfully set to " + arg);
+			send(sender, Level.INFO, "&a" + prop.getName() + " was successfully set to " + arg);
 			Configuration.save();
 		}
 	}
@@ -87,9 +87,10 @@ public class CommandSet extends BukkitSpeakCommand {
 	public List<String> onTabComplete(CommandSender sender, String[] args) {
 		switch (args.length) {
 		case 2:
+			String s = args[1].toLowerCase();
 			List<String> al = new ArrayList<String>();
 			for (SetProperty prop : PROPERTIES) {
-				if (prop.getName().startsWith(args[1])) {
+				if (prop.getName().toLowerCase().startsWith(s)) {
 					al.add(prop.getName());
 				}
 			}

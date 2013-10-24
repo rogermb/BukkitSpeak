@@ -7,6 +7,7 @@ import net.but2002.minecraft.BukkitSpeak.TsTarget;
 
 import org.bukkit.Color;
 import org.bukkit.OfflinePlayer;
+import org.bukkit.configuration.MemoryConfiguration;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.event.EventPriority;
 import org.bukkit.inventory.ItemStack;
@@ -24,15 +25,19 @@ public enum Configuration {
 	TS_CONSOLE_NAME("teamspeak.ConsoleName", "&eServer"),
 	TS_CHANNEL_ID("teamspeak.ChannelID", 0),
 	TS_CHANNEL_PASSWORD("teamspeak.ChannelPassword", ""),
-	TS_ENABLE_SERVER_EVENTS("teamspeak.ListenToServerEvents", true),
-	TS_ENABLE_SERVER_MESSAGES("teamspeak.ListenToServerBroadcasts", true),
-	TS_ENABLE_CHANNEL_EVENTS("teamspeak.ListenToChannel", true),
-	TS_ENABLE_CHANNEL_MESSAGES("teamspeak.ListenToChannelChat", true),
-	TS_ENABLE_PRIVATE_MESSAGES("teamspeak.ListenToPrivateMessages", true),
+	TS_ENABLE_SERVER_EVENTS("teamspeak.SendServerEventsToMinecraft", true,
+			new String[] {"teamspeak.ListenToServerEvents"}),
+	TS_ENABLE_SERVER_MESSAGES("teamspeak.SendServerBroadcastsToMinecraft", true,
+			new String[] {"teamspeak.ListenToServerBroadcasts"}),
+	TS_ENABLE_CHANNEL_EVENTS("teamspeak.SendChannelEventsToMinecraft", true,
+			new String[] {"teamspeak.ListenToChannel"}),
+	TS_ENABLE_CHANNEL_MESSAGES("teamspeak.SendChannelChatToMinecraft", true,
+			new String[] {"teamspeak.ListenToChannelChat"}),
+	TS_ENABLE_PRIVATE_MESSAGES("teamspeak.EnablePrivateMessaging", true,
+			new String[] {"teamspeak.ListenToPrivateMessages"}),
 	TS_ALLOW_LINKS("teamspeak.AllowLinksInMessages", true),
-	TS_MESSAGES_TARGET("teamspeak.SendChatToTeamspeak", "none"),
+	TS_MESSAGES_TARGET("teamspeak.SendChatToTeamspeak", "channel"),
 	TS_LOGGING("teamspeak.LogChatInConsole", true),
-	TS_DEFAULT_REASON("teamspeak.DefaultReason", "-"),
 	TS_CHAT_LISTENER_PRIORITY("teamspeak.ChatListenerPriority", "MONITOR"),
 	TS_DEBUGGING("teamspeak.Debug", false),
 	
@@ -54,7 +59,6 @@ public enum Configuration {
 	private final String[] oldPaths;
 	private final Object defValue;
 	
-	
 	Configuration(String configPath, Object defaultValue) {
 		this(configPath, defaultValue, null);
 	}
@@ -67,8 +71,10 @@ public enum Configuration {
 	
 	public static void reload() {
 		boolean changed = false;
+		boolean moved = false;
 		BukkitSpeak.getInstance().reloadConfig();
 		FileConfiguration config = BukkitSpeak.getInstance().getConfig();
+		config.setDefaults(new MemoryConfiguration()); // No Bukkit. No. Bad Bukkit.
 		
 		if (config.getKeys(false).isEmpty()) {
 			BukkitSpeak.getInstance().saveResource("config.yml", false);
@@ -89,6 +95,7 @@ public enum Configuration {
 							config.set(oldPath, null);
 							BukkitSpeak.log().info("Moved \"" + oldPath + "\" to \"" + value.path + "\".");
 							changed = true;
+							moved = true;
 							continue ValueIteration;
 						}
 					}
@@ -107,7 +114,20 @@ public enum Configuration {
 			}
 		}
 		
+		if (moved) removeEmptySections(config);
 		if (changed) save();
+	}
+	
+	private static void removeEmptySections(FileConfiguration config) {
+		boolean removed = false;
+		for (String key : config.getKeys(true)) {
+			if (!config.isConfigurationSection(key)) continue;
+			if (config.getConfigurationSection(key).getKeys(false).isEmpty()) {
+				config.set(key, null);
+				removed = true;
+			}
+		}
+		if (removed) removeEmptySections(config);
 	}
 	
 	public static void save() {

@@ -13,24 +13,21 @@ teamspeak:
   ChannelPassword: ''
   
   # Can only be true or false
-  ListenToServerEvents: true
-  ListenToServerBroadcasts: true
-  ListenToChannel: true
-  ListenToChannelChat: true
+  SendServerEventsToMinecraft: true
+  SendServerBroadcastsToMinecraft: true
+  SendChannelEventsToMinecraft: true
+  SendChannelChatToMinecraft: true
   
   # This will NOT publish your private TS messages!
   # It allows Minecraft users to send messages to specific TS clients.
-  ListenToPrivateMessages: true
+  EnablePrivateMessaging: true
   AllowLinksInMessages: true
   
   # Can be either 'server', 'channel' or 'none'
-  SendChatToTeamspeak: none
+  SendChatToTeamspeak: channel
   
   # Can only be true or false
   LogChatInConsole: true
-  
-  # Default reason for bans and (channel) kicks
-  DefaultReason: '-'
   
   # The priority of the chat listener.
   # By default, BukkitSpeak ignores all cancelled events (MONITOR).

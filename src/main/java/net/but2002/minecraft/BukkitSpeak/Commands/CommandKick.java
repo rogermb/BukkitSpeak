@@ -46,7 +46,7 @@ public class CommandKick extends BukkitSpeakCommand {
 		
 		String tsMsg = Messages.MC_COMMAND_KICK_TS.get();
 		String mcMsg = Messages.MC_COMMAND_KICK_MC.get();
-		String msg = Configuration.TS_DEFAULT_REASON.getString();
+		String msg = Messages.MC_COMMAND_DEFAULT_REASON.get();
 		if (args.length > 2) {
 			msg = combineSplit(2, args, " ");
 		}

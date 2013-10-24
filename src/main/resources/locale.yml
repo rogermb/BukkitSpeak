@@ -1,40 +1,69 @@
-messages:
-  TeamspeakEvents:
-    Join: '&e%client_nickname% &ahas joined TeamSpeak'
-    Quit: '&e%client_nickname% &ahas left TeamSpeak'
-    ChannelEnter: '&e%client_nickname% &aentered the channel.'
-    ChannelLeave: '&e%client_nickname% &aleft the channel.'
-    ServerMsg: '[&cTS&f] &e%client_nickname%&a: %msg%'
-    ChannelMsg: '&e%client_nickname%&f: %msg%'
-    PrivateMsg: '&e%client_nickname% &a-> &eMe&f: %msg%'
-  TeamspeakMessages:
-    ServerMessage: '&4&l%msg%'
-    ChannelMessage: '&4&l[%player_displayname%&4] &r%msg%'
-    PrivateMessage: '&4&l[%player_displayname%&4] &r%msg%'
-    PokeMessage: '&l[%player_displayname%] &r%msg%'
-    KickMessage: '[%player_displayname%] kicked you from the server for %msg%.'
-    ChannelKickMessage: '[%player_displayname%] kicked you from the channel for %msg%.'
-    BanMessage: '[%player_displayname%] banned you from the server for %msg%.'
-  TeamspeakCommandMessages:
-    PluginNotWhitelisted: 'You are not allowed to run commands of that plugin.'
-    CommandBlacklisted: 'The command you are trying to run is blacklisted.'
-    TeamspeakCommandSenderName: '&a[&6TS&a] &e%client_nickname%&r'
-  MinecraftEvents:
-    ChatMessage: '&l%player_displayname%&r: %msg%'
-    LoginMessage: '&l%player_displayname%&r logged in.'
-    LogoutMessage: '&l%player_displayname%&r logged out.'
-    KickedMessage: '&l%player_displayname%&r was kicked from the server.'
-    BannedMessage: '&l%player_displayname%&r was banned from the server.'
-  MinecraftCommandMessages:
-    OnlineList: '&aCurrently online: &e%list%'
-    ChannelList: '&aCurrently in the channel: &e%list%'
-    Mute: '&aYou are now muted.'
-    Unmute: '&aYou aren''t muted anymore.'
-    ChannelChange: '&aYou are now talking in the TeamSpeak channel &6%channel%&a.'
-    Broadcast: '&e%player_displayname% &a-> &f[&cTS&f]&f: %msg%'
-    Chat: '&e%player_displayname% &a-> &eTS&f: %msg%'
-    Pm: '&eMe &a-> &e%target%&f: %msg%'
-    Poke: '&eYou &apoked &e%target%&f: %msg%'
-    Kick: '&e%player_displayname% &akicked &e%target% &afrom the server for &e%msg%&a.'
-    ChannelKick: '&e%player_displayname% &akicked &e%target% &afrom the channel for &e%msg%&a.'
-    Ban: '&e%player_displayname% &abanned &e%target% &afor &e%msg%&a.'
+TeamspeakEvent:
+  ServerJoin:
+    ToMinecraftServer: '&e%client_nickname% &ahas joined TeamSpeak'
+  ServerQuit:
+    ToMinecraftServer: '&e%client_nickname% &ahas left TeamSpeak'
+  ChannelEnter:
+    ToMinecraftServer: '&e%client_nickname% &aentered the channel.'
+  ChannelLeave:
+    ToMinecraftServer: '&e%client_nickname% &aleft the channel.'
+  ServerMessage:
+    ToMinecraftServer: '[&cTS&f] &e%client_nickname%&a: %msg%'
+  ChannelMessage:
+    ToMinecraftServer: '&e%client_nickname%&f: %msg%'
+  PrivateMessage:
+    ToMinecraftUser: '&e%client_nickname% &a-> &eMe&f: %msg%'
+MinecraftEvent:
+  PlayerChat:
+    ToTeamspeakTarget: '&l%player_displayname%&r: %msg%'
+  PlayerLogin:
+    ToTeamspeakTarget: '&l%player_displayname%&r logged in.'
+  PlayerLogout:
+    ToTeamspeakTarget: '&l%player_displayname%&r logged out.'
+  PlayerKicked:
+    ToTeamspeakTarget: '&l%player_displayname%&r was kicked from the server.'
+  PlayerBanned:
+    ToTeamspeakTarget: '&l%player_displayname%&r was banned from the server.'
+MinecraftCommand:
+  List:
+    Server:
+      ToMinecraftUser: '&aCurrently online: &e%list%'
+    Channel:
+      ToMinecraftUser: '&aCurrently in the channel: &e%list%'
+  Mute:
+    Enable:
+      ToMinecraftUser: '&aYou are now muted.'
+    Disable:
+      ToMinecraftUser: '&aYou aren''t muted anymore.'
+  Set:
+    ChannelChange:
+      ToMinecraftServer: '&aYou are now talking in the TeamSpeak channel &6%channel%&a.'
+  Broadcast:
+    ToMinecraftServer: '&e%player_displayname% &a-> &f[&cTS&f]&f: %msg%'
+    ToTeamspeakServer: '&4&l%msg%'
+  Chat:
+    ToMinecraftServer: '&e%player_displayname% &a-> &eTS&f: %msg%'
+    ToTeamspeakChannel: '&l[%player_displayname%&r&l] &r%msg%'
+  Pm:
+    ToMinecraftUser: '&eMe &a-> &e%target%&f: %msg%'
+    ToTeamspeakUser: '&l[%player_displayname%&r&l] &r%msg%'
+  Poke:
+    ToMinecraftUser: '&eYou &apoked &e%target%&f: %msg%'
+    ToTeamspeakUser: '&l[%player_displayname%&r&l] &r%msg%'
+  Kick:
+    ToMinecraftServer: '&e%player_displayname% &akicked &e%target% &afrom the server
+      for &e%msg%&a.'
+    ToTeamspeakUser: '[%player_displayname%] kicked you from the server for %msg%.'
+  ChannelKick:
+    ToMinecraftServer: '&e%player_displayname% &akicked &e%target% &afrom the channel
+      for &e%msg%&a.'
+    ToTeamspeakUser: '[%player_displayname%] kicked you from the server for %msg%.'
+  Ban:
+    ToMinecraftServer: '&e%player_displayname% &abanned &e%target% &afor &e%msg%&a.'
+    ToTeamspeakUser: '[%player_displayname%] banned you from the server for %msg%.'
+  KickBanDefaultReason: '-'
+TeamspeakCommand:
+  Errors:
+    PluginNotWhitelisted: You are not allowed to run commands of that plugin.
+    CommandBlacklisted: The command you are trying to run is blacklisted.
+  CommandSenderName: '&a[&6TS&a] &e%client_nickname%&r'

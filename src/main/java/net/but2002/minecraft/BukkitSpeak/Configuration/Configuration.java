@@ -91,8 +91,8 @@ public enum Configuration {
 					for (String oldPath : value.oldPaths) {
 						Object oldVal = config.get(oldPath);
 						if (oldVal != null && oldVal.getClass().isInstance(value.defValue)) {
-							config.set(value.path, oldVal);
 							config.set(oldPath, null);
+							config.set(value.path, oldVal);
 							BukkitSpeak.log().info("Moved \"" + oldPath + "\" to \"" + value.path + "\".");
 							changed = true;
 							moved = true;

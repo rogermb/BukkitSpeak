@@ -40,6 +40,15 @@ public enum Messages {
 			"&e%client_nickname% &a-> &eMe&f: %msg%",
 			new String[] {"messages.TeamspeakEvents.PrivateMsg"}),
 	
+	TS_EVENT_PRIVATE_MESSAGE_NO_CONVERSATION("TeamspeakEvent.PrivateMessage.Errors.NotInConversation.ToTeamspeakUser",
+			"You're currently not in a private message conversation."),
+	
+	TS_EVENT_PRIVATE_MESSAGE_RECIPIENT_OFFLINE("TeamspeakEvent.PrivateMessage.Errors.PmRecipientNotOnline.ToTeamspeakUser",
+			"The user you're trying to send a message to is offline."),
+	
+	TS_EVENT_PRIVATE_MESSAGE_RECIPIENT_MUTED("TeamspeakEvent.PrivateMessage.Errors.PmRecipientMutedOrNoPermission.ToTeamspeakUser",
+			"The user you're trying to chat with can't receive your message."),
+	
 	// Minecraft events
 	MC_EVENT_CHAT("MinecraftEvent.PlayerChat.ToTeamspeakTarget",
 			"&l%player_displayname%&r: %msg%",
@@ -141,16 +150,17 @@ public enum Messages {
 			new String[] {"c:teamspeak.DefaultReason"}),
 	
 	// Teamspeak commands
-	TS_COMMAND_NOT_WHITELISTED("TeamspeakCommand.Errors.PluginNotWhitelisted",
-			"You are not allowed to run commands of that plugin.",
-			new String[] {"messages.TeamspeakCommandMessages.PluginNotWhitelisted"}),
+	TS_COMMAND_NOT_WHITELISTED("TeamspeakCommand.Errors.PluginNotWhitelisted.ToTeamspeakUser",
+			"You are not allowed to run commands of that plugin.", new String[] {
+					"messages.TeamspeakCommandMessages.PluginNotWhitelisted",
+					"TeamspeakCommand.Errors.PluginNotWhitelisted"}),
 	
-	TS_COMMAND_BLACKLISTED("TeamspeakCommand.Errors.CommandBlacklisted",
-			"The command you are trying to run is blacklisted.",
-			new String[] {"messages.TeamspeakCommandMessages.CommandBlacklisted"}),
+	TS_COMMAND_BLACKLISTED("TeamspeakCommand.Errors.CommandBlacklisted.ToTeamspeakUser",
+			"The command you are trying to run is blacklisted.", new String[] {
+					"messages.TeamspeakCommandMessages.CommandBlacklisted",
+					"TeamspeakCommand.Errors.CommandBlacklisted"}),
 	
-	TS_COMMAND_SENDER_NAME("TeamspeakCommand.CommandSenderName",
-			"&a[&6TS&a] &e%client_nickname%&r",
+	TS_COMMAND_SENDER_NAME("TeamspeakCommand.CommandSenderName", "&a[&6TS&a] &e%client_nickname%&r",
 			new String[] {"messages.TeamspeakCommandMessages.TeamspeakCommandSenderName"});
 	
 	private static final File CONFIG_FILE = new File(BukkitSpeak.getInstance().getDataFolder(), "locale.yml");
@@ -210,8 +220,8 @@ public enum Messages {
 						} else {
 							Object oldVal = config.get(oldPath);
 							if (oldVal != null && oldVal.getClass().isInstance(value.defValue)) {
-								config.set(value.path, oldVal);
 								config.set(oldPath, null);
+								config.set(value.path, oldVal);
 								BukkitSpeak.log().info("Moved \"" + oldPath + "\" to \"" + value.path + "\".");
 								changed = true;
 								movedLocale = true;

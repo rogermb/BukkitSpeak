@@ -2,9 +2,12 @@ package net.but2002.minecraft.BukkitSpeak.teamspeakEvent;
 
 import java.util.HashMap;
 
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
+import de.stefan1200.jts3serverquery.JTS3ServerQuery;
 import net.but2002.minecraft.BukkitSpeak.BukkitSpeak;
+import net.but2002.minecraft.BukkitSpeak.AsyncQueryUtils.QuerySender;
 import net.but2002.minecraft.BukkitSpeak.Configuration.Configuration;
 import net.but2002.minecraft.BukkitSpeak.Configuration.Messages;
 import net.but2002.minecraft.BukkitSpeak.util.MessageUtil;
@@ -59,18 +62,43 @@ public class ServerMessageEvent extends TeamspeakEvent {
 			m = MessageUtil.toMinecraft(m, true, true);
 			
 			String p = BukkitSpeak.getInstance().getRecipient(getClientId());
-			if (p == null || p.isEmpty()) return;
+			if (p == null || p.isEmpty()) {
+				String tsMsg = Messages.TS_EVENT_PRIVATE_MESSAGE_NO_CONVERSATION.get();
+				Replacer r = new Replacer().addTargetClient(getUser());
+				tsMsg = MessageUtil.toTeamspeak(r.replace(tsMsg), true, true);
+				
+				if (tsMsg == null || tsMsg.isEmpty()) return;
+				QuerySender qs = new QuerySender(getClientId(), JTS3ServerQuery.TEXTMESSAGE_TARGET_CLIENT, tsMsg);
+				Bukkit.getScheduler().runTaskAsynchronously(BukkitSpeak.getInstance(), qs);
+				return;
+			}
 			
 			if (MessageUtil.toMinecraft(Configuration.TS_CONSOLE_NAME.getString(), false, false).equals(p)) {
 				BukkitSpeak.log().info(MessageUtil.toMinecraft(m, false, Configuration.TS_ALLOW_LINKS.getBoolean()));
 			} else {
 				Player pl = BukkitSpeak.getInstance().getServer().getPlayerExact(p);
-				if (pl == null) return;
-				if (!BukkitSpeak.getMuted(pl) && checkPermissions(pl, "pm")) {
-					pl.sendMessage(m);
+				if (pl == null) {
+					String tsMsg = Messages.TS_EVENT_PRIVATE_MESSAGE_RECIPIENT_OFFLINE.get();
+					Replacer r = new Replacer().addTargetClient(getUser());
+					tsMsg = MessageUtil.toTeamspeak(r.replace(tsMsg), true, true);
+					
+					if (tsMsg == null || tsMsg.isEmpty()) return;
+					QuerySender qs = new QuerySender(getClientId(), JTS3ServerQuery.TEXTMESSAGE_TARGET_CLIENT, tsMsg);
+					Bukkit.getScheduler().runTaskAsynchronously(BukkitSpeak.getInstance(), qs);
+					return;
+				} else if (BukkitSpeak.getMuted(pl) || !checkPermissions(pl, "pm")) {
+					String tsMsg = Messages.TS_EVENT_PRIVATE_MESSAGE_RECIPIENT_MUTED.get();
+					Replacer r = new Replacer().addTargetClient(getUser());
+					tsMsg = MessageUtil.toTeamspeak(r.replace(tsMsg), true, true);
+					
+					if (tsMsg == null || tsMsg.isEmpty()) return;
+					QuerySender qs = new QuerySender(getClientId(), JTS3ServerQuery.TEXTMESSAGE_TARGET_CLIENT, tsMsg);
+					Bukkit.getScheduler().runTaskAsynchronously(BukkitSpeak.getInstance(), qs);
+					return;
 				}
+				
+				pl.sendMessage(m);
 			}
-			
 		}
 	}
 	

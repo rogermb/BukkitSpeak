@@ -44,7 +44,7 @@ public class SetChatListenerPriority extends SetProperty {
 			}
 		}
 		if (p == null) {
-			send(sender, Level.WARNING, "Only LOWEST, LOW, NORMAL, HIGH, HIGHEST or MONITOR are accepted.");
+			send(sender, Level.WARNING, "&4Only LOWEST, LOW, NORMAL, HIGH, HIGHEST or MONITOR are accepted.");
 			return false;
 		}
 		

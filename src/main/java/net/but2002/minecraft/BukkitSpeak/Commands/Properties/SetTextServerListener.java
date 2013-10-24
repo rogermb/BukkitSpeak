@@ -40,7 +40,7 @@ public class SetTextServerListener extends SetProperty {
 			PROPERTY.set(false);
 			send(sender, Level.INFO, "&aTeamSpeak broadcasts won't be sent to Minecraft anymore.");
 		} else {
-			send(sender, Level.WARNING, "Only 'true' or 'false' are accepted.");
+			send(sender, Level.WARNING, "&4Only 'true' or 'false' are accepted.");
 			return false;
 		}
 		Configuration.save();

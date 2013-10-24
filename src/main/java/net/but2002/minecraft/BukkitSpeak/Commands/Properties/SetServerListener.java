@@ -40,7 +40,7 @@ public class SetServerListener extends SetProperty {
 			PROPERTY.set(false);
 			send(sender, Level.INFO, "&aServer joins and quits won't be broadcasted in Minecraft anymore.");
 		} else {
-			send(sender, Level.WARNING, "Only 'true' or 'false' are accepted.");
+			send(sender, Level.WARNING, "&4Only 'true' or 'false' are accepted.");
 			return false;
 		}
 		Configuration.save();

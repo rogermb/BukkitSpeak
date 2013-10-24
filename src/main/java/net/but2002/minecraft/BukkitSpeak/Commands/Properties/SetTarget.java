@@ -36,7 +36,7 @@ public class SetTarget extends SetProperty {
 	public boolean execute(CommandSender sender, String arg) {
 		TsTarget tsTarget = TsTarget.getFromString(arg);
 		if (tsTarget == null) {
-			send(sender, Level.WARNING, "Only 'none', 'channel' or 'server' are accepted.");
+			send(sender, Level.WARNING, "&4Only 'none', 'channel' or 'server' are accepted.");
 			return false;
 		}
 		PROPERTY.set(tsTarget.name().toLowerCase());

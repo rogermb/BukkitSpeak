@@ -99,7 +99,7 @@ public class QueryConnector implements Runnable {
 		plugin.setStoppedTime(null);
 		plugin.setStartedTime(null);
 		plugin.setStartedTime(new Date());
-		logger.info("Connected with" + " SID = " + query.getCurrentQueryClientServerID() + ", CID = "
+		logger.info("Connected with SID = " + query.getCurrentQueryClientServerID() + ", CID = "
 				+ query.getCurrentQueryClientChannelID() + ", CLID = " + query.getCurrentQueryClientID());
 		
 	}

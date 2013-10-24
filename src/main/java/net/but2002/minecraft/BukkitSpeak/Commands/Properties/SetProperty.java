@@ -39,10 +39,10 @@ public abstract class SetProperty {
 			BukkitSpeak.getQuery().addEventNotify(JTS3ServerQuery.EVENT_MODE_TEXTSERVER, 0);
 		}
 		if (Configuration.TS_ENABLE_CHANNEL_EVENTS.getBoolean()) {
-			BukkitSpeak.getQuery().addEventNotify(JTS3ServerQuery.EVENT_MODE_CHANNEL, Configuration.TS_CHANNEL_ID.getInt());
+			BukkitSpeak.getQuery().addEventNotify(JTS3ServerQuery.EVENT_MODE_CHANNEL, BukkitSpeak.getQuery().getCurrentQueryClientChannelID());
 		}
 		if (Configuration.TS_ENABLE_CHANNEL_MESSAGES.getBoolean()) {
-			BukkitSpeak.getQuery().addEventNotify(JTS3ServerQuery.EVENT_MODE_TEXTCHANNEL, Configuration.TS_CHANNEL_ID.getInt());
+			BukkitSpeak.getQuery().addEventNotify(JTS3ServerQuery.EVENT_MODE_TEXTCHANNEL, BukkitSpeak.getQuery().getCurrentQueryClientChannelID());
 		}
 		if (Configuration.TS_ENABLE_PRIVATE_MESSAGES.getBoolean()) {
 			BukkitSpeak.getQuery().addEventNotify(JTS3ServerQuery.EVENT_MODE_TEXTPRIVATE, 0);
@@ -85,7 +85,7 @@ public abstract class SetProperty {
 	
 	public String getName() {
 		String property = getProperty().getConfigPath();
-		return property.substring(property.lastIndexOf("."));
+		return property.substring(property.lastIndexOf(".") + 1);
 	}
 	
 	public abstract Configuration getProperty();

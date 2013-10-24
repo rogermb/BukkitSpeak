@@ -53,7 +53,7 @@ public class CommandChat extends BukkitSpeakCommand {
 		mcMsg = r.replace(mcMsg);
 		
 		if (tsMsg == null || tsMsg.isEmpty()) return;
-		QuerySender qs = new QuerySender(Configuration.TS_CHANNEL_ID.getInt(),
+		QuerySender qs = new QuerySender(BukkitSpeak.getQuery().getCurrentQueryClientChannelID(),
 				JTS3ServerQuery.TEXTMESSAGE_TARGET_CHANNEL, tsMsg);
 		Bukkit.getScheduler().scheduleSyncDelayedTask(BukkitSpeak.getInstance(), qs);
 		broadcastMessage(mcMsg, sender);

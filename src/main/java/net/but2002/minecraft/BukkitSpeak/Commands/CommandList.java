@@ -54,7 +54,7 @@ public class CommandList extends BukkitSpeakCommand {
 				&& args[1].equalsIgnoreCase("channel")) {
 			ClientList clientList = BukkitSpeak.getClientList();
 			StringBuilder online = new StringBuilder();
-			String id = String.valueOf(Configuration.TS_CHANNEL_ID.getInt());
+			String id = String.valueOf(BukkitSpeak.getQuery().getCurrentQueryClientChannelID());
 			
 			for (HashMap<String, String> user : clientList.getClients().values()) {
 				if (user.get("client_type").equals("0") && user.get("cid").equals(id)) {

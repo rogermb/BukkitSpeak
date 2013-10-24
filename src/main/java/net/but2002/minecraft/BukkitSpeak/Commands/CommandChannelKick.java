@@ -38,7 +38,7 @@ public class CommandChannelKick extends BukkitSpeakCommand {
 			if (client == null) {
 				send(sender, Level.WARNING, "&4Can't find the user you want to kick from the channel.");
 				return;
-			} else if (Integer.valueOf(client.get("cid")) != Configuration.TS_CHANNEL_ID.getInt()) {
+			} else if (Integer.valueOf(client.get("cid")) != BukkitSpeak.getQuery().getCurrentQueryClientChannelID()) {
 				send(sender, Level.WARNING, "&4The client is not in the channel!");
 				return;
 			}

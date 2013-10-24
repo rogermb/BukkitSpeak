@@ -242,16 +242,16 @@ public enum Messages {
 		if (changed) save();
 	}
 	
-	private static void removeEmptySections(FileConfiguration config) {
+	private static void removeEmptySections(FileConfiguration fileConfig) {
 		boolean removed = false;
-		for (String key : config.getKeys(true)) {
-			if (!config.isConfigurationSection(key)) continue;
-			if (config.getConfigurationSection(key).getKeys(false).isEmpty()) {
-				config.set(key, null);
+		for (String key : fileConfig.getKeys(true)) {
+			if (!fileConfig.isConfigurationSection(key)) continue;
+			if (fileConfig.getConfigurationSection(key).getKeys(false).isEmpty()) {
+				fileConfig.set(key, null);
 				removed = true;
 			}
 		}
-		if (removed) removeEmptySections(config);
+		if (removed) removeEmptySections(fileConfig);
 	}
 	
 	public static void save() {

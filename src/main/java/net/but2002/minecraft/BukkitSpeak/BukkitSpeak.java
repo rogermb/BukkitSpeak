@@ -60,11 +60,18 @@ public class BukkitSpeak extends JavaPlugin {
 	public void onEnable() {
 		instance = this;
 		logger = this.getLogger();
+		muted = new ArrayList<String>();
+		pmRecipients = new HashMap<Integer, String>();
+		pmSenders = new HashMap<String, Integer>();
+		
 		Configuration.reload();
 		Messages.reload();
-		permissionsHelper = new PermissionsHelper();
+		
 		query = new JTS3ServerQuery();
 		query.DEBUG = Configuration.TS_DEBUGGING.getBoolean();
+		clients = new ClientList();
+		channels = new ChannelList();
+		permissionsHelper = new PermissionsHelper();
 		
 		ts = new TeamspeakListener();
 		qc = new QueryConnector();
@@ -76,9 +83,6 @@ public class BukkitSpeak extends JavaPlugin {
 		tsCommand = new TeamspeakCommandExecutor();
 		playerListener = new PlayerListener();
 		chatListener = new ChatListener();
-		muted = new ArrayList<String>();
-		pmRecipients = new HashMap<Integer, String>();
-		pmSenders = new HashMap<String, Integer>();
 		
 		EventPriority p = Configuration.TS_CHAT_LISTENER_PRIORITY.getEventPriority();
 		boolean i = (p != EventPriority.LOWEST);
@@ -183,10 +187,10 @@ public class BukkitSpeak extends JavaPlugin {
 	}
 	
 	public void resetLists() {
-		clients = new ClientList();
-		channels = new ChannelList();
+		clients.updateAll();
+		channels.updateAll();
 		if (Configuration.TS_COMMANDS_ENABLED.getBoolean()) {
-			permissionsHelper.setUp();
+			permissionsHelper.run();
 		}
 	}
 	

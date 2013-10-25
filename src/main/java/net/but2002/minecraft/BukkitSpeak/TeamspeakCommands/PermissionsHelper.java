@@ -33,15 +33,15 @@ public final class PermissionsHelper implements Runnable {
 		serverGroupMap = new HashMap<String, ServerGroup>();
 	}
 	
-	public void setUp() {
-		// Load the config
-		reload();
-		
+	public void runAsynchronously() {
 		// Start the permissions assignment task
 		BukkitSpeak.getInstance().getServer().getScheduler().runTaskAsynchronously(BukkitSpeak.getInstance(), this);
 	}
 	
 	public void run() {
+		// Load the config
+		reload();
+		
 		HashMap<String, ServerGroup> serverGroups = new HashMap<String, ServerGroup>();
 		HashMap<String, HashMap<String, Boolean>> perms = new HashMap<String, HashMap<String, Boolean>>();
 		HashMap<String, List<String>> inherits = new HashMap<String, List<String>>();

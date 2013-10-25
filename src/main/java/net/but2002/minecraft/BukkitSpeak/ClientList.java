@@ -12,11 +12,9 @@ import de.stefan1200.jts3serverquery.JTS3ServerQuery;
 public class ClientList {
 	
 	private ConcurrentHashMap<Integer, HashMap<String, String>> clients;
-	private JTS3ServerQuery query;
 	private Logger logger;
 	
 	public ClientList() {
-		query = BukkitSpeak.getQuery();
 		logger = BukkitSpeak.getInstance().getLogger();
 		clients = new ConcurrentHashMap<Integer, HashMap<String, String>>();
 		
@@ -25,11 +23,11 @@ public class ClientList {
 	
 	public boolean addClient(int clid) {
 		if (clid <= 0) return false;
-		if (!query.isConnected()) return false;
+		if (!BukkitSpeak.getQuery().isConnected()) return false;
 		
 		HashMap<String, String> user;
 		try {
-			user = query.getInfo(JTS3ServerQuery.INFOMODE_CLIENTINFO, clid);
+			user = BukkitSpeak.getQuery().getInfo(JTS3ServerQuery.INFOMODE_CLIENTINFO, clid);
 		} catch (Exception e) {
 			logger.severe("Error while receiving client information.");
 			e.printStackTrace();
@@ -119,34 +117,15 @@ public class ClientList {
 		return clients.size();
 	}
 	
-	public HashMap<String, String> updateClient(int clid) {
-		
-		if (!clients.containsKey(clid) || !query.isConnected()) return null;
-		
-		HashMap<String, String> user;
-		try {
-			user = query.getInfo(JTS3ServerQuery.INFOMODE_CLIENTINFO, clid);
-		} catch (Exception e) {
-			logger.severe("Error while receiving client information.");
-			e.printStackTrace();
-			return null;
-		}
-		
-		if (user != null && user.size() != 0) {
-			if (user.get("client_type").equals("0")) {
-				user.put("clid", String.valueOf(clid));
-				clients.put(clid, user);
-				return user;
-			}
-			return null;
-		} else {
-			logger.warning("Received no information for user id " + clid + ". (ClientUpdate)");
-			return null;
-		}
+	public void updateClient(int clid) {
+		(new ClientUpdater(this, clid)).run();
 	}
 	
-	void setClientData(HashMap<String, String> user, int clid) {
-		
+	public void updateAll() {
+		(new ClientUpdater(this)).run();
+	}
+	
+	private void setClientData(HashMap<String, String> user, int clid) {
 		if (user != null && user.size() != 0) {
 			if (user.get("client_type").equals("0")) {
 				user.put("clid", String.valueOf(clid));
@@ -156,48 +135,48 @@ public class ClientList {
 			logger.warning("Received no information for user id " + clid + ". (AsyncClientUpdate)");
 		}
 	}
-}
-
-class ClientUpdater implements Runnable {
 	
-	private ClientList cl;
-	private int clid;
-	private boolean updateAll;
-	
-	public ClientUpdater(ClientList clientList, int clientID) {
-		cl = clientList;
-		clid = clientID;
-		updateAll = false;
-	}
-	
-	public ClientUpdater(ClientList clientList) {
-		cl = clientList;
-		updateAll = true;
-	}
-	
-	@Override
-	public void run() {
-		if (!BukkitSpeak.getQuery().isConnected()) return;
+	private class ClientUpdater implements Runnable {
 		
-		if (updateAll) {
-			Vector<HashMap<String, String>> users;
-			try {
-				users = BukkitSpeak.getQuery().getList(JTS3ServerQuery.LISTMODE_CLIENTLIST, "-info,-groups,-country");
-				for (HashMap<String, String> user : users) {
-					cl.setClientData(user, Integer.valueOf(user.get("clid")));
+		private ClientList cl;
+		private int clid;
+		private boolean updateAll;
+		
+		public ClientUpdater(ClientList clientList, int clientID) {
+			cl = clientList;
+			clid = clientID;
+			updateAll = false;
+		}
+		
+		public ClientUpdater(ClientList clientList) {
+			cl = clientList;
+			updateAll = true;
+		}
+		
+		@Override
+		public void run() {
+			if (!BukkitSpeak.getQuery().isConnected()) return;
+			
+			if (updateAll) {
+				Vector<HashMap<String, String>> users;
+				try {
+					users = BukkitSpeak.getQuery().getList(JTS3ServerQuery.LISTMODE_CLIENTLIST, "-info,-groups,-country");
+					for (HashMap<String, String> user : users) {
+						cl.setClientData(user, Integer.valueOf(user.get("clid")));
+					}
+				} catch (Exception e) {
+					BukkitSpeak.log().severe("Error while receiving client information.");
+					e.printStackTrace();
 				}
-			} catch (Exception e) {
-				BukkitSpeak.log().severe("Error while receiving client information.");
-				e.printStackTrace();
-			}
-		} else {
-			HashMap<String, String> user;
-			try {
-				user = BukkitSpeak.getQuery().getInfo(JTS3ServerQuery.INFOMODE_CLIENTINFO, clid);
-				cl.setClientData(user, clid);
-			} catch (Exception e) {
-				BukkitSpeak.log().severe("Error while receiving client information.");
-				e.printStackTrace();
+			} else {
+				HashMap<String, String> user;
+				try {
+					user = BukkitSpeak.getQuery().getInfo(JTS3ServerQuery.INFOMODE_CLIENTINFO, clid);
+					cl.setClientData(user, clid);
+				} catch (Exception e) {
+					BukkitSpeak.log().severe("Error while receiving client information.");
+					e.printStackTrace();
+				}
 			}
 		}
 	}

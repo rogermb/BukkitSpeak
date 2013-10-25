@@ -12,15 +12,11 @@ import de.stefan1200.jts3serverquery.JTS3ServerQuery;
 public class ChannelList {
 	
 	private ConcurrentHashMap<Integer, HashMap<String, String>> channels;
-	private JTS3ServerQuery query;
 	private Logger logger;
 	
 	public ChannelList() {
-		query = BukkitSpeak.getQuery();
 		logger = BukkitSpeak.getInstance().getLogger();
 		channels = new ConcurrentHashMap<Integer, HashMap<String, String>>();
-		
-		asyncUpdateAll();
 	}
 	
 	public void asyncUpdateAll() {
@@ -93,79 +89,64 @@ public class ChannelList {
 		return channels.size();
 	}
 	
-	public HashMap<String, String> updateChannel(int cid) {
-		
-		if (!channels.containsKey(cid) || !query.isConnected()) return null;
-		
-		HashMap<String, String> channel;
-		try {
-			channel = query.getInfo(JTS3ServerQuery.INFOMODE_CHANNELINFO, cid);
-			if (channel != null && channel.size() != 0) {
-				channel.put("cid", String.valueOf(cid));
-				channels.put(cid, channel);
-				return channel;
-			} else {
-				logger.warning("Received no information for channel id " + cid + ". (ChannelUpdate)");
-				return null;
-			}
-		} catch (Exception e) {
-			logger.severe("Error while receiving channel information.");
-			e.printStackTrace();
-			return null;
-		}
+	public void updateChannel(int cid) {
+		(new ChannelUpdater(this, cid)).run();
 	}
 	
-	void setChannelData(HashMap<String, String> channel, int cid) {
-		
+	public void updateAll() {
+		(new ChannelUpdater(this)).run();
+	}
+	
+	private void setChannelData(HashMap<String, String> channel, int cid) {
 		if (channel != null && channel.size() != 0) {
-				channel.put("cid", String.valueOf(cid));
-				channels.put(cid, channel);
+			channel.put("cid", String.valueOf(cid));
+			channels.put(cid, channel);
 		} else {
 			logger.warning("Received no information for channel id " + cid + ". (AsyncChannelUpdate)");
 		}
 	}
-}
-
-class ChannelUpdater implements Runnable {
 	
-	private ChannelList cl;
-	private int cid;
-	private boolean updateAll;
-	
-	public ChannelUpdater(ChannelList channelList, int channelID) {
-		cl = channelList;
-		cid = channelID;
-		updateAll = false;
-	}
-	
-	public ChannelUpdater(ChannelList channelList) {
-		cl = channelList;
-		updateAll = true;
-	}
-	
-	@Override
-	public void run() {
-		if (!BukkitSpeak.getQuery().isConnected()) return;
+	private class ChannelUpdater implements Runnable {
 		
-		if (updateAll) {
-			Vector<HashMap<String, String>> channels;
-			try {
-				channels = BukkitSpeak.getQuery().getList(JTS3ServerQuery.LISTMODE_CHANNELLIST);
-				for (HashMap<String, String> channel : channels) {
-					cl.setChannelData(channel, Integer.valueOf(channel.get("cid")));
+		private ChannelList cl;
+		private int cid;
+		private boolean updateAll;
+		
+		public ChannelUpdater(ChannelList channelList, int channelID) {
+			cl = channelList;
+			cid = channelID;
+			updateAll = false;
+		}
+		
+		public ChannelUpdater(ChannelList channelList) {
+			cl = channelList;
+			updateAll = true;
+		}
+		
+		@Override
+		public void run() {
+			if (!BukkitSpeak.getQuery().isConnected()) return;
+			
+			if (updateAll) {
+				Vector<HashMap<String, String>> channels;
+				try {
+					channels = BukkitSpeak.getQuery().getList(JTS3ServerQuery.LISTMODE_CHANNELLIST);
+					for (HashMap<String, String> channel : channels) {
+						cl.setChannelData(channel, Integer.valueOf(channel.get("cid")));
+					}
+				} catch (Exception e) {
+					BukkitSpeak.log().severe("Error while receiving channel information.");
+					e.printStackTrace();
 				}
-			} catch (Exception e) {
-				BukkitSpeak.log().severe("Error while receiving channel information.");
-				e.printStackTrace();
-			}
-		} else {
-			HashMap<String, String> channel;
-			try {
-				channel = BukkitSpeak.getQuery().getInfo(JTS3ServerQuery.INFOMODE_CHANNELINFO, cid);
-				cl.setChannelData(channel, cid);
-			} catch (Exception e) {
-				BukkitSpeak.log().severe("Error while receiving channel information.");
-				e.printStackTrace();
+			} else {
+				HashMap<String, String> channel;
+				try {
+					channel = BukkitSpeak.getQuery().getInfo(JTS3ServerQuery.INFOMODE_CHANNELINFO, cid);
+					cl.setChannelData(channel, cid);
+				} catch (Exception e) {
+					BukkitSpeak.log().severe("Error while receiving channel information.");
+					e.printStackTrace();
+				}
 			}
 		}
 	}

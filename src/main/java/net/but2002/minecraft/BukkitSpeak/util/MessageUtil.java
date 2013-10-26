@@ -26,8 +26,7 @@ public final class MessageUtil {
 			"[i]"}; // 18
 	
 	private static final String URL_REGEX = "(?i)(^|[^\\w\\-\\.])(([\\w\\-]+://)?"
-			+ "([\\w\\-]+\\.){0,2}[\\w\\-]+\\.\\w{2,4}"
-			+ "(/[^\\s\\[]*)?)(?!\\S)";
+			+ "([\\w\\-]+\\.){1,3}[a-z]{2,4}(/[^\\s\\[]*)?)(?!\\S)";
 	
 	private MessageUtil() {};
 	

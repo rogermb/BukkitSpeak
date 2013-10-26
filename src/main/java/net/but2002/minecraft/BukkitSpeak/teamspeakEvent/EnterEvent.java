@@ -10,11 +10,10 @@ public class EnterEvent extends TeamspeakEvent {
 	public EnterEvent(HashMap<String, String> infoMap) {
 		int clid = Integer.valueOf(infoMap.get("clid"));
 		
-		if (!BukkitSpeak.getClientList().containsID(clid)) {
-			if (!BukkitSpeak.getClientList().addClient(clid)) return;
-		} else {
-			return;
-		}
+		if (BukkitSpeak.getClientList().containsID(clid)) return;
+		BukkitSpeak.getClientList().updateClient(clid);
+		if (!BukkitSpeak.getClientList().containsID(clid)) return;
+		
 		setUser(clid);
 		performAction();
 	}

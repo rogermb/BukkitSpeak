@@ -102,7 +102,7 @@ public class ChannelList {
 			channel.put("cid", String.valueOf(cid));
 			channels.put(cid, channel);
 		} else {
-			logger.warning("Received no information for channel id " + cid + ". (AsyncChannelUpdate)");
+			logger.warning("Received no information for channel id " + cid + ".");
 		}
 	}
 	
@@ -128,12 +128,12 @@ public class ChannelList {
 			if (!BukkitSpeak.getQuery().isConnected()) return;
 			
 			if (updateAll) {
-				Vector<HashMap<String, String>> channels = BukkitSpeak.getQuery().getList(JTS3ServerQuery.LISTMODE_CHANNELLIST);
-				if (channels == null) {
+				Vector<HashMap<String, String>> channelList = BukkitSpeak.getQuery().getList(JTS3ServerQuery.LISTMODE_CHANNELLIST);
+				if (channelList == null) {
 					BukkitSpeak.log().severe("Error while receiving channel information.");
 					return;
 				}
-				for (HashMap<String, String> channel : channels) {
+				for (HashMap<String, String> channel : channelList) {
 					if (channel == null) {
 						BukkitSpeak.log().severe("Error while receiving channel information.");
 						return;

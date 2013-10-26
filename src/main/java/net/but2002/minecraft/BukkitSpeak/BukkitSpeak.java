@@ -297,13 +297,10 @@ public class BukkitSpeak extends JavaPlugin {
 			EventPriority p = Configuration.TS_CHAT_LISTENER_PRIORITY.getEventPriority();
 			boolean i = (p != EventPriority.LOWEST);
 			getServer().getPluginManager().registerEvent(AsyncPlayerChatEvent.class, chatListener, p, chatListener, this, i);
+			tsCommand = new TeamspeakCommandExecutor();
 			
 			qc = new QueryConnector();
 			Bukkit.getScheduler().runTaskAsynchronously(this, qc);
-			
-			muted = new ArrayList<String>();
-			pmRecipients = new HashMap<Integer, String>();
-			pmSenders = new HashMap<String, Integer>();
 			
 			this.getLogger().info("reloaded.");
 			return true;

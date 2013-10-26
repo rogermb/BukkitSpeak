@@ -46,7 +46,10 @@ public class TeamspeakCommandEvent extends TeamspeakEvent {
 		TeamspeakCommandSender tscs = new TeamspeakCommandSender(getUser(), sg.isOp(), sg.getPermissions());
 		// Check for internal commands.
 		if (BukkitSpeak.getTeamspeakCommandExecutor().execute(tscs, commandName, args)) {
-			// Command successfully executed --> Return
+			// Command successfully executed --> Log and return
+			if (Configuration.TS_LOGGING.getBoolean()) {
+				BukkitSpeak.log().info("TS client \"" + getClientName() + "\" executed internal command \"" + cmd + "\".");
+			}
 			return;
 		}
 		

@@ -3,6 +3,7 @@ package net.but2002.minecraft.BukkitSpeak.TeamspeakCommands;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.but2002.minecraft.BukkitSpeak.Configuration.Configuration;
 import net.but2002.minecraft.BukkitSpeak.TeamspeakCommands.internal.*;
 
 public class TeamspeakCommandExecutor {
@@ -11,8 +12,12 @@ public class TeamspeakCommandExecutor {
 	
 	public TeamspeakCommandExecutor() {
 		commands = new ArrayList<TeamspeakCommand>();
-		commands.add(new CommandList());
-		commands.add(new CommandPm());
+		if (Configuration.TS_COMMANDS_INTERNAL_LIST.getBoolean()) {
+			commands.add(new CommandList());
+		}
+		if (Configuration.TS_COMMANDS_INTERNAL_PM.getBoolean()) {
+			commands.add(new CommandPm());
+		}
 	}
 	
 	public boolean execute(TeamspeakCommandSender sender, String command, String[] args) {

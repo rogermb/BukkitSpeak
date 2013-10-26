@@ -1,11 +1,10 @@
 package net.but2002.minecraft.BukkitSpeak.TeamspeakCommands.internal;
 
-import java.util.Map;
-
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
 import net.but2002.minecraft.BukkitSpeak.BukkitSpeak;
+import net.but2002.minecraft.BukkitSpeak.Configuration.Configuration;
 import net.but2002.minecraft.BukkitSpeak.Configuration.Messages;
 import net.but2002.minecraft.BukkitSpeak.TeamspeakCommands.TeamspeakCommandSender;
 import net.but2002.minecraft.BukkitSpeak.util.MessageUtil;
@@ -41,17 +40,16 @@ public class CommandPm extends TeamspeakCommand {
 			
 			String m = Messages.TS_EVENT_PRIVATE_MESSAGE.get();
 			if (m.isEmpty()) return;
-			m = new Replacer().addClient(sender.getClientInfo()).replace(m);
+			m = new Replacer().addClient(sender.getClientInfo()).addKey("msg", sb.toString()).replace(m);
 			m = MessageUtil.toMinecraft(m, true, true);
-			
-			Map<String, String> user = sender.getClientInfo();
-			user.put("msg", sb.toString());
 			
 			if (!BukkitSpeak.getMuted(p) && p.hasPermission("bukkitspeak.messages.pm")) {
 				p.sendMessage(m);
 			}
 		}
-		sender.sendMessage("Started conversation with player " + p.getName() + ".\nYou can now chat directly without typing !pm");
+		sender.sendMessage("Started conversation with player " + p.getName()
+				+ ". You can now chat directly without typing "
+				+ Configuration.TS_COMMANDS_PREFIX.getString() + "pm");
 		BukkitSpeak.registerRecipient(p.getName(), sender.getClientID());
 	}
 }

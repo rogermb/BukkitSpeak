@@ -54,6 +54,11 @@ teamspeak-commands:
   # The buffer lets individual messages stack up and is then sent as one TS message.
   MessageBufferDelay: 50
 
+  # Which internal commands should be enabled
+  internal:
+    ListCommandEnabled: true
+    PmCommandEnabled: true
+
 plugin-interaction:
   Factions:
     # If Factions is enabled, should only public chat be sent to TeamSpeak?

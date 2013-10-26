@@ -25,6 +25,7 @@ public class QueryConnector implements Runnable {
 		if (!query.connectTS3Query(Configuration.MAIN_IP.getString(), Configuration.MAIN_QUERYPORT.getInt())) {
 			logger.severe("Could not connect to the TS3 server.");
 			logger.severe("Make sure that the IP and the QueryPort are correct!");
+			logger.severe("You might also be (flood) banned from the server. Check the query whitelist!");
 			logger.severe("(" + query.getLastError() + ")");
 			plugin.setStoppedTime(new Date());
 			return;

@@ -187,11 +187,24 @@ public class BukkitSpeak extends JavaPlugin {
 	}
 	
 	public void resetLists() {
+		if (isFloodBanned()) return;
 		clients.updateAll();
+		if (isFloodBanned()) return;
 		channels.updateAll();
+		if (isFloodBanned()) return;
 		if (Configuration.TS_COMMANDS_ENABLED.getBoolean()) {
 			permissionsHelper.run();
 		}
+		if (isFloodBanned()) return;
+	}
+	
+	private boolean isFloodBanned() {
+		if (query.getLastErrorID() == 3331) {
+			logger.severe("You were flood banned. You need to add the Minecraft server IP to the TeamSpeak query whitelist!");
+			getServer().getPluginManager().disablePlugin(this);
+			return true;
+		}
+		return false;
 	}
 	
 	public static void registerRecipient(String player, int clid) {

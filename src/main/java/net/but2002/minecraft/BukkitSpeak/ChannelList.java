@@ -128,25 +128,25 @@ public class ChannelList {
 			if (!BukkitSpeak.getQuery().isConnected()) return;
 			
 			if (updateAll) {
-				Vector<HashMap<String, String>> channels;
-				try {
-					channels = BukkitSpeak.getQuery().getList(JTS3ServerQuery.LISTMODE_CHANNELLIST);
-					for (HashMap<String, String> channel : channels) {
-						cl.setChannelData(channel, Integer.valueOf(channel.get("cid")));
-					}
-				} catch (Exception e) {
+				Vector<HashMap<String, String>> channels = BukkitSpeak.getQuery().getList(JTS3ServerQuery.LISTMODE_CHANNELLIST);
+				if (channels == null) {
 					BukkitSpeak.log().severe("Error while receiving channel information.");
-					e.printStackTrace();
+					return;
+				}
+				for (HashMap<String, String> channel : channels) {
+					if (channel == null) {
+						BukkitSpeak.log().severe("Error while receiving channel information.");
+						return;
+					}
+					cl.setChannelData(channel, Integer.valueOf(channel.get("cid")));
 				}
 			} else {
-				HashMap<String, String> channel;
-				try {
-					channel = BukkitSpeak.getQuery().getInfo(JTS3ServerQuery.INFOMODE_CHANNELINFO, cid);
-					cl.setChannelData(channel, cid);
-				} catch (Exception e) {
+				HashMap<String, String> channel = BukkitSpeak.getQuery().getInfo(JTS3ServerQuery.INFOMODE_CHANNELINFO, cid);
+				if (channel == null) {
 					BukkitSpeak.log().severe("Error while receiving channel information.");
-					e.printStackTrace();
+					return;
 				}
+				cl.setChannelData(channel, cid);
 			}
 		}
 	}

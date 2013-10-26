@@ -128,7 +128,8 @@ public class ChannelList {
 			if (!BukkitSpeak.getQuery().isConnected()) return;
 			
 			if (updateAll) {
-				Vector<HashMap<String, String>> channelList = BukkitSpeak.getQuery().getList(JTS3ServerQuery.LISTMODE_CHANNELLIST);
+				Vector<HashMap<String, String>> channelList;
+				channelList = BukkitSpeak.getQuery().getList(JTS3ServerQuery.LISTMODE_CHANNELLIST);
 				if (channelList == null) {
 					BukkitSpeak.log().severe("Error while receiving channel information.");
 					return;

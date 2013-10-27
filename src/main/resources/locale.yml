@@ -13,6 +13,13 @@ TeamspeakEvent:
     ToMinecraftServer: '&e%client_nickname%&f: %msg%'
   PrivateMessage:
     ToMinecraftUser: '&e%client_nickname% &a-> &eMe&f: %msg%'
+    Errors:
+      NotInConversation:
+        ToTeamspeakUser: You're currently not in a private message conversation.
+      PmRecipientNotOnline:
+        ToTeamspeakUser: The user you're trying to send a message to is offline.
+      PmRecipientMutedOrNoPermission:
+        ToTeamspeakUser: The user you're trying to chat with can't receive your message.
 MinecraftEvent:
   PlayerChat:
     ToTeamspeakTarget: '&l%player_displayname%&r: %msg%'
@@ -64,6 +71,8 @@ MinecraftCommand:
   KickBanDefaultReason: '-'
 TeamspeakCommand:
   Errors:
-    PluginNotWhitelisted: You are not allowed to run commands of that plugin.
-    CommandBlacklisted: The command you are trying to run is blacklisted.
+    PluginNotWhitelisted:
+      ToTeamspeakUser: You are not allowed to run commands of that plugin.
+    CommandBlacklisted:
+      ToTeamspeakUser: The command you are trying to run is blacklisted.
   CommandSenderName: '&a[&6TS&a] &e%client_nickname%&r'

@@ -82,6 +82,7 @@ public enum Configuration {
 			BukkitSpeak.getInstance().saveResource("config.yml", false);
 			BukkitSpeak.log().info("Default config file created!");
 			BukkitSpeak.getInstance().reloadConfig();
+			config = BukkitSpeak.getInstance().getConfig();
 		}
 		
 		ValueIteration: for (Configuration value : Configuration.values()) {

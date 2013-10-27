@@ -22,7 +22,6 @@ public class ServerMessageEvent extends TeamspeakEvent {
 		info = infoMap;
 		
 		if (getUser() == null) return;
-		getUser().put("targetmode", infoMap.get("targetmode"));
 		performAction();
 	}
 	
@@ -34,12 +33,11 @@ public class ServerMessageEvent extends TeamspeakEvent {
 		msg = msg.replaceAll("\\n", " ");
 		msg = MessageUtil.toMinecraft(msg, true, Configuration.TS_ALLOW_LINKS.getBoolean());
 		if (msg.isEmpty()) return;
-		getUser().put("msg", msg);
 		
 		if (info.get("targetmode").equals("3")) {
 			String m = Messages.TS_EVENT_SERVER_MESSAGE.get();
 			if (m.isEmpty()) return;
-			m = new Replacer().addClient(getUser()).replace(m);
+			m = new Replacer().addClient(getUser()).addMessage(msg).replace(m);
 			m = MessageUtil.toMinecraft(m, true, true);
 			
 			for (Player pl : BukkitSpeak.getInstance().getServer().getOnlinePlayers()) {
@@ -53,18 +51,17 @@ public class ServerMessageEvent extends TeamspeakEvent {
 			}
 			
 		} else if (info.get("targetmode").equals("2")) {
-			sendMessage(Messages.TS_EVENT_CHANNEL_MESSAGE, "chat");
-			
+			sendMessage(Messages.TS_EVENT_CHANNEL_MESSAGE, "chat", msg);
 		} else if (info.get("targetmode").equals("1")) {
 			String m = Messages.TS_EVENT_PRIVATE_MESSAGE.get();
 			if (m.isEmpty()) return;
-			m = new Replacer().addClient(getUser()).replace(m);
+			m = new Replacer().addClient(getUser()).addMessage(msg).replace(m);
 			m = MessageUtil.toMinecraft(m, true, true);
 			
 			String p = BukkitSpeak.getInstance().getRecipient(getClientId());
 			if (p == null || p.isEmpty()) {
 				String tsMsg = Messages.TS_EVENT_PRIVATE_MESSAGE_NO_CONVERSATION.get();
-				Replacer r = new Replacer().addTargetClient(getUser());
+				Replacer r = new Replacer().addClient(getUser()).addMessage(msg);
 				tsMsg = MessageUtil.toTeamspeak(r.replace(tsMsg), true, true);
 				
 				if (tsMsg == null || tsMsg.isEmpty()) return;

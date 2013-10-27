@@ -57,8 +57,8 @@ public class CommandReply extends BukkitSpeakCommand {
 		String tsMsg = Messages.MC_COMMAND_PM_TS.get();
 		String mcMsg = Messages.MC_COMMAND_PM_MC.get();
 		
-		Replacer r = new Replacer().addSender(sender).addMessage(sb.toString());
-		r.addTargetClient(BukkitSpeak.getClientList().get(clid));
+		Replacer r = new Replacer().addSender(sender).addTargetClient(BukkitSpeak.getClientList().get(clid));
+		r.addMessage(sb.toString());
 		tsMsg = MessageUtil.toTeamspeak(r.replace(tsMsg), true, Configuration.TS_ALLOW_LINKS.getBoolean());
 		mcMsg = r.replace(mcMsg);
 		

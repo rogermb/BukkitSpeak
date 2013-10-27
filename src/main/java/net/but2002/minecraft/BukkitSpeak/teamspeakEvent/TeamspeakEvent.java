@@ -37,10 +37,17 @@ public abstract class TeamspeakEvent {
 	}
 	
 	protected void sendMessage(Messages message, String permission) {
+		sendMessage(message, permission, null);
+	}
+	
+	protected void sendMessage(Messages message, String permission, String msg) {
 		String m = message.get();
 		if (m.isEmpty()) return;
-		m = new Replacer().addClient(getUser()).replace(m);
-		m = MessageUtil.toMinecraft(m, true, true);
+		Replacer r = new Replacer().addClient(getUser());
+		if (msg != null && !msg.isEmpty()) {
+			r.addMessage(msg);
+		}
+		m = MessageUtil.toMinecraft(r.replace(m), true, true);
 		
 		if (BukkitSpeak.useHerochat() && Configuration.PLUGINS_HEROCHAT_RELAY_EVENTS.getBoolean()) {
 			// Send to Herochat channel

@@ -47,7 +47,9 @@ public class CommandKick extends BukkitSpeakCommand {
 		
 		if (tsMsg == null || tsMsg.isEmpty()) return;
 		if (tsMsg.length() > TS_MAXLENGHT) {
-			send(sender, Level.WARNING, "&4The message is too long! (> 100 characters)");
+			String tooLong = Messages.MC_COMMAND_ERROR_MESSAGE_TOO_LONG.get();
+			tooLong = new Replacer().addSender(sender).addTargetClient(client).replace(tooLong);
+			send(sender, Level.WARNING, tooLong);
 			return;
 		}
 		

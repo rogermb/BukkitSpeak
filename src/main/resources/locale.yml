@@ -54,6 +54,10 @@ MinecraftCommand:
   Pm:
     ToMinecraftUser: '&eMe &a-> &e%target%&f: %msg%'
     ToTeamspeakUser: '&l[%player_displayname%&r&l] &r%msg%'
+  Reply:
+    Errors:
+      NoRecipient:
+        ToMinecraftUser: '&4Nobody has sent you a PM yet.'
   Poke:
     ToMinecraftUser: '&eYou &apoked &e%target%&f: %msg%'
     ToTeamspeakUser: '&l[%player_displayname%&r&l] &r%msg%'
@@ -78,6 +82,8 @@ MinecraftCommand:
       ToMinecraftUser: '&4There is no player by the name of &e%input%&4.'
     MultiplePlayersFound:
       ToMinecraftUser: '&4There is more than one player matching &e%input%&4.'
+    MessageTooLong:
+      ToMinecraftUser: '&4The message is too long! (> 100 characters)'
 TeamspeakCommand:
   List:
     ToTeamspeakUser: 'Currently online: %list%'

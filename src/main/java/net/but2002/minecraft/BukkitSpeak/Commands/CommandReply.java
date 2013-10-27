@@ -42,7 +42,9 @@ public class CommandReply extends BukkitSpeakCommand {
 		}
 		
 		if (clid == null || !BukkitSpeak.getClientList().containsID(clid)) {
-			send(sender, Level.WARNING, "&4Nobody has sent you a PM yet.");
+			String noRecipient = Messages.MC_COMMAND_REPLY_NO_RECIPIENT.get();
+			noRecipient = new Replacer().addSender(sender).replace(noRecipient);
+			send(sender, Level.WARNING, noRecipient);
 			return;
 		}
 		

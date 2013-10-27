@@ -114,6 +114,9 @@ public enum Messages {
 			"&l[%player_displayname%&r&l] &r%msg%",
 			new String[] {"messages.TeamspeakMessages.PrivateMessage"}),
 	
+	MC_COMMAND_REPLY_NO_RECIPIENT("MinecraftCommand.Reply.Errors.NoRecipient.ToMinecraftUser",
+			"&4Nobody has sent you a PM yet."),
+	
 	MC_COMMAND_POKE_MC("MinecraftCommand.Poke.ToMinecraftUser",
 			"&eYou &apoked &e%target%&f: %msg%",
 			new String[] {"messages.MinecraftCommandMessages.Poke"}),
@@ -161,6 +164,9 @@ public enum Messages {
 	
 	MC_COMMAND_ERROR_MULTIPLE_PLAYERS_FOUND("MinecraftCommand.Errors.MultiplePlayersFound.ToMinecraftUser",
 			"&4There is more than one player matching &e%input%&4."),
+	
+	MC_COMMAND_ERROR_MESSAGE_TOO_LONG("MinecraftCommand.Errors.MessageTooLong.ToMinecraftUser",
+			"&4The message is too long! (> 100 characters)"),
 	
 	// Teamspeak commands
 	TS_COMMAND_LIST("TeamspeakCommand.List.ToTeamspeakUser",

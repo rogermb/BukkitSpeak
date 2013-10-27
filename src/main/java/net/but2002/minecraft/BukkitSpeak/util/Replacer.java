@@ -63,7 +63,7 @@ public class Replacer {
 	}
 	
 	public Replacer addInput(String input) {
-		repl.put("input", input);
+		repl.put("input", String.valueOf(input));
 		return this;
 	}
 	

@@ -27,22 +27,12 @@ public class CommandKick extends BukkitSpeakCommand {
 			send(sender, Level.WARNING, "&aToo few arguments!");
 			send(sender, Level.WARNING, "&aUsage: /ts kick client (message)");
 			return;
-		} else if (!BukkitSpeak.getQuery().isConnected()) {
-			send(sender, Level.WARNING, "&4Can't communicate with the TeamSpeak server.");
-			return;
 		}
 		
-		HashMap<String, String> client;
-		try {
-			client = BukkitSpeak.getClientList().getByPartialName(args[1]);
-			if (client == null) {
-				send(sender, Level.WARNING, "&4Can't find the user you want to kick from the server.");
-				return;
-			}
-		} catch (IllegalArgumentException e) {
-			send(sender, Level.WARNING, "&4There are more than one clients matching &e" + args[1] + "&4.");
-			return;
-		}
+		if (!isConnected(sender)) return;
+		
+		HashMap<String, String> client = getClient(args[1], sender);
+		if (client == null) return;
 		
 		String tsMsg = Messages.MC_COMMAND_KICK_TS.get();
 		String mcMsg = Messages.MC_COMMAND_KICK_MC.get();

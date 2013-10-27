@@ -33,10 +33,9 @@ public class CommandBroadcast extends BukkitSpeakCommand {
 			send(sender, Level.WARNING, "&aToo few arguments!");
 			send(sender, Level.WARNING, "&aUsage: /ts broadcast message");
 			return;
-		} else if (!BukkitSpeak.getQuery().isConnected()) {
-			send(sender, Level.WARNING, "&4Can't communicate with the TeamSpeak server.");
-			return;
 		}
+		
+		if (!isConnected(sender)) return;
 		
 		StringBuilder sb = new StringBuilder();
 		for (String s : Arrays.copyOfRange(args, 1, args.length)) {

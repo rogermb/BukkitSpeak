@@ -24,6 +24,8 @@ public class CommandChat extends BukkitSpeakCommand {
 	
 	@Override
 	public void execute(CommandSender sender, String[] args) {
+		if (!isConnected(sender)) return;
+		
 		if (!Configuration.TS_ENABLE_CHANNEL_MESSAGES.getBoolean()) {
 			send(sender, Level.WARNING, "&4You need to enable ListenToChannelChat in the config to use this command.");
 			return;
@@ -32,9 +34,6 @@ public class CommandChat extends BukkitSpeakCommand {
 		if (args.length < 2) {
 			send(sender, Level.WARNING, "&aToo few arguments!");
 			send(sender, Level.WARNING, "&aUsage: /ts chat message");
-			return;
-		} else if (!BukkitSpeak.getQuery().isConnected()) {
-			send(sender, Level.WARNING, "&4Can't communicate with the TeamSpeak server.");
 			return;
 		}
 		

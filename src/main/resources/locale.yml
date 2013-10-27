@@ -62,13 +62,22 @@ MinecraftCommand:
       for &e%msg%&a.'
     ToTeamspeakUser: '[%player_displayname%] kicked you from the server for %msg%.'
   ChannelKick:
-    ToMinecraftServer: '&e%player_displayname% &akicked &e%target% &afrom the channel
-      for &e%msg%&a.'
+    ToMinecraftServer: '&e%player_displayname% &akicked &e%target% &afrom the channel for &e%msg%&a.'
     ToTeamspeakUser: '[%player_displayname%] kicked you from the server for %msg%.'
+    Errors:
+      ClientNotInChannel:
+        ToMinecraftUser: '&4The client &r&e%target%&r&4 is not in the channel!'
   Ban:
     ToMinecraftServer: '&e%player_displayname% &abanned &e%target% &afor &e%msg%&a.'
     ToTeamspeakUser: '[%player_displayname%] banned you from the server for %msg%.'
   KickBanDefaultReason: '-'
+  Errors:
+    NotConnected:
+      ToMinecraftUser: '&4Can''t communicate with the TeamSpeak server.'
+    NoPlayerFound:
+      ToMinecraftUser: '&4There is no player by the name of &e%input%&4.'
+    MultiplePlayersFound:
+      ToMinecraftUser: '&4There is more than one player matching &e%input%&4.'
 TeamspeakCommand:
   List:
     ToTeamspeakUser: 'Currently online: %list%'
@@ -78,7 +87,7 @@ TeamspeakCommand:
       ToTeamspeakUser: 'Started conversation with player %player_displayname%. You can now chat directly without typing !pm'
     Errors:
       NoPlayerByThisName:
-        ToTeamspeakUser: '&4No Minecraft player by the name of %input%.'
+        ToTeamspeakUser: '&4No Minecraft player by the name of &e%input%&4.'
       RecipientMutedOrNoPermission:
         ToTeamspeakUser: '&4The user &l%player_displayname%&r&4 can''t receive your message.'
   CommandSenderName: '&a[&6TS&a] &e%client_nickname%&r'

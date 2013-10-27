@@ -1,11 +1,14 @@
 package net.but2002.minecraft.BukkitSpeak.Commands;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.logging.Level;
 
 import net.but2002.minecraft.BukkitSpeak.BukkitSpeak;
 import net.but2002.minecraft.BukkitSpeak.Configuration.Configuration;
+import net.but2002.minecraft.BukkitSpeak.Configuration.Messages;
 import net.but2002.minecraft.BukkitSpeak.util.MessageUtil;
+import net.but2002.minecraft.BukkitSpeak.util.Replacer;
 
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
@@ -61,6 +64,35 @@ public abstract class BukkitSpeakCommand {
 	
 	protected boolean checkCommandPermission(CommandSender sender, String perm) {
 		return sender.hasPermission("bukkitspeak.commands." + perm);
+	}
+	
+	protected boolean isConnected(CommandSender sender) {
+		if (!BukkitSpeak.getQuery().isConnected()) {
+			String mcMsg = Messages.MC_COMMAND_ERROR_DISCONNECTED.get();
+			mcMsg = new Replacer().addSender(sender).replace(mcMsg);
+			send(sender, Level.WARNING, mcMsg);
+			return false;
+		}
+		return true;
+	}
+	
+	protected HashMap<String, String> getClient(String name, CommandSender sender) {
+		HashMap<String, String> client;
+		try {
+			client = BukkitSpeak.getClientList().getByPartialName(name);
+			if (client == null) {
+				String noPlayer = Messages.MC_COMMAND_ERROR_NO_PLAYER_FOUND.get();
+				noPlayer = new Replacer().addInput(name).replace(noPlayer);
+				send(sender, Level.WARNING, noPlayer);
+				return null;
+			}
+			return client;
+		} catch (IllegalArgumentException e) {
+			String multiplePlayers = Messages.MC_COMMAND_ERROR_MULTIPLE_PLAYERS_FOUND.get();
+			multiplePlayers = new Replacer().addInput(name).replace(multiplePlayers);
+			send(sender, Level.WARNING, multiplePlayers);
+			return null;
+		}
 	}
 	
 	protected String combineSplit(int startIndex, String[] string, String seperator) {

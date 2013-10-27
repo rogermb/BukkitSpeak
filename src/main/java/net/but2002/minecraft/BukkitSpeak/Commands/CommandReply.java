@@ -29,10 +29,9 @@ public class CommandReply extends BukkitSpeakCommand {
 			send(sender, Level.WARNING, "&aToo few arguments!");
 			send(sender, Level.WARNING, "&aUsage: /ts r(eply) message");
 			return;
-		} else if (!BukkitSpeak.getQuery().isConnected()) {
-			send(sender, Level.WARNING, "&4Can't communicate with the TeamSpeak server.");
-			return;
 		}
+		
+		if (!isConnected(sender)) return;
 		
 		Integer clid;
 		if (sender instanceof Player) {

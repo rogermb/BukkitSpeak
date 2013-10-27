@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 
-import net.but2002.minecraft.BukkitSpeak.BukkitSpeak;
 import net.but2002.minecraft.BukkitSpeak.Commands.Properties.*;
 import net.but2002.minecraft.BukkitSpeak.Configuration.Configuration;
 
@@ -32,11 +31,7 @@ public class CommandSet extends BukkitSpeakCommand {
 	}
 	
 	public void execute(CommandSender sender, String[] args) {
-		
-		if (!BukkitSpeak.getQuery().isConnected() || BukkitSpeak.getClientList() == null) {
-			send(sender, Level.WARNING, "&4Can't communicate with the TeamSpeak server.");
-			return;
-		}
+		if (!isConnected(sender)) return;
 		
 		if (args.length == 1) {
 			send(sender, Level.INFO, "&aUsage: &6/tsa set <property> <value>");

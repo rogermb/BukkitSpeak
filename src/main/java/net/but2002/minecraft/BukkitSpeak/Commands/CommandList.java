@@ -22,10 +22,7 @@ public class CommandList extends BukkitSpeakCommand {
 	
 	@Override
 	public void execute(CommandSender sender, String[] args) {
-		if (!BukkitSpeak.getQuery().isConnected() || BukkitSpeak.getClientList() == null) {
-			send(sender, Level.WARNING, "&4Can't communicate with the TeamSpeak server.");
-			return;
-		}
+		if (!isConnected(sender)) return;
 		
 		if (args.length < 2 || args[1].equalsIgnoreCase("server")) {
 			StringBuilder online = new StringBuilder();

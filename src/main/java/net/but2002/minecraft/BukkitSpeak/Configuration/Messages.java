@@ -70,6 +70,7 @@ public enum Messages {
 			"&l%player_displayname%&r was banned from the server.",
 			new String[] {"messages.MinecraftEvents.BannedMessage"}),
 	
+	// Minecraft commands
 	MC_COMMAND_LIST_SERVER("MinecraftCommand.List.Server.ToMinecraftUser",
 			"&aCurrently online: &e%list%",
 			new String[] {"messages.MinecraftCommandMessages.OnlineList"}),
@@ -137,6 +138,9 @@ public enum Messages {
 			"[%player_displayname%] kicked you from the server for %msg%.",
 			new String[] {"messages.TeamspeakMessages.ChannelKickMessage"}),
 	
+	MC_COMMAND_CHANNEL_KICK_NOT_IN_CHANNEL("MinecraftCommand.ChannelKick.Errors.ClientNotInChannel.ToMinecraftUser",
+			"&4The client &r&e%target%&r&4 is not in the channel!"),
+	
 	MC_COMMAND_BAN_MC("MinecraftCommand.Ban.ToMinecraftServer",
 			"&e%player_displayname% &abanned &e%target% &afor &e%msg%&a.",
 			new String[] {"messages.MinecraftCommandMessages.Ban"}),
@@ -149,6 +153,15 @@ public enum Messages {
 			"-",
 			new String[] {"c:teamspeak.DefaultReason"}),
 	
+	MC_COMMAND_ERROR_DISCONNECTED("MinecraftCommand.Errors.NotConnected.ToMinecraftUser",
+			"&4Can't communicate with the TeamSpeak server."),
+	
+	MC_COMMAND_ERROR_NO_PLAYER_FOUND("MinecraftCommand.Errors.NoPlayerFound.ToMinecraftUser",
+			"&4There is no player by the name of &e%input%&4."),
+	
+	MC_COMMAND_ERROR_MULTIPLE_PLAYERS_FOUND("MinecraftCommand.Errors.MultiplePlayersFound.ToMinecraftUser",
+			"&4There is more than one player matching &e%input%&4."),
+	
 	// Teamspeak commands
 	TS_COMMAND_LIST("TeamspeakCommand.List.ToTeamspeakUser",
 			"Currently online: %list%"),
@@ -160,7 +173,7 @@ public enum Messages {
 			"Started conversation with player %player_displayname%. You can now chat directly without typing !pm"),
 	
 	TS_COMMAND_PM_NO_PLAYER_BY_THIS_NAME("TeamspeakCommand.Pm.Errors.NoPlayerByThisName.ToTeamspeakUser",
-			"&4No Minecraft player by the name of %input%."),
+			"&4No Minecraft player by the name of &e%input%&4."),
 	
 	TS_COMMAND_PM_RECIPIENT_MUTED("TeamspeakCommand.Pm.Errors.RecipientMutedOrNoPermission.ToTeamspeakUser",
 			"&4The user &l%player_displayname%&r&4 can't receive your message."),

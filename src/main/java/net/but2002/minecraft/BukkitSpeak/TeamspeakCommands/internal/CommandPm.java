@@ -26,7 +26,9 @@ public class CommandPm extends TeamspeakCommand {
 		String mcUser = args[0];
 		Player p = BukkitSpeak.getInstance().getServer().getPlayer(mcUser);
 		if (p == null) {
-			sender.sendMessage(ChatColor.RED + "No Minecraft player by the name of " + mcUser + ".");
+			String noUser = Messages.TS_COMMAND_PM_NO_PLAYER_BY_THIS_NAME.get();
+			noUser = new Replacer().addClient(sender.getClientInfo()).addInput(mcUser).replace(noUser);
+			if (!noUser.isEmpty()) sender.sendMessage(noUser);
 			return;
 		}
 		
@@ -39,17 +41,31 @@ public class CommandPm extends TeamspeakCommand {
 			sb.deleteCharAt(sb.length() - 1);
 			
 			String m = Messages.TS_EVENT_PRIVATE_MESSAGE.get();
-			if (m.isEmpty()) return;
 			m = new Replacer().addClient(sender.getClientInfo()).addMessage(sb.toString()).replace(m);
-			m = MessageUtil.toMinecraft(m, true, true);
+			m = MessageUtil.toMinecraft(m, true, Configuration.TS_ALLOW_LINKS.getBoolean());
 			
-			if (!BukkitSpeak.getMuted(p) && p.hasPermission("bukkitspeak.messages.pm")) {
-				p.sendMessage(m);
+			if (!m.isEmpty()) {
+				if (!BukkitSpeak.getMuted(p) && p.hasPermission("bukkitspeak.messages.pm")) {
+					p.sendMessage(m);
+					
+					String tsMsg = Messages.TS_COMMAND_PM.get();
+					Replacer r = new Replacer().addClient(sender.getClientInfo()).addMessage(sb.toString()).addPlayer(p);
+					tsMsg = r.replace(tsMsg);
+					if (!tsMsg.isEmpty()) {
+						sender.sendMessage(tsMsg);
+					}
+				} else {
+					String userMuted = Messages.TS_COMMAND_PM_RECIPIENT_MUTED.get();
+					userMuted = new Replacer().addClient(sender.getClientInfo()).addPlayer(p).replace(userMuted);
+					if (!userMuted.isEmpty()) sender.sendMessage(userMuted);
+				}
 			}
 		}
-		sender.sendMessage("Started conversation with player " + p.getName()
-				+ ". You can now chat directly without typing "
-				+ Configuration.TS_COMMANDS_PREFIX.getString() + "pm");
+		
+		String convStarted = Messages.TS_COMMAND_PM_CONVERSATION_STARTED.get();
+		convStarted = new Replacer().addClient(sender.getClientInfo()).addPlayer(p).replace(convStarted);
+		if (!convStarted.isEmpty()) sender.sendMessage(convStarted);
+		
 		BukkitSpeak.registerRecipient(p.getName(), sender.getClientID());
 	}
 }

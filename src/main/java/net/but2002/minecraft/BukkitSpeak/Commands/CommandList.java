@@ -8,7 +8,6 @@ import java.util.logging.Level;
 import org.bukkit.command.CommandSender;
 
 import net.but2002.minecraft.BukkitSpeak.BukkitSpeak;
-import net.but2002.minecraft.BukkitSpeak.ClientList;
 import net.but2002.minecraft.BukkitSpeak.Configuration.Configuration;
 import net.but2002.minecraft.BukkitSpeak.Configuration.Messages;
 import net.but2002.minecraft.BukkitSpeak.util.Replacer;
@@ -23,17 +22,15 @@ public class CommandList extends BukkitSpeakCommand {
 	
 	@Override
 	public void execute(CommandSender sender, String[] args) {
-		
 		if (!BukkitSpeak.getQuery().isConnected() || BukkitSpeak.getClientList() == null) {
 			send(sender, Level.WARNING, "&4Can't communicate with the TeamSpeak server.");
 			return;
 		}
 		
 		if (args.length < 2 || args[1].equalsIgnoreCase("server")) {
-			ClientList clientList = BukkitSpeak.getClientList();
 			StringBuilder online = new StringBuilder();
 			
-			for (HashMap<String, String> user : clientList.getClients().values()) {
+			for (HashMap<String, String> user : BukkitSpeak.getClientList().getClients().values()) {
 				if (user.get("client_type").equals("0")) {
 					if (online.length() != 0) online.append(", ");
 					online.append(user.get("client_nickname"));
@@ -52,11 +49,10 @@ public class CommandList extends BukkitSpeakCommand {
 			send(sender, Level.INFO, mcMsg);
 		} else if (args.length == 2 && Configuration.TS_ENABLE_CHANNEL_EVENTS.getBoolean()
 				&& args[1].equalsIgnoreCase("channel")) {
-			ClientList clientList = BukkitSpeak.getClientList();
 			StringBuilder online = new StringBuilder();
 			String id = String.valueOf(BukkitSpeak.getQuery().getCurrentQueryClientChannelID());
 			
-			for (HashMap<String, String> user : clientList.getClients().values()) {
+			for (HashMap<String, String> user : BukkitSpeak.getClientList().getClients().values()) {
 				if (user.get("client_type").equals("0") && user.get("cid").equals(id)) {
 					if (online.length() != 0) online.append(", ");
 					online.append(user.get("client_nickname"));

@@ -3,7 +3,11 @@ package net.but2002.minecraft.BukkitSpeak.TeamspeakCommands.internal;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
+import net.but2002.minecraft.BukkitSpeak.Configuration.Configuration;
+import net.but2002.minecraft.BukkitSpeak.Configuration.Messages;
 import net.but2002.minecraft.BukkitSpeak.TeamspeakCommands.TeamspeakCommandSender;
+import net.but2002.minecraft.BukkitSpeak.util.MessageUtil;
+import net.but2002.minecraft.BukkitSpeak.util.Replacer;
 
 public class CommandList extends TeamspeakCommand {
 	
@@ -13,20 +17,26 @@ public class CommandList extends TeamspeakCommand {
 	
 	@Override
 	public void execute(TeamspeakCommandSender sender, String[] args) {
-		StringBuilder sb = new StringBuilder("Currently online:");
+		StringBuilder online = new StringBuilder();
 		Player[] players = Bukkit.getOnlinePlayers();
 		
 		if (players.length > 0) {
-			sb.append("\n");
 			for (Player p : players) {
-				sb.append(p.getName());
-				sb.append(", ");
+				online.append(p.getName());
+				online.append(", ");
 			}
-			sb.delete(sb.length() - 2, sb.length());
+			online.delete(online.length() - 2, online.length());
 		} else {
-			sb.append(" -");
+			online.append(" -");
 		}
 		
-		sender.sendMessage(sb.toString());
+		String tsMsg = Messages.TS_COMMAND_LIST.get();
+		String list = online.toString();
+		
+		tsMsg = new Replacer().addSender(sender).addList(list).replace(tsMsg);
+		tsMsg = MessageUtil.toTeamspeak(tsMsg, true, Configuration.TS_ALLOW_LINKS.getBoolean());
+		
+		if (tsMsg.isEmpty()) return;
+		sender.sendMessage(tsMsg);
 	}
 }

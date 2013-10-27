@@ -41,13 +41,13 @@ public enum Messages {
 			new String[] {"messages.TeamspeakEvents.PrivateMsg"}),
 	
 	TS_EVENT_PRIVATE_MESSAGE_NO_CONVERSATION("TeamspeakEvent.PrivateMessage.Errors.NotInConversation.ToTeamspeakUser",
-			"You're currently not in a private message conversation."),
+			"&4You're currently not in a private message conversation."),
 	
 	TS_EVENT_PRIVATE_MESSAGE_RECIPIENT_OFFLINE("TeamspeakEvent.PrivateMessage.Errors.PmRecipientNotOnline.ToTeamspeakUser",
-			"The user you're trying to send a message to is offline."),
+			"&4The user you're trying to send a message to is offline."),
 	
 	TS_EVENT_PRIVATE_MESSAGE_RECIPIENT_MUTED("TeamspeakEvent.PrivateMessage.Errors.PmRecipientMutedOrNoPermission.ToTeamspeakUser",
-			"The user you're trying to chat with can't receive your message."),
+			"&4The user &l%player_displayname%&r&4 can't receive your message."),
 	
 	// Minecraft events
 	MC_EVENT_CHAT("MinecraftEvent.PlayerChat.ToTeamspeakTarget",
@@ -150,6 +150,24 @@ public enum Messages {
 			new String[] {"c:teamspeak.DefaultReason"}),
 	
 	// Teamspeak commands
+	TS_COMMAND_LIST("TeamspeakCommand.List.ToTeamspeakUser",
+			"Currently online: %list%"),
+	
+	TS_COMMAND_PM("TeamspeakCommand.Pm.ToTeamspeakUser",
+			"&4Me &r-> &4%player_displayname%&r: %msg%"),
+	
+	TS_COMMAND_PM_CONVERSATION_STARTED("TeamspeakCommand.Pm.ConversationStarted.ToTeamspeakUser",
+			"Started conversation with player %player_displayname%. You can now chat directly without typing !pm"),
+	
+	TS_COMMAND_PM_NO_PLAYER_BY_THIS_NAME("TeamspeakCommand.Pm.Errors.NoPlayerByThisName.ToTeamspeakUser",
+			"&4No Minecraft player by the name of %input%."),
+	
+	TS_COMMAND_PM_RECIPIENT_MUTED("TeamspeakCommand.Pm.Errors.RecipientMutedOrNoPermission.ToTeamspeakUser",
+			"&4The user &l%player_displayname%&r&4 can't receive your message."),
+	
+	TS_COMMAND_SENDER_NAME("TeamspeakCommand.CommandSenderName", "&a[&6TS&a] &e%client_nickname%&r",
+			new String[] {"messages.TeamspeakCommandMessages.TeamspeakCommandSenderName"}),
+	
 	TS_COMMAND_NOT_WHITELISTED("TeamspeakCommand.Errors.PluginNotWhitelisted.ToTeamspeakUser",
 			"You are not allowed to run commands of that plugin.", new String[] {
 					"messages.TeamspeakCommandMessages.PluginNotWhitelisted",
@@ -158,12 +176,9 @@ public enum Messages {
 	TS_COMMAND_BLACKLISTED("TeamspeakCommand.Errors.CommandBlacklisted.ToTeamspeakUser",
 			"The command you are trying to run is blacklisted.", new String[] {
 					"messages.TeamspeakCommandMessages.CommandBlacklisted",
-					"TeamspeakCommand.Errors.CommandBlacklisted"}),
+					"TeamspeakCommand.Errors.CommandBlacklisted"});
 	
-	TS_COMMAND_SENDER_NAME("TeamspeakCommand.CommandSenderName", "&a[&6TS&a] &e%client_nickname%&r",
-			new String[] {"messages.TeamspeakCommandMessages.TeamspeakCommandSenderName"});
-	
-	private static final File CONFIG_FILE = new File(BukkitSpeak.getInstance().getDataFolder(), "locale.yml");
+	private static File configFile;
 	private static YamlConfiguration config;
 	
 	private final String path;
@@ -184,7 +199,10 @@ public enum Messages {
 		boolean changed = false;
 		boolean movedLocale = false;
 		boolean movedConfig = false;
-		config = YamlConfiguration.loadConfiguration(CONFIG_FILE);
+		if (configFile == null) {
+			configFile = new File(BukkitSpeak.getInstance().getDataFolder(), "locale.yml");
+		}
+		config = YamlConfiguration.loadConfiguration(configFile);
 		
 		if (config.getKeys(false).isEmpty()) {
 			if (Configuration.getConfig().isConfigurationSection("messages")) {
@@ -195,7 +213,7 @@ public enum Messages {
 			} else {
 				BukkitSpeak.getInstance().saveResource("locale.yml", false);
 				BukkitSpeak.log().info("Default locale file created!");
-				config = YamlConfiguration.loadConfiguration(CONFIG_FILE);
+				config = YamlConfiguration.loadConfiguration(configFile);
 			}
 		}
 		
@@ -266,10 +284,13 @@ public enum Messages {
 	
 	public static void save() {
 		if (config == null) return;
+		if (configFile == null) {
+			configFile = new File(BukkitSpeak.getInstance().getDataFolder(), "locale.yml");
+		}
 		try {
-			config.save(CONFIG_FILE);
+			config.save(configFile);
 		} catch (IOException e) {
-			BukkitSpeak.log().log(Level.SEVERE, "Could not save the locale file to " + CONFIG_FILE, e);
+			BukkitSpeak.log().log(Level.SEVERE, "Could not save the locale file to " + configFile, e);
 		}
 	}
 	
@@ -286,6 +307,9 @@ public enum Messages {
 	}
 	
 	public String get() {
+		if (config == null) {
+			throw new IllegalAccessError("You need to load the configuration first!");
+		}
 		return config.getString(path, defValue);
 	}
 	

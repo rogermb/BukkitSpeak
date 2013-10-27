@@ -62,6 +62,11 @@ public class Replacer {
 		return this;
 	}
 	
+	public Replacer addInput(String input) {
+		repl.put("input", input);
+		return this;
+	}
+	
 	public String replace(String input) {
 		if (input == null) return null;
 		

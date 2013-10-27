@@ -85,7 +85,7 @@ public class ServerMessageEvent extends TeamspeakEvent {
 					return;
 				} else if (BukkitSpeak.getMuted(pl) || !checkPermissions(pl, "pm")) {
 					String tsMsg = Messages.TS_EVENT_PRIVATE_MESSAGE_RECIPIENT_MUTED.get();
-					Replacer r = new Replacer().addTargetClient(getUser());
+					Replacer r = new Replacer().addTargetClient(getUser()).addPlayer(pl);
 					tsMsg = MessageUtil.toTeamspeak(r.replace(tsMsg), true, true);
 					
 					if (tsMsg == null || tsMsg.isEmpty()) return;

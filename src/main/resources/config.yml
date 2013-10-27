@@ -6,7 +6,7 @@ main:
   QueryPassword: '123456'
 teamspeak:
   TeamspeakNickname: Minecraft
-  ConsoleName: '&9Server'
+  ConsoleName: '&eServer'
   
   # Only required if you use the channel functions!
   ChannelID: 0

@@ -44,7 +44,7 @@ public enum Configuration {
 	TS_COMMANDS_ENABLED("teamspeak-commands.Enabled", false),
 	TS_COMMANDS_PREFIX("teamspeak-commands.CommandPrefix", "!"),
 	TS_COMMANDS_LOGGING("teamspeak-commands.LogTeamspeakCommands", true),
-	TS_COMMANDS_MESSAGE_BUFFER("teamspeak-commands.MessageBufferDelay", 50),
+	TS_COMMANDS_MESSAGE_BUFFER("teamspeak-commands.MessageBufferDelay", 100),
 	TS_COMMANDS_INTERNAL_LIST("teamspeak-commands.internal.ListCommandEnabled", true),
 	TS_COMMANDS_INTERNAL_PM("teamspeak-commands.internal.PmCommandEnabled", true),
 	

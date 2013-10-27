@@ -52,7 +52,7 @@ teamspeak-commands:
   
   # How many milliseconds should be waited before sending messages to the client on Teamspeak
   # The buffer lets individual messages stack up and is then sent as one TS message.
-  MessageBufferDelay: 50
+  MessageBufferDelay: 100
 
   # Which internal commands should be enabled
   internal:

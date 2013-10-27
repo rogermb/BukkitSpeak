@@ -41,6 +41,7 @@ public class Replacer {
 	
 	public Replacer addTargetClient(Map<String, String> client) {
 		repl.put("target", client.get("client_nickname"));
+		repl.putAll(client);
 		return this;
 	}
 	

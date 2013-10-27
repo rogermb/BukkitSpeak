@@ -40,7 +40,7 @@ public class CommandPm extends TeamspeakCommand {
 			
 			String m = Messages.TS_EVENT_PRIVATE_MESSAGE.get();
 			if (m.isEmpty()) return;
-			m = new Replacer().addClient(sender.getClientInfo()).addKey("msg", sb.toString()).replace(m);
+			m = new Replacer().addClient(sender.getClientInfo()).addMessage(sb.toString()).replace(m);
 			m = MessageUtil.toMinecraft(m, true, true);
 			
 			if (!BukkitSpeak.getMuted(p) && p.hasPermission("bukkitspeak.messages.pm")) {

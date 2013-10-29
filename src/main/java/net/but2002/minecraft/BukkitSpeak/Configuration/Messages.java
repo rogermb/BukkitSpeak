@@ -251,7 +251,8 @@ public enum Messages {
 								Configuration.getConfig().set(oldPath, null);
 								
 								if (Configuration.TS_DEBUGGING.getBoolean()) {
-									BukkitSpeak.log().info("Moved \"" + oldPath + "\" to \"" + value.path + "\".");
+									BukkitSpeak.log().info("Moved \"" + oldPath
+											+ "\" to \"" + value.path + "\".");
 								}
 								
 								changed = true;

@@ -249,7 +249,11 @@ public enum Messages {
 							if (oldVal != null && oldVal.getClass().isInstance(value.defValue)) {
 								config.set(value.path, oldVal);
 								Configuration.getConfig().set(oldPath, null);
-								BukkitSpeak.log().info("Moved \"" + oldPath + "\" to \"" + value.path + "\".");
+								
+								if (Configuration.TS_DEBUGGING.getBoolean()) {
+									BukkitSpeak.log().info("Moved \"" + oldPath + "\" to \"" + value.path + "\".");
+								}
+								
 								changed = true;
 								movedConfig = true;
 								continue ValueIteration;

@@ -96,7 +96,11 @@ public enum Configuration {
 						if (oldVal != null && oldVal.getClass().isInstance(value.defValue)) {
 							config.set(oldPath, null);
 							config.set(value.path, oldVal);
-							BukkitSpeak.log().info("Moved \"" + oldPath + "\" to \"" + value.path + "\".");
+							
+							if (Configuration.TS_DEBUGGING.getBoolean()) {
+								BukkitSpeak.log().info("Moved \"" + oldPath + "\" to \"" + value.path + "\".");
+							}
+							
 							changed = true;
 							moved = true;
 							continue ValueIteration;

@@ -22,16 +22,6 @@
       </snapshots>
     </repository>
     <repository>
-      <id>mcmmo-repo</id>
-      <url>http://repo.mcmmo.info/</url>
-      <releases>
-        <updatePolicy>always</updatePolicy>
-      </releases>
-      <snapshots>
-        <updatePolicy>always</updatePolicy>
-      </snapshots>
-    </repository>
-    <repository>
       <id>stutz-repo</id>
       <url>http://repo.stutzfam.ch/content/groups/public</url>
       <releases>

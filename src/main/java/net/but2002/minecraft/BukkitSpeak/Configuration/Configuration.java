@@ -48,7 +48,7 @@ public enum Configuration {
 	TS_COMMANDS_INTERNAL_LIST("teamspeak-commands.internal.ListCommandEnabled", true),
 	TS_COMMANDS_INTERNAL_PM("teamspeak-commands.internal.PmCommandEnabled", true),
 	
-	PLUGINS_FACTIONS_PUBLIC_ONLY("plugin-interaction.Factions.public-only", true),
+	PLUGINS_FACTIONS_PUBLIC_ONLY("plugin-interaction.Factions.public-only", false),
 	
 	PLUGINS_HEROCHAT_ENABLED("plugin-interaction.Herochat.enabled", false),
 	PLUGINS_HEROCHAT_CHANNEL("plugin-interaction.Herochat.channel", "Global"),

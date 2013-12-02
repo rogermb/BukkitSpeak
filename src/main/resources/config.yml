@@ -62,7 +62,7 @@ teamspeak-commands:
 plugin-interaction:
   Factions:
     # If Factions is enabled, should only public chat be sent to TeamSpeak?
-    public-only: true
+    public-only: false
   Herochat:
     # Do we want to enable support for Herochat?
     enabled: false

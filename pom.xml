@@ -52,7 +52,7 @@
     <dependency>
         <groupId>com.gmail.nossr50.mcMMO</groupId>
         <artifactId>mcMMO</artifactId>
-        <version>1.4.00-beta4</version>
+        <version>1.4.07</version>
     </dependency>
     <dependency>
       <groupId>junit</groupId>

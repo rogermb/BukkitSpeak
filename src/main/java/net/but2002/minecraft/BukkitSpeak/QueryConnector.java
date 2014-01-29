@@ -80,9 +80,6 @@ public class QueryConnector implements Runnable {
 				logger.severe("Could not move the QueryClient into the channel.");
 				logger.severe("Ensure that the ChannelID is correct and the password is set if required.");
 				logger.severe("(" + query.getLastError() + ")");
-				query.closeTS3Connection();
-				plugin.setStoppedTime(new Date());
-				return;
 			}
 		}
 		

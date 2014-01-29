@@ -9,11 +9,11 @@ import net.but2002.minecraft.BukkitSpeak.util.DateManager;
 import org.bukkit.command.CommandSender;
 
 public class CommandStatus extends BukkitSpeakCommand {
-	
+
 	public CommandStatus() {
 		super("status", "version");
 	}
-	
+
 	@Override
 	public void execute(CommandSender sender, String[] args) {
 		send(sender, Level.INFO, "&eBukkitSpeak Version: &av" + BukkitSpeak.getInstance().getDescription().getVersion());
@@ -22,9 +22,10 @@ public class CommandStatus extends BukkitSpeakCommand {
 			send(sender, Level.INFO, "&eRunning since: &a"
 					+ DateManager.dateToString(BukkitSpeak.getInstance().getStartedTime()));
 			send(sender, Level.INFO, "&eSID = &a" + BukkitSpeak.getQuery().getCurrentQueryClientServerID()
-					+ "&e, CID = &a" + BukkitSpeak.getQuery().getCurrentQueryClientChannelID()
-					+ "&e, CLID = &a" + BukkitSpeak.getQuery().getCurrentQueryClientID());
-		} else if (BukkitSpeak.getInstance().getStoppedTime() == null || BukkitSpeak.getInstance().getStartedTime() == null) {
+					+ "&e, CID = &a" + BukkitSpeak.getQuery().getCurrentQueryClientChannelID() + "&e, CLID = &a"
+					+ BukkitSpeak.getQuery().getCurrentQueryClientID());
+		} else if (BukkitSpeak.getInstance().getStoppedTime() == null
+				|| BukkitSpeak.getInstance().getStartedTime() == null) {
 			send(sender, Level.WARNING, "&eTeamspeak Listener: &6connecting");
 			if (BukkitSpeak.getInstance().getStartedTime() != null) {
 				send(sender, Level.WARNING, "&eConnecting since: &6"
@@ -59,7 +60,7 @@ public class CommandStatus extends BukkitSpeakCommand {
 			send(sender, Level.WARNING, "&eUse &a/tsa reload &eto restart the listener!");
 		}
 	}
-	
+
 	@Override
 	public List<String> onTabComplete(CommandSender sender, String[] args) {
 		return null;

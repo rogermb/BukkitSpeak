@@ -9,27 +9,27 @@ import net.but2002.minecraft.BukkitSpeak.Configuration.Configuration;
 import org.bukkit.command.CommandSender;
 
 public class SetAllowLinks extends SetProperty {
-	
+
 	private static final Configuration PROPERTY = Configuration.TS_ALLOW_LINKS;
 	private static final String ALLOWED_INPUT = "true or false";
 	private static final String DESCRIPTION = "If set to false, any links in messages will be filtered out.";
 	private static final String[] TAB_SUGGESTIONS = {"true", "false"};
-	
+
 	@Override
 	public Configuration getProperty() {
 		return PROPERTY;
 	}
-	
+
 	@Override
 	public String getAllowedInput() {
 		return ALLOWED_INPUT;
 	}
-	
+
 	@Override
 	public String getDescription() {
 		return DESCRIPTION;
 	}
-	
+
 	@Override
 	public boolean execute(CommandSender sender, String arg) {
 		if (arg.equalsIgnoreCase("true")) {
@@ -44,7 +44,7 @@ public class SetAllowLinks extends SetProperty {
 		}
 		return true;
 	}
-	
+
 	@Override
 	public List<String> onTabComplete(CommandSender sender, String[] args) {
 		if (args.length != 3) return null;

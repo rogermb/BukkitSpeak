@@ -24,37 +24,37 @@ import com.google.common.collect.Lists;
 import de.stefan1200.jts3serverquery.JTS3ServerQuery;
 
 public final class PermissionsHelper implements Runnable {
-	
+
 	private File permissionsFile;
 	private FileConfiguration permissionsConfig;
 	private HashMap<String, ServerGroup> serverGroupMap;
-	
+
 	public PermissionsHelper() {
 		serverGroupMap = new HashMap<String, ServerGroup>();
 	}
-	
+
 	public void runAsynchronously() {
 		// Start the permissions assignment task
 		BukkitSpeak.getInstance().getServer().getScheduler().runTaskAsynchronously(BukkitSpeak.getInstance(), this);
 	}
-	
+
 	public void run() {
 		// Load the config
 		reload();
-		
+
 		HashMap<String, ServerGroup> serverGroups = new HashMap<String, ServerGroup>();
 		HashMap<String, HashMap<String, Boolean>> perms = new HashMap<String, HashMap<String, Boolean>>();
 		HashMap<String, List<String>> inherits = new HashMap<String, List<String>>();
 		Set<String> removedServerGroups = new HashSet<String>();
 		Queue<String> resolved = new LinkedList<String>();
 		Queue<String> unresolved = new LinkedList<String>();
-		
+
 		for (String key : permissionsConfig.getKeys(false)) {
 			if (permissionsConfig.isConfigurationSection(key)) {
 				removedServerGroups.add(key);
 			}
 		}
-		
+
 		// Set up a raw list of permissions
 		Vector<HashMap<String, String>> groups = BukkitSpeak.getQuery().getList(JTS3ServerQuery.LISTMODE_SERVERGROUPLIST);
 		if (groups == null) {
@@ -66,7 +66,7 @@ public final class PermissionsHelper implements Runnable {
 			String id = group.get("sgid");
 			String type = group.get("type");
 			if ((type == null) || !("1".equals(type))) continue;
-			
+
 			if (permissionsConfig.isConfigurationSection(id)) {
 				ConfigurationSection section = permissionsConfig.getConfigurationSection(id);
 				section.set("name", group.get("name"));
@@ -91,13 +91,13 @@ public final class PermissionsHelper implements Runnable {
 				List<String> pluginWhitelist = section.getStringList("plugin-whitelist");
 				List<String> commandBlacklist = section.getStringList("command-blacklist");
 				inherits.put(id, section.getStringList("inherits"));
-				
+
 				if (op == null || blocked == null || cs == null || pluginWhitelist == null || commandBlacklist == null
 						|| inherits == null) {
 					BukkitSpeak.log().severe("Error parsing TS3 server group " + id + ".");
 					continue;
 				}
-				
+
 				// Don't waste time if someone is blocked anyways
 				if (blocked.booleanValue()) {
 					serverGroups.put(id, new ServerGroup(false));
@@ -106,7 +106,7 @@ public final class PermissionsHelper implements Runnable {
 					serverGroups.put(id, new ServerGroup(op.booleanValue(), pluginWhitelist, commandBlacklist));
 					perms.put(id, parseConfigSection(cs));
 				}
-				
+
 				removedServerGroups.remove(id);
 			} else {
 				ConfigurationSection section = permissionsConfig.createSection(id);
@@ -118,20 +118,20 @@ public final class PermissionsHelper implements Runnable {
 				section.set("plugin-whitelist", (List<String>) Lists.newArrayList("PluginNameFromPluginsCommand"));
 				section.set("command-blacklist", (List<String>) Lists.newArrayList("SomeBlockedCommand"));
 				section.set("inherits", (List<String>) new ArrayList<String>());
-				
+
 				serverGroups.put(id, new ServerGroup());
 				perms.put(id, parseConfigSection(section.getConfigurationSection("permissions")));
 			}
 		}
-		
+
 		for (String id : removedServerGroups) {
 			permissionsConfig.getConfigurationSection(id).set("removed", "This server group has been removed on Teamspeak.");
 			BukkitSpeak.log().warning("Obsolete permissions.yml server group entry: ID " + id + ".");
 		}
-		
+
 		// Save the config
 		save();
-		
+
 		// Get the initial resolved groups
 		for (String id : serverGroups.keySet()) {
 			List<String> i = inherits.get(id);
@@ -142,19 +142,19 @@ public final class PermissionsHelper implements Runnable {
 				unresolved.add(id);
 			}
 		}
-		
+
 		if (resolved.size() == 0) {
 			BukkitSpeak.log().severe("Teamspeak permissions: Circular inheritance (No groups with no 'inherits').");
 		}
-		
+
 		do {
 			// Add the permissions of resolved groups thus resolving the permissions of other groups.
-			
+
 			while (resolved.size() > 0) {
 				String id = resolved.poll();
 				ServerGroup sg = serverGroups.get(id);
 				sg.getPermissions().putAll(perms.get(id));
-				
+
 				for (String u : inherits.keySet()) {
 					List<String> i = inherits.get(u);
 					if ((i.size() > 0) && (i.contains(id))) {
@@ -170,17 +170,17 @@ public final class PermissionsHelper implements Runnable {
 					}
 				}
 			}
-			
+
 			// When everything went well, this queue is now empty.
 			if (unresolved.size() == 0) {
 				break;
 			}
-			
+
 			// Otherwise, just choose a group with an unresolved dependency
 			String id = unresolved.poll();
 			ServerGroup sg = serverGroups.get(id);
 			sg.getPermissions().putAll(perms.get(id));
-			
+
 			// Notify about unresolved dependencies.
 			List<String> inheritances = inherits.get(id);
 			StringBuilder sb = new StringBuilder();
@@ -191,9 +191,9 @@ public final class PermissionsHelper implements Runnable {
 			sb.setLength(sb.length() - 2);
 			sb.append(".");
 			BukkitSpeak.log().warning(sb.toString());
-			
+
 			inherits.put(id, new ArrayList<String>()); // Clear the stored dependencies for this one.
-			
+
 			for (String u : inherits.keySet()) {
 				List<String> i = inherits.get(u);
 				if ((i.size() > 0) && (i.contains(id))) {
@@ -206,11 +206,11 @@ public final class PermissionsHelper implements Runnable {
 				}
 			}
 		} while (unresolved.size() > 0);
-		
+
 		// Done
 		serverGroupMap = serverGroups;
 	}
-	
+
 	private HashMap<String, Boolean> parseConfigSection(ConfigurationSection cs) {
 		HashMap<String, Boolean> map = new HashMap<String, Boolean>();
 		for (Map.Entry<String, Object> entry : cs.getValues(true).entrySet()) {
@@ -224,11 +224,11 @@ public final class PermissionsHelper implements Runnable {
 		}
 		return map;
 	}
-	
+
 	public ServerGroup getServerGroup(String id) {
 		return serverGroupMap.get(id);
 	}
-	
+
 	public void reload() {
 		if (permissionsFile == null) {
 			permissionsFile = new File(BukkitSpeak.getInstance().getDataFolder(), "permissions.yml");
@@ -236,7 +236,7 @@ public final class PermissionsHelper implements Runnable {
 		permissionsConfig = YamlConfiguration.loadConfiguration(permissionsFile);
 		permissionsConfig.options().pathSeparator('/');
 	}
-	
+
 	public void save() {
 		if ((permissionsFile == null) || (permissionsConfig == null)) return;
 		try {

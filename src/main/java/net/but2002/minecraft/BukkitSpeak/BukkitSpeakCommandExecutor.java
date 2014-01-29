@@ -14,10 +14,10 @@ import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 
 public class BukkitSpeakCommandExecutor implements CommandExecutor, TabCompleter {
-	
+
 	private List<BukkitSpeakCommand> userCommands;
 	private List<BukkitSpeakCommand> adminCommands;
-	
+
 	public BukkitSpeakCommandExecutor() {
 		userCommands = new ArrayList<BukkitSpeakCommand>();
 		userCommands.add(new CommandHelp());
@@ -29,7 +29,7 @@ public class BukkitSpeakCommandExecutor implements CommandExecutor, TabCompleter
 		userCommands.add(new CommandPm());
 		userCommands.add(new CommandPoke());
 		userCommands.add(new CommandReply());
-		
+
 		adminCommands = new ArrayList<BukkitSpeakCommand>();
 		adminCommands.add(new CommandAdminHelp());
 		adminCommands.add(new CommandBan());
@@ -39,10 +39,10 @@ public class BukkitSpeakCommandExecutor implements CommandExecutor, TabCompleter
 		adminCommands.add(new CommandSet());
 		adminCommands.add(new CommandStatus());
 	}
-	
+
 	@Override
 	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
-		
+
 		if (cmd.getName().equals("ts")) {
 			if (args.length >= 1 && args[0].equals("admin")) {
 				return onTeamspeakAdminCommand(sender, cmd, label, Arrays.copyOfRange(args, 1, args.length));
@@ -55,7 +55,7 @@ public class BukkitSpeakCommandExecutor implements CommandExecutor, TabCompleter
 			return true;
 		}
 	}
-	
+
 	public void send(CommandSender sender, Level level, String msg) {
 		String m = msg;
 		if (sender instanceof Player) {
@@ -66,18 +66,18 @@ public class BukkitSpeakCommandExecutor implements CommandExecutor, TabCompleter
 			BukkitSpeak.log().log(level, m);
 		}
 	}
-	
+
 	public Boolean checkPermissions(CommandSender sender, String perm) {
 		return sender.hasPermission("bukkitspeak.commands." + perm);
 	}
-	
+
 	public boolean onTeamspeakCommand(CommandSender sender, Command cmd, String alias, String[] args) {
-		
+
 		String s = "help";
 		if (args.length > 0) {
 			s = args[0];
 		}
-		
+
 		for (BukkitSpeakCommand bsc : userCommands) {
 			for (String name : bsc.getNames()) {
 				if (name.equalsIgnoreCase(s)) {
@@ -87,17 +87,17 @@ public class BukkitSpeakCommandExecutor implements CommandExecutor, TabCompleter
 				}
 			}
 		}
-		
+
 		return false;
 	}
-	
+
 	public boolean onTeamspeakAdminCommand(CommandSender sender, Command cmd, String label, String[] args) {
-		
+
 		String s = "adminhelp";
 		if (args.length > 0) {
 			s = args[0];
 		}
-		
+
 		for (BukkitSpeakCommand bsc : adminCommands) {
 			for (String name : bsc.getNames()) {
 				if (name.equalsIgnoreCase(s)) {
@@ -107,13 +107,13 @@ public class BukkitSpeakCommandExecutor implements CommandExecutor, TabCompleter
 				}
 			}
 		}
-		
+
 		return false;
 	}
-	
+
 	@Override
 	public List<String> onTabComplete(CommandSender sender, Command cmd, String alias, String[] args) {
-		
+
 		switch (args.length) {
 		case 0:
 			return null;

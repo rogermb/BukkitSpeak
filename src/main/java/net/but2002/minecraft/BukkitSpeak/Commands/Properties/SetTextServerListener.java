@@ -9,28 +9,28 @@ import net.but2002.minecraft.BukkitSpeak.Configuration.Configuration;
 import org.bukkit.command.CommandSender;
 
 public class SetTextServerListener extends SetProperty {
-	
+
 	private static final Configuration PROPERTY = Configuration.TS_ENABLE_SERVER_MESSAGES;
 	private static final String ALLOWED_INPUT = "true or false";
 	private static final String DESCRIPTION = "If this is set to true, BukkitSpeak will notice if "
 			+ "somebody writes a global message on TeamSpeak.";
 	private static final String[] TAB_SUGGESTIONS = {"true", "false"};
-	
+
 	@Override
 	public Configuration getProperty() {
 		return PROPERTY;
 	}
-	
+
 	@Override
 	public String getAllowedInput() {
 		return ALLOWED_INPUT;
 	}
-	
+
 	@Override
 	public String getDescription() {
 		return DESCRIPTION;
 	}
-	
+
 	@Override
 	public boolean execute(CommandSender sender, String arg) {
 		if (arg.equalsIgnoreCase("true")) {
@@ -47,7 +47,7 @@ public class SetTextServerListener extends SetProperty {
 		reloadListener();
 		return false;
 	}
-	
+
 	@Override
 	public List<String> onTabComplete(CommandSender sender, String[] args) {
 		if (args.length != 3) return null;

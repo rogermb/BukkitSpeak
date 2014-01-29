@@ -3,19 +3,19 @@ package net.but2002.minecraft.BukkitSpeak;
 import java.util.Date;
 
 public class TeamspeakKeepAlive extends Thread {
-	
+
 	private static final int MAX_STEPS = 6;
 	private static final int MAX_WAIT = 60;
-	
+
 	private BukkitSpeak plugin;
 	private int wait, failed;
-	
+
 	public TeamspeakKeepAlive(BukkitSpeak bukkitSpeak) {
 		plugin = bukkitSpeak;
 		wait = 0;
 		failed = 0;
 	}
-	
+
 	@Override
 	public void run() {
 		if (BukkitSpeak.getQuery().isConnected()) {
@@ -42,7 +42,7 @@ public class TeamspeakKeepAlive extends Thread {
 			}
 		}
 	}
-	
+
 	private int getRetryTime(int d) {
 		int p = d / 2;
 		if (p < MAX_STEPS) {

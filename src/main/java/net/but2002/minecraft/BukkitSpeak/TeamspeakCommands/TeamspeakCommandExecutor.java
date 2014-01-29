@@ -7,9 +7,9 @@ import net.but2002.minecraft.BukkitSpeak.Configuration.Configuration;
 import net.but2002.minecraft.BukkitSpeak.TeamspeakCommands.internal.*;
 
 public class TeamspeakCommandExecutor {
-	
+
 	private List<TeamspeakCommand> commands;
-	
+
 	public TeamspeakCommandExecutor() {
 		commands = new ArrayList<TeamspeakCommand>();
 		if (Configuration.TS_COMMANDS_INTERNAL_LIST.getBoolean()) {
@@ -19,7 +19,7 @@ public class TeamspeakCommandExecutor {
 			commands.add(new CommandPm());
 		}
 	}
-	
+
 	public boolean execute(TeamspeakCommandSender sender, String command, String[] args) {
 		for (TeamspeakCommand tsc : commands) {
 			for (String name : tsc.getNames()) {
@@ -29,7 +29,7 @@ public class TeamspeakCommandExecutor {
 				}
 			}
 		}
-		
+
 		return false;
 	}
 }

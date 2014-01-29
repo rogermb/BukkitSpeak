@@ -14,26 +14,26 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 
 public class SetChatListenerPriority extends SetProperty {
-	
+
 	private static final Configuration PROPERTY = Configuration.TS_CHAT_LISTENER_PRIORITY;
 	private static final String ALLOWED_INPUT = "LOWEST, LOW, NORMAL, HIGH, HIGHEST or MONITOR";
 	private static final String DESCRIPTION = "The priority of the chat listener.";
-	
+
 	@Override
 	public Configuration getProperty() {
 		return PROPERTY;
 	}
-	
+
 	@Override
 	public String getAllowedInput() {
 		return ALLOWED_INPUT;
 	}
-	
+
 	@Override
 	public String getDescription() {
 		return DESCRIPTION;
 	}
-	
+
 	@Override
 	public boolean execute(CommandSender sender, String arg) {
 		EventPriority p = null;
@@ -47,7 +47,7 @@ public class SetChatListenerPriority extends SetProperty {
 			send(sender, Level.WARNING, "&4Only LOWEST, LOW, NORMAL, HIGH, HIGHEST or MONITOR are accepted.");
 			return false;
 		}
-		
+
 		PROPERTY.set(p.name());
 		ChatListener cl = BukkitSpeak.getInstance().getChatListener();
 		AsyncPlayerChatEvent.getHandlerList().unregister(cl);
@@ -55,7 +55,7 @@ public class SetChatListenerPriority extends SetProperty {
 		Bukkit.getPluginManager().registerEvent(AsyncPlayerChatEvent.class, cl, p, cl, BukkitSpeak.getInstance(), i);
 		return true;
 	}
-	
+
 	@Override
 	public List<String> onTabComplete(CommandSender sender, String[] args) {
 		if (args.length != 3) return null;

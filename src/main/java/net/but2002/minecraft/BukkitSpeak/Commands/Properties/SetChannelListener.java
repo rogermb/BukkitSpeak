@@ -9,28 +9,28 @@ import net.but2002.minecraft.BukkitSpeak.Configuration.Configuration;
 import org.bukkit.command.CommandSender;
 
 public class SetChannelListener extends SetProperty {
-	
+
 	private static final Configuration PROPERTY = Configuration.TS_ENABLE_CHANNEL_EVENTS;
 	private static final String ALLOWED_INPUT = "true or false";
 	private static final String DESCRIPTION = "If this is set to true, the Minecraft server will be notified when "
 			+ "somebody joins or leaves the TS channel.";
 	private static final String[] TAB_SUGGESTIONS = {"true", "false"};
-	
+
 	@Override
 	public Configuration getProperty() {
 		return PROPERTY;
 	}
-	
+
 	@Override
 	public String getAllowedInput() {
 		return ALLOWED_INPUT;
 	}
-	
+
 	@Override
 	public String getDescription() {
 		return DESCRIPTION;
 	}
-	
+
 	@Override
 	public boolean execute(CommandSender sender, String arg) {
 		boolean o = (Configuration.TS_ENABLE_CHANNEL_EVENTS.getBoolean())
@@ -52,7 +52,7 @@ public class SetChannelListener extends SetProperty {
 		if (!o && n) connectChannel(sender);
 		return false;
 	}
-	
+
 	@Override
 	public List<String> onTabComplete(CommandSender sender, String[] args) {
 		if (args.length != 3) return null;

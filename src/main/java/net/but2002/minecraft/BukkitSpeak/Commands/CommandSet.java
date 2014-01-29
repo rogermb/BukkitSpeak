@@ -10,15 +10,14 @@ import net.but2002.minecraft.BukkitSpeak.Configuration.Configuration;
 import org.bukkit.command.CommandSender;
 
 public class CommandSet extends BukkitSpeakCommand {
-	
-	private static final SetProperty[] PROPERTIES = {
-		new SetDisplayName(), new SetConsoleName(), new SetChannel(), new SetChannelPassword(),
-		new SetServerListener(), new SetTextServerListener(), new SetChannelListener(), new SetTextChannelListener(),
-		new SetPrivateMessagesListener(), new SetAllowLinks(), new SetTarget(), new SetConsoleLog(), 
-		new SetChatListenerPriority(), new SetDebug()};
-	
+
+	private static final SetProperty[] PROPERTIES = {new SetDisplayName(), new SetConsoleName(), new SetChannel(),
+			new SetChannelPassword(), new SetServerListener(), new SetTextServerListener(), new SetChannelListener(),
+			new SetTextChannelListener(), new SetPrivateMessagesListener(), new SetAllowLinks(), new SetTarget(),
+			new SetConsoleLog(), new SetChatListenerPriority(), new SetDebug()};
+
 	private String props;
-	
+
 	public CommandSet() {
 		super("set");
 		StringBuilder sb = new StringBuilder();
@@ -29,10 +28,10 @@ public class CommandSet extends BukkitSpeakCommand {
 		}
 		props = sb.toString();
 	}
-	
+
 	public void execute(CommandSender sender, String[] args) {
 		if (!isConnected(sender)) return;
-		
+
 		if (args.length == 1) {
 			send(sender, Level.INFO, "&aUsage: &6/tsa set <property> <value>");
 			send(sender, Level.INFO, "&aProperties you can set:");
@@ -52,24 +51,24 @@ public class CommandSet extends BukkitSpeakCommand {
 			}
 		} else if (args.length > 2) {
 			String arg = combineSplit(2, args, " ");
-			
+
 			SetProperty prop = getMatchingProperty(args[1]);
-			
+
 			if (prop == null) {
 				send(sender, Level.INFO, "&4This is not a valid property.");
 				send(sender, Level.INFO, "&aProperties you can set:");
 				send(sender, Level.INFO, props);
 				return;
 			}
-			
+
 			if (!prop.execute(sender, arg)) return;
 			send(sender, Level.INFO, "&a" + prop.getName() + " was successfully set to " + arg);
 			Configuration.save();
 		}
 	}
-	
+
 	private SetProperty getMatchingProperty(String name) {
-		
+
 		for (SetProperty property : PROPERTIES) {
 			if (property.getName().equalsIgnoreCase(name)) {
 				return property;
@@ -77,7 +76,7 @@ public class CommandSet extends BukkitSpeakCommand {
 		}
 		return null;
 	}
-	
+
 	@Override
 	public List<String> onTabComplete(CommandSender sender, String[] args) {
 		switch (args.length) {
@@ -92,7 +91,7 @@ public class CommandSet extends BukkitSpeakCommand {
 			return al;
 		case 3:
 			SetProperty prop = getMatchingProperty(args[1]);
-			
+
 			if (prop == null) {
 				return null;
 			} else {

@@ -11,11 +11,11 @@ import net.but2002.minecraft.BukkitSpeak.util.MessageUtil;
 import net.but2002.minecraft.BukkitSpeak.util.Replacer;
 
 public class CommandPm extends TeamspeakCommand {
-	
+
 	public CommandPm() {
 		super("pm", "tell");
 	}
-	
+
 	@Override
 	public void execute(TeamspeakCommandSender sender, String[] args) {
 		if (args.length < 1) {
@@ -31,7 +31,7 @@ public class CommandPm extends TeamspeakCommand {
 			if (!noUser.isEmpty()) sender.sendMessage(noUser);
 			return;
 		}
-		
+
 		if (args.length > 1) {
 			StringBuilder sb = new StringBuilder();
 			for (int i = 1; i < args.length; i++) {
@@ -39,15 +39,15 @@ public class CommandPm extends TeamspeakCommand {
 				sb.append(" ");
 			}
 			sb.deleteCharAt(sb.length() - 1);
-			
+
 			String m = Messages.TS_EVENT_PRIVATE_MESSAGE.get();
 			m = new Replacer().addClient(sender.getClientInfo()).addMessage(sb.toString()).replace(m);
 			m = MessageUtil.toMinecraft(m, true, Configuration.TS_ALLOW_LINKS.getBoolean());
-			
+
 			if (!m.isEmpty()) {
 				if (!BukkitSpeak.getMuted(p) && p.hasPermission("bukkitspeak.messages.pm")) {
 					p.sendMessage(m);
-					
+
 					String tsMsg = Messages.TS_COMMAND_PM.get();
 					Replacer r = new Replacer().addClient(sender.getClientInfo()).addMessage(sb.toString()).addPlayer(p);
 					tsMsg = r.replace(tsMsg);
@@ -61,11 +61,11 @@ public class CommandPm extends TeamspeakCommand {
 				}
 			}
 		}
-		
+
 		String convStarted = Messages.TS_COMMAND_PM_CONVERSATION_STARTED.get();
 		convStarted = new Replacer().addClient(sender.getClientInfo()).addPlayer(p).replace(convStarted);
 		if (!convStarted.isEmpty()) sender.sendMessage(convStarted);
-		
+
 		BukkitSpeak.registerRecipient(p.getName(), sender.getClientID());
 	}
 }

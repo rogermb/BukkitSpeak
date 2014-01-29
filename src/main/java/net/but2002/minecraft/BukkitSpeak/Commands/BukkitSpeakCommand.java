@@ -16,15 +16,15 @@ import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 
 public abstract class BukkitSpeakCommand {
-	
+
 	protected static final int TS_MAXLENGHT = 100;
 	private final String[] names;
-	
+
 	protected BukkitSpeakCommand(String firstName, String... otherNames) {
 		if (firstName == null || firstName.isEmpty()) {
 			throw new IllegalArgumentException("A Command did not have a name specified.");
 		}
-		
+
 		if (otherNames == null) {
 			names = new String[] {firstName};
 		} else {
@@ -35,7 +35,7 @@ public abstract class BukkitSpeakCommand {
 			}
 		}
 	}
-	
+
 	protected void send(CommandSender sender, Level level, String msg) {
 		String m = msg;
 		if (sender instanceof Player) {
@@ -49,7 +49,7 @@ public abstract class BukkitSpeakCommand {
 			sender.sendMessage(m);
 		}
 	}
-	
+
 	protected void broadcastMessage(String mcMsg, CommandSender sender) {
 		if (mcMsg == null || mcMsg.isEmpty()) return;
 		for (Player pl : Bukkit.getServer().getOnlinePlayers()) {
@@ -61,11 +61,11 @@ public abstract class BukkitSpeakCommand {
 			BukkitSpeak.log().info(MessageUtil.toMinecraft(mcMsg, false, Configuration.TS_ALLOW_LINKS.getBoolean()));
 		}
 	}
-	
+
 	protected boolean checkCommandPermission(CommandSender sender, String perm) {
 		return sender.hasPermission("bukkitspeak.commands." + perm);
 	}
-	
+
 	protected boolean isConnected(CommandSender sender) {
 		if (!BukkitSpeak.getQuery().isConnected()) {
 			String mcMsg = Messages.MC_COMMAND_ERROR_DISCONNECTED.get();
@@ -75,7 +75,7 @@ public abstract class BukkitSpeakCommand {
 		}
 		return true;
 	}
-	
+
 	protected HashMap<String, String> getClient(String name, CommandSender sender) {
 		HashMap<String, String> client;
 		try {
@@ -94,28 +94,28 @@ public abstract class BukkitSpeakCommand {
 			return null;
 		}
 	}
-	
+
 	protected String combineSplit(int startIndex, String[] string, String seperator) {
 		StringBuilder builder = new StringBuilder();
-		
+
 		for (int i = startIndex; i < string.length; i++) {
 			builder.append(string[i]);
 			builder.append(seperator);
 		}
-		
+
 		builder.deleteCharAt(builder.length() - seperator.length());
 		return builder.toString();
 	}
-	
+
 	public final String getName() {
 		return names[0];
 	}
-	
+
 	public final String[] getNames() {
 		return names;
 	}
-	
+
 	public abstract void execute(CommandSender sender, String[] args);
-	
+
 	public abstract List<String> onTabComplete(CommandSender sender, String[] args);
 }

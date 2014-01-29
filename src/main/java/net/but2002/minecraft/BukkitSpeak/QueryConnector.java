@@ -7,21 +7,21 @@ import net.but2002.minecraft.BukkitSpeak.Configuration.Configuration;
 import de.stefan1200.jts3serverquery.JTS3ServerQuery;
 
 public class QueryConnector implements Runnable {
-	
+
 	private BukkitSpeak plugin;
 	private JTS3ServerQuery query;
 	private Logger logger;
-	
+
 	public QueryConnector() {
 		this.plugin = BukkitSpeak.getInstance();
 		query = BukkitSpeak.getQuery();
 		logger = plugin.getLogger();
 	}
-	
+
 	public void run() {
 		plugin.setStartedTime(new Date());
 		query.removeTeamspeakActionListener();
-		
+
 		if (!query.connectTS3Query(Configuration.MAIN_IP.getString(), Configuration.MAIN_QUERYPORT.getInt())) {
 			logger.severe("Could not connect to the TS3 server.");
 			logger.severe("Make sure that the IP and the QueryPort are correct!");
@@ -62,16 +62,16 @@ public class QueryConnector implements Runnable {
 			logger.warning("Make sure that the name isn't occupied.");
 			logger.warning("(" + query.getLastError() + ")");
 		}
-		
+
 		query.setTeamspeakActionListener(plugin.getTSActionListener());
-		
+
 		if (Configuration.TS_ENABLE_SERVER_EVENTS.getBoolean()) {
 			query.addEventNotify(JTS3ServerQuery.EVENT_MODE_SERVER, 0);
 		}
 		if (Configuration.TS_ENABLE_SERVER_MESSAGES.getBoolean()) {
 			query.addEventNotify(JTS3ServerQuery.EVENT_MODE_TEXTSERVER, 0);
 		}
-		
+
 		final int cid = Configuration.TS_CHANNEL_ID.getInt();
 		final boolean channelEvents = Configuration.TS_ENABLE_CHANNEL_EVENTS.getBoolean();
 		final boolean channelMessages = Configuration.TS_ENABLE_CHANNEL_MESSAGES.getBoolean();
@@ -82,7 +82,7 @@ public class QueryConnector implements Runnable {
 				logger.severe("(" + query.getLastError() + ")");
 			}
 		}
-		
+
 		if (channelEvents) {
 			query.addEventNotify(JTS3ServerQuery.EVENT_MODE_CHANNEL, query.getCurrentQueryClientChannelID());
 		}
@@ -92,13 +92,12 @@ public class QueryConnector implements Runnable {
 		if (Configuration.TS_ENABLE_PRIVATE_MESSAGES.getBoolean()) {
 			query.addEventNotify(JTS3ServerQuery.EVENT_MODE_TEXTPRIVATE, 0);
 		}
-		
+
 		BukkitSpeak.getInstance().resetLists();
 		plugin.setStoppedTime(null);
 		plugin.setStartedTime(null);
 		plugin.setStartedTime(new Date());
 		logger.info("Connected with SID = " + query.getCurrentQueryClientServerID() + ", CID = "
 				+ query.getCurrentQueryClientChannelID() + ", CLID = " + query.getCurrentQueryClientID());
-		
 	}
 }

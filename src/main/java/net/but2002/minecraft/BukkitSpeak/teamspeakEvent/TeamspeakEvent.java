@@ -13,33 +13,33 @@ import net.but2002.minecraft.BukkitSpeak.util.MessageUtil;
 import net.but2002.minecraft.BukkitSpeak.util.Replacer;
 
 public abstract class TeamspeakEvent {
-	
+
 	private HashMap<String, String> user;
-	
+
 	public HashMap<String, String> getUser() {
 		return user;
 	}
-	
+
 	public String getClientName() {
 		return user.get("client_nickname");
 	}
-	
+
 	public Integer getClientId() {
 		return Integer.valueOf(user.get("clid"));
 	}
-	
+
 	public Integer getClientType() {
 		return Integer.valueOf(user.get("client_type"));
 	}
-	
+
 	protected void setUser(Integer clid) {
 		user = BukkitSpeak.getClientList().get(clid);
 	}
-	
+
 	protected void sendMessage(Messages message, String permission) {
 		sendMessage(message, permission, null);
 	}
-	
+
 	protected void sendMessage(Messages message, String permission, String msg) {
 		String m = message.get();
 		if (m.isEmpty()) return;
@@ -48,7 +48,7 @@ public abstract class TeamspeakEvent {
 			r.addMessage(msg);
 		}
 		m = MessageUtil.toMinecraft(r.replace(m), true, true);
-		
+
 		if (BukkitSpeak.useHerochat() && Configuration.PLUGINS_HEROCHAT_RELAY_EVENTS.getBoolean()) {
 			// Send to Herochat channel
 			String c = Configuration.PLUGINS_HEROCHAT_CHANNEL.getString();
@@ -61,17 +61,17 @@ public abstract class TeamspeakEvent {
 				}
 			}
 		}
-		
+
 		// Finally log in console if enabled
 		if (Configuration.TS_LOGGING.getBoolean()) {
 			m = MessageUtil.toMinecraft(m, false, Configuration.PLUGINS_HEROCHAT_RELAY_EVENTS.getBoolean());
 			BukkitSpeak.log().info(m);
 		}
 	}
-	
+
 	protected boolean checkPermissions(Player player, String perm) {
 		return player.hasPermission("bukkitspeak.messages." + perm);
 	}
-	
+
 	protected abstract void performAction();
 }

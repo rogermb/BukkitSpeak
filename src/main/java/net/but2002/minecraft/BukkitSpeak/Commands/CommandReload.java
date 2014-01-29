@@ -9,11 +9,11 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 public class CommandReload extends BukkitSpeakCommand {
-	
+
 	public CommandReload() {
 		super("reload");
 	}
-	
+
 	@Override
 	public void execute(CommandSender sender, String[] args) {
 		String t = BukkitSpeak.getInstance().toString();
@@ -27,7 +27,7 @@ public class CommandReload extends BukkitSpeakCommand {
 			}
 		}
 	}
-	
+
 	@Override
 	public List<String> onTabComplete(CommandSender sender, String[] args) {
 		return null;

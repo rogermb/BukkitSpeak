@@ -4,9 +4,9 @@ public enum TsTarget {
 	NONE("nobody", "null", "nothing"),
 	CHANNEL("chat"),
 	SERVER("broadcast");
-	
+
 	private final String[] names;
-	
+
 	TsTarget(String... aliases) {
 		if (aliases == null) {
 			names = new String[1];
@@ -18,7 +18,7 @@ public enum TsTarget {
 		}
 		names[0] = name().toLowerCase();
 	}
-	
+
 	public static TsTarget getFromString(String input) {
 		if (input == null) return null;
 		for (TsTarget value : TsTarget.values()) {

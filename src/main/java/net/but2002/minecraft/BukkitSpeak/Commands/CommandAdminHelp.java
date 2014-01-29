@@ -6,11 +6,11 @@ import java.util.logging.Level;
 import org.bukkit.command.CommandSender;
 
 public class CommandAdminHelp extends BukkitSpeakCommand {
-	
+
 	public CommandAdminHelp() {
 		super("help", "adminhelp");
 	}
-	
+
 	@Override
 	public void execute(CommandSender sender, String[] args) {
 		send(sender, Level.INFO, "&2Admin Commands Help");
@@ -28,7 +28,7 @@ public class CommandAdminHelp extends BukkitSpeakCommand {
 		if (checkCommandPermission(sender, "reload"))
 			send(sender, Level.INFO, "&e/tsa reload &2- Reloads the config and the query.");
 	}
-	
+
 	@Override
 	public List<String> onTabComplete(CommandSender sender, String[] args) {
 		return null;

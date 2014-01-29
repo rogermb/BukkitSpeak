@@ -11,27 +11,27 @@ import net.but2002.minecraft.BukkitSpeak.Configuration.Configuration;
 import org.bukkit.command.CommandSender;
 
 public class SetChannel extends SetProperty {
-	
+
 	private static final Configuration PROPERTY = Configuration.TS_CHANNEL_ID;
 	private static final String ALLOWED_INPUT = "Channel name or ID";
 	private static final String DESCRIPTION = "BukkitSpeak will try to move itself into the channel with the stated ID. "
 			+ "Set ChannelPassword &lfirst&r&6!";
-	
+
 	@Override
 	public Configuration getProperty() {
 		return PROPERTY;
 	}
-	
+
 	@Override
 	public String getAllowedInput() {
 		return ALLOWED_INPUT;
 	}
-	
+
 	@Override
 	public String getDescription() {
 		return DESCRIPTION;
 	}
-	
+
 	@Override
 	public boolean execute(CommandSender sender, String arg) {
 		if (!(Configuration.TS_ENABLE_CHANNEL_EVENTS.getBoolean())
@@ -44,29 +44,29 @@ public class SetChannel extends SetProperty {
 			send(sender, Level.WARNING, "&4The value must be an Integer greater than 0 or the name of a channel.");
 			return false;
 		}
-		
+
 		HashMap<String, String> channel;
 		try {
 			channel = BukkitSpeak.getChannelList().getByPartialName(arg);
 		} catch (IllegalArgumentException e) {
 			channel = null;
 		}
-		
+
 		int cid = -1;
 		if (channel == null) {
 			cid = getIntFromString(arg);
 		} else {
 			cid = Integer.valueOf(channel.get("cid"));
 		}
-		
+
 		if (cid < 1) {
 			send(sender, Level.WARNING, "&4The value must be an Integer greater than 0.");
 			return false;
 		}
-		
+
 		int clid = BukkitSpeak.getQuery().getCurrentQueryClientID();
 		String pw = Configuration.TS_CHANNEL_PASSWORD.getString();
-		
+
 		if (BukkitSpeak.getQuery().moveClient(clid, cid, pw)) {
 			Configuration.TS_CHANNEL_ID.set(cid);
 			Configuration.save();
@@ -80,7 +80,7 @@ public class SetChannel extends SetProperty {
 		}
 		return false;
 	}
-	
+
 	@Override
 	public List<String> onTabComplete(CommandSender sender, String[] args) {
 		if (args.length != 3) return null;
@@ -92,7 +92,7 @@ public class SetChannel extends SetProperty {
 		}
 		return al;
 	}
-	
+
 	private int getIntFromString(String s) {
 		int ret;
 		try {

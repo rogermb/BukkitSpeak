@@ -22,23 +22,23 @@ import com.massivecraft.factions.struct.ChatMode;
 import de.stefan1200.jts3serverquery.JTS3ServerQuery;
 
 public class ChatListener implements EventExecutor, Listener {
-	
+
 	@Override
 	public void execute(Listener listener, Event event) {
 		if (!(event instanceof AsyncPlayerChatEvent)) return;
 		AsyncPlayerChatEvent e = (AsyncPlayerChatEvent) event;
-		
+
 		if (BukkitSpeak.useHerochat()) return; // Use Herochat's ChannelChatEvent instead, if using herochat.
 		if (Configuration.TS_MESSAGES_TARGET.getTeamspeakTarget() == TsTarget.NONE) return;
 		if (e.getPlayer() == null || e.getMessage().isEmpty()) return;
-		
+
 		/* Factions check */
 		if (BukkitSpeak.hasFactions() && Configuration.PLUGINS_FACTIONS_PUBLIC_ONLY.getBoolean()) {
 			if (FPlayers.i.get(e.getPlayer()).getChatMode() != ChatMode.PUBLIC) {
 				return;
 			}
 		}
-		
+
 		/* mcMMO check */
 		if (BukkitSpeak.hasMcMMO()) {
 			if (ChatAPI.isUsingPartyChat(e.getPlayer()) && Configuration.PLUGINS_MCMMO_FILTER_PARTY_CHAT.getBoolean()) {
@@ -48,15 +48,15 @@ public class ChatListener implements EventExecutor, Listener {
 				return;
 			}
 		}
-		
+
 		if (!hasPermission(e.getPlayer(), "chat")) return;
-		
+
 		String tsMsg = Messages.MC_EVENT_CHAT.get();
 		tsMsg = new Replacer().addPlayer(e.getPlayer()).addMessage(e.getMessage()).replace(tsMsg);
 		tsMsg = MessageUtil.toTeamspeak(tsMsg, true, Configuration.TS_ALLOW_LINKS.getBoolean());
-		
+
 		if (tsMsg.isEmpty()) return;
-		
+
 		if (Configuration.TS_MESSAGES_TARGET.getTeamspeakTarget() == TsTarget.CHANNEL) {
 			QuerySender qs = new QuerySender(BukkitSpeak.getQuery().getCurrentQueryClientChannelID(),
 					JTS3ServerQuery.TEXTMESSAGE_TARGET_CHANNEL, tsMsg);
@@ -67,7 +67,7 @@ public class ChatListener implements EventExecutor, Listener {
 			Bukkit.getScheduler().runTaskAsynchronously(BukkitSpeak.getInstance(), qs);
 		}
 	}
-	
+
 	private boolean hasPermission(Player player, String perm) {
 		return player.hasPermission("bukkitspeak.sendteamspeak." + perm);
 	}

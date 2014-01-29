@@ -17,7 +17,7 @@ import org.bukkit.entity.Player;
 import de.stefan1200.jts3serverquery.JTS3ServerQuery;
 
 public abstract class SetProperty {
-	
+
 	protected void send(CommandSender sender, Level level, String msg) {
 		String m = msg;
 		if (sender instanceof Player) {
@@ -28,10 +28,10 @@ public abstract class SetProperty {
 			BukkitSpeak.log().log(level, m);
 		}
 	}
-	
+
 	protected void reloadListener() {
 		BukkitSpeak.getQuery().removeAllEvents();
-		
+
 		if (Configuration.TS_ENABLE_SERVER_EVENTS.getBoolean()) {
 			BukkitSpeak.getQuery().addEventNotify(JTS3ServerQuery.EVENT_MODE_SERVER, 0);
 		}
@@ -39,18 +39,16 @@ public abstract class SetProperty {
 			BukkitSpeak.getQuery().addEventNotify(JTS3ServerQuery.EVENT_MODE_TEXTSERVER, 0);
 		}
 		if (Configuration.TS_ENABLE_CHANNEL_EVENTS.getBoolean()) {
-			BukkitSpeak.getQuery().addEventNotify(JTS3ServerQuery.EVENT_MODE_CHANNEL,
-					BukkitSpeak.getQuery().getCurrentQueryClientChannelID());
+			BukkitSpeak.getQuery().addEventNotify(JTS3ServerQuery.EVENT_MODE_CHANNEL, BukkitSpeak.getQuery().getCurrentQueryClientChannelID());
 		}
 		if (Configuration.TS_ENABLE_CHANNEL_MESSAGES.getBoolean()) {
-			BukkitSpeak.getQuery().addEventNotify(JTS3ServerQuery.EVENT_MODE_TEXTCHANNEL,
-					BukkitSpeak.getQuery().getCurrentQueryClientChannelID());
+			BukkitSpeak.getQuery().addEventNotify(JTS3ServerQuery.EVENT_MODE_TEXTCHANNEL, BukkitSpeak.getQuery().getCurrentQueryClientChannelID());
 		}
 		if (Configuration.TS_ENABLE_PRIVATE_MESSAGES.getBoolean()) {
 			BukkitSpeak.getQuery().addEventNotify(JTS3ServerQuery.EVENT_MODE_TEXTPRIVATE, 0);
 		}
 	}
-	
+
 	protected void broadcastMessage(String mcMsg, CommandSender sender) {
 		if (mcMsg == null || mcMsg.isEmpty()) return;
 		for (Player pl : Bukkit.getServer().getOnlinePlayers()) {
@@ -62,16 +60,16 @@ public abstract class SetProperty {
 			BukkitSpeak.log().info(MessageUtil.toMinecraft(mcMsg, false, Configuration.TS_ALLOW_LINKS.getBoolean()));
 		}
 	}
-	
+
 	protected void sendChannelChangeMessage(CommandSender sender) {
 		String mcMsg = Messages.MC_COMMAND_CHANNEL_CHANGE.get();
-		HashMap<String, String> info = BukkitSpeak.getQuery().getInfo(JTS3ServerQuery.INFOMODE_CHANNELINFO,
-				BukkitSpeak.getQuery().getCurrentQueryClientChannelID());
-		
+		int clientId = BukkitSpeak.getQuery().getCurrentQueryClientChannelID();
+		HashMap<String, String> info = BukkitSpeak.getQuery().getInfo(JTS3ServerQuery.INFOMODE_CHANNELINFO, clientId);
+
 		mcMsg = new Replacer().addSender(sender).addChannel(info).replace(mcMsg);
 		broadcastMessage(mcMsg, sender);
 	}
-	
+
 	protected void connectChannel(CommandSender sender) {
 		int cid = BukkitSpeak.getQuery().getCurrentQueryClientChannelID();
 		int clid = BukkitSpeak.getQuery().getCurrentQueryClientID();
@@ -84,19 +82,19 @@ public abstract class SetProperty {
 		}
 		sendChannelChangeMessage(sender);
 	}
-	
+
 	public String getName() {
 		String property = getProperty().getConfigPath();
 		return property.substring(property.lastIndexOf(".") + 1);
 	}
-	
+
 	public abstract Configuration getProperty();
-	
+
 	public abstract String getAllowedInput();
-	
+
 	public abstract String getDescription();
-	
+
 	public abstract boolean execute(CommandSender sender, String arg);
-	
+
 	public abstract List<String> onTabComplete(CommandSender sender, String[] args);
 }

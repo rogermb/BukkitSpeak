@@ -4,7 +4,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public final class MessageUtil {
-	
+
 	private static final String[] COLORS = {"", // 0
 			"[color=#0000AA]", // 1
 			"[color=#00AA00]", // 2
@@ -24,27 +24,27 @@ public final class MessageUtil {
 			"[b]", // 16
 			"[u]", // 17
 			"[i]"}; // 18
-	
+
 	private static final String URL_REGEX = "(?i)(^|[^\\w\\-\\.])(([\\w\\-]+://)?"
 			+ "([\\w\\-]+\\.){1,3}[a-z]{2,4}(/[^\\s\\[]*)?)(?!\\S)";
-	
+
 	private MessageUtil() {};
-	
+
 	public static String toTeamspeak(String input, boolean color, boolean links) {
 		if (input == null) return input;
-		
+
 		boolean colored = false, bold = false, underlined = false, italics = false;
 		String s = input;
 		if (color) {
 			s = s.replaceAll("((&|$)([a-fk-orA-FK-OR0-9]))", "\u00A7$3");
 			s = s.replaceAll("\\[", "\\\\[");
-			
+
 			StringBuilder sb = new StringBuilder(s);
 			Matcher m = Pattern.compile("(\u00A7([a-fk-orA-FK-OR0-9]))").matcher(sb);
 			while (m.find()) {
 				int i = m.start();
 				int j = getIndex(sb.charAt(i + 1));
-				
+
 				if (j <= 15) {
 					if (colored) {
 						sb.insert(i, "[/color]");
@@ -96,16 +96,16 @@ public final class MessageUtil {
 		} else {
 			s = s.replaceAll("((&|$|\u00A7)([a-fk-orA-FK-OR0-9]))", "");
 		}
-		
+
 		if (links) {
 			s = s.replaceAll(URL_REGEX, "$1\\[URL]$2\\[/URL]");
 		} else {
 			s = s.replaceAll(URL_REGEX, "$1");
 		}
-		
+
 		return s;
 	}
-	
+
 	public static String toMinecraft(String input, boolean color, boolean links) {
 		if (input != null) {
 			String s = input;
@@ -124,7 +124,7 @@ public final class MessageUtil {
 		}
 		return null;
 	}
-	
+
 	private static Integer getIndex(char c) {
 		String s = String.valueOf(c);
 		if (s.matches("[0-9a-fA-F]")) {

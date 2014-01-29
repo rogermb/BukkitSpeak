@@ -8,27 +8,27 @@ import net.but2002.minecraft.BukkitSpeak.Configuration.Configuration;
 import org.bukkit.command.CommandSender;
 
 public class SetChannelPassword extends SetProperty {
-	
+
 	private static final Configuration PROPERTY = Configuration.TS_CHANNEL_PASSWORD;
 	private static final String ALLOWED_INPUT = "Any string";
 	private static final String DESCRIPTION = "BukkitSpeak will use this password to enter the selected channel. "
 			+ "'' means no password.";
-	
+
 	@Override
 	public Configuration getProperty() {
 		return PROPERTY;
 	}
-	
+
 	@Override
 	public String getAllowedInput() {
 		return ALLOWED_INPUT;
 	}
-	
+
 	@Override
 	public String getDescription() {
 		return DESCRIPTION;
 	}
-	
+
 	@Override
 	public boolean execute(CommandSender sender, String arg) {
 		if (!(Configuration.TS_ENABLE_CHANNEL_EVENTS.getBoolean())
@@ -42,7 +42,7 @@ public class SetChannelPassword extends SetProperty {
 		PROPERTY.set(s);
 		return true;
 	}
-	
+
 	@Override
 	public List<String> onTabComplete(CommandSender sender, String[] args) {
 		return null;

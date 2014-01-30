@@ -179,9 +179,9 @@ public class TeamspeakCommandSender implements CommandSender {
 
 		private boolean done;
 
-		public BufferSender(List<String> outBuffer, Map<String, String> client) {
-			buffer = outBuffer;
-			clid = Integer.valueOf(client.get("clid"));
+		public BufferSender(List<String> outBufferList, Map<String, String> clientInfo) {
+			buffer = outBufferList;
+			clid = Integer.valueOf(clientInfo.get("clid"));
 		}
 
 		public void run() {

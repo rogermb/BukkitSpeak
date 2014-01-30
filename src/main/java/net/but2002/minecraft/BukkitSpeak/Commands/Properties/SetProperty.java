@@ -39,10 +39,12 @@ public abstract class SetProperty {
 			BukkitSpeak.getQuery().addEventNotify(JTS3ServerQuery.EVENT_MODE_TEXTSERVER, 0);
 		}
 		if (Configuration.TS_ENABLE_CHANNEL_EVENTS.getBoolean()) {
-			BukkitSpeak.getQuery().addEventNotify(JTS3ServerQuery.EVENT_MODE_CHANNEL, BukkitSpeak.getQuery().getCurrentQueryClientChannelID());
+			BukkitSpeak.getQuery().addEventNotify(JTS3ServerQuery.EVENT_MODE_CHANNEL,
+					BukkitSpeak.getQuery().getCurrentQueryClientChannelID());
 		}
 		if (Configuration.TS_ENABLE_CHANNEL_MESSAGES.getBoolean()) {
-			BukkitSpeak.getQuery().addEventNotify(JTS3ServerQuery.EVENT_MODE_TEXTCHANNEL, BukkitSpeak.getQuery().getCurrentQueryClientChannelID());
+			BukkitSpeak.getQuery().addEventNotify(JTS3ServerQuery.EVENT_MODE_TEXTCHANNEL,
+					BukkitSpeak.getQuery().getCurrentQueryClientChannelID());
 		}
 		if (Configuration.TS_ENABLE_PRIVATE_MESSAGES.getBoolean()) {
 			BukkitSpeak.getQuery().addEventNotify(JTS3ServerQuery.EVENT_MODE_TEXTPRIVATE, 0);

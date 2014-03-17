@@ -49,6 +49,13 @@ public class ChatListener implements EventExecutor, Listener {
 			}
 		}
 
+		/* If all players on the server will receive this message, it should be considered safe to relay */
+		if (Configuration.PLUGINS_CHAT_RECIPIENTS_MUST_BE_EVERYONE.getBoolean()) {
+			if (e.getRecipients().size() != Bukkit.getOnlinePlayers().length) {
+				return;
+			}
+		}
+
 		if (!hasPermission(e.getPlayer(), "chat")) return;
 
 		String tsMsg = Messages.MC_EVENT_CHAT.get();

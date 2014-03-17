@@ -48,6 +48,8 @@ public enum Configuration {
 	TS_COMMANDS_INTERNAL_LIST("teamspeak-commands.internal.ListCommandEnabled", true),
 	TS_COMMANDS_INTERNAL_PM("teamspeak-commands.internal.PmCommandEnabled", true),
 
+	PLUGINS_CHAT_RECIPIENTS_MUST_BE_EVERYONE("plugin-interaction.OnlyRelayChatAllPlayersWillReceive", true),
+
 	PLUGINS_FACTIONS_PUBLIC_ONLY("plugin-interaction.Factions.public-only", false),
 
 	PLUGINS_HEROCHAT_ENABLED("plugin-interaction.Herochat.enabled", false),

@@ -1,5 +1,7 @@
 package net.but2002.minecraft.BukkitSpeak;
 
+import java.io.File;
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -139,7 +141,7 @@ public class BukkitSpeak extends JavaPlugin {
 	}
 
 	public static Logger log() {
-		return instance.getLogger();
+		return instance.logger;
 	}
 
 	public static JTS3ServerQuery getQuery() {
@@ -309,5 +311,36 @@ public class BukkitSpeak extends JavaPlugin {
 			e.printStackTrace();
 			return false;
 		}
+	}
+
+	public void setUpForTesting() throws NoSuchFieldException, SecurityException, IllegalArgumentException, IllegalAccessException {
+		instance = this;
+		logger = Logger.getGlobal();
+		logger.info("Setting up for testing.");
+		final File dataFolder = new File("BukkitSpeak");
+		dataFolder.mkdir();
+
+		Field folder = JavaPlugin.class.getDeclaredField("dataFolder");
+		folder.setAccessible(true);
+		folder.set(this, dataFolder);
+
+		Field file = JavaPlugin.class.getDeclaredField("configFile");
+		file.setAccessible(true);
+		file.set(this, new File(dataFolder, "config.yml"));
+
+		Field classLoader = JavaPlugin.class.getDeclaredField("classLoader");
+		classLoader.setAccessible(true);
+		classLoader.set(this, BukkitSpeak.class.getClassLoader());
+
+		Configuration.reload();
+		Messages.reload();
+
+		query = new JTS3ServerQuery();
+		query.DEBUG = true;
+		clients = new ClientList();
+		channels = new ChannelList();
+		permissionsHelper = new PermissionsHelper();
+
+		ts = new TeamspeakListener();
 	}
 }

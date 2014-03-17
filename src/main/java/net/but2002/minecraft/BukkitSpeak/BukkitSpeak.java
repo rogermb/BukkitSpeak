@@ -315,7 +315,7 @@ public class BukkitSpeak extends JavaPlugin {
 
 	public void setUpForTesting() throws NoSuchFieldException, SecurityException, IllegalArgumentException, IllegalAccessException {
 		instance = this;
-		logger = Logger.getGlobal();
+		logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 		logger.info("Setting up for testing.");
 		final File dataFolder = new File("BukkitSpeak");
 		dataFolder.mkdir();

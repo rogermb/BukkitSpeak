@@ -33,7 +33,7 @@ public class CommandList extends TeamspeakCommand {
 		String tsMsg = Messages.TS_COMMAND_LIST.get();
 		String list = online.toString();
 
-		tsMsg = new Replacer().addSender(sender).addList(list).replace(tsMsg);
+		tsMsg = new Replacer().addSender(sender).addList(list).addCount(players.length).replace(tsMsg);
 		tsMsg = MessageUtil.toTeamspeak(tsMsg, true, Configuration.TS_ALLOW_LINKS.getBoolean());
 
 		if (tsMsg.isEmpty()) return;

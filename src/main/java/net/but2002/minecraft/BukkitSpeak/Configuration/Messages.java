@@ -170,7 +170,7 @@ public enum Messages {
 
 	// Teamspeak commands
 	TS_COMMAND_LIST("TeamspeakCommand.List.ToTeamspeakUser",
-			"Currently online: %list%"),
+			"Currently online (%count%): %list%"),
 
 	TS_COMMAND_PM("TeamspeakCommand.Pm.ToTeamspeakUser",
 			"&4Me &r-> &4%player_displayname%&r: %msg%"),

@@ -86,7 +86,7 @@ MinecraftCommand:
       ToMinecraftUser: '&4The message is too long! (> 100 characters)'
 TeamspeakCommand:
   List:
-    ToTeamspeakUser: 'Currently online: %list%'
+    ToTeamspeakUser: 'Currently online (%count%): %list%'
   Pm:
     ToTeamspeakUser: '&4Me &r-> &4%player_displayname%&r: %msg%'
     ConversationStarted:

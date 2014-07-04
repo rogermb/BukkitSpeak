@@ -72,11 +72,11 @@ public enum Messages {
 
 	// Minecraft commands
 	MC_COMMAND_LIST_SERVER("MinecraftCommand.List.Server.ToMinecraftUser",
-			"&aCurrently online: &e%list%",
+			"&aCurrently online (&e%count%&a): &e%list%",
 			new String[] {"messages.MinecraftCommandMessages.OnlineList"}),
 
 	MC_COMMAND_LIST_CHANNEL("MinecraftCommand.List.Channel.ToMinecraftUser",
-			"&aCurrently in the channel: &e%list%",
+			"&aCurrently in the channel (&e%count%&a): &e%list%",
 			new String[] {"messages.MinecraftCommandMessages.ChannelList"}),
 
 	MC_COMMAND_MUTE("MinecraftCommand.Mute.Enable.ToMinecraftUser",

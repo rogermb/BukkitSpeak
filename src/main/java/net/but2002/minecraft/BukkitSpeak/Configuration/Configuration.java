@@ -37,6 +37,7 @@ public enum Configuration {
 			new String[] {"teamspeak.ListenToPrivateMessages"}),
 	TS_ALLOW_LINKS("teamspeak.AllowLinksInMessages", true),
 	TS_MESSAGES_TARGET("teamspeak.SendChatToTeamspeak", "channel"),
+	TS_LIST_GROUPING("teamspeak.GroupClientListByServerGroup", false),
 	TS_LOGGING("teamspeak.LogChatInConsole", true),
 	TS_CHAT_LISTENER_PRIORITY("teamspeak.ChatListenerPriority", "MONITOR"),
 	TS_DEBUGGING("teamspeak.Debug", false),

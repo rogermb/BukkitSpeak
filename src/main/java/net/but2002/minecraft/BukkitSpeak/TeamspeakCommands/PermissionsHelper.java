@@ -100,10 +100,10 @@ public final class PermissionsHelper implements Runnable {
 
 				// Don't waste time if someone is blocked anyways
 				if (blocked.booleanValue()) {
-					serverGroups.put(id, new ServerGroup(false));
+					serverGroups.put(id, new ServerGroup(group.get("name") ,false));
 					perms.put(id, new HashMap<String, Boolean>());
 				} else {
-					serverGroups.put(id, new ServerGroup(op.booleanValue(), pluginWhitelist, commandBlacklist));
+					serverGroups.put(id, new ServerGroup(group.get("name"), op.booleanValue(), pluginWhitelist, commandBlacklist));
 					perms.put(id, parseConfigSection(cs));
 				}
 
@@ -119,7 +119,7 @@ public final class PermissionsHelper implements Runnable {
 				section.set("command-blacklist", (List<String>) Lists.newArrayList("SomeBlockedCommand"));
 				section.set("inherits", (List<String>) new ArrayList<String>());
 
-				serverGroups.put(id, new ServerGroup());
+				serverGroups.put(id, new ServerGroup(group.get("name")));
 				perms.put(id, parseConfigSection(section.getConfigurationSection("permissions")));
 			}
 		}
@@ -225,7 +225,37 @@ public final class PermissionsHelper implements Runnable {
 		return map;
 	}
 
-	public ServerGroup getServerGroup(String id) {
+	public ServerGroup getServerGroup(String entry) {
+		if ((entry == null) || (entry.isEmpty())) return null;
+		if (!entry.contains(",")) {
+			return getSingleServerGroup(entry);
+		}
+
+		ServerGroup combined = new ServerGroup("");
+		StringBuilder groupName = new StringBuilder("[");
+		for (String group : entry.split(",")) {
+			ServerGroup sg = getSingleServerGroup(group);
+			if (sg == null) {
+				BukkitSpeak.log().warning("Could not resolve server group " + group);
+				continue;
+			}
+
+			// If one group is blocked, the resulting group should be blocked, too
+			if (sg.isBlocked()) return new ServerGroup(sg.getName(), true);
+
+			groupName.append(sg.getName()).append(", ");
+			combined.setOp(combined.isOp() || sg.isOp());
+			combined.getPermissions().putAll(sg.getPermissions());
+			combined.getPluginWhitelist().addAll(sg.getPluginWhitelist());
+			combined.getCommandBlacklist().addAll(sg.getCommandBlacklist());
+		}
+
+		groupName.setLength(groupName.length() - 2);
+		combined.setName(groupName.append("]").toString());
+		return combined;
+	}
+
+	public ServerGroup getSingleServerGroup(String id) {
 		return serverGroupMap.get(id);
 	}
 

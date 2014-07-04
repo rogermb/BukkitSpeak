@@ -27,6 +27,7 @@ teamspeak:
   SendChatToTeamspeak: channel
   
   # Can only be true or false
+  GroupClientListByServerGroup: false
   LogChatInConsole: true
   
   # The priority of the chat listener.

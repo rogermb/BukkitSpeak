@@ -57,6 +57,11 @@ public class Replacer {
 		return this;
 	}
 
+	public Replacer addCount(int count) {
+		repl.put("count", String.valueOf(count));
+		return this;
+	}
+
 	public Replacer addList(String list) {
 		repl.put("list", list);
 		return this;

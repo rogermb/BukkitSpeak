@@ -34,7 +34,7 @@ public class TeamspeakCommandEvent extends TeamspeakEvent {
 		String commandName = split[0].toLowerCase();
 		String[] args = Arrays.copyOfRange(split, 1, split.length);
 
-		ServerGroup sg = getServerGroup(getUser().get("client_servergroups"));
+		ServerGroup sg = BukkitSpeak.getPermissionsHelper().getServerGroup(getUser().get("client_servergroups"));
 		if (sg == null) {
 			BukkitSpeak.log().warning("Could not resolve server group(s) for user \""
 					+ getUser().get("client_nickname") + "\".");
@@ -93,30 +93,5 @@ public class TeamspeakCommandEvent extends TeamspeakEvent {
 			BukkitSpeak.log().info("TS client \"" + getClientName() + "\" executed command \"" + cmd + "\".");
 		}
 		Bukkit.dispatchCommand(tscs, cmd);
-	}
-
-	private ServerGroup getServerGroup(String entry) {
-		if ((entry == null) || (entry.isEmpty())) return null;
-		if (entry.contains(",")) {
-			ServerGroup combined = new ServerGroup();
-			for (String group : entry.split(",")) {
-				ServerGroup sg = BukkitSpeak.getPermissionsHelper().getServerGroup(group);
-				if (sg == null) {
-					BukkitSpeak.log().warning("Could not resolve server group " + group);
-					continue;
-				}
-
-				// If one group is blocked, the resulting group should be blocked, too
-				if (sg.isBlocked()) return new ServerGroup(true);
-
-				combined.setOp(combined.isOp() || sg.isOp());
-				combined.getPermissions().putAll(sg.getPermissions());
-				combined.getPluginWhitelist().addAll(sg.getPluginWhitelist());
-				combined.getCommandBlacklist().addAll(sg.getCommandBlacklist());
-			}
-			return combined;
-		} else {
-			return BukkitSpeak.getPermissionsHelper().getServerGroup(entry);
-		}
 	}
 }

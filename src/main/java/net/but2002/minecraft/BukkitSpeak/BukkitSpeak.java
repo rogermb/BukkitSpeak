@@ -194,7 +194,7 @@ public class BukkitSpeak extends JavaPlugin {
 		if (isFloodBanned()) return;
 		channels.updateAll();
 		if (isFloodBanned()) return;
-		if (Configuration.TS_COMMANDS_ENABLED.getBoolean()) {
+		if (Configuration.TS_COMMANDS_ENABLED.getBoolean() || Configuration.TS_LIST_GROUPING.getBoolean()) {
 			permissionsHelper.run();
 		}
 		if (isFloodBanned()) return;

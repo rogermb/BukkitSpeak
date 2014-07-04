@@ -34,9 +34,9 @@ MinecraftEvent:
 MinecraftCommand:
   List:
     Server:
-      ToMinecraftUser: '&aCurrently online: &e%list%'
+      ToMinecraftUser: '&aCurrently online (&e%count%&a): &e%list%'
     Channel:
-      ToMinecraftUser: '&aCurrently in the channel: &e%list%'
+      ToMinecraftUser: '&aCurrently in the channel (&e%count%&a): &e%list%'
   Mute:
     Enable:
       ToMinecraftUser: '&aYou are now muted.'

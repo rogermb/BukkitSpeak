@@ -34,7 +34,7 @@ public final class MessageUtil {
 		if (input == null) return input;
 
 		boolean colored = false, bold = false, underlined = false, italics = false;
-		String s = input;
+		String s = Matcher.quoteReplacement(input);;
 		if (color) {
 			s = s.replaceAll("((&|$)([a-fk-orA-FK-OR0-9]))", "\u00A7$3");
 			s = s.replaceAll("\\[", "\\\\[");
@@ -104,6 +104,50 @@ public final class MessageUtil {
 		}
 
 		return s;
+	}
+
+	public static String getFormatString(String input) {
+		char color = 'f';
+		boolean bold = false, underlined = false, italics = false, stroke = false, magic = false;
+
+		String s = Matcher.quoteReplacement(input);
+		s = s.replaceAll("((&|$)([a-fk-orA-FK-OR0-9]))", "\u00A7$3");
+
+		Matcher m = Pattern.compile("((&|$|\u00A7)([a-fk-orA-FK-OR0-9]))").matcher(s);
+		while (m.find()) {
+			char formatChar = s.charAt(m.start() + 1);
+			int j = getIndex(formatChar);
+
+			if (j <= 15) {
+				color = formatChar;
+			} else if (j == 16) {
+				bold = true;
+			} else if (j == 17) {
+				underlined = true;
+			} else if (j == 18) {
+				italics = true;
+			} else if (j == 19) {
+				stroke = true;
+			} else if (j == 20) {
+				magic = true;
+			} else {
+				color = 'f';
+				bold = false;
+				italics = false;
+				underlined = false;
+				stroke = false;
+				magic = false;
+			}
+		}
+
+		StringBuilder result = new StringBuilder("&");
+		result.append(color);
+		if (bold) result.append("&l");
+		if (underlined) result.append("&n");
+		if (italics) result.append("&o");
+		if (stroke) result.append("&m");
+		if (magic) result.append("&k");
+		return result.toString();
 	}
 
 	public static String toMinecraft(String input, boolean color, boolean links) {

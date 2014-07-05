@@ -313,7 +313,7 @@ public class BukkitSpeak extends JavaPlugin {
 		}
 	}
 
-	public void setUpForTesting() throws NoSuchFieldException, SecurityException, IllegalArgumentException, IllegalAccessException {
+	public void setUpForTesting() throws NoSuchFieldException, IllegalAccessException {
 		instance = this;
 		logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 		logger.info("Setting up for testing.");

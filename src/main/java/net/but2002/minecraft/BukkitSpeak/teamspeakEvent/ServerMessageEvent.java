@@ -73,6 +73,7 @@ public class ServerMessageEvent extends TeamspeakEvent {
 			if (MessageUtil.toMinecraft(Configuration.TS_CONSOLE_NAME.getString(), false, false).equals(p)) {
 				BukkitSpeak.log().info(MessageUtil.toMinecraft(m, false, Configuration.TS_ALLOW_LINKS.getBoolean()));
 			} else {
+				@SuppressWarnings("deprecation")
 				Player pl = BukkitSpeak.getInstance().getServer().getPlayerExact(p);
 				if (pl == null) {
 					String tsMsg = Messages.TS_EVENT_PRIVATE_MESSAGE_RECIPIENT_OFFLINE.get();

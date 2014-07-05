@@ -24,7 +24,10 @@ public class CommandPm extends TeamspeakCommand {
 			return;
 		}
 		String mcUser = args[0];
+
+		@SuppressWarnings("deprecation") // Thanks Bukkit! Great use of deprecation!
 		Player p = BukkitSpeak.getInstance().getServer().getPlayer(mcUser);
+
 		if (p == null) {
 			String noUser = Messages.TS_COMMAND_PM_NO_PLAYER_BY_THIS_NAME.get();
 			noUser = new Replacer().addClient(sender.getClientInfo()).addInput(mcUser).replace(noUser);

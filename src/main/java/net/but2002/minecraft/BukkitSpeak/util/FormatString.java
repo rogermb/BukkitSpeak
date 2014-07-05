@@ -29,14 +29,14 @@ public enum FormatString {
 	private final String teamspeakBB;
 	private final String colorValue;
 
-	FormatString(char minecraftChar, String teamspeakBB) {
-		this(minecraftChar, teamspeakBB, null);
+	FormatString(char mcChar, String tsBB) {
+		this(mcChar, tsBB, null);
 	}
 
-	FormatString(char minecraftChar, String teamspeakBB, String colorValue) {
-		this.minecraftChar = minecraftChar;
-		this.teamspeakBB = teamspeakBB;
-		this.colorValue = colorValue;
+	FormatString(char mcChar, String tsBB, String color) {
+		minecraftChar = mcChar;
+		teamspeakBB = tsBB;
+		colorValue = color;
 	}
 
 	public static FormatString fromChar(char c) {

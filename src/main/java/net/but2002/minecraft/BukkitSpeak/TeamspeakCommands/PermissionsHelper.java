@@ -65,7 +65,9 @@ public final class PermissionsHelper implements Runnable {
 		for (HashMap<String, String> group : groups) {
 			String id = group.get("sgid");
 			String type = group.get("type");
-			if ((type == null) || !("1".equals(type))) continue;
+			String name = group.get("name");
+			if (name == null || name.isEmpty()) continue;
+			if (type == null || !("1".equals(type))) continue;
 
 			if (permissionsConfig.isConfigurationSection(id)) {
 				ConfigurationSection section = permissionsConfig.getConfigurationSection(id);
@@ -100,10 +102,10 @@ public final class PermissionsHelper implements Runnable {
 
 				// Don't waste time if someone is blocked anyways
 				if (blocked.booleanValue()) {
-					serverGroups.put(id, new ServerGroup(group.get("name") ,false));
+					serverGroups.put(id, new ServerGroup(name, true));
 					perms.put(id, new HashMap<String, Boolean>());
 				} else {
-					serverGroups.put(id, new ServerGroup(group.get("name"), op.booleanValue(), pluginWhitelist, commandBlacklist));
+					serverGroups.put(id, new ServerGroup(name, op.booleanValue(), pluginWhitelist, commandBlacklist));
 					perms.put(id, parseConfigSection(cs));
 				}
 

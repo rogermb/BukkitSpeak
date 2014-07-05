@@ -34,7 +34,7 @@ public final class MessageUtil {
 		if (input == null) return input;
 
 		boolean colored = false, bold = false, underlined = false, italics = false;
-		String s = Matcher.quoteReplacement(input);;
+		String s = Matcher.quoteReplacement(input);
 		if (color) {
 			s = s.replaceAll("((&|$)([a-fk-orA-FK-OR0-9]))", "\u00A7$3");
 			s = s.replaceAll("\\[", "\\\\[");

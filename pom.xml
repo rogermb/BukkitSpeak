@@ -1,119 +1,120 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-  <modelVersion>4.0.0</modelVersion>
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
 
-  <groupId>me.firedroide.plugins</groupId>
-  <artifactId>BukkitSpeak</artifactId>
-  <version>0.68-SNAPSHOT</version>
-  <packaging>jar</packaging>
+	<groupId>me.firedroide.plugins</groupId>
+	<artifactId>BukkitSpeak</artifactId>
+	<version>0.68-SNAPSHOT</version>
+	<packaging>jar</packaging>
 
-  <name>BukkitSpeak</name>
-  <url>http://dev.bukkit.org/server-mods/bukkitspeak/</url>
+	<name>BukkitSpeak</name>
+	<url>http://dev.bukkit.org/server-mods/bukkitspeak/</url>
 
-  <repositories>
-    <repository>
-      <id>bukkit-repo</id>
-      <url>http://repo.bukkit.org/content/groups/public</url>
-      <releases>
-        <updatePolicy>always</updatePolicy>
-      </releases>
-      <snapshots>
-        <updatePolicy>always</updatePolicy>
-      </snapshots>
-    </repository>
-    <repository>
-      <id>stutz-repo</id>
-      <url>http://repo.stutzfam.ch/content/groups/public</url>
-      <releases>
-        <updatePolicy>always</updatePolicy>
-      </releases>
-      <snapshots>
-        <updatePolicy>always</updatePolicy>
-      </snapshots>
-    </repository>
-  </repositories>
+	<repositories>
+		<repository>
+			<id>bukkit-repo</id>
+			<url>http://repo.bukkit.org/content/groups/public</url>
+			<releases>
+				<updatePolicy>always</updatePolicy>
+			</releases>
+			<snapshots>
+				<updatePolicy>always</updatePolicy>
+			</snapshots>
+		</repository>
+		<repository>
+			<id>stutz-repo</id>
+			<url>http://repo.stutzfam.ch/content/groups/public</url>
+			<releases>
+				<updatePolicy>always</updatePolicy>
+			</releases>
+			<snapshots>
+				<updatePolicy>always</updatePolicy>
+			</snapshots>
+		</repository>
+	</repositories>
 
-  <dependencies>
-    <dependency>
-      <groupId>org.bukkit</groupId>
-      <artifactId>bukkit</artifactId>
-      <version>1.7.2-R0.3-SNAPSHOT</version>
-    </dependency>
-    <dependency>
-      <groupId>com.massivecraft</groupId>
-      <artifactId>Factions</artifactId>
-      <version>1.6.9.5</version>
-    </dependency>
-    <dependency>
-      <groupId>com.dthielke</groupId>
-      <artifactId>herochat</artifactId>
-      <version>5.6.7</version>
-    </dependency>
-    <dependency>
-        <groupId>com.gmail.nossr50.mcMMO</groupId>
-        <artifactId>mcMMO</artifactId>
-        <version>1.4.07</version>
-    </dependency>
-    <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
-      <version>4.11</version>
-    </dependency>
-  </dependencies>
+	<dependencies>
+		<dependency>
+			<groupId>org.bukkit</groupId>
+			<artifactId>bukkit</artifactId>
+			<version>1.7.2-R0.3-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>com.massivecraft</groupId>
+			<artifactId>Factions</artifactId>
+			<version>1.6.9.5</version>
+		</dependency>
+		<dependency>
+			<groupId>com.dthielke</groupId>
+			<artifactId>herochat</artifactId>
+			<version>5.6.7</version>
+		</dependency>
+		<dependency>
+			<groupId>com.gmail.nossr50.mcMMO</groupId>
+			<artifactId>mcMMO</artifactId>
+			<version>1.4.07</version>
+		</dependency>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>4.11</version>
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
 
-  <build>
-    <finalName>BukkitSpeak</finalName>
-    
-    <resources>
-      <resource>
-        <targetPath>.</targetPath>
-        <filtering>true</filtering>
-        <directory>src/main/resources/</directory>
-        <includes>
-          <include>*.yml</include>
-        </includes>
-      </resource>
-    </resources>
-    
-    <plugins>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-compiler-plugin</artifactId>
-        <version>2.5.1</version>
-        <configuration>
-          <source>1.6</source>
-          <target>1.6</target>
-        </configuration>
-      </plugin>
-      
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-checkstyle-plugin</artifactId>
-        <version>2.9.1</version>
-        <configuration>
-          <configLocation>config/checkstyle.xml</configLocation>
-          <suppressionsLocation>config/checkstyle-suppressions.xml</suppressionsLocation>
-          <suppressionsFileExpression>config/checkstyle-suppressions.xml</suppressionsFileExpression>
-        </configuration>
-      </plugin>
-    </plugins>
-  </build>
+	<build>
+		<finalName>BukkitSpeak</finalName>
 
-  <ciManagement>
-    <system>Jenkins</system>
-    <url>http://ci.stutzfam.ch/</url>
-  </ciManagement>
-  
-  <distributionManagement>
-    <repository>
-      <id>stutz-repo</id>
-      <name>Nexus Releases</name>
-      <url>http://repo.stutzfam.ch/content/repositories/releases/</url>
-    </repository>
-    <snapshotRepository>
-      <id>stutz-repo</id>
-      <name>Nexus Snapshots</name>
-      <url>http://repo.stutzfam.ch/content/repositories/snapshots/</url>
-    </snapshotRepository>
-  </distributionManagement>
+		<resources>
+			<resource>
+				<targetPath>.</targetPath>
+				<filtering>true</filtering>
+				<directory>src/main/resources/</directory>
+				<includes>
+					<include>*.yml</include>
+				</includes>
+			</resource>
+		</resources>
+
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>2.5.1</version>
+				<configuration>
+					<source>1.6</source>
+					<target>1.6</target>
+				</configuration>
+			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-checkstyle-plugin</artifactId>
+				<version>2.9.1</version>
+				<configuration>
+					<configLocation>config/checkstyle.xml</configLocation>
+					<suppressionsLocation>config/checkstyle-suppressions.xml</suppressionsLocation>
+					<suppressionsFileExpression>config/checkstyle-suppressions.xml</suppressionsFileExpression>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+
+	<ciManagement>
+		<system>Jenkins</system>
+		<url>http://ci.stutzfam.ch/</url>
+	</ciManagement>
+
+	<distributionManagement>
+		<repository>
+			<id>stutz-repo</id>
+			<name>Nexus Releases</name>
+			<url>http://repo.stutzfam.ch/content/repositories/releases/</url>
+		</repository>
+		<snapshotRepository>
+			<id>stutz-repo</id>
+			<name>Nexus Snapshots</name>
+			<url>http://repo.stutzfam.ch/content/repositories/snapshots/</url>
+		</snapshotRepository>
+	</distributionManagement>
 </project>

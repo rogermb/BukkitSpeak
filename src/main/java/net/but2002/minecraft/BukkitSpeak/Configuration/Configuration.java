@@ -22,7 +22,7 @@ public enum Configuration {
 	MAIN_PASSWORD("main.QueryPassword", "123456"),
 
 	TS_NICKNAME("teamspeak.TeamspeakNickname", "Minecraft"),
-	TS_CONSOLE_NAME("teamspeak.ConsoleName", "&eServer"),
+	TS_CONSOLE_NAME("teamspeak.ConsoleName", "&4Server"),
 	TS_CHANNEL_ID("teamspeak.ChannelID", 0),
 	TS_CHANNEL_PASSWORD("teamspeak.ChannelPassword", ""),
 	TS_ENABLE_SERVER_EVENTS("teamspeak.SendServerEventsToMinecraft", true,

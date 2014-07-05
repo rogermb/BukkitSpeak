@@ -1,29 +1,12 @@
 package net.but2002.minecraft.BukkitSpeak.util;
 
+import java.util.Deque;
+import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public final class MessageUtil {
-
-	private static final String[] COLORS = {"", // 0
-			"[color=#0000AA]", // 1
-			"[color=#00AA00]", // 2
-			"[color=#00AAAA]", // 3
-			"[color=#AA0000]", // 4
-			"[color=#AA00AA]", // 5
-			"[color=#EEAA00]", // 6
-			"[color=#999999]", // 7
-			"[color=#555555]", // 8
-			"[color=#4444FF]", // 9
-			"[color=#44DD44]", // 10
-			"[color=#3399FF]", // 11
-			"[color=#FF3333]", // 12
-			"[color=#FF33FF]", // 13
-			"[color=#DDBB00]", // 14
-			"[color=#FFFFFF]", // 15
-			"[b]", // 16
-			"[u]", // 17
-			"[i]"}; // 18
 
 	private static final String URL_REGEX = "(?i)(^|[^\\w\\-\\.])(([\\w\\-]+://)?"
 			+ "([\\w\\-]+\\.){1,3}[a-z]{2,4}(/[^\\s\\[]*)?)(?!\\S)";
@@ -31,70 +14,36 @@ public final class MessageUtil {
 	private MessageUtil() {};
 
 	public static String toTeamspeak(String input, boolean color, boolean links) {
-		if (input == null) return input;
+		if (input == null) return null;
 
-		boolean colored = false, bold = false, underlined = false, italics = false;
-		String s = Matcher.quoteReplacement(input);
+		String s = input;
 		if (color) {
-			s = s.replaceAll("((&|$)([a-fk-orA-FK-OR0-9]))", "\u00A7$3");
+			s = s.replaceAll("(&|$)([a-fk-orA-FK-OR0-9])", "\u00A7$2");
 			s = s.replaceAll("\\[", "\\\\[");
 
-			StringBuilder sb = new StringBuilder(s);
-			Matcher m = Pattern.compile("(\u00A7([a-fk-orA-FK-OR0-9]))").matcher(sb);
-			while (m.find()) {
-				int i = m.start();
-				int j = getIndex(sb.charAt(i + 1));
+			StringBuilder out = new StringBuilder();
+			Deque<FormatString> deque = new LinkedList<FormatString>();
+			Matcher m = Pattern.compile("\u00A7[a-fk-orA-FK-OR0-9]").matcher(s);
 
-				if (j <= 15) {
-					if (colored) {
-						sb.insert(i, "[/color]");
-						i += 8;
-					}
-					sb.replace(i, i + 2, COLORS[j]);
-					colored = (j != 0);
-				} else if (j == 16) {
-					if (bold) {
-						sb.insert(i, "[/b]");
-						i += 4;
-					}
-					sb.replace(i, i + 2, COLORS[j]);
-					bold = true;
-				} else if (j == 17) {
-					if (underlined) {
-						sb.insert(i, "[/u]");
-						i += 4;
-					}
-					sb.replace(i, i + 2, COLORS[j]);
-					underlined = true;
-				} else if (j == 18) {
-					if (italics) {
-						sb.insert(i, "[/i]");
-						i += 4;
-					}
-					sb.replace(i, i + 2, COLORS[j]);
-					italics = true;
-				} else if (j == 19 || j == 20) {
-					sb.replace(i, i + 2, "");
+			int previousIndex = 0;
+			while (m.find()) {
+				FormatString format = FormatString.fromChar(s.charAt(m.start() + 1));
+				out.append(s.substring(previousIndex, m.start()));
+
+				if (format == FormatString.RESET) {
+					out.append(resetStack(deque));
 				} else {
-					sb.replace(i, i + 2, "");
-					if (underlined) sb.insert(i, "[/u]");
-					if (italics) sb.insert(i, "[/i]");
-					if (bold) sb.insert(i, "[/b]");
-					if (colored) sb.insert(i, "[/color]");
-					colored = false;
-					bold = false;
-					italics = false;
-					underlined = false;
+					out.append(pushStack(deque, format));
 				}
-				m.reset(sb);
+
+				previousIndex = m.start() + 2;
 			}
-			if (colored) sb.append("[/color]");
-			if (bold) sb.append("[/b]");
-			if (italics) sb.append("[/i]");
-			if (underlined) sb.append("[/u]");
-			s = sb.toString();
+
+			out.append(s.substring(previousIndex));
+			out.append(resetStack(deque));
+			s = out.toString();
 		} else {
-			s = s.replaceAll("((&|$|\u00A7)([a-fk-orA-FK-OR0-9]))", "");
+			s = s.replaceAll("(&|$|\u00A7)[a-fk-orA-FK-OR0-9]", "");
 		}
 
 		if (links) {
@@ -107,46 +56,24 @@ public final class MessageUtil {
 	}
 
 	public static String getFormatString(String input) {
-		char color = 'f';
-		boolean bold = false, underlined = false, italics = false, stroke = false, magic = false;
+		String s = input.replaceAll("(&|$)([a-fk-orA-FK-OR0-9])", "\u00A7$2");
+		Deque<FormatString> deque = new LinkedList<FormatString>();
+		Matcher m = Pattern.compile("\u00A7[a-fk-orA-FK-OR0-9]").matcher(s);
 
-		String s = Matcher.quoteReplacement(input);
-		s = s.replaceAll("((&|$)([a-fk-orA-FK-OR0-9]))", "\u00A7$3");
-
-		Matcher m = Pattern.compile("((&|$|\u00A7)([a-fk-orA-FK-OR0-9]))").matcher(s);
 		while (m.find()) {
-			char formatChar = s.charAt(m.start() + 1);
-			int j = getIndex(formatChar);
+			FormatString format = FormatString.fromChar(s.charAt(m.start() + 1));
 
-			if (j <= 15) {
-				color = formatChar;
-			} else if (j == 16) {
-				bold = true;
-			} else if (j == 17) {
-				underlined = true;
-			} else if (j == 18) {
-				italics = true;
-			} else if (j == 19) {
-				stroke = true;
-			} else if (j == 20) {
-				magic = true;
+			if (format == FormatString.RESET) {
+				resetStack(deque);
 			} else {
-				color = 'f';
-				bold = false;
-				italics = false;
-				underlined = false;
-				stroke = false;
-				magic = false;
+				pushStack(deque, format);
 			}
 		}
 
-		StringBuilder result = new StringBuilder("&");
-		result.append(color);
-		if (bold) result.append("&l");
-		if (underlined) result.append("&n");
-		if (italics) result.append("&o");
-		if (stroke) result.append("&m");
-		if (magic) result.append("&k");
+		StringBuilder result = new StringBuilder();
+		for (Iterator<FormatString> reverse = deque.descendingIterator(); reverse.hasNext();) {
+			result.append(reverse.next().getMinecraftFormatString());
+		}
 		return result.toString();
 	}
 
@@ -154,7 +81,7 @@ public final class MessageUtil {
 		if (input != null) {
 			String s = input;
 			if (color) {
-				s = s.replaceAll("((&|$)([a-fk-orA-FK-OR0-9]))", "\u00A7$3");
+				s = s.replaceAll("(&|$)([a-fk-orA-FK-OR0-9])", "\u00A7$2");
 			} else {
 				s = s.replaceAll("((&|$|\u00A7)([a-fk-orA-FK-OR0-9]))", "");
 			}
@@ -169,22 +96,48 @@ public final class MessageUtil {
 		return null;
 	}
 
-	private static Integer getIndex(char c) {
-		String s = String.valueOf(c);
-		if (s.matches("[0-9a-fA-F]")) {
-			return Integer.valueOf(s, 16);
-		} else if (s.equalsIgnoreCase("l")) {
-			return 16;
-		} else if (s.equalsIgnoreCase("n")) {
-			return 17;
-		} else if (s.equalsIgnoreCase("o")) {
-			return 18;
-		} else if (s.equalsIgnoreCase("m")) {
-			return 19;
-		} else if (s.equalsIgnoreCase("k")) {
-			return 20;
-		} else {
-			return 21;
+	private static String pushStack(Deque<FormatString> s, FormatString value) {
+		StringBuilder sb = new StringBuilder();
+
+		sb.append(popStack(s, value));
+		sb.append(value.getOpeningTeamspeakBB());
+		s.addFirst(value);
+		return sb.toString();
+	}
+
+	private static String popStack(Deque<FormatString> s, FormatString value) {
+		StringBuilder sb = new StringBuilder();
+		LinkedList<FormatString> previousTags = new LinkedList<FormatString>();
+		FormatString match = null;
+
+		for (FormatString element : s) {
+			if (element.sharesEqualTag(value)) {
+				match = element;
+				break;
+			}
+			previousTags.add(element);
 		}
+
+		if (match == null) return "";
+
+		for (Iterator<FormatString> forward = previousTags.iterator(); forward.hasNext();) {
+			sb.append(forward.next().getClosingTeamspeakBB());
+		}
+		sb.append(match.getClosingTeamspeakBB());
+		s.removeFirstOccurrence(match);
+		for (Iterator<FormatString> reverse = previousTags.descendingIterator(); reverse.hasNext();) {
+			sb.append(reverse.next().getOpeningTeamspeakBB());
+		}
+
+		return sb.toString();
+	}
+
+	private static String resetStack(Deque<FormatString> s) {
+		StringBuilder sb = new StringBuilder();
+		for (FormatString element : s) {
+			sb.append(element.getClosingTeamspeakBB());
+		}
+		s.clear();
+		return sb.toString();
 	}
 }

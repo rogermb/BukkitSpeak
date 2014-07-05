@@ -10,6 +10,10 @@
 	<name>BukkitSpeak</name>
 	<url>http://dev.bukkit.org/server-mods/bukkitspeak/</url>
 
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+	</properties>
+
 	<repositories>
 		<repository>
 			<id>bukkit-repo</id>

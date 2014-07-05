@@ -46,7 +46,7 @@ public class ServerMessageEvent extends TeamspeakEvent {
 				}
 			}
 			if (Configuration.TS_LOGGING.getBoolean()) {
-				m = MessageUtil.toMinecraft(m, false, Configuration.PLUGINS_HEROCHAT_RELAY_EVENTS.getBoolean());
+				m = MessageUtil.toMinecraft(m, false, true);
 				BukkitSpeak.log().info(m);
 			}
 
@@ -98,18 +98,5 @@ public class ServerMessageEvent extends TeamspeakEvent {
 				pl.sendMessage(m);
 			}
 		}
-	}
-
-	protected String filterLinks(String input, Boolean allowed) {
-		if (input != null) {
-			String s = input;
-			if (allowed) {
-				s = s.replaceAll("\\[URL](.*)\\[/URL]", "$1");
-			} else {
-				s = s.replaceAll("\\[URL](.*)\\[/URL]", "");
-			}
-			return s;
-		}
-		return null;
 	}
 }

@@ -64,7 +64,7 @@ public abstract class TeamspeakEvent {
 
 		// Finally log in console if enabled
 		if (Configuration.TS_LOGGING.getBoolean()) {
-			m = MessageUtil.toMinecraft(m, false, Configuration.PLUGINS_HEROCHAT_RELAY_EVENTS.getBoolean());
+			m = MessageUtil.toMinecraft(m, false, true);
 			BukkitSpeak.log().info(m);
 		}
 	}

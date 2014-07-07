@@ -4,6 +4,7 @@ import static org.junit.Assert.*;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.ArrayList;
@@ -18,33 +19,34 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.junit.*;
 
 public class ConfigurationTest {
-	
+
 	private FileConfiguration defaults;
-	
+
 	public ConfigurationTest() {
 		defaults = new YamlConfiguration();
 		try {
-			defaults.load(getResource("config.yml"));
+			InputStreamReader in = new InputStreamReader(getResource("config.yml"));
+			defaults.load(in);
 		} catch (IOException e) {
 			e.printStackTrace();
-			Assert.fail();
+			fail();
 		} catch (InvalidConfigurationException e) {
 			e.printStackTrace();
-			Assert.fail();
+			fail();
 		}
 	}
-	
+
 	@Test
 	public void checkAllPathsValid() {
 		Pattern p = Pattern.compile("(?:[\\w\\-]+" + Pattern.quote(String.valueOf(defaults.options().pathSeparator()))
 				+ ")*[\\w\\-]+");
 		for (Configuration c : Configuration.values()) {
 			if (!p.matcher(c.getConfigPath()).matches()) {
-				Assert.fail(c.name() + "'s path did not comply to the path naming rules.");
+				fail(c.name() + "'s path did not comply to the path naming rules.");
 			}
 		}
 	}
-	
+
 	@Test
 	public void checkAllDefaultValues() {
 		for (Configuration c : Configuration.values()) {
@@ -55,7 +57,7 @@ public class ConfigurationTest {
 			}
 		}
 	}
-	
+
 	@Test
 	public void checkAllValuesExist() {
 		List<String> keys = new ArrayList<String>();
@@ -64,32 +66,31 @@ public class ConfigurationTest {
 				keys.add(s);
 			}
 		}
-		
+
 		for (Configuration c : Configuration.values()) {
 			if (!keys.remove(c.getConfigPath())) {
 				fail(c.getConfigPath() + " did not have a value set in the default file.");
 			}
 		}
-		
+
 		for (String key : keys) {
 			fail(key + " was set in the default file, but not in the config.");
 		}
 	}
-	
+
 	private InputStream getResource(String filename) {
 		ClassLoader loader = Thread.currentThread().getContextClassLoader();
-		
+
 		if (filename == null) {
 			throw new IllegalArgumentException("Filename cannot be null");
 		}
-		
+
 		try {
 			URL url = loader.getResource(filename);
-			
 			if (url == null) {
 				return null;
 			}
-			
+
 			URLConnection connection = url.openConnection();
 			connection.setUseCaches(false);
 			return connection.getInputStream();

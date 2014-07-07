@@ -78,7 +78,7 @@ public class Replacer {
 		String s = input;
 		for (String key : repl.keySet()) {
 			String v = repl.get(key);
-			if (v == null || v.length() == 0) continue;
+			if (v == null) continue;
 			s = s.replaceAll("%" + key + "%", Matcher.quoteReplacement(v));
 		}
 		return s;

@@ -19,7 +19,10 @@ public class TeamspeakKeepAlive extends Thread {
 	@Override
 	public void run() {
 		if (BukkitSpeak.getQuery().isConnected()) {
-			if (plugin.getStoppedTime() != null) plugin.setStoppedTime(null);
+			if (plugin.getStoppedTime() != null) {
+				plugin.getLogger().info("Successfully reconnected!");
+				plugin.setStoppedTime(null);
+			}
 			try {
 				BukkitSpeak.getQuery().doCommand("clientupdate");
 				BukkitSpeak.getClientList().asyncUpdateAll();

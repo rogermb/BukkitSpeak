@@ -23,37 +23,49 @@ public class QueryConnector implements Runnable {
 		query.removeTeamspeakActionListener();
 
 		if (!query.connectTS3Query(Configuration.MAIN_IP.getString(), Configuration.MAIN_QUERYPORT.getInt())) {
-			logger.severe("Could not connect to the TS3 server.");
-			logger.severe("Make sure that the IP and the QueryPort are correct!");
-			logger.severe("You might also be (flood) banned from the server. Check the query whitelist!");
-			logger.severe("(" + query.getLastError() + ")");
+			if (plugin.getStoppedTime() == null) {
+				logger.severe("Could not connect to the TS3 server.");
+				logger.severe("Make sure that the IP and the QueryPort are correct!");
+				logger.severe("You might also be (flood) banned from the server. Check the query whitelist!");
+				logger.severe("(" + query.getLastError() + ")");
+			}
+
 			plugin.setStoppedTime(new Date());
 			return;
 		}
 		if (!query.loginTS3(Configuration.MAIN_USERNAME.getString(), Configuration.MAIN_PASSWORD.getString())) {
-			logger.severe("Could not login to the Server Query.");
-			logger.severe("Make sure that \"QueryUsername\" and \"QueryPassword\" are correct.");
-			logger.severe("(" + query.getLastError() + ")");
-			query.closeTS3Connection();
+			if (plugin.getStoppedTime() == null) {
+				logger.severe("Could not login to the Server Query.");
+				logger.severe("Make sure that \"QueryUsername\" and \"QueryPassword\" are correct.");
+				logger.severe("(" + query.getLastError() + ")");
+			}
+
 			plugin.setStoppedTime(new Date());
+			query.closeTS3Connection();
 			return;
 		}
 		if (Configuration.MAIN_SERVERPORT.getInt() > 0) {
 			if (!query.selectVirtualServer(Configuration.MAIN_SERVERPORT.getInt(), true)) {
-				logger.severe("Could not select the virtual server.");
-				logger.severe("Make sure TeamSpeakPort is PortNumber OR -VirtualServerId");
-				logger.severe("(" + query.getLastError() + ")");
-				query.closeTS3Connection();
+				if (plugin.getStoppedTime() == null) {
+					logger.severe("Could not select the virtual server.");
+					logger.severe("Make sure TeamSpeakPort is PortNumber OR -VirtualServerId");
+					logger.severe("(" + query.getLastError() + ")");
+				}
+
 				plugin.setStoppedTime(new Date());
+				query.closeTS3Connection();
 				return;
 			}
 		} else {
 			if (!query.selectVirtualServer(-(Configuration.MAIN_SERVERPORT.getInt()), false)) {
-				logger.severe("Could not select the virtual server.");
-				logger.severe("Make sure TeamSpeakPort is PortNumber OR -VirtualServerId");
-				logger.severe("(" + query.getLastError() + ")");
-				query.closeTS3Connection();
+				if (plugin.getStoppedTime() == null) {
+					logger.severe("Could not select the virtual server.");
+					logger.severe("Make sure TeamSpeakPort is PortNumber OR -VirtualServerId");
+					logger.severe("(" + query.getLastError() + ")");
+				}
+
 				plugin.setStoppedTime(new Date());
+				query.closeTS3Connection();
 				return;
 			}
 		}

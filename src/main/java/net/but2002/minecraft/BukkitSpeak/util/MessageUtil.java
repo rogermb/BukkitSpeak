@@ -27,7 +27,7 @@ public final class MessageUtil {
 
 			int previousIndex = 0;
 			while (m.find()) {
-				FormatString format = FormatString.fromChar(s.charAt(m.start() + 1));
+				FormatString format = FormatString.fromChar(Character.toLowerCase(s.charAt(m.start() + 1)));
 				out.append(s.substring(previousIndex, m.start()));
 
 				if (format == FormatString.RESET) {

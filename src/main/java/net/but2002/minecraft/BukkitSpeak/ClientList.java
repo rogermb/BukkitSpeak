@@ -90,6 +90,9 @@ public class ClientList {
 	}
 
 	public void updateClient(int clid) {
+		// This should prevent a wrong result in #containsID(int) while the data is still being updated
+		clients.put(clid, new HashMap<String, String>());
+
 		(new ClientUpdater(this, clid)).run();
 	}
 
@@ -104,6 +107,7 @@ public class ClientList {
 				clients.put(clid, client);
 			}
 		} else {
+			clients.remove(clid);
 			logger.warning("Received no information for client id " + clid + ".");
 		}
 	}

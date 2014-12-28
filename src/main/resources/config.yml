@@ -63,7 +63,7 @@ teamspeak-commands:
 plugin-interaction:
   # Whether only chat events where all online players are the recipients
   # of the message should be sent to the TS server.
-  OnlyRelayChatAllPlayersWillReceive: true
+  OnlyRelayChatAllPlayersWillReceive: false
 
   Factions:
     # If Factions is enabled, should only public chat be sent to TeamSpeak?

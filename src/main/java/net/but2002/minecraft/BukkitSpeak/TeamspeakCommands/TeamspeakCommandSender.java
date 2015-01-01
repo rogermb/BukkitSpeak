@@ -42,7 +42,7 @@ public class TeamspeakCommandSender implements CommandSender {
 		outBuffer = Collections.synchronizedList(new LinkedList<String>());
 		operator = op;
 
-		permissions = new PermissibleBase(null);
+		permissions = new PermissibleBase(this);
 		for (Map.Entry<String, Boolean> e : perms.entrySet()) {
 			permissions.addAttachment(BukkitSpeak.getInstance(), e.getKey(), e.getValue());
 		}

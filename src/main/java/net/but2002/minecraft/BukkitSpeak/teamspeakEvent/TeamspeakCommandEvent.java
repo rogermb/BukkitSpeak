@@ -44,6 +44,7 @@ public class TeamspeakCommandEvent extends TeamspeakEvent {
 		if (sg.isBlocked()) return;
 
 		TeamspeakCommandSender tscs = new TeamspeakCommandSender(getUser(), sg.isOp(), sg.getPermissions());
+
 		// Check for internal commands.
 		if (BukkitSpeak.getTeamspeakCommandExecutor().execute(tscs, commandName, args)) {
 			// Command successfully executed --> Log and return

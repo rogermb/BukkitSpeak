@@ -32,7 +32,7 @@ public class BukkitSpeak extends JavaPlugin {
 
 	private static final int KEEP_ALIVE_DELAY = 1200;
 
-	private static BukkitSpeak instance;
+	private static BukkitSpeak instance
 	private static TeamspeakCommandExecutor tsCommand;
 	private static PermissionsHelper permissionsHelper;
 	private static ClientList clients;

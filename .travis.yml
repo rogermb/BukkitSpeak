@@ -2,3 +2,6 @@ language: java
 sudo: false
 jdk:
   - oraclejdk7
+branches:
+  only:
+    - TravisTest

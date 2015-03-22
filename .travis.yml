@@ -2,8 +2,8 @@ language: java
 sudo: false
 jdk:
   - oraclejdk7
-before_script: chmod +x script/buildscript.sh
-script: ./script/buildscript.sh
+before_install: chmod +x script/buildscript.sh
+install: ./script/buildscript.sh
 branches:
   only:
     - TravisTest

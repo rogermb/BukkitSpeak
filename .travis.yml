@@ -2,6 +2,7 @@ language: java
 sudo: false
 jdk:
   - oraclejdk7
+script: ./script/buildscript.sh
 branches:
   only:
     - TravisTest

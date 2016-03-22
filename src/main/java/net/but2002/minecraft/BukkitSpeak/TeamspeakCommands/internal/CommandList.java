@@ -18,22 +18,22 @@ public class CommandList extends TeamspeakCommand {
 	@Override
 	public void execute(TeamspeakCommandSender sender, String[] args) {
 		StringBuilder online = new StringBuilder();
-		Player[] players = Bukkit.getOnlinePlayers();
+                
+                if(Bukkit.getOnlinePlayers().size() > 0){
+                    for (Player players : Bukkit.getOnlinePlayers()) {
+                            online.append(players.getName());
+                            online.append(", ");
+                    }
 
-		if (players.length > 0) {
-			for (Player p : players) {
-				online.append(p.getName());
-				online.append(", ");
-			}
-			online.delete(online.length() - 2, online.length());
-		} else {
-			online.append(" -");
+                    online.delete(online.length() - 2, online.length());
+                } else {
+                    online.append(" -");
 		}
 
 		String tsMsg = Messages.TS_COMMAND_LIST.get();
 		String list = online.toString();
 
-		tsMsg = new Replacer().addSender(sender).addList(list).addCount(players.length).replace(tsMsg);
+		tsMsg = new Replacer().addSender(sender).addList(list).addCount(Bukkit.getOnlinePlayers().size()).replace(tsMsg);
 		tsMsg = MessageUtil.toTeamspeak(tsMsg, true, Configuration.TS_ALLOW_LINKS.getBoolean());
 
 		if (tsMsg.isEmpty()) return;

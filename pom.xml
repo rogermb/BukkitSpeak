@@ -4,7 +4,7 @@
 
 	<groupId>me.firedroide.plugins</groupId>
 	<artifactId>BukkitSpeak</artifactId>
-	<version>0.68-SNAPSHOT</version>
+	<version>0.69-SNAPSHOT</version>
 	<packaging>jar</packaging>
 
 	<name>BukkitSpeak</name>
@@ -15,16 +15,10 @@
 	</properties>
 
 	<repositories>
-		<repository>
-			<id>bukkit-repo</id>
-			<url>http://repo.bukkit.org/content/groups/public</url>
-			<releases>
-				<updatePolicy>always</updatePolicy>
-			</releases>
-			<snapshots>
-				<updatePolicy>always</updatePolicy>
-			</snapshots>
-		</repository>
+                <repository>
+                    <id>spigot-repo</id>
+                    <url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>
+                </repository>
 		<repository>
 			<id>stutz-repo</id>
 			<url>http://repo.stutzfam.ch/content/groups/public</url>
@@ -38,11 +32,20 @@
 	</repositories>
 
 	<dependencies>
-		<dependency>
-			<groupId>org.bukkit</groupId>
-			<artifactId>bukkit</artifactId>
-			<version>1.7.9-R0.2</version>
-		</dependency>
+                <!--Spigot API-->
+                <dependency>
+                        <groupId>org.spigotmc</groupId>
+                        <artifactId>spigot-api</artifactId>
+                        <version>1.9-R0.1-SNAPSHOT</version>
+                        <scope>provided</scope>
+                </dependency>
+                <!--Bukkit API-->
+                <dependency>
+                        <groupId>org.bukkit</groupId>
+                        <artifactId>bukkit</artifactId>
+                        <version>1.9-R0.1-SNAPSHOT</version>
+                        <scope>provided</scope>
+                </dependency>
 		<dependency>
 			<groupId>com.massivecraft</groupId>
 			<artifactId>Factions</artifactId>

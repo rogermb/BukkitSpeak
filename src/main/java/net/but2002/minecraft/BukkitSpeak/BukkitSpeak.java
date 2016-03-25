@@ -197,7 +197,6 @@ public class BukkitSpeak extends JavaPlugin {
 		if (Configuration.TS_COMMANDS_ENABLED.getBoolean() || Configuration.TS_LIST_GROUPING.getBoolean()) {
 			permissionsHelper.run();
 		}
-		if (isFloodBanned()) return;
 	}
 
 	private boolean isFloodBanned() {

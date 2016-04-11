@@ -26,8 +26,7 @@ public class CommandPoke extends BukkitSpeakCommand {
 	@Override
 	public void execute(CommandSender sender, String[] args) {
 		if (args.length < 3) {
-			send(sender, Level.WARNING, "&aToo few arguments!");
-			send(sender, Level.WARNING, "&aUsage: /ts poke target message");
+			sendTooFewArgumentsMessage(sender, Messages.MC_COMMAND_POKE_USAGE.get());
 			return;
 		}
 

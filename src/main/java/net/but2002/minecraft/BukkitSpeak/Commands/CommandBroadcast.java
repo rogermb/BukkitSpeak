@@ -30,8 +30,7 @@ public class CommandBroadcast extends BukkitSpeakCommand {
 		}
 
 		if (args.length < 2) {
-			send(sender, Level.WARNING, "&aToo few arguments!");
-			send(sender, Level.WARNING, "&aUsage: /ts broadcast message");
+			sendTooFewArgumentsMessage(sender, Messages.MC_COMMAND_BROADCAST_USAGE.get());
 			return;
 		}
 

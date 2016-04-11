@@ -72,6 +72,17 @@ public class Replacer {
 		return this;
 	}
 
+	public Replacer addCommandUsage(String usage) {
+		repl.put("usage", usage);
+		return this;
+	}
+
+	public Replacer addCommandDescription(String command, String description) {
+		repl.put("command", command);
+		repl.put("description", description);
+		return this;
+	}
+
 	public String replace(String input) {
 		if (input == null) return null;
 

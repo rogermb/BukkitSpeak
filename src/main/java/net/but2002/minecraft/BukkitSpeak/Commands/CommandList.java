@@ -71,8 +71,9 @@ public class CommandList extends BukkitSpeakCommand {
 			if (mcMsg == null || mcMsg.isEmpty()) return;
 			send(sender, Level.INFO, mcMsg);
 		} else {
-			send(sender, Level.INFO, "&4Usage:");
-			send(sender, Level.INFO, "&4/ts list (server / channel)");
+			Replacer r = new Replacer().addSender(sender).addCommandUsage("/ts list (server / channel)");
+			String usageMessage = r.replace(Messages.MC_COMMAND_ERROR_MESSAGE_USAGE.get());
+			send(sender, Level.WARNING, usageMessage);
 		}
 	}
 

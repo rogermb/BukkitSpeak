@@ -32,48 +32,82 @@ MinecraftEvent:
   PlayerBanned:
     ToTeamspeakTarget: '&l%player_displayname%&r was banned from the server.'
 MinecraftCommand:
+  Help:
+    UserCommands:
+      Header: '&aHelp'
+      ToMinecraftUser: '&e%command% &a- %description%'
+    AdminCommands:
+      Command: '/ts admin &aor &e/tsa'
+      Description: 'BukkitSpeak admin commands.'
+      Header: '&2Admin Commands Help'
+      ToMinecraftUser: '&e%command% &2- %description%'
   List:
+    Description: 'Displays who''s currently on TeamSpeak.'
     Server:
       ToMinecraftUser: '&aCurrently online (&e%count%&a): &e%list%'
     Channel:
       ToMinecraftUser: '&aCurrently in the channel (&e%count%&a): &e%list%'
   Mute:
+    Description: 'Mutes / unmutes BukkitSpeak for you.'
     Enable:
       ToMinecraftUser: '&aYou are now muted.'
     Disable:
       ToMinecraftUser: '&aYou aren''t muted anymore.'
-  Set:
-    ChannelChange:
-      ToMinecraftServer: '&aYou are now talking in the TeamSpeak channel &6%channel%&a.'
   Broadcast:
+    Usage: '/ts broadcast message'
+    Description: 'Broadcast a global TS message.'
     ToMinecraftServer: '&e%player_displayname% &a-> &f[&cTS&f]&f: %msg%'
     ToTeamspeakServer: '&4&l%msg%'
   Chat:
+    Usage: '/ts chat message'
+    Description: 'Displays a message in the TS channel.'
     ToMinecraftServer: '&e%player_displayname% &a-> &eTS&f: %msg%'
     ToTeamspeakChannel: '&l[%player_displayname%&r&l] &r%msg%'
   Pm:
+    Usage: '/ts pm target message'
+    Description: 'Sends a message to a certain client.'
     ToMinecraftUser: '&eMe &a-> &e%target%&f: %msg%'
     ToTeamspeakUser: '&l[%player_displayname%&r&l] &r%msg%'
   Reply:
+    Usage: '/ts r(eply) message'
+    Description: 'Replies to a PM.'
     Errors:
       NoRecipient:
         ToMinecraftUser: '&4Nobody has sent you a PM yet.'
   Poke:
+    Usage: '/ts poke target message'
+    Description: 'Pokes a client on Teamspeak.'
     ToMinecraftUser: '&eYou &apoked &e%target%&f: %msg%'
     ToTeamspeakUser: '&l[%player_displayname%&r&l] &r%msg%'
+  Info:
+    Description: 'Information about the TS server.'
+  Ban:
+    Usage: '/ts ban client (message)'
+    Description: 'Bans a client.'
+    ToMinecraftServer: '&e%player_displayname% &abanned &e%target% &afor &e%msg%&a.'
+    ToTeamspeakUser: '[%player_displayname%] banned you from the server for %msg%.'
   Kick:
+    Usage: '/ts kick client (message)'
+    Description: 'Kicks from the TS server.'
     ToMinecraftServer: '&e%player_displayname% &akicked &e%target% &afrom the server
       for &e%msg%&a.'
     ToTeamspeakUser: '[%player_displayname%] kicked you from the server for %msg%.'
   ChannelKick:
+    Usage: '/ts channelkick client (message)'
+    Description: 'Kicks from the channel and moves the client to the default channel.'
     ToMinecraftServer: '&e%player_displayname% &akicked &e%target% &afrom the channel for &e%msg%&a.'
     ToTeamspeakUser: '[%player_displayname%] kicked you from the server for %msg%.'
     Errors:
       ClientNotInChannel:
         ToMinecraftUser: '&4The client &r&e%target%&r&4 is not in the channel!'
-  Ban:
-    ToMinecraftServer: '&e%player_displayname% &abanned &e%target% &afor &e%msg%&a.'
-    ToTeamspeakUser: '[%player_displayname%] banned you from the server for %msg%.'
+  Set:
+    Description: 'Change BukkitSpeak''s config.'
+    ChannelChange:
+      ToMinecraftServer: '&aYou are now talking in the TeamSpeak channel &6%channel%&a.'
+  Status:
+    Description: 'Shows some info about BukkitSpeak.'
+  Reload:
+    Description: 'Reloads the config and the query.'
   KickBanDefaultReason: '-'
   Errors:
     NotConnected:
@@ -84,6 +118,10 @@ MinecraftCommand:
       ToMinecraftUser: '&4There is more than one player matching &e%input%&4.'
     MessageTooLong:
       ToMinecraftUser: '&4The message is too long! (> 100 characters)'
+    TooFewArguments:
+      ToMinecraftUser: '&aToo few arguments!'
+    UsageInfo:
+      ToMinecraftUser: '&aUsage: &e%usage%'
 TeamspeakCommand:
   List:
     ToTeamspeakUser: 'Currently online (%count%): %list%'

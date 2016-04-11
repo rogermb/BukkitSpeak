@@ -33,8 +33,7 @@ public class CommandPm extends BukkitSpeakCommand {
 		}
 
 		if (args.length < 3) {
-			send(sender, Level.WARNING, "&aToo few arguments!");
-			send(sender, Level.WARNING, "&aUsage: /ts pm target message");
+			sendTooFewArgumentsMessage(sender, Messages.MC_COMMAND_PM_USAGE.get());
 			return;
 		}
 

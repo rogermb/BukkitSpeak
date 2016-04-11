@@ -33,7 +33,7 @@ public class CommandSet extends BukkitSpeakCommand {
 		if (!isConnected(sender)) return;
 
 		if (args.length == 1) {
-			send(sender, Level.INFO, "&aUsage: &6/tsa set <property> <value>");
+			send(sender, Level.INFO, "&aUsage: &e/tsa set <property> <value>");
 			send(sender, Level.INFO, "&aProperties you can set:");
 			send(sender, Level.INFO, props);
 		} else if (args.length == 2) {

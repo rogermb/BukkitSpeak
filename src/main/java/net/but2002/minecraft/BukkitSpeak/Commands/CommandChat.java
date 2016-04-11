@@ -32,8 +32,7 @@ public class CommandChat extends BukkitSpeakCommand {
 		}
 
 		if (args.length < 2) {
-			send(sender, Level.WARNING, "&aToo few arguments!");
-			send(sender, Level.WARNING, "&aUsage: /ts chat message");
+			sendTooFewArgumentsMessage(sender, Messages.MC_COMMAND_CHAT_USAGE.get());
 			return;
 		}
 

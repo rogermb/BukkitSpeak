@@ -24,8 +24,7 @@ public class CommandKick extends BukkitSpeakCommand {
 	@Override
 	public void execute(CommandSender sender, String[] args) {
 		if (args.length < 2) {
-			send(sender, Level.WARNING, "&aToo few arguments!");
-			send(sender, Level.WARNING, "&aUsage: /ts kick client (message)");
+			sendTooFewArgumentsMessage(sender, Messages.MC_COMMAND_KICK_USAGE.get());
 			return;
 		}
 

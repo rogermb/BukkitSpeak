@@ -62,6 +62,16 @@ public abstract class BukkitSpeakCommand {
 		}
 	}
 
+	protected void sendTooFewArgumentsMessage(CommandSender sender, String usage) {
+		Replacer r = new Replacer().addSender(sender);
+		String tooFewArgsMessage = r.replace(Messages.MC_COMMAND_ERROR_MESSAGE_TOO_FEW_ARGS.get());
+		r.addCommandUsage(usage);
+		String usageMessage = r.replace(Messages.MC_COMMAND_ERROR_MESSAGE_USAGE.get());
+
+		send(sender, Level.WARNING, tooFewArgsMessage);
+		send(sender, Level.WARNING, usageMessage);
+	}
+
 	protected boolean checkCommandPermission(CommandSender sender, String perm) {
 		return sender.hasPermission("bukkitspeak.commands." + perm);
 	}

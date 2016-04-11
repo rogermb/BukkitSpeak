@@ -18,7 +18,7 @@ public class CommandInfo extends BukkitSpeakCommand {
 	public void execute(CommandSender sender, String[] args) {
 		if (!isConnected(sender)) return;
 
-		if (Integer.valueOf(Configuration.MAIN_SERVERPORT.getInt()) > 0) {
+		if (Configuration.MAIN_SERVERPORT.getInt() > 0) {
 			StringBuilder sb = new StringBuilder();
 
 			sb.append("&aTeamspeak IP: &e").append(Configuration.MAIN_IP.getString());
@@ -26,7 +26,7 @@ public class CommandInfo extends BukkitSpeakCommand {
 
 			send(sender, Level.INFO, sb.toString());
 		} else {
-			int port = -(Integer.valueOf(Configuration.MAIN_SERVERPORT.getInt()));
+			int port = -Configuration.MAIN_SERVERPORT.getInt();
 			StringBuilder sb = new StringBuilder();
 
 			sb.append("&aTeamspeak IP: &e").append(Configuration.MAIN_IP.getString());

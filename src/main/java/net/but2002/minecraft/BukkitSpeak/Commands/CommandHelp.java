@@ -5,6 +5,8 @@ import java.util.logging.Level;
 
 import net.but2002.minecraft.BukkitSpeak.Configuration.Configuration;
 
+import net.but2002.minecraft.BukkitSpeak.Configuration.Messages;
+import net.but2002.minecraft.BukkitSpeak.util.Replacer;
 import org.bukkit.command.CommandSender;
 
 public class CommandHelp extends BukkitSpeakCommand {
@@ -15,34 +17,39 @@ public class CommandHelp extends BukkitSpeakCommand {
 
 	@Override
 	public void execute(CommandSender sender, String[] args) {
-		send(sender, Level.INFO, "&aHelp");
-		if (checkCommandPermission(sender, "list")) {
-			send(sender, Level.INFO, "&e/ts list &a- Displays who's currently on TeamSpeak.");
+		send(sender, Level.INFO, Messages.MC_COMMAND_HELP_USER_HEADER.get());
+		sendUserCommandHelp(sender, "list", Messages.MC_COMMAND_LIST_DESCRIPTION.get());
+		sendUserCommandHelp(sender, "mute", Messages.MC_COMMAND_MUTE_DESCRIPTION.get());
+		if (Configuration.TS_ENABLE_SERVER_MESSAGES.getBoolean()) {
+			sendUserCommandHelp(sender, "broadcast", Messages.MC_COMMAND_BROADCAST_DESCRIPTION.get());
 		}
-		if (checkCommandPermission(sender, "mute")) {
-			send(sender, Level.INFO, "&e/ts mute &a- Mutes / unmutes BukkitSpeak for you.");
+		if (Configuration.TS_ENABLE_CHANNEL_MESSAGES.getBoolean()) {
+			sendUserCommandHelp(sender, "chat", Messages.MC_COMMAND_CHAT_DESCRIPTION.get());
 		}
-		if (checkCommandPermission(sender, "broadcast") && Configuration.TS_ENABLE_SERVER_MESSAGES.getBoolean()) {
-			send(sender, Level.INFO, "&e/ts broadcast &a- Broadcast a global TS message.");
+		if (Configuration.TS_ENABLE_PRIVATE_MESSAGES.getBoolean()) {
+			sendUserCommandHelp(sender, "pm", Messages.MC_COMMAND_PM_DESCRIPTION.get());
+			sendUserCommandHelp(sender, "reply", "r(eply)", Messages.MC_COMMAND_REPLY_DESCRIPTION.get());
 		}
-		if (checkCommandPermission(sender, "chat") && Configuration.TS_ENABLE_CHANNEL_MESSAGES.getBoolean()) {
-			send(sender, Level.INFO, "&e/ts chat &a- Displays a message in the TS channel.");
-		}
-		if (checkCommandPermission(sender, "pm") && Configuration.TS_ENABLE_PRIVATE_MESSAGES.getBoolean()) {
-			send(sender, Level.INFO, "&e/ts pm &a- Sends a message to a certain client.");
-		}
-		if (checkCommandPermission(sender, "reply") && Configuration.TS_ENABLE_PRIVATE_MESSAGES.getBoolean()) {
-			send(sender, Level.INFO, "&e/ts r(eply) &a- Replies to a PM.");
-		}
-		if (checkCommandPermission(sender, "poke")) {
-			send(sender, Level.INFO, "&e/ts poke &a- Pokes a client on Teamspeak.");
-		}
-		if (checkCommandPermission(sender, "info")) {
-			send(sender, Level.INFO, "&e/ts info &a- Information about the TS server.");
-		}
+		sendUserCommandHelp(sender, "poke", Messages.MC_COMMAND_POKE_DESCRIPTION.get());
+		sendUserCommandHelp(sender, "info", Messages.MC_COMMAND_INFO_DESCRIPTION.get());
+
 		if (checkCommandPermission(sender, "admin")) {
-			send(sender, Level.INFO, "&e/ts admin &2or &e/tsa &2- BukkitSpeak admin commands.");
+			String help = Messages.MC_COMMAND_HELP_ADMIN.get();
+			help = new Replacer().addCommandDescription(Messages.MC_COMMAND_HELP_ADMIN_COMMAND.get(),
+					Messages.MC_COMMAND_HELP_ADMIN_DESCRIPTION.get()).replace(help);
+			send(sender, Level.INFO, help);
 		}
+	}
+
+	private void sendUserCommandHelp(CommandSender sender, String command, String description) {
+		sendUserCommandHelp(sender, command, command, description);
+	}
+
+	private void sendUserCommandHelp(CommandSender sender, String permission, String command, String description) {
+		if (!checkCommandPermission(sender, permission)) return;
+		String help = Messages.MC_COMMAND_HELP_USER.get();
+		help = new Replacer().addCommandDescription("/ts " + command, description).replace(help);
+		send(sender, Level.INFO, help);
 	}
 
 	@Override

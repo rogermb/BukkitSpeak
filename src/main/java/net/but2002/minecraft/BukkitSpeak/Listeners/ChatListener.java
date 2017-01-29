@@ -16,8 +16,8 @@ import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.plugin.EventExecutor;
 
 import com.gmail.nossr50.api.ChatAPI;
-import com.massivecraft.factions.FPlayers;
-import com.massivecraft.factions.struct.ChatMode;
+import nz.co.lolnet.james137137.FactionChat.API.FactionChatAPI;
+//import com.massivecraft.factions.struct.ChatMode;
 
 import de.stefan1200.jts3serverquery.JTS3ServerQuery;
 
@@ -33,8 +33,8 @@ public class ChatListener implements EventExecutor, Listener {
 		if (e.getPlayer() == null || e.getMessage().isEmpty()) return;
 
 		/* Factions check */
-		if (BukkitSpeak.hasFactions() && Configuration.PLUGINS_FACTIONS_PUBLIC_ONLY.getBoolean()) {
-			if (FPlayers.i.get(e.getPlayer()).getChatMode() != ChatMode.PUBLIC) {
+		if (BukkitSpeak.hasFactions() && BukkitSpeak.hasFactionsChat() && Configuration.PLUGINS_FACTIONS_PUBLIC_ONLY.getBoolean()) {
+			if(!FactionChatAPI.getChatMode(e.getPlayer()).toUpperCase().equals("PUBLIC")){
 				return;
 			}
 		}

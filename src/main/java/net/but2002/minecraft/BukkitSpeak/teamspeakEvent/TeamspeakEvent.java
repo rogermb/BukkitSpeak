@@ -1,10 +1,12 @@
 package net.but2002.minecraft.BukkitSpeak.teamspeakEvent;
 
+import com.dthielke.Herochat;
 import java.util.HashMap;
 
 import org.bukkit.entity.Player;
 
-import com.dthielke.herochat.Herochat;
+//import com.dthielke.herochat.Herochat;
+//import com.dthielke.channel.ChannelManager;
 
 import net.but2002.minecraft.BukkitSpeak.BukkitSpeak;
 import net.but2002.minecraft.BukkitSpeak.Configuration.Configuration;

@@ -24,7 +24,7 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import com.dthielke.herochat.Herochat;
+import com.dthielke.Herochat;
 
 import de.stefan1200.jts3serverquery.*;
 
@@ -43,7 +43,7 @@ public class BukkitSpeak extends JavaPlugin {
 	private static HashMap<Integer, String> pmRecipients;
 	private static HashMap<String, Integer> pmSenders;
 
-	private static boolean factions, herochat, mcMMO;
+	private static boolean factions, herochat, mcMMO, factionschat;
 
 	private QueryConnector qc;
 	private TeamspeakActionListener ts;
@@ -96,6 +96,9 @@ public class BukkitSpeak extends JavaPlugin {
 		/* PlugIn hooks after the initialization */
 		factions = Bukkit.getPluginManager().isPluginEnabled("Factions");
 		if (factions) logger.info("Hooked into Factions!");
+                
+                factionschat = Bukkit.getPluginManager().isPluginEnabled("FactionChat");
+		if (factionschat) logger.info("Hooked into FactionChat!");
 
 		mcMMO = Bukkit.getPluginManager().isPluginEnabled("mcMMO");
 		if (mcMMO) logger.info("Hooked into mcMMO!");
@@ -271,6 +274,11 @@ public class BukkitSpeak extends JavaPlugin {
 	/* Returns true if factions is enabled on the server */
 	public static boolean hasFactions() {
 		return factions;
+	}
+        
+        /* Returns true if factionsChat is enabled on the server */
+	public static boolean hasFactionsChat() {
+		return factionschat;
 	}
 
 	/* Returns true if herochat is enabled on the server and set to true in the config */

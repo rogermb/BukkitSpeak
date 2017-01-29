@@ -149,6 +149,13 @@ public class MetricsUtil {
 					return BukkitSpeak.hasMcMMO() ? 1 : 0;
 				}
 			});
+                        dependencyGraph.addPlotter(new Plotter("FactionChat") {
+
+				@Override
+				public int getValue() {
+					return BukkitSpeak.hasFactionsChat() ? 1 : 0;
+				}
+			});
 
 			metrics.start();
 			logger.info("Connected to mcstats.org.");

@@ -29,34 +29,67 @@
 				<updatePolicy>always</updatePolicy>
 			</snapshots>
 		</repository>
+                <!-- For anything else without its own repo -->
+                <repository>
+                    <id>cnaude-repo</id>
+                    <url>http://cnaude.org/repo/</url>
+                </repository>
+                <!-- FactionChat -->
+                <repository>
+                    <id>FactionChat-repo</id>
+                    <url>http://jenkins.lolnet.co.nz/plugin/repository/everything/</url>
+                    <snapshots>
+                        <enabled>false</enabled>
+                    </snapshots>
+                </repository>
+                <repository>
+                    <id>md_5-repo</id>
+                    <url>http://repo.md-5.net/content/repositories/snapshots/</url>
+                </repository>
 	</repositories>
 
 	<dependencies>
-		<dependency>
-			<groupId>org.bukkit</groupId>
-			<artifactId>bukkit</artifactId>
-			<version>1.9-R0.1-SNAPSHOT</version>
+                <!-- McMMO -->
+                <dependency>
+                    <groupId>com.gmail.nossr50.mcMMO</groupId>
+                    <artifactId>mcMMO</artifactId>
+                    <version>1.5.01-SNAPSHOT</version>
+                </dependency>
+		<!-- Bukkit -->
+                <dependency>
+                    <groupId>org.bukkit</groupId>
+                    <artifactId>bukkit</artifactId>
+                    <version>1.9.2-R0.1-SNAPSHOT</version>
 		</dependency>
-		<dependency>
-			<groupId>com.massivecraft</groupId>
-			<artifactId>Factions</artifactId>
-			<version>1.6.9.5</version>
+		<!-- Factions -->
+                <dependency>
+                    <groupId>com.cnaude.factions</groupId>
+                    <artifactId>Factions</artifactId>
+                    <version>2.8.2</version>
 		</dependency>
+                <!-- Factions Core -->
+                <dependency>
+                    <groupId>com.cnaude.mcore</groupId>
+                    <artifactId>MassiveCore</artifactId>
+                    <version>2.8.2</version>
+                </dependency>
+                <!-- Herochat -->
+                <dependency>
+                    <groupId>com.cnaude.herochat</groupId>
+                    <artifactId>Herochat</artifactId>
+                    <version>5.7.0</version>
+                </dependency>
+                <!-- FactionChat -->
+                <dependency>
+                    <groupId>nz.co.lolnet.james137137</groupId>
+                    <artifactId>factionchat</artifactId>
+                    <version>1.9.16</version>
+                </dependency>
 		<dependency>
-			<groupId>com.dthielke</groupId>
-			<artifactId>herochat</artifactId>
-			<version>5.6.7</version>
-		</dependency>
-		<dependency>
-			<groupId>com.gmail.nossr50.mcMMO</groupId>
-			<artifactId>mcMMO</artifactId>
-			<version>1.4.07</version>
-		</dependency>
-		<dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
-			<version>4.11</version>
-			<scope>test</scope>
+                    <groupId>junit</groupId>
+                    <artifactId>junit</artifactId>
+                    <version>4.11</version>
+                    <scope>test</scope>
 		</dependency>
 	</dependencies>
 
@@ -80,8 +113,8 @@
 				<artifactId>maven-compiler-plugin</artifactId>
 				<version>2.5.1</version>
 				<configuration>
-					<source>1.6</source>
-					<target>1.6</target>
+					<source>1.7</source>
+					<target>1.7</target>
 				</configuration>
 			</plugin>
 
